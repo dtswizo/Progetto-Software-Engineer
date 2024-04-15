@@ -24,9 +24,9 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
   - [Use case diagram](#use-case-diagram)
     - [Use case 1, UC1](#use-case-1-uc1)
-      - [Scenario 1.1](#scenario-11)
-      - [Scenario 1.2](#scenario-12)
-      - [Scenario 1.x](#scenario-1x)
+        - [Scenario 1.1](#scenario-11)
+        - [Scenario 1.2](#scenario-12)
+        - [Scenario 1.x](#scenario-1x)
     - [Use case 2, UC2](#use-case-2-uc2)
     - [Use case x, UCx](#use-case-x-ucx)
 - [Glossary](#glossary)
@@ -41,7 +41,11 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 | Stakeholder name | Description |
 | :--------------: | :---------: |
-| Stakeholder x..  |             |
+| Customer  | User that can buy products            |
+| Store Manager  | User that sells products            |
+| Payment service  | Used to manage transactions            |
+| Delivery service  | Used to manage deliveries            |
+| Software Factory  |  Delopers and mainteiners of the applications          |
 
 # Context Diagram and interfaces
 
@@ -60,6 +64,11 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |   Actor   | Logical Interface | Physical Interface |
 | :-------: | :---------------: | :----------------: |
 | Actor x.. |                   |                    |
+| Actor x.. |                   |                    |
+| Actor x.. |                   |                    |
+| Actor x.. |                   |                    |
+| Actor x.. |                   |                    |
+
 
 # Stories and personas
 
