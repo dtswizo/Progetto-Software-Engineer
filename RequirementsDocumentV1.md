@@ -53,6 +53,8 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 \<Define here Context diagram using UML use case diagram>
 
+![alt text](resources/Context_Diagram.png)
+
 \<actors are a subset of stakeholders>
 
 ## Interfaces
@@ -63,12 +65,11 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 |   Actor   | Logical Interface | Physical Interface |
 | :-------: | :---------------: | :----------------: |
-| Actor x.. |                   |                    |
-| Actor x.. |                   |                    |
-| Actor x.. |                   |                    |
-| Actor x.. |                   |                    |
-| Actor x.. |                   |                    |
-
+| Customer  |      GUI          |     PC /  Smartphone|
+| Store Manager | GUI | PC / Smartphone|
+| Payment Service | https://developer.paypal.com/docs/payouts/standard/integrate-api/ | Internet |
+| Delivery Service |BRT EasySpedWeb | Internet
+| Software Factory ???
 
 # Stories and personas
 
