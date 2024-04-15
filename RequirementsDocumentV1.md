@@ -88,9 +88,64 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 |  ID   | Description |
 | :---: | :---------: |
-|  FR1  |             |
-|  FR2  |             |
-| FRx.. |             |
+|  FR1  |     Gestione Transazione   |
+|  FR1.1  |   Integrazione API servizio di pagamento          |
+| FR1.2 | Aggiornamento status database             |
+| FR1.3|  Aggancio sezione esito |
+| FR2 | Gestione carrello             |
+| FR2.1 | Aggiungi/Rimuovi elemento  dal carrello             |
+| FR2.2 | Cambiamento quantità elemento del carrello             |
+| FR2.3 | Svuota carrello             |
+| FR2.4 | Procedi al pagamento|
+| FR3 | Gestione Articolo|
+| FR3.1 | Aggiunta/Rimozione articolo|
+| FR3.2 | Modifica prezzo|
+| FR3.3 | Modifica descrizione|
+| FR4| Gestione Account |
+| FR4.1| Registrazione account|
+| FR4.2| Chiusura account|
+| FR4.3| Login/Logout utenti|
+| FR4.4 |Gestione privilegi(?)|
+|FR4.5 | Aggiunta indirizzo default|
+| FR5| Storico ordini |
+| FR5.1|  Download fattura|
+| FR5.2| Status ordine |
+| FR5.3| Filtri ordine|
+| FR6| Assistenza ordine |
+| FR6.1| Reindirizzamento verso corriere |
+| FR6.2| Reindirizzamento  venditore|
+| FR7| Gestione privacy|
+| FR7.1 | Mostra cookie policy|
+| FR7.2 | GDPR privacy policy requirements|
+| FR8| Checkout ordine |
+| FR8.1| Riepilogo lista articoli|
+| FR8.2| Selezione indirizzo di spedizione |
+| FR8.2.1| Selezione indirizzo di default|
+| FR8.2.3| Selezione indirizzo temporaneo |
+| FR9| Sezione esito| 
+| FR9.1 | Mostra esito| 
+| FR9.2 | Vai a redirect| 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Non Functional Requirements
 
