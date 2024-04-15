@@ -90,15 +90,13 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  ID   | Description |
 | :---: | :---------: |
 |  FR1  |     Gestione Transazione   |
-|  FR1.1  |   Integrazione API servizio di pagamento          |
-| FR1.2 | Aggiornamento status database             |
-| FR1.3|  Aggancio sezione esito |
+|  FR1.1  |   Richiesta pagamento       |
+| FR1.2 | Gestione dati di pagamento            |
 | FR2 | Gestione carrello             |
 | FR2.1 | Aggiungi/Rimuovi elemento  dal carrello             |
 | FR2.2 | Cambiamento quantità elemento del carrello             |
 | FR2.3 | Svuota carrello             |
-| FR2.4 | Procedi al pagamento|
-| FR3 | Gestione Articolo|
+| FR3 | Gestione articolo in vendita|
 | FR3.1 | Aggiunta/Rimozione articolo|
 | FR3.2 | Modifica prezzo|
 | FR3.3 | Modifica descrizione|
@@ -106,26 +104,33 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | FR4.1| Registrazione account|
 | FR4.2| Chiusura account|
 | FR4.3| Login/Logout utenti|
-| FR4.4 |Gestione privilegi(?)|
 |FR4.5 | Aggiunta indirizzo default|
-| FR5| Storico ordini |
-| FR5.1|  Download fattura|
-| FR5.2| Status ordine |
-| FR5.3| Filtri ordine|
-| FR6| Assistenza ordine |
-| FR6.1| Reindirizzamento verso corriere |
-| FR6.2| Reindirizzamento  venditore|
-| FR7| Gestione privacy|
-| FR7.1 | Mostra cookie policy|
-| FR7.2 | GDPR privacy policy requirements|
-| FR8| Checkout ordine |
-| FR8.1| Riepilogo lista articoli|
-| FR8.2| Selezione indirizzo di spedizione |
-| FR8.2.1| Selezione indirizzo di default|
-| FR8.2.3| Selezione indirizzo temporaneo |
-| FR9| Sezione esito| 
-| FR9.1 | Mostra esito| 
-| FR9.2 | Vai a redirect| 
+| FR5| Gestione ordini |
+| FR5.1|  Mostra ordini|
+| FR5.2|  Download fattura|
+| FR5.3| Status ordine |
+| FR5.4| Filtri ordine|
+| FR5.5| Assistenza ordine |
+| FR6| Gestione privacy|
+| FR6.1 | Mostra cookie policy|
+| FR6.2 | GDPR privacy policy requirements|
+| FR7| Checkout ordine |
+| FR7.1| Riepilogo lista articoli|
+| FR7.2| Selezione indirizzo di spedizione |
+| FR7.2.1| Selezione indirizzo di default|
+| FR7.2.2| Selezione indirizzo temporaneo |
+| FR8| Sezione esito| 
+| FR8.1 | Mostra esito| 
+| FR8.2 | Vai a redirect| 
+| FR9 | Visualizza prodotti| 
+| FR9.1 | Ricerca prodotti| 
+| FR9.2 | Filtra prodotti| 
+| FR9.3 | Dettaglio prodotto| 
+
+
+
+
+
 
 
 
@@ -154,10 +159,21 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
-|  NFR1   |                                    |             |           |
-|  NFR2   |                                    |             |           |
-|  NFR3   |                                    |             |           |
-| NFRx .. |                                    |             |           |
+|  NFR1   | Usabilità                               | Utenti non hanno bisogno di training            |           |
+|  NFR2   | Efficienza                                    | Tempo di risposta del server inferiore a 0.2s            |           |
+|  NFR3   | Affidabilità                                   | Sito non deve essere offline per più di 7gg all'anno           |           |
+| NFR4  | Usabilità                                   | La sessione deve essere mantenuta attiva almeno 5 ore          |           |
+| NFR5  |   Correttezza                                 | Test Coverage 80%  |           |
+| NFR6  |   Portabilità                             | Chrome: 97.0.4692.99, Firefox:  96.0.1, Safari: 15.1|           |
+| NFR7  |  Portabilità                           | Il sito deve essere responsive per schermi che vanno da 360x720 a 3840x2160 |           |
+| NFR8  |  Manutenibilità | 8 ore/persona necessarie per sistemare un malfunzionamento |           |
+| NFR9 |  Manutenibilità | 20 ore/persona necessarie per tempistiche di deploy per una nuova versione|           |
+| NFR10 |  Sicurezza | La password deve rispettare le seguenti caratteristiche: lunghezza minima 8 caratteri, carattere speciale, carattere maiuscolo, numero |           |
+| NFR11 |  Sicurezza | Le password devono essere salvate sul database con un algoritmo di hashing salted|           |
+| NFR12 |  Sicurezza | Utilizzo del protocollo https|           |
+
+
+
 
 # Use case diagram and use cases
 
