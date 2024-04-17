@@ -41,11 +41,10 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 | Stakeholder name | Description |
 | :--------------: | :---------: |
-| Customer  | User that can buy products            |
-| Store Manager  | User that sells products            |
-| Payment service  | Used to manage transactions            |
-| Delivery service  | Used to manage deliveries            |
-| Software Factory  |  Delopers and mainteiners of the applications          |
+| Customer  |  Utente che acquista i prodotti     |
+| Store Manager  | Utente che gestisce l'inventario e conferma gli ordini           |
+| Payment service  | Utilizzato per gestire le transazioni            |
+| Software Factory  |  Programmatori e manutentori del sistema          |
 
 # Context Diagram and interfaces
 
@@ -68,8 +67,6 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | Customer  |      GUI          |     PC /  Smartphone|
 | Store Manager | GUI | PC / Smartphone|
 | Payment Service | https://developer.paypal.com/docs/payouts/standard/integrate-api/ | Internet |
-| Delivery Service |BRT EasySpedWeb | Internet
-| Software Factory ???
 
 # Stories and personas
 
@@ -89,63 +86,33 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 |  ID   | Description |
 | :---: | :---------: |
-|  FR1  |     Gestione Transazione   |
-|  FR1.1  |   Richiesta pagamento       |
-| FR1.2 | Gestione dati di pagamento            |
-| FR2 | Gestione carrello             |
-| FR2.1 | Aggiungi/Rimuovi elemento  dal carrello             |
-| FR2.2 | Cambiamento quantità elemento del carrello             |
-| FR2.3 | Svuota carrello             |
-| FR3 | Gestione articolo in vendita|
-| FR3.1 | Aggiunta/Rimozione articolo|
-| FR3.2 | Modifica prezzo|
-| FR3.3 | Modifica descrizione|
-| FR4| Gestione Account |
+|  FR1  | Gestione Transazione |
+|  FR1.1  |   Richiesta pagamento |
+| FR1.2 | Gestione dati di pagamento|
+| FR2 | Gestione carrello |
+| FR2.1 | Aggiungi/Rimuovi prodotto |
+| FR2.2 | Svuota carrello |
+| FR2.3 | Checkout carrello |
+| FR2.4 | Mostra carrello |
+| FR3 | Gestione prodotti| 
+| FR3.1 | Ricerca prodotti| 
+| FR3.2 | Filtra prodotti (categoria, modello, sold)|
+| FR3.3 | Mostra prodotti | 
+| FR3.4 | Registro prodotti |
+| FR3.5 | Conferma vendita prodotti |
+| FR3.6 | Rimozione prodotti |
+| FR3| Gestione Account |
 | FR4.1| Registrazione account|
-| FR4.2| Chiusura account|
+| FR4.2| Eliminazione account|
 | FR4.3| Login/Logout utenti|
-|FR4.5 | Aggiunta indirizzo default|
+| FR4.4| Filtra utenti|
+| FR4.5| Mostra utenti|
 | FR5| Gestione ordini |
-| FR5.1|  Mostra ordini|
-| FR5.2|  Download fattura|
-| FR5.3| Status ordine |
-| FR5.4| Filtri ordine|
-| FR5.5| Assistenza ordine |
+| FR5.1| Storico ordini|
+| FR5.2| Rimozione ordini |
 | FR6| Gestione privacy|
 | FR6.1 | Mostra cookie policy|
 | FR6.2 | GDPR privacy policy requirements|
-| FR7| Checkout ordine |
-| FR7.1| Riepilogo lista articoli|
-| FR7.2| Selezione indirizzo di spedizione |
-| FR7.2.1| Selezione indirizzo di default|
-| FR7.2.2| Selezione indirizzo temporaneo |
-| FR8| Sezione esito| 
-| FR8.1 | Mostra esito| 
-| FR8.2 | Vai a redirect| 
-| FR9 | Visualizza prodotti| 
-| FR9.1 | Ricerca prodotti| 
-| FR9.2 | Filtra prodotti| 
-| FR9.3 | Dettaglio prodotto| 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -163,14 +130,14 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  NFR2   | Efficienza                                    | Tempo di risposta del server inferiore a 0.2s            |           |
 |  NFR3   | Affidabilità                                   | Sito non deve essere offline per più di 7gg all'anno           |           |
 | NFR4  | Usabilità                                   | La sessione deve essere mantenuta attiva almeno 5 ore          |           |
-| NFR5  |   Correttezza                                 | Test Coverage 80%  |           |
+| NFR5  |   Correttezza                                 | Test Coverage >= 80%  |           |
 | NFR6  |   Portabilità                             | Chrome: 97.0.4692.99, Firefox:  96.0.1, Safari: 15.1|           |
-| NFR7  |  Portabilità                           | Il sito deve essere responsive per schermi che vanno da 360x720 a 3840x2160 |           |
+| NFR7  |  Portabilità                           | Il sito deve essere responsive per schermi che vanno da 360x720 pixels a 3840x2160 pixels |           |
 | NFR8  |  Manutenibilità | 8 ore/persona necessarie per sistemare un malfunzionamento |           |
 | NFR9 |  Manutenibilità | 20 ore/persona necessarie per tempistiche di deploy per una nuova versione|           |
 | NFR10 |  Sicurezza | La password deve rispettare le seguenti caratteristiche: lunghezza minima 8 caratteri, carattere speciale, carattere maiuscolo, numero |           |
-| NFR11 |  Sicurezza | Le password devono essere salvate sul database con un algoritmo di hashing salted|           |
-| NFR12 |  Sicurezza | Utilizzo del protocollo https|           |
+| NFR11 |  Sicurezza | Le password devono essere salvate sul database con un algoritmo di hashing salted (?)|           |
+| NFR12 |  Sicurezza | Utilizzo del protocollo https (?)|           |
 
 
 
