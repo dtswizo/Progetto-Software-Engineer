@@ -23,9 +23,12 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
   - [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
   - [Use case diagram](#use-case-diagram)
-    - [Use case 1, UC1](#use-case-1-uc1)
+    - [Use case 1, Gestione Carrello](#use-case-1-gestione-carrello)
         - [Scenario 1.1](#scenario-11)
         - [Scenario 1.2](#scenario-12)
+        - [Scenario 1.3](#scenario-13)
+        - [Scenario 1.4](#scenario-14)
+        - [Scenario 1.5](#scenario-15)
         - [Scenario 1.x](#scenario-1x)
     - [Use case 2, UC2](#use-case-2-uc2)
     - [Use case x, UCx](#use-case-x-ucx)
@@ -150,7 +153,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 \<next describe here each use case in the UCD>
 
-### Use case 1, UC1
+### Use case 1, Gestione Carrello
 
 | Actors Involved  |                                                                      |
 | :--------------: | :------------------------------------------------------------------: |
@@ -172,14 +175,63 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 |  Scenario 1.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | \<Boolean expression, must evaluate to true before the scenario can start> |
-| Post condition |  \<Boolean expression, must evaluate to true after scenario is finished>   |
+|  Precondition  | Carrello Vuoto, Utente Loggato|
+| Post condition |  Aggiunta elemento al carrello, Mostra carrello|
 |     Step#      |                                Description                                 |
-|       1        |                                                                            |
-|       2        |                                                                            |
-|      ...       |                                                                            |
+|       1        |      Il sito mostra la lista dei prodotti                                                                   |
+|       2        |        L'utente inserisce un prodotto nel carrello                                                                    |
+|      3       |            Il sistema aggiorna il carrello                                                        |
+|      4       |            L'utente apre il carrello                                                                |
+|      5       |            Il sistema mostra il carrello                                                    |
 
 ##### Scenario 1.2
+
+|  Scenario 1.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Carrello con almeno un elemento, Utente Loggato|
+| Post condition |  Rimozioni elemento al carrello|
+|     Step#      |                                Description                                 |
+|       1        |      L'utente   apre il carrello                                                           |
+|       2        |      Il sistema mostra il carrello                                         |
+|       3        |        L'utente rimuove un elemento                                                                    |
+|      4       |            Il sistema aggiorna il carrello                                                         |
+
+##### Scenario 1.3
+
+|  Scenario 1.3  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Carrello con almeno due elementi, Utente Loggato|
+| Post condition |  Carrello vuoto |
+|     Step#      |                                Description                                 |
+|       1        |      L'utente   apre il carrello                                                           |
+|       2        |      Il sistema mostra il carrello                                         |
+|       3        |        L'utente richiede eliminazione del carrello                                                               |
+|      4       |            Il sistema aggiorna il carrello                                                         |
+
+##### Scenario 1.4
+
+|  Scenario 1.4  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Carrello con almeno due elementi, Utente Loggato|
+| Post condition |  Checkout effettuato con successo|
+|     Step#      |                                Description                                 |
+|       1        |      L'utente   apre il carrello                                                           |
+|       2        |      Il sistema mostra il carrello                                         |
+|       3        |        L'utente richiede checkout del carrello                                                               |
+|      4       |            Il sistema effettua il checkout del carrello                                             |
+
+##### Scenario 1.5
+
+|  Scenario 1.5  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Carrello con almeno due elementi, Utente Loggato|
+| Post condition |  Checkout non riuscito|
+|     Step#      |                                Description                                 |
+|       1        |      L'utente   apre il carrello                                                           |
+|       2        |      Il sistema mostra il carrello                                         |
+|       3        |        L'utente richiede checkout del carrello                                                               |
+|      4       |            Il sistema invia un messaggio di errore perhchè il checkout non è andato a buon fine                                        |
+
 
 ##### Scenario 1.x
 
