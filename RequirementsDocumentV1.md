@@ -24,13 +24,18 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
   - [Use case diagram](#use-case-diagram)
     - [Use case 1, Gestione Carrello](#use-case-1-gestione-carrello)
-        - [Scenario 1.1](#scenario-11)
-        - [Scenario 1.2](#scenario-12)
-        - [Scenario 1.3](#scenario-13)
-        - [Scenario 1.4](#scenario-14)
-        - [Scenario 1.5](#scenario-15)
-        - [Scenario 1.x](#scenario-1x)
-    - [Use case 2, UC2](#use-case-2-uc2)
+        - [Scenario 1.1.1](#scenario-111)
+        - [Scenario 1.1.2](#scenario-112)
+        - [Scenario 1.1.3](#scenario-113)
+        - [Scenario 1.2.1](#scenario-121)
+        - [Scenario 1.2.2](#scenario-122)
+        - [Scenario 1.2.3](#scenario-123)
+        - [Scenario 1.3.1](#scenario-131)
+        - [Scenario 1.3.2](#scenario-132)
+        - [Scenario 1.4 DA RIVEDERE PENSO SIA IN GESTIONE ORDINI/STORICO](#scenario-14-da-rivedere-penso-sia-in-gestione-ordinistorico)
+    - [Use case 2, Checkout Carrello](#use-case-2-checkout-carrello)
+        - [Scenario 2.1](#scenario-21)
+        - [Scenario 2.2](#scenario-22)
     - [Use case x, UCx](#use-case-x-ucx)
     - [Use case a, Registrazione](#use-case-a-registrazione)
         - [Scenario a.1](#scenario-a1)
@@ -172,17 +177,18 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 \<next describe here each use case in the UCD>
 
+
 ### Use case 1, Gestione Carrello
 
-| Actors Involved  |                                                                      |
+| Actors Involved  |         Utente                                                             |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | \<Boolean expression, must evaluate to true before the UC can start> |
-|  Post condition  |  \<Boolean expression, must evaluate to true after UC is finished>   |
-| Nominal Scenario |         \<Textual description of actions executed by the UC>         |
+|   Precondition   | Utente loggato come cliente |
+|  Post condition  |  Carrello modificato rispetto alla condizione iniziale   |
+| Nominal Scenario |         Azioni di gestione del carrello         |
 |     Variants     |                      \<other normal executions>                      |
-|    Exceptions    |                        \<exceptions, errors >                        |
+|    Exceptions    |                       Errori 404,409                       |
 
-##### Scenario 1.1
+##### Scenario 1.1.1
 
 \<describe here scenarios instances of UC1>
 
@@ -192,9 +198,9 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 \<only relevant scenarios should be described>
 
-|  Scenario 1.1  |                                                                            |
+|  Scenario 1.1.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Carrello Vuoto, Utente Loggato|
+|  Precondition  | Utente autenticato come cliente |
 | Post condition |  Aggiunta elemento al carrello, Mostra carrello|
 |     Step#      |                                Description                                 |
 |       1        |      Il sito mostra la lista dei prodotti                                                                   |
@@ -203,11 +209,35 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |      4       |            L'utente apre il carrello                                                                |
 |      5       |            Il sistema mostra il carrello                                                    |
 
-##### Scenario 1.2
+##### Scenario 1.1.2
 
-|  Scenario 1.1  |                                                                            |
+
+|  Scenario 1.1.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Carrello con almeno un elemento, Utente Loggato|
+|  Precondition  | Utente autenticato come cliente |
+| Post condition |  Lancio errore 404|
+|     Step#      |                                Description                                 |
+|       1        |      Il sito mostra la lista dei prodotti                                                                   |
+|       2        |        L'utente inserisce un prodotto nel carrello                                                                    |
+|      3       |            Il sistema ritorna un messaggio 404 perchè il prodotto non esiste                                                       |
+
+##### Scenario 1.1.3
+
+
+|  Scenario 1.1.3  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Utente autenticato come cliente |
+| Post condition |  Lancio errore 409 |
+|     Step#      |                                Description                                 |
+|       1        |      Il sito mostra la lista dei prodotti                                                                   |
+|       2        |        L'utente inserisce un prodotto nel carrello                                                                    |
+|      3       |            Il sistema ritorna un messaggio 409 perchè il prodotto non è disponibile (venduto o in un altro carrello)                                                       |
+
+##### Scenario 1.2.1
+
+|  Scenario 1.2.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Carrello con almeno un elemento, Utente autenticato come cliente |
 | Post condition |  Rimozioni elemento al carrello|
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
@@ -215,11 +245,35 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |       3        |        L'utente rimuove un elemento                                                                    |
 |      4       |            Il sistema aggiorna il carrello                                                         |
 
-##### Scenario 1.3
+##### Scenario 1.2.2
 
-|  Scenario 1.3  |                                                                            |
+|  Scenario 1.2.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Carrello con almeno due elementi, Utente Loggato|
+|  Precondition  | Utente autenticato come cliente |
+| Post condition |  Lancio Errore 404 |
+|     Step#      |                                Description                                 |
+|       1        |      L'utente   apre il carrello                                                           |
+|       2        |      Il sistema mostra il carrello                                         |
+|       3        |        L'utente rimuove un elemento                                                                    |
+|      4       |            Il sistema lancia l'errore 404 (prodotto non nel carrello, prodotto e/o carrello non esistente)                                                         |
+
+##### Scenario 1.2.3
+
+|  Scenario 1.2.3  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Carrello con almeno un elemento, Utente autenticato come cliente |
+| Post condition |  Lancio Errore 409|
+|     Step#      |                                Description                                 |
+|       1        |      L'utente   apre il carrello                                                           |
+|       2        |      Il sistema mostra il carrello                                         |
+|       3        |        L'utente rimuove un elemento                                                                    |
+|      4       |            Il sistema lancia l'errore 409 (prodotto già venduto)                                                         |
+
+##### Scenario 1.3.1
+
+|  Scenario 1.3.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Utente possiede un carrello, Utente autenticato come cliente|
 | Post condition |  Carrello vuoto |
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
@@ -227,36 +281,61 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |       3        |        L'utente richiede eliminazione del carrello                                                               |
 |      4       |            Il sistema aggiorna il carrello                                                         |
 
-##### Scenario 1.4
+##### Scenario 1.3.2
+
+|  Scenario 1.3.2  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Utente non possiede un carrello, Utente autenticato come cliente|
+| Post condition |  Errore 404 |
+|     Step#      |                                Description                                 |
+|       1        |      L'utente   apre il carrello                                                           |
+|       2        |      Il sistema mostra il carrello                                         |
+|       3        |        L'utente richiede eliminazione del carrello                                                               |
+|      4       |            Il sistema lancia l'errore 404                                                        |
+
+##### Scenario 1.4 DA RIVEDERE PENSO SIA IN GESTIONE ORDINI/STORICO
 
 |  Scenario 1.4  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Carrello con almeno due elementi, Utente Loggato|
+|  Precondition  | Utente autenticato come manager|
+| Post condition |  Eliminazione di tutti i carrelli esistenti |
+|     Step#      |                                Description                                 |
+|       1        |      L'utente richiede l'eliminazione del carrello                                                           |
+|       2        |      Il sistema elimina tutti i carrelli esistenti                                         |
+
+### Use case 2, Checkout Carrello
+| Actors Involved  |         Cliente                                                             |
+| :--------------: | :------------------------------------------------------------------: |
+|   Precondition   | Utente autenticato come Cliente|
+|  Post condition  |  Checkout effettuato   |
+| Nominal Scenario |         \<Textual description of actions executed by the UC>         |
+|     Variants     |                      \<other normal executions>                      |
+|    Exceptions    |                        Errore 404 e 409                        |
+
+##### Scenario 2.1
+
+|  Scenario 2.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Carrello con almeno un elemento, Utente autenticato come cliente|
 | Post condition |  Checkout effettuato con successo|
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
 |       2        |      Il sistema mostra il carrello                                         |
 |       3        |        L'utente richiede checkout del carrello                                                               |
-|      4       |            Il sistema effettua il checkout del carrello                                             |
+|      4       |            Il sistema effettua il checkout del carrello con successo                                             |
 
-##### Scenario 1.5
+##### Scenario 2.2
 
-|  Scenario 1.5  |                                                                            |
+|  Scenario 2.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Carrello con almeno due elementi, Utente Loggato|
+|  Precondition  | Carrello vuoto, Utente autenticato come cliente|
 | Post condition |  Checkout non riuscito|
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
 |       2        |      Il sistema mostra il carrello                                         |
 |       3        |        L'utente richiede checkout del carrello                                                               |
-|      4       |            Il sistema invia un messaggio di errore perhchè il checkout non è andato a buon fine                                        |
+|      4       |            Il sistema lancia l'errore 404 perchè il carrello è vuoto / non esiste                                         |
 
-
-##### Scenario 1.x
-
-### Use case 2, UC2
-
-..
 
 ### Use case x, UCx
 
