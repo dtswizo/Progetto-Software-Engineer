@@ -36,6 +36,21 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 2, Checkout Carrello](#use-case-2-checkout-carrello)
         - [Scenario 2.1](#scenario-21)
         - [Scenario 2.2](#scenario-22)
+    - [Use case 3, Registrazione prodotti](#use-case-3-registrazione-prodotti)
+        - [Scenario 3.1](#scenario-31)
+        - [Scenario 3.2](#scenario-32)
+        - [Scenario 3.3](#scenario-33)
+    - [Use case 4, Eliminazione prodotti](#use-case-4-eliminazione-prodotti)
+        - [Scenario 4.1](#scenario-41)
+        - [Scenario 4.2](#scenario-42)
+        - [Scenario 4.3](#scenario-43)
+    - [Use case 5, Conferma vendita prodotto](#use-case-5-conferma-vendita-prodotto)
+        - [Scenario 5.1](#scenario-51)
+    - [Use case 6, Ricerca prodotti](#use-case-6-ricerca-prodotti)
+        - [Scenario 6.1](#scenario-61)
+        - [Scenario 6.2](#scenario-62)
+    - [Use case 7, Filtra prodotti](#use-case-7-filtra-prodotti)
+        - [Scenario 7.1](#scenario-71)
     - [Use case x, UCx](#use-case-x-ucx)
     - [Use case a, Registrazione](#use-case-a-registrazione)
         - [Scenario a.1](#scenario-a1)
@@ -153,18 +168,18 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
-|  NFR1   | Usabilità                               | Utenti non hanno bisogno di training            |           |
-|  NFR2   | Efficienza                                    | Tempo di risposta del server inferiore a 0.2s            |           |
-|  NFR3   | Affidabilità                                   | Sito non deve essere offline per più di 7gg all'anno           |           |
-| NFR4  | Usabilità                                   | La sessione deve essere mantenuta attiva almeno 5 ore          |           |
-| NFR5  |   Correttezza                                 | Test Coverage >= 80%  |           |
-| NFR6  |   Portabilità                             | Chrome: 97.0.4692.99, Firefox:  96.0.1, Safari: 15.1|           |
-| NFR7  |  Portabilità                           | Il sito deve essere responsive per schermi che vanno da 360x720 pixels a 3840x2160 pixels |           |
-| NFR8  |  Manutenibilità | 8 ore/persona necessarie per sistemare un malfunzionamento |           |
-| NFR9 |  Manutenibilità | 20 ore/persona necessarie per tempistiche di deploy per una nuova versione|           |
-| NFR10 |  Sicurezza | La password deve rispettare le seguenti caratteristiche: lunghezza minima 8 caratteri, carattere speciale, carattere maiuscolo, numero |           |
-| NFR11 |  Sicurezza | Le password devono essere salvate sul database con un algoritmo di hashing salted (?)|           |
-| NFR12 |  Sicurezza | Utilizzo del protocollo https (?)|           |
+|  NFR1 | Usabilità | Utenti non hanno bisogno di training | Utente |
+|  NFR2 | Efficienza | Tempo di risposta del server inferiore a 0.2s |           |
+|  NFR3 | Affidabilità | Sito non deve essere offline per più di 7gg all'anno|           |
+| NFR4 | Usabilità | La sessione deve essere mantenuta attiva almeno 5 ore |           |
+| NFR5 |   Correttezza | Test Coverage >= 80%  |           |
+| NFR6 |   Portabilità | Chrome: 97.0.4692.99, Firefox:  96.0.1, Safari: 15.1|           |
+| NFR7 |  Portabilità | Il sito deve essere responsive per schermi che vanno da 360x720 pixels a 3840x2160 pixels |           |
+| NFR8 | Manutenibilità | 8 ore/persona necessarie per sistemare un malfunzionamento |           |
+| NFR9 | Manutenibilità | 20 ore/persona necessarie per tempistiche di deploy per una nuova versione|           |
+| NFR10 | Sicurezza | La password deve rispettare le seguenti caratteristiche: lunghezza minima 8 caratteri, carattere speciale, carattere maiuscolo, numero |           |
+| NFR11 | Sicurezza | Le password devono essere salvate sul database con un algoritmo di hashing salted (?)|           |
+| NFR12 | Sicurezza | Utilizzo del protocollo https (?)|           |
 
 
 
@@ -336,6 +351,171 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |       3        |        L'utente richiede checkout del carrello                                                               |
 |      4       |            Il sistema lancia l'errore 404 perchè il carrello è vuoto / non esiste                                         |
 
+
+### Use case 3, Registrazione prodotti
+
+| Actors Involved  |  Store Manager |
+| :--------------: | :------------------------------------------------------------------: |
+|   Precondition   | Utente autenticato come Store Manager |
+|  Post condition  | Prodotto/i registrato all'interno del sistema |
+| Nominal Scenario | Store manager registra prodotti         |
+|     Variants     | \<other normal executions>    |
+|    Exceptions    | Errore id duplicato |
+
+
+##### Scenario 3.1
+
+|  Scenario 3.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  Registrazione prodotti con molteplicitá > 1 |
+|       1        |      Sistema mostra elenco prodotti |
+|       2        |        Store manager seleziona 'aggiunta arrival' |
+|      3       |            Sistema mostra form di inserimento dati |
+|      4       |            Store manager inserisce e conferma dati |
+|      5       |            Il sistema registra il prodotto con la molteplicità inserita |
+
+##### Scenario 3.2
+
+|  Scenario 3.2  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  Registrazione prodotto singolo |
+|       1        |      Sistema mostra elenco prodotti                                         |
+|       2        |        Store manager seleziona 'aggiunta prodotto singolo' |
+|      3       |            Sistema mostra form di inserimento dati                                                         |
+|      4       |            Store manager inserisce e conferma dati                                                        |
+|      5       |            Il sistema registra il prodotto con la molteplicità 1 |
+
+##### Scenario 3.3
+
+|  Scenario 3.3  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  Errore registrazione prodotto, id duplicato |
+|       1        |  Sistema mostra elenco prodotti |
+|       2        |  Store manager seleziona aggiunta multipla/aggiunta prodotto singolo |
+|      3       |  Sistema mostra form di inserimento dati |
+|      4       |  Store manager inserisce e conferma dati |
+|      5       |  Il sistema mostra un messaggio di errore per id duplicato |
+
+### Use case 4, Eliminazione prodotti
+
+| Actors Involved  |  Store Manager |
+| :--------------: | :------------------------------------------------------------------: |
+|   Precondition   | Utente autenticato come Store Manager |
+|  Post condition  | Prodotto/i eliminati dal sistema |
+| Nominal Scenario | Store manager elimina prodotti dal sistema        |
+|     Variants     | \<other normal executions>    |
+|    Exceptions    | Eliminazione prodotto non riuscita|
+
+
+##### Scenario 4.1
+
+|  Scenario 4.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  Prodotto eliminato |
+|       1        |  Sistema mostra elenco prodotti |
+|       2        |  Store manager seleziona 'elimina' accanto al prodotto che desidera eliminare |
+|      3       |  Sistema chiede conferma dell'operazione |
+|      4       |  Store manager conferma l'operazione |
+|      5       |  Sistema elimina il prodotto dall'elenco |
+
+##### Scenario 4.2
+
+|  Scenario 4.2  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  Eliminazione tutti i prodotti |
+|       1        |  Sistema mostra elenco prodotti |
+|       2        |  Store manager seleziona 'elimina tutti i prodotti' |
+|      3       |  Sistema chiede conferma dell'operazione |
+|      4       |  Store manager conferma l'operazione |
+|      5       |  Sistema elimina tutti i prodotti dall'elenco |
+
+##### Scenario 4.3
+
+|  Scenario 4.3  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  Prodotto eliminato |
+|       1        |  Sistema mostra elenco prodotti |
+|       2        |  Store manager seleziona 'elimina' accanto al prodotto che desidera eliminare |
+|      3       |  Sistema chiede conferma dell'operazione |
+|      4       |  Store manager conferma l'operazione |
+|      5       |  Sistema mostra errore 'Eliminazione prodotto non riuscita'  |
+
+### Use case 5, Conferma vendita prodotto
+
+| Actors Involved  |  Store Manager |
+| :--------------: | :------------------------------------------------------------------: |
+|   Precondition   | Utente autenticato come Store Manager |
+|  Post condition  | Prodotto/i eliminati dal sistema |
+| Nominal Scenario | Store manager conferma vendita prodotto         |
+|     Variants     | \<other normal executions>    |
+|    Exceptions    | Eliminazione prodotto non riuscita|
+
+##### Scenario 5.1
+
+|  Scenario 5.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  Vendita prodotto confermata |
+|       1        |  Sistema mostra elenco prodotti |
+|       2        |  Store manager seleziona sezione 'conferma prodotto' |
+|      3       |  Sistema mostra elenco di prodotti da confermare |
+|      4       |  Store manager seleziona 'conferma' per i prodotti che vuole confermare |
+|      5       |  Sistema aggiorna lo stato dei prodotti confermati |
+
+### Use case 6, Ricerca prodotti
+
+| Actors Involved  |  Store Manager |
+| :--------------: | :------------------------------------------------------------------: |
+|   Precondition   | Utente autenticato come Store Manager |
+|  Post condition  | Prodotto/i eliminati dal sistema |
+| Nominal Scenario | Store manager ricerca prodotti         |
+|     Variants     | \<other normal executions>    |
+|    Exceptions    | Errore prodotto non trovato|
+
+##### Scenario 6.1
+
+|  Scenario 6.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  Prodotto ricercato mostrato |
+|       1        |  Sistema mostra elenco prodotti |
+|       2        |  Store manager inserisce il codice prodotto nella barra di ricerca |
+|      3       |  Sistema mostra prodotto ricercato |
+
+##### Scenario 6.2
+|  Scenario 6.2  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  Errore prodotto ricercato non trovato |
+|       1        |  Sistema mostra elenco prodotti |
+|       2        |  Store manager inserisce il codice prodotto nella barra di ricerca |
+|      3       |  Sistema mostra messaggio di errore per prodotto non trovato |
+
+### Use case 7, Filtra prodotti
+
+| Actors Involved  |  Store Manager, Customer |
+| :--------------: | :------------------------------------------------------------------: |
+|   Precondition   | Utente autenticato (Store Manager/User) |
+|  Post condition  | Visualizzazione prodotti filtrati |
+| Nominal Scenario | Utente filtra lista di prodotti         |
+|     Variants     | \<other normal executions>    |
+|    Exceptions    | - |
+
+##### Scenario 7.1
+
+|  Scenario 7.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager/Customer loggato|
+| Post condition |  Visualizzazione lista prodotti filtrata |
+|       1        |  Sistema mostra elenco prodotti |
+|       2        |  Store manager seleziona filtro (categoria, modello, sold)/Customer seleziona filtro (categoria, modello) |
+|      3       |  Sistema mostra lista prodotti filtrata secondo il filtro selezionato |
 
 ### Use case x, UCx
 
