@@ -32,6 +32,25 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario 1.x](#scenario-1x)
     - [Use case 2, UC2](#use-case-2-uc2)
     - [Use case x, UCx](#use-case-x-ucx)
+    - [Use case a, Registrazione](#use-case-a-registrazione)
+        - [Scenario a.1](#scenario-a1)
+        - [Scenario a.2](#scenario-a2)
+        - [Scenario a.3](#scenario-a3)
+        - [Scenario a.4](#scenario-a4)
+    - [Use case b, Login](#use-case-b-login)
+        - [Scenario b.1](#scenario-b1)
+        - [Scenario b.2](#scenario-b2)
+    - [Use case C, Logout](#use-case-c-logout)
+        - [Scenario c.1](#scenario-c1)
+    - [Use case d, Eliminazione account](#use-case-d-eliminazione-account)
+        - [Scenario d.1](#scenario-d1)
+        - [Scenario d.2](#scenario-d2)
+    - [Use case e, Filtra utenti](#use-case-e-filtra-utenti)
+        - [Scenario e.1](#scenario-e1)
+        - [Scenario e.2](#scenario-e2)
+        - [Scenario e.3](#scenario-e3)
+    - [Use case f, Mostra utenti](#use-case-f-mostra-utenti)
+        - [Scenario f.1](#scenario-f1)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -242,6 +261,216 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 ### Use case x, UCx
 
 ..
+
+### Use case a, Registrazione
+| Actors Involved  |  Utente |
+| :--------------: | :---: |
+|   Precondition   | Utente non registrato |
+|  Post condition  | Utente Registrato |
+| Nominal Scenario | Utente visita EZElectronics e si registra inseredo i dati personali|
+|     Variants     | - |
+|    Exceptions    | EZElectronics non è raggiungibile, l'utente inserisce dei dati non validi, utente omette dei dati obbligatori |
+
+##### Scenario a.1
+|  Scenario a.1  |   |
+| :------------: | :---: |
+|  Precondition  | Utente non registrato|
+| Post condition | Utente registrato|
+|     Step#      |Description |
+|1| Utente visita EZElectronics|
+|2| EZElectronics visualizza pagina principale|
+|3| Utente chiede di effettuare registrazione |
+|4| EZElectronics chiede dati personali|
+|5| Utente inserisce dati personali|
+|6| Sistema valida, salva i dati e crea nuovo account| 
+
+##### Scenario a.2
+|  Scenario a.2  |   |
+| :------------: | :---: |
+|  Precondition  | Utente non registrato|
+| Post condition | -|
+|     Step#      |Description |
+|1| Utente visita EZElectronics|
+|2| EZElectronics visualizza pagina principale|
+|3| Utente chiede di effettuare registrazione |
+|4| EZElectronics chiede dati personali|
+|5| Utente inserisce dati personali|
+|6| Sistema individua dati non validi e trona un errore|
+
+##### Scenario a.3
+|  Scenario a.3  |   |
+| :------------: | :---: |
+|  Precondition  | Utente non registrato|
+| Post condition | -|
+|     Step#      |Description |
+|1| Utente visita EZElectronics|
+|2| EZElectronics visualizza pagina principale|
+|3| Utente chiede di effettuare registrazione |
+|4| EZElectronics chiede dati personali|
+|5| Utente inserisce dati personali|
+|6| Sistema individua omissione di alcuni dati e trona un errore| 
+
+##### Scenario a.4
+|  Scenario a.4  |   |
+| :------------: | :---: |
+|  Precondition  | Utente non registrato|
+| Post condition | -|
+|     Step#      |Description |
+|1| Utente visita EZElectronics|
+|2| EZElectronics non risponde|
+
+
+### Use case b, Login
+| Actors Involved  | Utente  |
+| :--------------: | :---: |
+|   Precondition   | Utente non loggato |
+|  Post condition  | Utente loggato |
+| Nominal Scenario | Utente visita EZElectronics e accede al proprio account|
+|     Variants     | - |
+|    Exceptions    | l'utente inserisce dei dati non validi|
+
+##### Scenario b.1
+|  Scenario b.1  |   |
+| :------------: | :---: |
+|  Precondition  | Utente non loggato|
+| Post condition | Utente loggato|
+|     Step#      |Description |
+|1| Utente visita EZElectronics|
+|2| EZElectronics visualizza pagina principale|
+|3| Utente chiede di effettuare login |
+|4| EZElectronics chiede dati di accesso|
+|5| Utente inserisce dati di accesso|
+|6| Sistema valida i dati e avvia sessione|
+
+##### Scenario b.2
+|  Scenario b.1  |   |
+| :------------: | :---: |
+|  Precondition  | Utente non loggato|
+| Post condition | - |
+|     Step#      |Description |
+|1| Utente visita EZElectronics|
+|2| EZElectronics visualizza pagina principale|
+|3| Utente chiede di effettuare login |
+|4| EZElectronics chiede dati di accesso|
+|5| Utente inserisce dati di accesso|
+|6| Sistema rileva errore nei dati e torna errore|
+
+### Use case C, Logout
+| Actors Involved  | Utente  |
+| :--------------: | :---: |
+|   Precondition   | Utente loggato |
+|  Post condition  | Utente non loggato |
+| Nominal Scenario | Utente si disconnette dal proprio account EZElectronics|
+|     Variants     | - |
+|    Exceptions    | -|
+
+##### Scenario c.1
+|  Scenario c.1  |   |
+| :------------: | :---: |
+|  Precondition  | Utente loggato|
+| Post condition | Utente non loggato|
+|     Step#      |Description |
+|1| Utente chiede di effettuare logout |
+|2| EZElectronics termina la sessione dell'account|
+
+### Use case d, Eliminazione account
+| Actors Involved  | Utente  |
+| :--------------: | :---: |
+|   Precondition   | Utente loggato |
+|  Post condition  | Utente non registrato |
+| Nominal Scenario | Utente elimina il proprio account EZElectronics|
+|     Variants     | Utente non conferma la decisione di eliminare account |
+|    Exceptions    | -|
+
+##### Scenario d.1
+|  Scenario d.1  |   |
+| :------------: | :---: |
+|  Precondition  | Utente loggato|
+| Post condition | Utente non registrato|
+|     Step#      |Description |
+|1| Utente chiede di eliminare l'account |
+|2| EZElectronics chiede conferma dell'intenzione di voler eliminare l'account|
+|3| Utente conferma volontà di eliminare l'account|
+|4| EZElectronics elimina account e relativi dati|
+
+##### Scenario d.2
+|  Scenario d.2  |   |
+| :------------: | :---: |
+|  Precondition  | Utente loggato|
+| Post condition |-|
+|     Step#      |Description |
+|1| Utente chiede di eliminare l'account |
+|2| EZElectronics chiede conferma dell'intenzione di voler eliminare l'account|
+|3| Utente non conferma volontà di eliminare l'account|
+
+### Use case e, Filtra utenti
+| Actors Involved  | Utente  |
+| :--------------: | :---: |
+|   Precondition   | - |
+|  Post condition  | - |
+| Nominal Scenario | Utente filtra utenti per username|
+|     Variants     | Utente filtra utenti per ruolo |
+|    Exceptions    | Username cercato non esiste|
+
+##### Scenario e.1
+|  Scenario e.1  |   |
+| :------------: | :---: |
+|  Precondition  | -|
+| Post condition | -|
+|     Step#      |Description |
+|1| Utente chiede di visualizzare utenti |
+|2| EZElectronics mostra utenti|
+|3| Utente chiede di filtrare utenti per username|
+|4| EZElectronics richiede username|
+|5| Utente inserisce username|
+|6| EZElectronics visualizza utenti filtrati|
+
+##### Scenario e.2
+|  Scenario e.2  |   |
+| :------------: | :---: |
+|  Precondition  | -|
+| Post condition | -|
+|     Step#      |Description |
+|1| Utente chiede di visualizzare utenti |
+|2| EZElectronics mostra utenti|
+|3| Utente chiede di filtrare utenti per username|
+|4| EZElectronics richiede username|
+|5| Utente inserisce username|
+|6| EZElectronics torna errore visto che lo username cercato non esiste|
+
+##### Scenario e.3
+|  Scenario e.3  |   |
+| :------------: | :---: |
+|  Precondition  | -|
+| Post condition | -|
+|     Step#      |Description |
+|1| Utente chiede di visualizzare utenti |
+|2| EZElectronics mostra utenti|
+|3| Utente chiede di filtrare utenti per ruolo|
+|4| EZElectronics richiede di selezionare un ruolo per cui filtrare|
+|5| Utente sleziona ruolo|
+|6| EZElectronics visualizza utenti filtrati|
+
+
+### Use case f, Mostra utenti
+| Actors Involved  | Utente  |
+| :--------------: | :---: |
+|   Precondition   |-|
+|  Post condition  | - |
+| Nominal Scenario | Dopo richiesta da parte dell'utente EZElectronics mostra lista degli utenti|
+|     Variants     | - |
+|    Exceptions    | -|
+
+##### Scenario f.1
+|  Scenario f.1  |   |
+| :------------: | :---: |
+|  Precondition  | -|
+| Post condition |-|
+|     Step#      |Description |
+|1| Utente chiede di visualizzare utenti |
+|2| EZElectronics mostra utenti|
+
+
 
 # Glossary
 
