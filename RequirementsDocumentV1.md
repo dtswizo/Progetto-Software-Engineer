@@ -743,7 +743,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Scenario a.1  |   |
 | :------------: | :---: |
 |  Precondition  | Manager autenticato|
-| Post condition | Lancio errore comunicazione con il database|
+| Post condition | Manager visualizza ordini|
 |     Step#      |Description |
 |1| Manager apre sezione ordini|
 |2| Manager clicca su "storico ordini"|
@@ -754,7 +754,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Scenario a.2  |   |
 | :------------: | :---: |
 |  Precondition  | Manager autenticato|
-| Post condition | Lancio errore comunicazione con il database|
+| Post condition | Lancio errore "Ordini non trovati"|
 |     Step#      |Description |
 |1| Manager apre sezione ordini|
 |2| Manager clicca su "storico ordini"|
@@ -774,7 +774,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Scenario b.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente autenticato|
-| Post condition | Lancio errore "Nessun ordine eseguito"|
+| Post condition | Utente visualizza lista ordini|
 |     Step#      |Description |
 |1| Utente apre la sezione "i miei ordini"|
 |2| Il sistema cerca gli ordini associati all'utente|
@@ -804,7 +804,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Scenario c.1  |   |
 | :------------: | :---: |
 |  Precondition  | Manager autenticato|
-| Post condition | Lancio errore eliminazione ordini|
+| Post condition | Tutti gli ordini sono stati eliminati|
 |     Step#      |Description |
 |1| Manager apre sezione ordini|
 |2| Manager clicca la voce "Elimina tutti gli ordini"|
@@ -844,7 +844,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Scenario a.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente accede a EZElectronics|
-| Post condition | Utente accetta l'utilizzo dei cookies|
+| Post condition | Utente rifiuta l'utilizzo dei cookies|
 |     Step#      |Description |
 |1| Utente accede a EZElectronics|
 |2| Il sistema mostra un banner sull'utilizzo dei cookies|
@@ -857,7 +857,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Scenario a.2  |   |
 | :------------: | :---: |
 |  Precondition  | Utente accede a EZElectronics|
-| Post condition | Utente rifiuta l'utilizzo dei cookies|
+| Post condition | Utente accetta l'utilizzo dei cookies|
 |     Step#      |Description |
 |1| Utente accede a EZElectronics|
 |2| Il sistema mostra un banner sull'utilizzo dei cookies|
@@ -874,7 +874,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |1| Utente accede a EZElectronics|
 |2| Il sistema mostra un banner sull'utilizzo dei cookies|
 |3| L'utente clicca sul link "Cookie Policy"|
-|4| Lancio errore "Normativa cookie non disponibile|
+|4| Lancio errore "Normativa cookie non disponibile"|
 
 
 
