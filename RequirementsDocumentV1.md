@@ -144,33 +144,32 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 |  ID   | Description |
 | :---: | :---------: |
-|  FR1  | Gestione Transazione |
-|  FR1.1  |   Richiesta pagamento |
-| FR1.2 | Gestione dati di pagamento|
 | FR2 | Gestione carrello |
-| FR2.1 | Aggiungi/Rimuovi prodotto |
-| FR2.2 | Svuota carrello |
-| FR2.3 | Checkout carrello |
-| FR2.4 | Mostra carrello |
+| FR2.1 | Aggiungi prodotto| v
+| FR2.2 | Elimina carrello corrente | v
+| FR2.3 | Checkout carrello | v
+| FR2.4 | Mostra carrello | v
+| FR2.5 | Rimuovi prodotto| v
 | FR3 | Gestione prodotti| 
-| FR3.1 | Ricerca prodotti| 
-| FR3.2 | Filtra prodotti (categoria, modello, sold)|
-| FR3.3 | Mostra prodotti | 
-| FR3.4 | Registro prodotti |
-| FR3.5 | Conferma vendita prodotti |
-| FR3.6 | Rimozione prodotti |
-| FR3| Gestione Account |
-| FR4.1| Registrazione account|
-| FR4.2| Eliminazione account|
-| FR4.3| Login/Logout utenti|
-| FR4.4| Filtra utenti|
-| FR4.5| Mostra utenti|
+| FR3.1 | Ricerca prodotto| v 
+| FR3.2 | Filtra prodotti (categoria, modello, sold??)| v
+| FR3.3 | Mostra prodotti | v
+| FR3.4 | Crea prodotto | v
+| FR3.5 | Conferma vendita prodotto | v
+| FR3.6 | Eliminazione prodotto/i | v
+| FR3.7 | Registra arrivo prodotti dello stesso modello| v
+| FR4| Gestione Account |
+| FR4.1| Creazione utente| v
+| FR4.2| Eliminazione utente/i| v
+| FR4.3| Login utenti| v
+| FR4.4| Filtra utenti| v
+| FR4.5| Mostra lista utenti| v
+| FR4.6| Mostra utente loggato| v
+| FR4.7| Ricerca utente| v
+| FR4.8| Logout utente| v
 | FR5| Gestione ordini |
-| FR5.1| Storico ordini|
-| FR5.2| Rimozione ordini |
-| FR6| Gestione privacy|
-| FR6.1 | Mostra cookie policy|
-| FR6.2 | GDPR privacy policy requirements|
+| FR5.1| Mostra storico ordini/carrelli pagati| v
+| FR5.2| Rimozione carrelli | v
 
 
 
