@@ -549,6 +549,164 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |1| Utente chiede di visualizzare utenti |
 |2| EZElectronics mostra utenti|
 
+### Use case a, Storico ordini
+| Actors Involved  |  Manager |
+| :--------------: | :---: |
+|   Precondition   | Manager autenticato |
+|  Post condition  | Manager storico ordini visualizzato|
+| Nominal Scenario | Manager visualizza e gestisce gli ordini
+ |
+|     Variants     | - |
+|    Exceptions    |  Ordini non trovati |
+
+##### Scenario a.1
+|  Scenario a.1  |   |
+| :------------: | :---: |
+|  Precondition  | Manager autenticato|
+| Post condition | Lancio errore comunicazione con il database|
+|     Step#      |Description |
+|1| Manager apre sezione ordini|
+|2| Manager clicca su "storico ordini"|
+|3| Lo storico ordini viene visualizzato|
+
+
+##### Scenario a.2
+|  Scenario a.2  |   |
+| :------------: | :---: |
+|  Precondition  | Manager autenticato|
+| Post condition | Lancio errore comunicazione con il database|
+|     Step#      |Description |
+|1| Manager apre sezione ordini|
+|2| Manager clicca su "storico ordini"|
+|3| Il sistema restituisce un messaggio di errore "Ordini non trovati"|
+
+### Use case b, Storico ordini
+| Actors Involved  |  Utente |
+| :--------------: | :---: |
+|   Precondition   | Utente autenticato |
+|  Post condition  | Utente storico ordini visualizzato|
+| Nominal Scenario | L'utente visualizza il proprio storico ordini
+ |
+|     Variants     | - |
+|    Exceptions    | Ordini non trovati |
+
+##### Scenario b.1
+|  Scenario b.1  |   |
+| :------------: | :---: |
+|  Precondition  | Utente autenticato|
+| Post condition | Lancio errore "Nessun ordine eseguito"|
+|     Step#      |Description |
+|1| Utente apre la sezione "i miei ordini"|
+|2| Il sistema cerca gli ordini associati all'utente|
+|3| La lista degli ordini effettuati viene restituita all'utente|
+
+##### Scenario b.2
+|  Scenario b.2  |   |
+| :------------: | :---: |
+|  Precondition  | Utente autenticato|
+| Post condition | Lancio errore "Nessun ordine eseguito"|
+|     Step#      |Description |
+|1| Utente apre la sezione "i miei ordini"|
+|2| Il sistema cerca gli ordini associati all'utente|
+|3| Il sistema restituisce un messaggio di errore "Impossibile visualizzare ordini, nessun ordine eseguito"|
+
+
+### Use case c, Rimozione ordini
+| Actors Involved  |  Manager |
+| :--------------: | :---: |
+|   Precondition   | Manager autenticato |
+|  Post condition  | Tutti gli ordini sono stati cancellati|
+| Nominal Scenario | Manager visualizza gli ordini e li rimuove |
+|     Variants     | - |
+|    Exceptions    | Rimozione ordine disponibile solo dopo il loro completamento, impossibile rimuovere ordini in assenza di ordini completati. |
+
+##### Scenario c.1
+|  Scenario c.1  |   |
+| :------------: | :---: |
+|  Precondition  | Manager autenticato|
+| Post condition | Lancio errore eliminazione ordini|
+|     Step#      |Description |
+|1| Manager apre sezione ordini|
+|2| Manager clicca la voce "Elimina tutti gli ordini"|
+|3| Tutti gli ordini presenti vengono eliminati|
+
+##### Scenario c.2
+|  Scenario c.2  |   |
+| :------------: | :---: |
+|  Precondition  | Manager autenticato|
+| Post condition | Lancio errore eliminazione ordini|
+|     Step#      |Description |
+|1| Manager apre sezione ordini|
+|2| Seleziona la voce "Elimina tutti gli ordini"|
+|3| Lancio messaggio di errore poichè uno o più ordini non sono stati ancora completati|
+
+##### Scenario c.3
+|  Scenario c.3  |   |
+| :------------: | :---: |
+|  Precondition  | Manager autenticato|
+| Post condition | Lancio errore eliminazione ordini|
+|     Step#      |Description |
+|1| Manager apre sezione ordini|
+|2| Seleziona la voce "Elimina tutti gli ordini"|
+|3| Lancio messaggio di errore poichè nessun ordine è presente nel database|
+
+### Use case a, Mostra cookie policy
+| Actors Involved  |  Utente |
+| :--------------: | :---: |
+|   Precondition   |Utente accede a EZElectronics|
+|  Post condition  | Utente visualizza la cookie policy del sito|
+| Nominal Scenario | Utente clicca su Cookie policy e visualizza e ne legge il contenuto
+ |
+|     Variants     | - |
+|    Exceptions    | Normativa cookie non disponibile|
+
+##### Scenario a.1
+|  Scenario a.1  |   |
+| :------------: | :---: |
+|  Precondition  | Utente accede a EZElectronics|
+| Post condition | Utente accetta l'utilizzo dei cookies|
+|     Step#      |Description |
+|1| Utente accede a EZElectronics|
+|2| Il sistema mostra un banner sull'utilizzo dei cookies|
+|3| L'utente clicca e legge le informazioni sull'utilizzo dei cookies|
+|4| L'utente rifiuta l'utilizzo dei cookies cliccando sul tasto rifiuta|
+|5| Il sito memorizza la preferenza dell'utente|
+
+
+##### Scenario a.2
+|  Scenario a.2  |   |
+| :------------: | :---: |
+|  Precondition  | Utente accede a EZElectronics|
+| Post condition | Utente rifiuta l'utilizzo dei cookies|
+|     Step#      |Description |
+|1| Utente accede a EZElectronics|
+|2| Il sistema mostra un banner sull'utilizzo dei cookies|
+|3| L'utente clicca e legge le informazioni sull'utilizzo dei cookies|
+|4| L'utente accetta l'utilizzo dei cookies cliccando sul tasto accetta|
+|5| Il sito memorizza la preferenza dell'utente|
+
+##### Scenario a.3
+|  Scenario a.3  |   |
+| :------------: | :---: |
+|  Precondition  | Utente accede a EZElectronics|
+| Post condition | Lancio errore "Normativa cookie non disponibile"|
+|     Step#      |Description |
+|1| Utente accede a EZElectronics|
+|2| Il sistema mostra un banner sull'utilizzo dei cookies|
+|3| L'utente clicca sul link "Cookie Policy"|
+|4| Lancio errore "Normativa cookie non disponibile|
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Glossary
