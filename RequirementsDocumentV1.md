@@ -38,27 +38,33 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 4, Checkout Carrello](#use-case-4-checkout-carrello)
         - [Scenario 4.1](#scenario-41)
         - [Scenario 4.2](#scenario-42)
-    - [Use case 3, Registrazione prodotti](#use-case-3-registrazione-prodotti)
+    - [Use case 3, Registrazione  arrivo prodotti](#use-case-3-registrazione--arrivo-prodotti)
         - [Scenario 3.1](#scenario-31-1)
         - [Scenario 3.2](#scenario-32-1)
-        - [Scenario 3.3](#scenario-33)
     - [Use case 4, Eliminazione prodotti](#use-case-4-eliminazione-prodotti)
         - [Scenario 4.1](#scenario-41-1)
         - [Scenario 4.2](#scenario-42-1)
         - [Scenario 4.3](#scenario-43)
     - [Use case 5, Conferma vendita prodotto](#use-case-5-conferma-vendita-prodotto)
         - [Scenario 5.1](#scenario-51)
+        - [Scenario 5.2](#scenario-52)
+        - [Scenario 5.2](#scenario-52-1)
     - [Use case 6, Ricerca prodotti](#use-case-6-ricerca-prodotti)
         - [Scenario 6.1](#scenario-61)
         - [Scenario 6.2](#scenario-62)
     - [Use case 7, Filtra prodotti](#use-case-7-filtra-prodotti)
         - [Scenario 7.1](#scenario-71)
+    - [Use case 8, Crea nuovo prodotto](#use-case-8-crea-nuovo-prodotto)
+        - [Scenario 8.1](#scenario-81)
+        - [Scenario 8.2](#scenario-82)
+        - [Scenario 8.3](#scenario-83)
+    - [Use case 9, Mostra prodotti](#use-case-9-mostra-prodotti)
+        - [Scenario 9.1](#scenario-91)
+        - [Scenario 9.2](#scenario-92)
     - [Use case x, UCx](#use-case-x-ucx)
     - [Use case a, Registrazione](#use-case-a-registrazione)
         - [Scenario a.1](#scenario-a1)
         - [Scenario a.2](#scenario-a2)
-        - [Scenario a.3](#scenario-a3)
-        - [Scenario a.4](#scenario-a4)
     - [Use case b, Login](#use-case-b-login)
         - [Scenario b.1](#scenario-b1)
         - [Scenario b.2](#scenario-b2)
@@ -73,6 +79,10 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario e.3](#scenario-e3)
     - [Use case f, Mostra utenti](#use-case-f-mostra-utenti)
         - [Scenario f.1](#scenario-f1)
+    - [Use case g, Mostra informazioni utente](#use-case-g-mostra-informazioni-utente)
+        - [Scenario g.1](#scenario-g1)
+    - [Use case h, Elimina tutti gli utento](#use-case-h-elimina-tutti-gli-utento)
+        - [Scenario h.1](#scenario-h1)
     - [Use case a, Storico ordini](#use-case-a-storico-ordini)
         - [Scenario a.1](#scenario-a1-1)
         - [Scenario a.2](#scenario-a2-1)
@@ -86,7 +96,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case a, Mostra cookie policy](#use-case-a-mostra-cookie-policy)
         - [Scenario a.1](#scenario-a1-2)
         - [Scenario a.2](#scenario-a2-2)
-        - [Scenario a.3](#scenario-a3-1)
+        - [Scenario a.3](#scenario-a3)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -152,7 +162,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | FR2.5 | Rimuovi prodotto| v
 | FR3 | Gestione prodotti| 
 | FR3.1 | Ricerca prodotto| v 
-| FR3.2 | Filtra prodotti (categoria, modello, sold??)| v
+| FR3.2 | Filtra prodotti (categoria, modello, sold)| v
 | FR3.3 | Mostra prodotti | v
 | FR3.4 | Crea prodotto | v
 | FR3.5 | Conferma vendita prodotto | v
@@ -388,7 +398,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |      4       |            Il sistema lancia l'errore 404 perchè il carrello è vuoto / non esiste                                         |
 
 
-### Use case 3, Registrazione prodotti
+### Use case 3, Registrazione  arrivo prodotti
 
 | Actors Involved  |  Store Manager |
 | :--------------: | :------------------------------------------------------------------: |
@@ -396,7 +406,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Post condition  | Prodotto/i registrato all'interno del sistema |
 | Nominal Scenario | Store manager registra prodotti         |
 |     Variants     | \<other normal executions>    |
-|    Exceptions    | Errore id duplicato |
+|    Exceptions    | inserimento data di arrivo dopo quella corrente |
 
 
 ##### Scenario 3.1
@@ -405,35 +415,22 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
 | Post condition |  Registrazione prodotti con molteplicitá > 1 |
-|       1        |      Sistema mostra elenco prodotti |
-|       2        |        Store manager seleziona 'aggiunta arrival' |
-|      3       |            Sistema mostra form di inserimento dati |
-|      4       |            Store manager inserisce e conferma dati |
-|      5       |            Il sistema registra il prodotto con la molteplicità inserita |
+|       1        |        Store manager chiede di registrare nuovi arrivi |
+|      2       |            Sistema mostra form di inserimento data di arrivo |
+|      3       |            Store manager inserisce data/e di arrivo |
+|      4       |            Il sistema registra data di arrivo relativa ai prodotti interessati |
 
 ##### Scenario 3.2
 
 |  Scenario 3.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
-| Post condition |  Registrazione prodotto singolo |
-|       1        |      Sistema mostra elenco prodotti                                         |
-|       2        |        Store manager seleziona 'aggiunta prodotto singolo' |
-|      3       |            Sistema mostra form di inserimento dati                                                         |
-|      4       |            Store manager inserisce e conferma dati                                                        |
-|      5       |            Il sistema registra il prodotto con la molteplicità 1 |
+| Post condition |  sistema mostra errore |
+|       1       |        Store manager chiede di registrare nuovi arrivi |
+|      2       |            Sistema mostra form di inserimento data di arrivo |
+|      3       |            Store manager inserisce data/e di arrivo |
+|      4       |            Il sistema mostra errore perchè la data di arrivo è dopo la data odierna |
 
-##### Scenario 3.3
-
-|  Scenario 3.3  |                                                                            |
-| :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Store manager loggato|
-| Post condition |  Errore registrazione prodotto, id duplicato |
-|       1        |  Sistema mostra elenco prodotti |
-|       2        |  Store manager seleziona aggiunta multipla/aggiunta prodotto singolo |
-|      3       |  Sistema mostra form di inserimento dati |
-|      4       |  Store manager inserisce e conferma dati |
-|      5       |  Il sistema mostra un messaggio di errore per id duplicato |
 
 ### Use case 4, Eliminazione prodotti
 
@@ -487,10 +484,10 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | Actors Involved  |  Store Manager |
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Store Manager |
-|  Post condition  | Prodotto/i eliminati dal sistema |
-| Nominal Scenario | Store manager conferma vendita prodotto         |
-|     Variants     | \<other normal executions>    |
-|    Exceptions    | Eliminazione prodotto non riuscita|
+|  Post condition  | Prodotto segnato come venduto |
+| Nominal Scenario | Store manager conferma vendita prodotto     |
+|     Variants     | -   |
+|    Exceptions    | il codice prodotto non esiste (ERROR 404), data di vendita dopo data corrente, data di vendita antecedente alla data di arrivo, il prodotto e-è gia stato venduto|
 
 ##### Scenario 5.1
 
@@ -498,11 +495,26 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
 | Post condition |  Vendita prodotto confermata |
-|       1        |  Sistema mostra elenco prodotti |
-|       2        |  Store manager seleziona sezione 'conferma prodotto' |
-|      3       |  Sistema mostra elenco di prodotti da confermare |
-|      4       |  Store manager seleziona 'conferma' per i prodotti che vuole confermare |
-|      5       |  Sistema aggiorna lo stato dei prodotti confermati |
+|       1        |  Store manager chiede di segnare un prodotto come venduto |
+|      2       |  Sistema aggiorna lo stato del prodotto |
+
+##### Scenario 5.2
+
+|  Scenario 5.2 |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  sistema mostra errore (404) |
+|       1        |  Store manager chiede di segnare un prodotto come venduto |
+|      2       |  Sistema mostra errore(404) |
+
+##### Scenario 5.2
+
+|  Scenario 5.2 |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  sistema mostra errore |
+|       1        |  Store manager chiede di segnare un prodotto come venduto |
+|      2       |  Sistema mostra errore (data di vendita antecedente quella di arrivo, data di vendita dopo quella corrente, il prodotto è gia stato venduto) |
 
 ### Use case 6, Ricerca prodotti
 
@@ -537,10 +549,10 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 | Actors Involved  |  Store Manager, Customer |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente autenticato (Store Manager/User) |
+|   Precondition   | Utente autenticato |
 |  Post condition  | Visualizzazione prodotti filtrati |
 | Nominal Scenario | Utente filtra lista di prodotti         |
-|     Variants     | \<other normal executions>    |
+|     Variants     | ulteriore filtro per prodotti venduti/non venduti    |
 |    Exceptions    | - |
 
 ##### Scenario 7.1
@@ -549,9 +561,79 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager/Customer loggato|
 | Post condition |  Visualizzazione lista prodotti filtrata |
-|       1        |  Sistema mostra elenco prodotti |
-|       2        |  Store manager seleziona filtro (categoria, modello, sold)/Customer seleziona filtro (categoria, modello) |
-|      3       |  Sistema mostra lista prodotti filtrata secondo il filtro selezionato |
+|       1        |  utente seleziona filtro (categoria o modello) |
+|      2       |  Sistema mostra lista prodotti filtrata secondo il filtro selezionato |
+
+
+### Use case 8, Crea nuovo prodotto
+| Actors Involved  | Utente  |
+| :--------------: | :---: |
+|   Precondition   | utente loggato come manager|
+|  Post condition  | nuovo prodotto aggiunto |
+| Nominal Scenario | Manager richiede di aggiungere prodotto ed EZElectronics lo aggiunge|
+|     Variants     | - |
+|    Exceptions    | Inserimento prodotto duplicato (409), inserimento data di arrivo dopo quella corrente |
+
+##### Scenario 8.1
+|  Scenario 8.1  |   |
+| :------------: | :---: |
+|  Precondition  | utente loggato come manager|
+| Post condition | nuovo prodotto aggiunto|
+|     Step#      |Description |
+|1| Manager chiede di aggiungere nuovo prodotto |
+|2| EZElectronics mostra form per inserimento informazioni|
+|3| Manager compila il form e invia i dati|
+|4| EZElectronics valida i dati e inserisce nuovo prodotto|
+
+##### Scenario 8.2
+|  Scenario 8.2  |   |
+| :------------: | :---: |
+|  Precondition  | utente loggato come manager|
+| Post condition | visualizzazione errore da parte del sisstema|
+|     Step#      |Description |
+|1| Manager chiede di aggiungere nuovo prodotto |
+|2| EZElectronics mostra form per inserimento informazioni|
+|3| Manager compila il form e invia i dati|
+|4| EZElectronics verifica i dati e torna errore 409 (prodotto gia esistente)|
+
+##### Scenario 8.3
+|  Scenario 8.3  |   |
+| :------------: | :---: |
+|  Precondition  | utente loggato come manager|
+| Post condition | visualizzazione errore da parte del sisstema|
+|     Step#      |Description |
+|1| Manager chiede di aggiungere nuovo prodotto |
+|2| EZElectronics mostra form per inserimento informazioni|
+|3| Manager compila il form e invia i dati|
+|4| EZElectronics verifica i dati e torna errore (data di arrivo dopo la data odierna)|
+
+### Use case 9, Mostra prodotti
+| Actors Involved  | Utente  |
+| :--------------: | :---: |
+|   Precondition   | utente loggato|
+|  Post condition  | visualizzazione prodotti |
+| Nominal Scenario | utente richiede di visualizzare tutti i prodotti e EZElectronics li mostra |
+|     Variants     | utente richiede di visualizzare prodotti per venduto/non venduto |
+|    Exceptions    | - |
+
+##### Scenario 9.1
+|  Scenario 9.1  |   |
+| :------------: | :---: |
+|  Precondition  | utente loggato|
+| Post condition | prodotti visualizzati|
+|     Step#      |Description |
+|1| utente chiede di visualizzare tutti i prodotti |
+|2| EZElectronics mostra i prodotti|
+
+##### Scenario 9.2
+|  Scenario 9.2  |   |
+| :------------: | :---: |
+|  Precondition  | utente loggato|
+| Post condition | prodotti filtrati e visualizzati|
+|     Step#      |Description |
+|1| utente chiede di visualizzare i prodotti venduti/non venduti |
+|2| EZElectronics mostra i prodotti filtrati richiesti|
+
 
 ### Use case x, UCx
 
@@ -562,9 +644,9 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
 |  Post condition  | Utente Registrato |
-| Nominal Scenario | Utente visita EZElectronics e si registra inseredo i dati personali|
+| Nominal Scenario | Utente visita EZElectronics e si registra inserendo i dati personali|
 |     Variants     | - |
-|    Exceptions    | EZElectronics non è raggiungibile, l'utente inserisce dei dati non validi, utente omette dei dati obbligatori |
+|    Exceptions    | l'utente inserisce uno username duplicato(ERROR 409) |
 
 ##### Scenario a.1
 |  Scenario a.1  |   |
@@ -572,47 +654,21 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Precondition  | Utente non registrato|
 | Post condition | Utente registrato|
 |     Step#      |Description |
-|1| Utente visita EZElectronics|
-|2| EZElectronics visualizza pagina principale|
-|3| Utente chiede di effettuare registrazione |
-|4| EZElectronics chiede dati personali|
-|5| Utente inserisce dati personali|
-|6| Sistema valida, salva i dati e crea nuovo account| 
+|1| Utente chiede di effettuare registrazione |
+|2| EZElectronics mostra form registrazione|
+|3| Utente inserisce dati personali|
+|4| Sistema valida, salva i dati e crea nuovo account| 
 
 ##### Scenario a.2
 |  Scenario a.2  |   |
 | :------------: | :---: |
 |  Precondition  | Utente non registrato|
-| Post condition | -|
+| Post condition | Sistema mostra errore|
 |     Step#      |Description |
-|1| Utente visita EZElectronics|
-|2| EZElectronics visualizza pagina principale|
-|3| Utente chiede di effettuare registrazione |
-|4| EZElectronics chiede dati personali|
-|5| Utente inserisce dati personali|
-|6| Sistema individua dati non validi e trona un errore|
-
-##### Scenario a.3
-|  Scenario a.3  |   |
-| :------------: | :---: |
-|  Precondition  | Utente non registrato|
-| Post condition | -|
-|     Step#      |Description |
-|1| Utente visita EZElectronics|
-|2| EZElectronics visualizza pagina principale|
-|3| Utente chiede di effettuare registrazione |
-|4| EZElectronics chiede dati personali|
-|5| Utente inserisce dati personali|
-|6| Sistema individua omissione di alcuni dati e trona un errore| 
-
-##### Scenario a.4
-|  Scenario a.4  |   |
-| :------------: | :---: |
-|  Precondition  | Utente non registrato|
-| Post condition | -|
-|     Step#      |Description |
-|1| Utente visita EZElectronics|
-|2| EZElectronics non risponde|
+|1| Utente chiede di effettuare registrazione |
+|2| EZElectronics chiede dati personali|
+|3| Utente inserisce dati personali|
+|4| Sistema individua username duplicato e torna errore 409|
 
 
 ### Use case b, Login
@@ -671,60 +727,57 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 ### Use case d, Eliminazione account
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
-|   Precondition   | Utente loggato |
-|  Post condition  | Utente non registrato |
-| Nominal Scenario | Utente elimina il proprio account EZElectronics|
-|     Variants     | Utente non conferma la decisione di eliminare account |
-|    Exceptions    | -|
+|   Precondition   | - |
+|  Post condition  | Account desiderato eliminato |
+| Nominal Scenario | Utente elimina un account EZElectronics|
+|     Variants     | -|
+|    Exceptions    | tentativo di eliminare un accaout non esistente (ERROR 404)|
 
 ##### Scenario d.1
 |  Scenario d.1  |   |
 | :------------: | :---: |
-|  Precondition  | Utente loggato|
-| Post condition | Utente non registrato|
+|  Precondition  | -|
+| Post condition | Account desiderato eliminato|
 |     Step#      |Description |
-|1| Utente chiede di eliminare l'account |
-|2| EZElectronics chiede conferma dell'intenzione di voler eliminare l'account|
-|3| Utente conferma volontà di eliminare l'account|
-|4| EZElectronics elimina account e relativi dati|
+|1| Utente chiede di eliminare uno specifico account |
+|2| EZElectronics elimina account e relativi dati|
 
 ##### Scenario d.2
 |  Scenario d.2  |   |
 | :------------: | :---: |
-|  Precondition  | Utente loggato|
-| Post condition |-|
+|  Precondition  | --|
+| Post condition |Sistema visualizza errore|
 |     Step#      |Description |
 |1| Utente chiede di eliminare l'account |
-|2| EZElectronics chiede conferma dell'intenzione di voler eliminare l'account|
-|3| Utente non conferma volontà di eliminare l'account|
+|2| EZElectronics torna errore perchè l'account selezionato non esiste|
 
 ### Use case e, Filtra utenti
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | - |
-|  Post condition  | - |
+|  Post condition  | Visulalizzazione utenti filtrati|
 | Nominal Scenario | Utente filtra utenti per username|
 |     Variants     | Utente filtra utenti per ruolo |
-|    Exceptions    | Username cercato non esiste|
+|    Exceptions    | Username cercato non esiste( ERROR 404)|
 
 ##### Scenario e.1
 |  Scenario e.1  |   |
 | :------------: | :---: |
 |  Precondition  | -|
-| Post condition | -|
+| Post condition | Visulalizzazione utenti filtrati|
 |     Step#      |Description |
 |1| Utente chiede di visualizzare utenti |
 |2| EZElectronics mostra utenti|
 |3| Utente chiede di filtrare utenti per username|
 |4| EZElectronics richiede username|
 |5| Utente inserisce username|
-|6| EZElectronics visualizza utenti filtrati|
+|6| EZElectronics visualizza utente cercato|
 
 ##### Scenario e.2
 |  Scenario e.2  |   |
 | :------------: | :---: |
 |  Precondition  | -|
-| Post condition | -|
+| Post condition | Sistema visulalizza errore 404|
 |     Step#      |Description |
 |1| Utente chiede di visualizzare utenti |
 |2| EZElectronics mostra utenti|
@@ -737,7 +790,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Scenario e.3  |   |
 | :------------: | :---: |
 |  Precondition  | -|
-| Post condition | -|
+| Post condition | Visulalizzazione utenti filtrati|
 |     Step#      |Description |
 |1| Utente chiede di visualizzare utenti |
 |2| EZElectronics mostra utenti|
@@ -751,7 +804,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   |-|
-|  Post condition  | - |
+|  Post condition  | Sistema mostra utenti |
 | Nominal Scenario | Dopo richiesta da parte dell'utente EZElectronics mostra lista degli utenti|
 |     Variants     | - |
 |    Exceptions    | -|
@@ -760,10 +813,49 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Scenario f.1  |   |
 | :------------: | :---: |
 |  Precondition  | -|
-| Post condition |-|
+| Post condition |Sistema mostra utenti|
 |     Step#      |Description |
 |1| Utente chiede di visualizzare utenti |
 |2| EZElectronics mostra utenti|
+
+
+### Use case g, Mostra informazioni utente
+| Actors Involved  | Utente  |
+| :--------------: | :---: |
+|   Precondition   | utente loggato|
+|  Post condition  | informazioni visualizzate |
+| Nominal Scenario | Dopo richiesta da parte dell'utente EZElectronics mostra informazione relative all'utente|
+|     Variants     | - |
+|    Exceptions    | -|
+
+##### Scenario g.1
+|  Scenario g.1  |   |
+| :------------: | :---: |
+|  Precondition  | utente loggato|
+| Post condition |informazioni visualizzate|
+|     Step#      |Description |
+|1| Utente chiede di visualizzare le proprie informazioni |
+|2| EZElectronics mostra le informazioni relative all'utente|
+
+
+### Use case h, Elimina tutti gli utento
+| Actors Involved  | Utente  |
+| :--------------: | :---: |
+|   Precondition   | -|
+|  Post condition  | Tutti utenti eliminati |
+| Nominal Scenario | Dopo richiesta da parte dell'utente EZElectronics elimina tutti gli utenti|
+|     Variants     | - |
+|    Exceptions    | -|
+
+##### Scenario h.1
+|  Scenario h.1  |   |
+| :------------: | :---: |
+|  Precondition  |-|
+| Post condition |Tutti utenti eliminati|
+|     Step#      |Description |
+|1| Utente chiede di eliminare tutti gli utenti |
+|2| EZElectronics elimina tutti gli utenti|
+
 
 ### Use case a, Storico ordini
 | Actors Involved  |  Manager |
