@@ -23,7 +23,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
   - [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
   - [Use case diagram](#use-case-diagram)
-    - [Use case 1, Gestione Carrello](#use-case-1-gestione-carrello)
+    - [Use case 1, Aggiunta prodotto carrello](#use-case-1-aggiunta-prodotto-carrello)
         - [Scenario 1.1](#scenario-11)
         - [Scenario 1.2](#scenario-12)
         - [Scenario 1.3](#scenario-13)
@@ -34,19 +34,22 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 3, Eliminazione Carrello](#use-case-3-eliminazione-carrello)
         - [Scenario 3.1](#scenario-31)
         - [Scenario 3.2](#scenario-32)
-        - [Scenario 1.4 DA RIVEDERE PENSO SIA IN GESTIONE ORDINI/STORICO](#scenario-14-da-rivedere-penso-sia-in-gestione-ordinistorico)
     - [Use case 4, Checkout Carrello](#use-case-4-checkout-carrello)
         - [Scenario 4.1](#scenario-41)
         - [Scenario 4.2](#scenario-42)
-    - [Use case 3, Registrazione  arrivo prodotti](#use-case-3-registrazione--arrivo-prodotti)
+        - [Scenario 4.3](#scenario-43)
+    - [Use case 5, Mostra carrello](#use-case-5-mostra-carrello)
+    - [Scenario 5.1](#scenario-51)
+    - [Use case 3, Registrazione arrivo prodotti](#use-case-3-registrazione-arrivo-prodotti)
         - [Scenario 3.1](#scenario-31-1)
         - [Scenario 3.2](#scenario-32-1)
-    - [Use case 4, Eliminazione prodotti](#use-case-4-eliminazione-prodotti)
+        - [Scenario 3.3](#scenario-33)
+        - [Scenario 3.4](#scenario-34)
+    - [Use case 4, Eliminazione prodotto](#use-case-4-eliminazione-prodotto)
         - [Scenario 4.1](#scenario-41-1)
         - [Scenario 4.2](#scenario-42-1)
-        - [Scenario 4.3](#scenario-43)
     - [Use case 5, Conferma vendita prodotto](#use-case-5-conferma-vendita-prodotto)
-        - [Scenario 5.1](#scenario-51)
+        - [Scenario 5.1](#scenario-51-1)
         - [Scenario 5.2](#scenario-52)
         - [Scenario 5.2](#scenario-52-1)
     - [Use case 6, Ricerca prodotti](#use-case-6-ricerca-prodotti)
@@ -54,6 +57,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario 6.2](#scenario-62)
     - [Use case 7, Filtra prodotti](#use-case-7-filtra-prodotti)
         - [Scenario 7.1](#scenario-71)
+        - [Scenario 7.2](#scenario-72)
     - [Use case 8, Crea nuovo prodotto](#use-case-8-crea-nuovo-prodotto)
         - [Scenario 8.1](#scenario-81)
         - [Scenario 8.2](#scenario-82)
@@ -81,8 +85,6 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario f.1](#scenario-f1)
     - [Use case g, Mostra informazioni utente](#use-case-g-mostra-informazioni-utente)
         - [Scenario g.1](#scenario-g1)
-    - [Use case h, Elimina tutti gli utento](#use-case-h-elimina-tutti-gli-utento)
-        - [Scenario h.1](#scenario-h1)
     - [Use case a, Storico ordini](#use-case-a-storico-ordini)
         - [Scenario a.1](#scenario-a1-1)
         - [Scenario a.2](#scenario-a2-1)
@@ -93,10 +95,6 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario c.1](#scenario-c1-1)
         - [Scenario c.2](#scenario-c2)
         - [Scenario c.3](#scenario-c3)
-    - [Use case a, Mostra cookie policy](#use-case-a-mostra-cookie-policy)
-        - [Scenario a.1](#scenario-a1-2)
-        - [Scenario a.2](#scenario-a2-2)
-        - [Scenario a.3](#scenario-a3)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -218,15 +216,15 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 \<next describe here each use case in the UCD>
 
 
-### Use case 1, Gestione Carrello
+### Use case 1, Aggiunta prodotto carrello
 
 | Actors Involved  |         Utente                                                             |
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente loggato come cliente |
-|  Post condition  |  Carrello creato e con elementi |
-| Nominal Scenario |        Aggiunta di un elemento al carrello         |
-|     Variants     |                      \<other normal executions>                      |
-|    Exceptions    |                       Errori 404,409                       |
+|  Post condition  | prodotto aggiunto al carrello |
+| Nominal Scenario |        utente aggiunge un elemento al carrello         |
+|     Variants     |    -                      |
+|    Exceptions    | il prodotto non esiste (Error 404),il prodotto non è disponibile (venduto o in un altro carrello) (Error 409)                       |
 
 ##### Scenario 1.1
 
@@ -241,13 +239,11 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Scenario 1.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Utente autenticato come cliente |
-| Post condition |  Aggiunta elemento al carrello, Mostra carrello|
+| Post condition |  Aggiunta elemento al carrello|
 |     Step#      |                                Description                                 |
 |       1        |      Il sito mostra la lista dei prodotti                                                                   |
 |       2        |        L'utente inserisce un prodotto nel carrello                                                                    |
 |      3       |            Il sistema aggiorna il carrello                                                        |
-|      4       |            L'utente apre il carrello                                                                |
-|      5       |            Il sistema mostra il carrello                                                    |
 
 ##### Scenario 1.2
 
@@ -257,9 +253,9 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Precondition  | Utente autenticato come cliente |
 | Post condition |  Lancio errore 404|
 |     Step#      |                                Description                                 |
-|       1        |      Il sito mostra la lista dei prodotti                                                                   |
-|       2        |        L'utente inserisce un prodotto nel carrello                                                                    |
-|      3       |            Il sistema ritorna un messaggio 404 perchè il prodotto non esiste                                                       |
+|       1      |      Il sito mostra la lista dei prodotti                                                                   |
+|       2      |        L'utente inserisce un prodotto nel carrello                   |
+|      3       |            Il sistema ritorna un messaggio 404 perchè il prodotto non esiste  |
 
 ##### Scenario 1.3
 
@@ -271,7 +267,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |     Step#      |                                Description                                 |
 |       1        |      Il sito mostra la lista dei prodotti                                                                   |
 |       2        |        L'utente inserisce un prodotto nel carrello                                                                    |
-|      3       |            Il sistema ritorna un messaggio 409 perchè il prodotto non è disponibile (venduto o in un altro carrello)                                                       |
+|      3       |            Il sistema ritorna un messaggio 409 perchè il prodotto non è disponibile (venduto o in un altro carrello)   |
 
 ### Use case 2, Rimozione elementi Carrello
 
@@ -354,24 +350,15 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |       3        |        L'utente richiede eliminazione del carrello                                                               |
 |      4       |            Il sistema lancia l'errore 404                                                        |
 
-##### Scenario 1.4 DA RIVEDERE PENSO SIA IN GESTIONE ORDINI/STORICO
-
-|  Scenario 1.4  |                                                                            |
-| :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Utente autenticato come manager|
-| Post condition |  Eliminazione di tutti i carrelli esistenti |
-|     Step#      |                                Description                                 |
-|       1        |      L'utente richiede l'eliminazione del carrello                                                           |
-|       2        |      Il sistema elimina tutti i carrelli esistenti                                         |
 
 ### Use case 4, Checkout Carrello
 | Actors Involved  |         Cliente                                                             |
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Cliente|
 |  Post condition  |  Checkout effettuato   |
-| Nominal Scenario |         \<Textual description of actions executed by the UC>         |
-|     Variants     |                      \<other normal executions>                      |
-|    Exceptions    |                        Errore 404 e 409                        |
+| Nominal Scenario | Cliente fa il checkout del carrello         |
+|     Variants     |   -   |
+|    Exceptions    |   Il carrello non esiste(Error 404), carrello vuoti (ERROR 404)                      |
 
 ##### Scenario 4.1
 
@@ -387,7 +374,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 ##### Scenario 4.2
 
-|  Scenario 2.2  |                                                                            |
+|  Scenario 4.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Carrello vuoto, Utente autenticato come cliente|
 | Post condition |  Checkout non riuscito|
@@ -395,18 +382,50 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |       1        |      L'utente   apre il carrello                                                           |
 |       2        |      Il sistema mostra il carrello                                         |
 |       3        |        L'utente richiede checkout del carrello                                                               |
-|      4       |            Il sistema lancia l'errore 404 perchè il carrello è vuoto / non esiste                                         |
+|      4       |            Il sistema lancia l'errore 404 perchè il carrello è vuoto                         |
+
+##### Scenario 4.3
+
+|  Scenario 4.3  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Carrello con almeno un elemento, Utente autenticato come cliente|
+| Post condition |  Checkout effettuato con successo|
+|     Step#      |                                Description                                 |
+|       1        |      L'utente   apre il carrello                                                           |
+|       2        |      Il sistema mostra il carrello                                         |
+|       3        |        L'utente richiede checkout del carrello                                                               |
+|      4       |  Il sistema lancia l'errore 404 (carrello insesistente)                                       |
+
+### Use case 5, Mostra carrello
+
+| Actors Involved  |         Customer                                                            |
+| :--------------: | :------------------------------------------------------------------: |
+|   Precondition   | Utente loggato come customer|
+|  Post condition  | carrello dal sistema |
+| Nominal Scenario | Sitstema mostra carrello dell'utente corrente          |
+|     Variants     |        -          |
+|    Exceptions    |               |
 
 
-### Use case 3, Registrazione  arrivo prodotti
+### Scenario 5.1
+
+|  Scenario 5.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | utente loggato come customer|
+| Post condition | carrello mostrato dal sistema|
+|    1   |       customer richiede di visualizzare il carrello |
+|    2   |            Sistema mostra il carrello |
+
+
+### Use case 3, Registrazione arrivo prodotti
 
 | Actors Involved  |  Store Manager |
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Store Manager |
 |  Post condition  | Prodotto/i registrato all'interno del sistema |
-| Nominal Scenario | Store manager registra prodotti         |
-|     Variants     | \<other normal executions>    |
-|    Exceptions    | inserimento data di arrivo dopo quella corrente |
+| Nominal Scenario | Store manager registra singolo prodotto        |
+|     Variants     |  Store manager registra più prodotti dello stesso modello   |
+|    Exceptions    | inserimento data di arrivo dopo quella corrente, prodotto già esistente nel database(ERROR 409) |
 
 
 ##### Scenario 3.1
@@ -417,7 +436,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | Post condition |  Registrazione prodotti con molteplicitá > 1 |
 |       1        |        Store manager chiede di registrare nuovi arrivi |
 |      2       |            Sistema mostra form di inserimento data di arrivo |
-|      3       |            Store manager inserisce data/e di arrivo |
+|      3       |            Store manager inserisce data di arrivo |
 |      4       |            Il sistema registra data di arrivo relativa ai prodotti interessati |
 
 ##### Scenario 3.2
@@ -431,16 +450,38 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |      3       |            Store manager inserisce data/e di arrivo |
 |      4       |            Il sistema mostra errore perchè la data di arrivo è dopo la data odierna |
 
+##### Scenario 3.3
 
-### Use case 4, Eliminazione prodotti
+|  Scenario 3.3  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition | registrazione singolo prodotto |
+|       1        |        Store manager chiede di registrare nuovo arrivo |
+|      2       |            Sistema mostra form di inserimento dati |
+|      3     |            Store manager inserisce dati prodotto |
+|      4       |            Il sistema registra dati di arrivo relativi al prodotto interessato |
+
+##### Scenario 3.4
+
+|  Scenario 3.4  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition | registrazione singolo prodotto |
+|       1        |        Store manager chiede di registrare nuovo arrivo |
+|      2       |            Sistema mostra form di inserimento dati |
+|      3     |            Store manager inserisce dati prodotto |
+|      4       |            Il sistema rileva duplicazione codice prodotto (ERROR 409) e torna errore |
+
+
+### Use case 4, Eliminazione prodotto
 
 | Actors Involved  |  Store Manager |
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Store Manager |
-|  Post condition  | Prodotto/i eliminati dal sistema |
-| Nominal Scenario | Store manager elimina prodotti dal sistema        |
-|     Variants     | \<other normal executions>    |
-|    Exceptions    | Eliminazione prodotto non riuscita|
+|  Post condition  | Prodotto eliminato dal sistema |
+| Nominal Scenario | Store manager elimina prodotto dal sistema        |
+|     Variants     | -  |
+|    Exceptions    | Codice prodtto da eliminare non esistente (ERROR 404) |
 
 
 ##### Scenario 4.1
@@ -455,29 +496,18 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |      4       |  Store manager conferma l'operazione |
 |      5       |  Sistema elimina il prodotto dall'elenco |
 
+
 ##### Scenario 4.2
 
 |  Scenario 4.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
-| Post condition |  Eliminazione tutti i prodotti |
-|       1        |  Sistema mostra elenco prodotti |
-|       2        |  Store manager seleziona 'elimina tutti i prodotti' |
-|      3       |  Sistema chiede conferma dell'operazione |
-|      4       |  Store manager conferma l'operazione |
-|      5       |  Sistema elimina tutti i prodotti dall'elenco |
-
-##### Scenario 4.3
-
-|  Scenario 4.3  |                                                                            |
-| :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Store manager loggato|
-| Post condition |  Prodotto eliminato |
+| Post condition |  Sistema mostra errore |
 |       1        |  Sistema mostra elenco prodotti |
 |       2        |  Store manager seleziona 'elimina' accanto al prodotto che desidera eliminare |
 |      3       |  Sistema chiede conferma dell'operazione |
 |      4       |  Store manager conferma l'operazione |
-|      5       |  Sistema mostra errore 'Eliminazione prodotto non riuscita'  |
+|      5       |  Sistema mostra errore 404  |
 
 ### Use case 5, Conferma vendita prodotto
 
@@ -487,7 +517,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |  Post condition  | Prodotto segnato come venduto |
 | Nominal Scenario | Store manager conferma vendita prodotto     |
 |     Variants     | -   |
-|    Exceptions    | il codice prodotto non esiste (ERROR 404), data di vendita dopo data corrente, data di vendita antecedente alla data di arrivo, il prodotto e-è gia stato venduto|
+|    Exceptions    | il codice prodotto non esiste (ERROR 404), data di vendita dopo data corrente, data di vendita antecedente alla data di arrivo, il prodotto è gia stato venduto|
 
 ##### Scenario 5.1
 
@@ -518,55 +548,66 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 ### Use case 6, Ricerca prodotti
 
-| Actors Involved  |  Store Manager |
+| Actors Involved  |  Utente |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente autenticato come Store Manager |
-|  Post condition  | Prodotto/i eliminati dal sistema |
-| Nominal Scenario | Store manager ricerca prodotti         |
-|     Variants     | \<other normal executions>    |
-|    Exceptions    | Errore prodotto non trovato|
+|   Precondition   | Utente autenticato |
+|  Post condition  | Prodotto mostrato dal sistema |
+| Nominal Scenario | utente ricerca prodotto per codice         |
+|     Variants     | - |
+|    Exceptions    | Errore prodotto non trovato (error 404)|
 
 ##### Scenario 6.1
 
 |  Scenario 6.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Store manager loggato|
+|  Precondition  | utente loggato|
 | Post condition |  Prodotto ricercato mostrato |
 |       1        |  Sistema mostra elenco prodotti |
-|       2        |  Store manager inserisce il codice prodotto nella barra di ricerca |
+|       2        |  utente inserisce il codice prodotto nella barra di ricerca |
 |      3       |  Sistema mostra prodotto ricercato |
 
 ##### Scenario 6.2
 |  Scenario 6.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Store manager loggato|
+|  Precondition  | utente loggato|
 | Post condition |  Errore prodotto ricercato non trovato |
 |       1        |  Sistema mostra elenco prodotti |
-|       2        |  Store manager inserisce il codice prodotto nella barra di ricerca |
-|      3       |  Sistema mostra messaggio di errore per prodotto non trovato |
+|       2        |  utente inserisce il codice prodotto nella barra di ricerca |
+|      3       |  Sistema mostra messaggio di errore 404 |
 
 ### Use case 7, Filtra prodotti
 
-| Actors Involved  |  Store Manager, Customer |
+| Actors Involved  |  utente|
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato |
 |  Post condition  | Visualizzazione prodotti filtrati |
-| Nominal Scenario | Utente filtra lista di prodotti         |
-|     Variants     | ulteriore filtro per prodotti venduti/non venduti    |
+| Nominal Scenario | Utente filtra, per categoria o modello, lista di prodotti       |
+|     Variants     | utente applica ulteriore filtro per prodotti venduti/non venduti    |
 |    Exceptions    | - |
 
 ##### Scenario 7.1
 
 |  Scenario 7.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Store manager/Customer loggato|
+|  Precondition  | utente loggato|
 | Post condition |  Visualizzazione lista prodotti filtrata |
 |       1        |  utente seleziona filtro (categoria o modello) |
 |      2       |  Sistema mostra lista prodotti filtrata secondo il filtro selezionato |
 
+##### Scenario 7.2
+
+|  Scenario 7.2  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | utente loggato|
+| Post condition |  Visualizzazione lista prodotti filtrata |
+|       1        |  utente seleziona filtro (categoria o modello) |
+|      2       |  Sistema mostra lista prodotti filtrata secondo il filtro selezionato |
+| 3 | utente seleziona filtro venduto/venduto|
+| 4 | sistema mostra lissta prodotti ulteriormente filtrati|
+
 
 ### Use case 8, Crea nuovo prodotto
-| Actors Involved  | Utente  |
+| Actors Involved  | store manager  |
 | :--------------: | :---: |
 |   Precondition   | utente loggato come manager|
 |  Post condition  | nuovo prodotto aggiunto |
@@ -838,24 +879,6 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |2| EZElectronics mostra le informazioni relative all'utente|
 
 
-### Use case h, Elimina tutti gli utento
-| Actors Involved  | Utente  |
-| :--------------: | :---: |
-|   Precondition   | -|
-|  Post condition  | Tutti utenti eliminati |
-| Nominal Scenario | Dopo richiesta da parte dell'utente EZElectronics elimina tutti gli utenti|
-|     Variants     | - |
-|    Exceptions    | -|
-
-##### Scenario h.1
-|  Scenario h.1  |   |
-| :------------: | :---: |
-|  Precondition  |-|
-| Post condition |Tutti utenti eliminati|
-|     Step#      |Description |
-|1| Utente chiede di eliminare tutti gli utenti |
-|2| EZElectronics elimina tutti gli utenti|
-
 
 ### Use case a, Storico ordini
 | Actors Involved  |  Manager |
@@ -958,51 +981,9 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |2| Seleziona la voce "Elimina tutti gli ordini"|
 |3| Lancio messaggio di errore poichè nessun ordine è presente nel database|
 
-### Use case a, Mostra cookie policy
-| Actors Involved  |  Utente |
-| :--------------: | :---: |
-|   Precondition   |Utente accede a EZElectronics|
-|  Post condition  | Utente visualizza la cookie policy del sito|
-| Nominal Scenario | Utente clicca su Cookie policy e visualizza e ne legge il contenuto
- |
-|     Variants     | - |
-|    Exceptions    | Normativa cookie non disponibile|
-
-##### Scenario a.1
-|  Scenario a.1  |   |
-| :------------: | :---: |
-|  Precondition  | Utente accede a EZElectronics|
-| Post condition | Utente rifiuta l'utilizzo dei cookies|
-|     Step#      |Description |
-|1| Utente accede a EZElectronics|
-|2| Il sistema mostra un banner sull'utilizzo dei cookies|
-|3| L'utente clicca e legge le informazioni sull'utilizzo dei cookies|
-|4| L'utente rifiuta l'utilizzo dei cookies cliccando sul tasto rifiuta|
-|5| Il sito memorizza la preferenza dell'utente|
 
 
-##### Scenario a.2
-|  Scenario a.2  |   |
-| :------------: | :---: |
-|  Precondition  | Utente accede a EZElectronics|
-| Post condition | Utente accetta l'utilizzo dei cookies|
-|     Step#      |Description |
-|1| Utente accede a EZElectronics|
-|2| Il sistema mostra un banner sull'utilizzo dei cookies|
-|3| L'utente clicca e legge le informazioni sull'utilizzo dei cookies|
-|4| L'utente accetta l'utilizzo dei cookies cliccando sul tasto accetta|
-|5| Il sito memorizza la preferenza dell'utente|
 
-##### Scenario a.3
-|  Scenario a.3  |   |
-| :------------: | :---: |
-|  Precondition  | Utente accede a EZElectronics|
-| Post condition | Lancio errore "Normativa cookie non disponibile"|
-|     Step#      |Description |
-|1| Utente accede a EZElectronics|
-|2| Il sistema mostra un banner sull'utilizzo dei cookies|
-|3| L'utente clicca sul link "Cookie Policy"|
-|4| Lancio errore "Normativa cookie non disponibile"|
 
 
 
