@@ -27,7 +27,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario 1.1](#scenario-11)
         - [Scenario 1.2](#scenario-12)
         - [Scenario 1.3](#scenario-13)
-    - [Use case 2, Rimozione elemento Carrello](#use-case-2-rimozione-elemento-carrello)
+    - [Use case 2, Rimozione prodotto Carrello](#use-case-2-rimozione-prodotto-carrello)
         - [Scenario 2.1](#scenario-21)
         - [Scenario 2.2](#scenario-22)
         - [Scenario 2.3](#scenario-23)
@@ -43,8 +43,6 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 3, Registrazione arrivo prodotti](#use-case-3-registrazione-arrivo-prodotti)
         - [Scenario 3.1](#scenario-31-1)
         - [Scenario 3.2](#scenario-32-1)
-        - [Scenario 3.3](#scenario-33)
-        - [Scenario 3.4](#scenario-34)
     - [Use case 4, Eliminazione prodotto](#use-case-4-eliminazione-prodotto)
         - [Scenario 4.1](#scenario-41-1)
         - [Scenario 4.2](#scenario-42-1)
@@ -58,7 +56,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 7, Filtra prodotti](#use-case-7-filtra-prodotti)
         - [Scenario 7.1](#scenario-71)
         - [Scenario 7.2](#scenario-72)
-    - [Use case 8, Crea nuovo prodotto](#use-case-8-crea-nuovo-prodotto)
+    - [Use case 8, Crea e registra nuovo prodotto](#use-case-8-crea-e-registra-nuovo-prodotto)
         - [Scenario 8.1](#scenario-81)
         - [Scenario 8.2](#scenario-82)
         - [Scenario 8.3](#scenario-83)
@@ -66,7 +64,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario 9.1](#scenario-91)
         - [Scenario 9.2](#scenario-92)
     - [Use case x, UCx](#use-case-x-ucx)
-    - [Use case a, Registrazione](#use-case-a-registrazione)
+    - [Use case a, Registrazione utente](#use-case-a-registrazione-utente)
         - [Scenario a.1](#scenario-a1)
         - [Scenario a.2](#scenario-a2)
     - [Use case b, Login](#use-case-b-login)
@@ -74,7 +72,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario b.2](#scenario-b2)
     - [Use case C, Logout](#use-case-c-logout)
         - [Scenario c.1](#scenario-c1)
-    - [Use case d, Eliminazione account](#use-case-d-eliminazione-account)
+    - [Use case d, Eliminazione utente](#use-case-d-eliminazione-utente)
         - [Scenario d.1](#scenario-d1)
         - [Scenario d.2](#scenario-d2)
     - [Use case e, Filtra utenti](#use-case-e-filtra-utenti)
@@ -217,7 +215,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 ### Use case 1, Aggiunta prodotto carrello
 
-| Actors Involved  |         Utente                                                             |
+| Actors Involved  |        Cliente                                                             |
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente loggato come cliente |
 |  Post condition  | prodotto aggiunto al carrello |
@@ -268,7 +266,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |       2        |        L'utente inserisce un prodotto nel carrello                                                                    |
 |      3       |            Il sistema ritorna un messaggio 409 perchè il prodotto non è disponibile (venduto o in un altro carrello)   |
 
-### Use case 2, Rimozione elemento Carrello
+### Use case 2, Rimozione prodotto Carrello
 
 | Actors Involved  |         Utente                                                             |
 | :--------------: | :------------------------------------------------------------------: |
@@ -421,17 +419,17 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | Actors Involved  |  Store Manager |
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Store Manager |
-|  Post condition  | Prodotto/i registrato all'interno del sistema |
-| Nominal Scenario | Store manager registra singolo prodotto        |
-|     Variants     |  Store manager registra più prodotti dello stesso modello   |
-|    Exceptions    | inserimento data di arrivo dopo quella corrente, prodotto già esistente nel database(ERROR 409) |
+|  Post condition  | Prodotti registrati all'interno del sistema |
+| Nominal Scenario |Store manager registra più prodotti dello stesso modello       |
+|     Variants     | - |
+|    Exceptions    | inserimento data di arrivo dopo quella corrente |
 
 
 ##### Scenario 3.1
 
 |  Scenario 3.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Store manager loggato|
+|  Precondition  | utente loggato come store manager|
 | Post condition |  Registrazione prodotti con molteplicitá > 1 |
 |       1        |        Store manager chiede di registrare nuovi arrivi |
 |      2       |            Sistema mostra form di inserimento data di arrivo |
@@ -449,27 +447,6 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |      3       |            Store manager inserisce data/e di arrivo |
 |      4       |            Il sistema mostra errore perchè la data di arrivo è dopo la data odierna |
 
-##### Scenario 3.3
-
-|  Scenario 3.3  |                                                                            |
-| :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Store manager loggato|
-| Post condition | registrazione singolo prodotto |
-|       1        |        Store manager chiede di registrare nuovo arrivo |
-|      2       |            Sistema mostra form di inserimento dati |
-|      3     |            Store manager inserisce dati prodotto |
-|      4       |            Il sistema registra dati di arrivo relativi al prodotto interessato |
-
-##### Scenario 3.4
-
-|  Scenario 3.4  |                                                                            |
-| :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Store manager loggato|
-| Post condition | registrazione singolo prodotto |
-|       1        |        Store manager chiede di registrare nuovo arrivo |
-|      2       |            Sistema mostra form di inserimento dati |
-|      3     |            Store manager inserisce dati prodotto |
-|      4       |            Il sistema rileva duplicazione codice prodotto (ERROR 409) e torna errore |
 
 
 ### Use case 4, Eliminazione prodotto
@@ -605,7 +582,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | 4 | sistema mostra lissta prodotti ulteriormente filtrati|
 
 
-### Use case 8, Crea nuovo prodotto
+### Use case 8, Crea e registra nuovo prodotto
 | Actors Involved  | store manager  |
 | :--------------: | :---: |
 |   Precondition   | utente loggato come manager|
@@ -679,7 +656,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 ..
 
-### Use case a, Registrazione
+### Use case a, Registrazione utente
 | Actors Involved  |  Utente |
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
@@ -764,23 +741,23 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |1| Utente chiede di effettuare logout |
 |2| EZElectronics termina la sessione dell'account|
 
-### Use case d, Eliminazione account
+### Use case d, Eliminazione utente
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | - |
-|  Post condition  | Account desiderato eliminato |
-| Nominal Scenario | Utente elimina un account EZElectronics|
+|  Post condition  | utente desiderato eliminato |
+| Nominal Scenario | Utente elimina un utente EZElectronics|
 |     Variants     | -|
-|    Exceptions    | tentativo di eliminare un accaout non esistente (ERROR 404)|
+|    Exceptions    | tentativo di eliminare un utente non esistente (ERROR 404)|
 
 ##### Scenario d.1
 |  Scenario d.1  |   |
 | :------------: | :---: |
 |  Precondition  | -|
-| Post condition | Account desiderato eliminato|
+| Post condition | utente desiderato eliminato|
 |     Step#      |Description |
-|1| Utente chiede di eliminare uno specifico account |
-|2| EZElectronics elimina account e relativi dati|
+|1| Utente chiede di eliminare uno specifico utente |
+|2| EZElectronics elimina utente e relativi dati|
 
 ##### Scenario d.2
 |  Scenario d.2  |   |
