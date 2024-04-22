@@ -93,10 +93,6 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario c.1](#scenario-c1-1)
         - [Scenario c.2](#scenario-c2)
         - [Scenario c.3](#scenario-c3)
-    - [Use case a, Mostra cookie policy](#use-case-a-mostra-cookie-policy)
-        - [Scenario a.1](#scenario-a1-2)
-        - [Scenario a.2](#scenario-a2-2)
-        - [Scenario a.3](#scenario-a3)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -166,11 +162,11 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | FR3.3 | Mostra prodotti | v
 | FR3.4 | Crea prodotto | v
 | FR3.5 | Conferma vendita prodotto | v
-| FR3.6 | Eliminazione prodotto/i | v
+| FR3.6 | Eliminazione prodotto | v
 | FR3.7 | Registra arrivo prodotti dello stesso modello| v
 | FR4| Gestione Account |
 | FR4.1| Creazione utente| v
-| FR4.2| Eliminazione utente/i| v
+| FR4.2| Eliminazione utente| v
 | FR4.3| Login utenti| v
 | FR4.4| Filtra utenti| v
 | FR4.5| Mostra lista utenti| v
@@ -179,7 +175,6 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | FR4.8| Logout utente| v
 | FR5| Gestione ordini |
 | FR5.1| Mostra storico ordini/carrelli pagati| v
-| FR5.2| Rimozione carrelli | v
 
 
 
@@ -957,59 +952,6 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |1| Manager apre sezione ordini|
 |2| Seleziona la voce "Elimina tutti gli ordini"|
 |3| Lancio messaggio di errore poichè nessun ordine è presente nel database|
-
-### Use case a, Mostra cookie policy
-| Actors Involved  |  Utente |
-| :--------------: | :---: |
-|   Precondition   |Utente accede a EZElectronics|
-|  Post condition  | Utente visualizza la cookie policy del sito|
-| Nominal Scenario | Utente clicca su Cookie policy e visualizza e ne legge il contenuto
- |
-|     Variants     | - |
-|    Exceptions    | Normativa cookie non disponibile|
-
-##### Scenario a.1
-|  Scenario a.1  |   |
-| :------------: | :---: |
-|  Precondition  | Utente accede a EZElectronics|
-| Post condition | Utente rifiuta l'utilizzo dei cookies|
-|     Step#      |Description |
-|1| Utente accede a EZElectronics|
-|2| Il sistema mostra un banner sull'utilizzo dei cookies|
-|3| L'utente clicca e legge le informazioni sull'utilizzo dei cookies|
-|4| L'utente rifiuta l'utilizzo dei cookies cliccando sul tasto rifiuta|
-|5| Il sito memorizza la preferenza dell'utente|
-
-
-##### Scenario a.2
-|  Scenario a.2  |   |
-| :------------: | :---: |
-|  Precondition  | Utente accede a EZElectronics|
-| Post condition | Utente accetta l'utilizzo dei cookies|
-|     Step#      |Description |
-|1| Utente accede a EZElectronics|
-|2| Il sistema mostra un banner sull'utilizzo dei cookies|
-|3| L'utente clicca e legge le informazioni sull'utilizzo dei cookies|
-|4| L'utente accetta l'utilizzo dei cookies cliccando sul tasto accetta|
-|5| Il sito memorizza la preferenza dell'utente|
-
-##### Scenario a.3
-|  Scenario a.3  |   |
-| :------------: | :---: |
-|  Precondition  | Utente accede a EZElectronics|
-| Post condition | Lancio errore "Normativa cookie non disponibile"|
-|     Step#      |Description |
-|1| Utente accede a EZElectronics|
-|2| Il sistema mostra un banner sull'utilizzo dei cookies|
-|3| L'utente clicca sul link "Cookie Policy"|
-|4| Lancio errore "Normativa cookie non disponibile"|
-
-
-
-
-
-
-
 
 
 
