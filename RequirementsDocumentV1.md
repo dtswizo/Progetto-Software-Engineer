@@ -132,7 +132,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 Marco è un ragazzo di 25 anni che vuole comprare componenti per assemblare un pc. Nella ricerca per pezzi a prezzi convenienti, ha scoperto il sito EZElectronics grazie a un suo collega. Marco ha eseguito la procedura di registrazione come cliente e, dopo aver fatto accesso al sito e aver navigato per circa un' ora, trova e acquista i componenti necessari, da ritirare in negozio.
 
-Emma è una donna 30 anni che lavora come manager per lo store online di EZElectronics. Nella sua giornata gestisce il sito, ad esempio aggiungendo i prodotti non appena arrivano e confermare le vendite. In caso di necessità può controllare i carrelli dei clienti per motivi di gestione.
+Emma è una donna 30 anni che lavora come manager per lo store online di EZElectronics. Nella sua giornata gestisce il sito, ad esempio aggiungendo i prodotti non appena arrivano e confermare le vendite.
 
 \<Persona is-an-instance-of actor>
 
@@ -932,6 +932,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 # Glossary
 
 \<use UML class diagram to define important terms, or concepts in the domain of the application, and their relationships>
+![alt text](resources/Glossary.png)
 
 \<concepts must be used consistently all over the document, ex in use cases, requirements etc>
 
