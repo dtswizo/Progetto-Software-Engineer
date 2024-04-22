@@ -27,7 +27,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario 1.1](#scenario-11)
         - [Scenario 1.2](#scenario-12)
         - [Scenario 1.3](#scenario-13)
-    - [Use case 2, Rimozione elementi Carrello](#use-case-2-rimozione-elementi-carrello)
+    - [Use case 2, Rimozione elemento Carrello](#use-case-2-rimozione-elemento-carrello)
         - [Scenario 2.1](#scenario-21)
         - [Scenario 2.2](#scenario-22)
         - [Scenario 2.3](#scenario-23)
@@ -223,7 +223,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |   Precondition   | Utente loggato come cliente |
 |  Post condition  | prodotto aggiunto al carrello |
 | Nominal Scenario |        utente aggiunge un elemento al carrello         |
-|     Variants     |    -                      |
+|     Variants     |    -           |
 |    Exceptions    | il prodotto non esiste (Error 404),il prodotto non è disponibile (venduto o in un altro carrello) (Error 409)                       |
 
 ##### Scenario 1.1
@@ -269,26 +269,26 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |       2        |        L'utente inserisce un prodotto nel carrello                                                                    |
 |      3       |            Il sistema ritorna un messaggio 409 perchè il prodotto non è disponibile (venduto o in un altro carrello)   |
 
-### Use case 2, Rimozione elementi Carrello
+### Use case 2, Rimozione elemento Carrello
 
 | Actors Involved  |         Utente                                                             |
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente loggato come cliente, carrello con un elemento |
 |  Post condition  |  Elemento rimosso dal carrello |
 | Nominal Scenario |         Rimozione di un elemento dal carrello         |
-|     Variants     |                      \<other normal executions>                      |
-|    Exceptions    |                       Errori 404,409                       |
+|     Variants     |     -        |
+|    Exceptions    |    codice prodotto non presente nel carrello (ERROr 404), carrello non esistente (ERROR 404), codice prodotto insesistente (ERROR 409), codice prodotto di un prodotto già venduto (ERROR 409)                       |
 
 ##### Scenario 2.1
 
 |  Scenario 2.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Carrello con almeno un elemento, Utente autenticato come cliente |
-| Post condition |  Rimozioni elemento al carrello|
+| Post condition |  Rimozione elemento dal carrello|
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
 |       2        |      Il sistema mostra il carrello                                         |
-|       3        |        L'utente rimuove un elemento                                                                    |
+|       3        |        L'utente chiede di rimuovere un prodotto                                                                    |
 |      4       |            Il sistema aggiorna il carrello                                                         |
 
 ##### Scenario 2.2
@@ -300,8 +300,8 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
 |       2        |      Il sistema mostra il carrello                                         |
-|       3        |        L'utente rimuove un elemento                                                                    |
-|      4       |            Il sistema lancia l'errore 404 (prodotto non nel carrello, prodotto e/o carrello non esistente)                                                         |
+|       3        |        L'utente chiede di rimuovere un prodotto                                                                    |
+|      4       |            Il sistema lancia l'errore 404 (prodotto non nel carrello, prodotto e/o carrello non esistente)           |
 
 ##### Scenario 2.3
 
@@ -311,7 +311,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | Post condition |  Lancio Errore 409|
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
-|       2        |      Il sistema mostra il carrello                                         |
+|       2        |      Il sistema chiede di rimuovere un prodotto                                        |
 |       3        |        L'utente rimuove un elemento                                                                    |
 |      4       |            Il sistema lancia l'errore 409 (prodotto già venduto)                                                         |
 
@@ -319,11 +319,11 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 | Actors Involved  |         Utente                                                             |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente autenticato come cliente, Utente   |
+|   Precondition   | Utente autenticato come cliente   |
 |  Post condition  |  Carrello eliminato|
-| Nominal Scenario |         Azioni di gestione del carrello         |
-|     Variants     |                      \<other normal executions>                      |
-|    Exceptions    |                       Errori 404,409                       |
+| Nominal Scenario | Utente richiede di eliminare il carello corrente         |
+|     Variants     |        -|
+|    Exceptions    |                  Carrello non esistente (Error 404)|
 
 
 ##### Scenario 3.1
@@ -336,14 +336,14 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |       1        |      L'utente   apre il carrello                                                           |
 |       2        |      Il sistema mostra il carrello                                         |
 |       3        |        L'utente richiede eliminazione del carrello                                                               |
-|      4       |            Il sistema aggiorna il carrello                                                         |
+|      4       |            Il sistema elimina il carrello                                                         |
 
 ##### Scenario 3.2
 
 |  Scenario 3.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Utente non possiede un carrello, Utente autenticato come cliente|
-| Post condition |  Errore 404 |
+|  Precondition  | Utente autenticato come cliente|
+| Post condition | Errore 404 |
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
 |       2        |      Il sistema mostra il carrello                                         |
