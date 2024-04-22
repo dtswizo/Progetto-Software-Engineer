@@ -81,18 +81,14 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario e.3](#scenario-e3)
     - [Use case f, Mostra utenti](#use-case-f-mostra-utenti)
         - [Scenario f.1](#scenario-f1)
-    - [Use case g, Mostra informazioni utente](#use-case-g-mostra-informazioni-utente)
+    - [Use case g, Mostra informazioni utente corrente](#use-case-g-mostra-informazioni-utente-corrente)
         - [Scenario g.1](#scenario-g1)
-    - [Use case a, Storico ordini](#use-case-a-storico-ordini)
-        - [Scenario a.1](#scenario-a1-1)
-        - [Scenario a.2](#scenario-a2-1)
-    - [Use case b, Storico ordini](#use-case-b-storico-ordini)
+    - [Use case b, Storico carrelli](#use-case-b-storico-carrelli)
         - [Scenario b.1](#scenario-b1-1)
         - [Scenario b.2](#scenario-b2-1)
-    - [Use case c, Rimozione ordini](#use-case-c-rimozione-ordini)
+    - [Use case c, Rimozione carrello](#use-case-c-rimozione-carrello)
         - [Scenario c.1](#scenario-c1-1)
         - [Scenario c.2](#scenario-c2)
-        - [Scenario c.3](#scenario-c3)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -357,7 +353,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |  Post condition  |  Checkout effettuato   |
 | Nominal Scenario | Cliente fa il checkout del carrello         |
 |     Variants     |   -   |
-|    Exceptions    |   Il carrello non esiste(Error 404), carrello vuoti (ERROR 404)                      |
+|    Exceptions    |   Il carrello non esiste(Error 404), carrello vuoto (ERROR 404)                      |
 
 ##### Scenario 4.1
 
@@ -838,7 +834,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |2| EZElectronics mostra utenti|
 
 
-### Use case g, Mostra informazioni utente
+### Use case g, Mostra informazioni utente corrente
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | utente loggato|
@@ -857,57 +853,25 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |2| EZElectronics mostra le informazioni relative all'utente|
 
 
-
-### Use case a, Storico ordini
-| Actors Involved  |  Manager |
+### Use case b, Storico carrelli
+| Actors Involved  |  Customer |
 | :--------------: | :---: |
-|   Precondition   | Manager autenticato |
-|  Post condition  | Manager storico ordini visualizzato|
-| Nominal Scenario | Manager visualizza e gestisce gli ordini
+|   Precondition   | Utente autenticato come customer |
+|  Post condition  | Utente storico carrelli visualizzato|
+| Nominal Scenario | L'utente visualizza il proprio storico carrelli
  |
 |     Variants     | - |
-|    Exceptions    |  Ordini non trovati |
-
-##### Scenario a.1
-|  Scenario a.1  |   |
-| :------------: | :---: |
-|  Precondition  | Manager autenticato|
-| Post condition | Manager visualizza ordini|
-|     Step#      |Description |
-|1| Manager apre sezione ordini|
-|2| Manager clicca su "storico ordini"|
-|3| Lo storico ordini viene visualizzato|
-
-
-##### Scenario a.2
-|  Scenario a.2  |   |
-| :------------: | :---: |
-|  Precondition  | Manager autenticato|
-| Post condition | Lancio errore "Ordini non trovati"|
-|     Step#      |Description |
-|1| Manager apre sezione ordini|
-|2| Manager clicca su "storico ordini"|
-|3| Il sistema restituisce un messaggio di errore "Ordini non trovati"|
-
-### Use case b, Storico ordini
-| Actors Involved  |  Utente |
-| :--------------: | :---: |
-|   Precondition   | Utente autenticato |
-|  Post condition  | Utente storico ordini visualizzato|
-| Nominal Scenario | L'utente visualizza il proprio storico ordini
- |
-|     Variants     | - |
-|    Exceptions    | Ordini non trovati |
+|    Exceptions    | carrelli non trovati |
 
 ##### Scenario b.1
 |  Scenario b.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente autenticato|
-| Post condition | Utente visualizza lista ordini|
+| Post condition | Utente visualizza lista carrelli|
 |     Step#      |Description |
 |1| Utente apre la sezione "i miei ordini"|
-|2| Il sistema cerca gli ordini associati all'utente|
-|3| La lista degli ordini effettuati viene restituita all'utente|
+|2| Il sistema cerca i carrelli associati all'utente|
+|3| La lista dei carrelli effettuati viene restituita all'utente|
 
 ##### Scenario b.2
 |  Scenario b.2  |   |
@@ -916,48 +880,37 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 | Post condition | Lancio errore "Nessun ordine eseguito"|
 |     Step#      |Description |
 |1| Utente apre la sezione "i miei ordini"|
-|2| Il sistema cerca gli ordini associati all'utente|
+|2| Il sistema cerca i carrelli associati all'utente|
 |3| Il sistema restituisce un messaggio di errore "Impossibile visualizzare ordini, nessun ordine eseguito"|
 
 
-### Use case c, Rimozione ordini
-| Actors Involved  |  Manager |
+### Use case c, Rimozione carrello
+| Actors Involved  |  Customer |
 | :--------------: | :---: |
-|   Precondition   | Manager autenticato |
-|  Post condition  | Tutti gli ordini sono stati cancellati|
-| Nominal Scenario | Manager visualizza gli ordini e li rimuove |
+|   Precondition   | Customer autenticato |
+|  Post condition  | Il carrello corrente viene eliminato|
+| Nominal Scenario | Utente richiede l'eliminaione del suo carrello corrente e questo viene eliminato dal sistema |
 |     Variants     | - |
-|    Exceptions    | Rimozione ordine disponibile solo dopo il loro completamento, impossibile rimuovere ordini in assenza di ordini completati. |
+|    Exceptions    | il customer non ha un carrello (ERROR 404) |
 
 ##### Scenario c.1
 |  Scenario c.1  |   |
 | :------------: | :---: |
-|  Precondition  | Manager autenticato|
-| Post condition | Tutti gli ordini sono stati eliminati|
+|  Precondition  | Customer autenticato|
+| Post condition |Il carrello corrente viene eliminato|
 |     Step#      |Description |
-|1| Manager apre sezione ordini|
-|2| Manager clicca la voce "Elimina tutti gli ordini"|
-|3| Tutti gli ordini presenti vengono eliminati|
+|1| Customer richiede di eleiminare il carrello corrente|
+|2| EZElectronics elimina il carrello corrente dell'utente|
 
 ##### Scenario c.2
 |  Scenario c.2  |   |
 | :------------: | :---: |
-|  Precondition  | Manager autenticato|
-| Post condition | Lancio errore eliminazione ordini|
+|  Precondition  | Customer autenticato|
+| Post condition | Lancio errore 404|
 |     Step#      |Description |
-|1| Manager apre sezione ordini|
-|2| Seleziona la voce "Elimina tutti gli ordini"|
-|3| Lancio messaggio di errore poichè uno o più ordini non sono stati ancora completati|
+|1| Customer richiede di eleiminare il carrello corrente|
+|2| EZElectronics lancia errore perchè il customer non ha un carrello (ERROR 404)
 
-##### Scenario c.3
-|  Scenario c.3  |   |
-| :------------: | :---: |
-|  Precondition  | Manager autenticato|
-| Post condition | Lancio errore eliminazione ordini|
-|     Step#      |Description |
-|1| Manager apre sezione ordini|
-|2| Seleziona la voce "Elimina tutti gli ordini"|
-|3| Lancio messaggio di errore poichè nessun ordine è presente nel database|
 
 
 
