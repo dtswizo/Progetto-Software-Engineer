@@ -208,6 +208,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 \<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
 
+![alt text](resources/UseCase_Diagram.png)
+
 \<next describe here each use case in the UCD>
 
 
