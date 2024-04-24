@@ -932,6 +932,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 # System Design
 
 \<describe here system design>
+![alt text](resources/SystemDesign.png)
 
 \<must be consistent with Context diagram>
 
