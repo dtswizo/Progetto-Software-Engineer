@@ -186,18 +186,12 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
-|  NFR1 | Usabilità | Utenti non hanno bisogno di training | Utente |
-|  NFR2 | Efficienza | Tempo di risposta del server inferiore a 0.2s |           |
-|  NFR3 | Affidabilità | Sito non deve essere offline per più di 7gg all'anno|           |
-| NFR4 | Usabilità | La sessione deve essere mantenuta attiva almeno 5 ore |           |
-| NFR5 |   Correttezza | Test Coverage >= 80%  |           |
-| NFR6 |   Portabilità | Chrome: 97.0.4692.99, Firefox:  96.0.1, Safari: 15.1|           |
-| NFR7 |  Portabilità | Il sito deve essere responsive per schermi che vanno da 360x720 pixels a 3840x2160 pixels |           |
-| NFR8 | Manutenibilità | 8 ore/persona necessarie per sistemare un malfunzionamento |           |
-| NFR9 | Manutenibilità | 20 ore/persona necessarie per tempistiche di deploy per una nuova versione|           |
-| NFR10 | Sicurezza | La password deve rispettare le seguenti caratteristiche: lunghezza minima 8 caratteri, carattere speciale, carattere maiuscolo, numero |           |
-| NFR11 | Sicurezza | Le password devono essere salvate sul database con un algoritmo di hashing salted (?)|           |
-| NFR12 | Sicurezza | Utilizzo del protocollo https (?)|           |
+|  NFR1 | Usabilità | Utenti non hanno bisogno di training | FR3 |
+| NFR2 | Usabilità | La sessione deve essere mantenuta attiva almeno 12 ore |    FR3       |
+| NFR3 |   Portabilità | Chrome: 97.0.4692.99, Firefox:  96.0.1, Safari: 15.1|           |
+| NFR4 |  Portabilità | Il sito deve essere responsive per schermi che vanno da 360x720 pixels a 3840x2160 pixels |           |
+| NFR5 | Sicurezza | Le password devono essere salvate sul database con un algoritmo di hashing salted|   FR3        | 
+
 
 
 
