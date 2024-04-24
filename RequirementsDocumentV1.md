@@ -148,31 +148,31 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 |  ID   | Description |
 | :---: | :---------: |
-| FR2 | Gestione carrello |
-| FR2.1 | Aggiungi prodotto| v
-| FR2.2 | Elimina carrello corrente | v
-| FR2.3 | Checkout carrello | v
-| FR2.4 | Mostra carrello | v
-| FR2.5 | Rimuovi prodotto| v
-| FR3 | Gestione prodotti| 
-| FR3.1 | Ricerca prodotto| v 
-| FR3.2 | Filtra prodotti (categoria, modello, sold)| v
-| FR3.3 | Mostra prodotti | v
-| FR3.4 | Crea prodotto | v
-| FR3.5 | Conferma vendita prodotto | v
-| FR3.6 | Eliminazione prodotto | v
-| FR3.7 | Registra arrivo prodotti dello stesso modello| v
-| FR4| Gestione Account |
-| FR4.1| Creazione utente| v
-| FR4.2| Eliminazione utente| v
-| FR4.3| Login utenti| v
-| FR4.4| Filtra utenti| v
-| FR4.5| Mostra lista utenti| v
-| FR4.6| Mostra utente loggato| v
-| FR4.7| Ricerca utente| v
-| FR4.8| Logout utente| v
-| FR5| Gestione ordini |
-| FR5.1| Mostra storico ordini/carrelli pagati| v
+| FR1 | Gestione carrello |
+| FR1.1 | Aggiungi prodotto| 
+| FR1.2 | Elimina carrello corrente | 
+| FR1.3 | Checkout carrello | 
+| FR1.4 | Mostra carrello | 
+| FR1.5 | Rimuovi prodotto| 
+| FR2 | Gestione prodotti| 
+| FR2.1 | Ricerca prodotto| 
+| FR2.2 | Filtra prodotti (categoria, modello, sold)| 
+| FR2.3 | Mostra prodotti | 
+| FR2.4 | Crea prodotto | 
+| FR2.5 | Conferma vendita prodotto | 
+| FR2.6 | Eliminazione prodotto | 
+| FR2.7 | Registra arrivo prodotti dello stesso modello| 
+| FR3| Gestione Account |
+| FR3.1| Creazione utente| 
+| FR3.2| Eliminazione utente| 
+| FR3.3| Login utenti| 
+| FR3.4| Filtra utenti| 
+| FR3.5| Mostra lista utenti| 
+| FR3.6| Mostra utente loggato| 
+| FR3.7| Ricerca utente| 
+| FR3.8| Logout utente| 
+| FR4| Gestione ordini |
+| FR4.1| Mostra storico ordini/carrelli pagati| 
 
 
 
