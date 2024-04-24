@@ -39,56 +39,55 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario 4.2](#scenario-42)
         - [Scenario 4.3](#scenario-43)
     - [Use case 5, Mostra carrello](#use-case-5-mostra-carrello)
-    - [Scenario 5.1](#scenario-51)
-    - [Use case 3, Registrazione arrivo prodotti](#use-case-3-registrazione-arrivo-prodotti)
-        - [Scenario 3.1](#scenario-31-1)
-        - [Scenario 3.2](#scenario-32-1)
-    - [Use case 4, Eliminazione prodotto](#use-case-4-eliminazione-prodotto)
-        - [Scenario 4.1](#scenario-41-1)
-        - [Scenario 4.2](#scenario-42-1)
-    - [Use case 5, Conferma vendita prodotto](#use-case-5-conferma-vendita-prodotto)
-        - [Scenario 5.1](#scenario-51-1)
-        - [Scenario 5.2](#scenario-52)
-        - [Scenario 5.2](#scenario-52-1)
-    - [Use case 6, Ricerca prodotti](#use-case-6-ricerca-prodotti)
+      - [Scenario 5.1](#scenario-51)
+    - [Use case 6, Registrazione arrivo prodotti](#use-case-6-registrazione-arrivo-prodotti)
         - [Scenario 6.1](#scenario-61)
         - [Scenario 6.2](#scenario-62)
-    - [Use case 7, Filtra prodotti](#use-case-7-filtra-prodotti)
+    - [Use case 7, Eliminazione prodotto](#use-case-7-eliminazione-prodotto)
         - [Scenario 7.1](#scenario-71)
         - [Scenario 7.2](#scenario-72)
-    - [Use case 8, Crea e registra nuovo prodotto](#use-case-8-crea-e-registra-nuovo-prodotto)
+    - [Use case 8, Conferma vendita prodotto](#use-case-8-conferma-vendita-prodotto)
         - [Scenario 8.1](#scenario-81)
         - [Scenario 8.2](#scenario-82)
         - [Scenario 8.3](#scenario-83)
-    - [Use case 9, Mostra prodotti](#use-case-9-mostra-prodotti)
+    - [Use case 9, Ricerca prodotti](#use-case-9-ricerca-prodotti)
         - [Scenario 9.1](#scenario-91)
         - [Scenario 9.2](#scenario-92)
-    - [Use case x, UCx](#use-case-x-ucx)
-    - [Use case a, Registrazione utente](#use-case-a-registrazione-utente)
-        - [Scenario a.1](#scenario-a1)
-        - [Scenario a.2](#scenario-a2)
-    - [Use case b, Login](#use-case-b-login)
-        - [Scenario b.1](#scenario-b1)
-        - [Scenario b.2](#scenario-b2)
-    - [Use case C, Logout](#use-case-c-logout)
-        - [Scenario c.1](#scenario-c1)
-    - [Use case d, Eliminazione utente](#use-case-d-eliminazione-utente)
-        - [Scenario d.1](#scenario-d1)
-        - [Scenario d.2](#scenario-d2)
-    - [Use case e, Filtra utenti](#use-case-e-filtra-utenti)
-        - [Scenario e.1](#scenario-e1)
-        - [Scenario e.2](#scenario-e2)
-        - [Scenario e.3](#scenario-e3)
-    - [Use case f, Mostra utenti](#use-case-f-mostra-utenti)
-        - [Scenario f.1](#scenario-f1)
-    - [Use case g, Mostra informazioni utente corrente](#use-case-g-mostra-informazioni-utente-corrente)
-        - [Scenario g.1](#scenario-g1)
-    - [Use case b, Storico carrelli](#use-case-b-storico-carrelli)
-        - [Scenario b.1](#scenario-b1-1)
-        - [Scenario b.2](#scenario-b2-1)
-    - [Use case c, Rimozione carrello](#use-case-c-rimozione-carrello)
-        - [Scenario c.1](#scenario-c1-1)
-        - [Scenario c.2](#scenario-c2)
+    - [Use case 7, Filtra prodotti](#use-case-7-filtra-prodotti)
+        - [Scenario 7.1](#scenario-71-1)
+        - [Scenario 7.2](#scenario-72-1)
+    - [Use case 8, Crea e registra nuovo prodotto](#use-case-8-crea-e-registra-nuovo-prodotto)
+        - [Scenario 8.1](#scenario-81-1)
+        - [Scenario 8.2](#scenario-82-1)
+        - [Scenario 8.3](#scenario-83-1)
+    - [Use case 9, Mostra prodotti](#use-case-9-mostra-prodotti)
+        - [Scenario 9.1](#scenario-91-1)
+        - [Scenario 9.2](#scenario-92-1)
+    - [Use case 10, Registrazione utente](#use-case-10-registrazione-utente)
+        - [Scenario 10.1](#scenario-101)
+        - [Scenario 10.2](#scenario-102)
+    - [Use case 11, Login](#use-case-11-login)
+        - [Scenario 11.1](#scenario-111)
+        - [Scenario 11.2](#scenario-112)
+    - [Use case 12, Logout](#use-case-12-logout)
+        - [Scenario 12.1](#scenario-121)
+    - [Use case 13, Eliminazione utente](#use-case-13-eliminazione-utente)
+        - [Scenario 13.1](#scenario-131)
+        - [Scenario 13.2](#scenario-132)
+    - [Use case 14, Filtra utenti](#use-case-14-filtra-utenti)
+        - [Scenario 14.1](#scenario-141)
+        - [Scenario 14.2](#scenario-142)
+        - [Scenario 14.3](#scenario-143)
+    - [Use case 15, Mostra utenti](#use-case-15-mostra-utenti)
+        - [Scenario 15.1](#scenario-151)
+    - [Use case 16, Mostra informazioni utente corrente](#use-case-16-mostra-informazioni-utente-corrente)
+        - [Scenario 16.1](#scenario-161)
+    - [Use case 17, Storico carrelli](#use-case-17-storico-carrelli)
+        - [Scenario 17.1](#scenario-171)
+        - [Scenario 17.2](#scenario-172)
+    - [Use case 18, Rimozione carrello](#use-case-18-rimozione-carrello)
+        - [Scenario 18.1](#scenario-181)
+        - [Scenario 18.2](#scenario-182)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -148,31 +147,31 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 |  ID   | Description |
 | :---: | :---------: |
-| FR2 | Gestione carrello |
-| FR2.1 | Aggiungi prodotto| v
-| FR2.2 | Elimina carrello corrente | v
-| FR2.3 | Checkout carrello | v
-| FR2.4 | Mostra carrello | v
-| FR2.5 | Rimuovi prodotto| v
-| FR3 | Gestione prodotti| 
-| FR3.1 | Ricerca prodotto| v 
-| FR3.2 | Filtra prodotti (categoria, modello, sold)| v
-| FR3.3 | Mostra prodotti | v
-| FR3.4 | Crea prodotto | v
-| FR3.5 | Conferma vendita prodotto | v
-| FR3.6 | Eliminazione prodotto | v
-| FR3.7 | Registra arrivo prodotti dello stesso modello| v
-| FR4| Gestione Account |
-| FR4.1| Creazione utente| v
-| FR4.2| Eliminazione utente| v
-| FR4.3| Login utenti| v
-| FR4.4| Filtra utenti| v
-| FR4.5| Mostra lista utenti| v
-| FR4.6| Mostra utente loggato| v
-| FR4.7| Ricerca utente| v
-| FR4.8| Logout utente| v
-| FR5| Gestione ordini |
-| FR5.1| Mostra storico ordini/carrelli pagati| v
+| FR1 | Gestione carrello |
+| FR1.1 | Aggiungi prodotto| 
+| FR1.2 | Elimina carrello corrente | 
+| FR1.3 | Checkout carrello | 
+| FR1.4 | Mostra carrello | 
+| FR1.5 | Rimuovi prodotto| 
+| FR2 | Gestione prodotti| 
+| FR2.1 | Ricerca prodotto| 
+| FR2.2 | Filtra prodotti (categoria, modello, sold)| 
+| FR2.3 | Mostra prodotti | 
+| FR2.4 | Crea prodotto | 
+| FR2.5 | Conferma vendita prodotto | 
+| FR2.6 | Eliminazione prodotto | 
+| FR2.7 | Registra arrivo prodotti dello stesso modello| 
+| FR3| Gestione Account |
+| FR3.1| Creazione utente| 
+| FR3.2| Eliminazione utente| 
+| FR3.3| Login utenti| 
+| FR3.4| Filtra utenti| 
+| FR3.5| Mostra lista utenti| 
+| FR3.6| Mostra utente loggato| 
+| FR3.7| Ricerca utente| 
+| FR3.8| Logout utente| 
+| FR4| Gestione ordini |
+| FR4.1| Mostra storico ordini/carrelli pagati| 
 
 
 
@@ -186,18 +185,12 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
-|  NFR1 | Usabilità | Utenti non hanno bisogno di training | Utente |
-|  NFR2 | Efficienza | Tempo di risposta del server inferiore a 0.2s |           |
-|  NFR3 | Affidabilità | Sito non deve essere offline per più di 7gg all'anno|           |
-| NFR4 | Usabilità | La sessione deve essere mantenuta attiva almeno 5 ore |           |
-| NFR5 |   Correttezza | Test Coverage >= 80%  |           |
-| NFR6 |   Portabilità | Chrome: 97.0.4692.99, Firefox:  96.0.1, Safari: 15.1|           |
-| NFR7 |  Portabilità | Il sito deve essere responsive per schermi che vanno da 360x720 pixels a 3840x2160 pixels |           |
-| NFR8 | Manutenibilità | 8 ore/persona necessarie per sistemare un malfunzionamento |           |
-| NFR9 | Manutenibilità | 20 ore/persona necessarie per tempistiche di deploy per una nuova versione|           |
-| NFR10 | Sicurezza | La password deve rispettare le seguenti caratteristiche: lunghezza minima 8 caratteri, carattere speciale, carattere maiuscolo, numero |           |
-| NFR11 | Sicurezza | Le password devono essere salvate sul database con un algoritmo di hashing salted (?)|           |
-| NFR12 | Sicurezza | Utilizzo del protocollo https (?)|           |
+|  NFR1 | Usabilità | Utenti non hanno bisogno di training | FR3 |
+| NFR2 | Usabilità | La sessione deve essere mantenuta attiva almeno 12 ore |    FR3       |
+| NFR3 |   Portabilità | Chrome: 97.0.4692.99, Firefox:  96.0.1, Safari: 15.1|      FR1,FR2,FR3,FR4     |
+| NFR4 |  Portabilità | Il sito deve essere responsive per schermi che vanno da 360x720 pixels a 3840x2160 pixels |    FR1,FR2,FR3,FR4       |
+| NFR5 | Sicurezza | Le password devono essere salvate sul database con un algoritmo di hashing salted|   FR3        | 
+
 
 
 
@@ -404,7 +397,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |    Exceptions    |               |
 
 
-### Scenario 5.1
+#### Scenario 5.1
 
 |  Scenario 5.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
@@ -414,7 +407,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |    2   |            Sistema mostra il carrello |
 
 
-### Use case 3, Registrazione arrivo prodotti
+### Use case 6, Registrazione arrivo prodotti
 
 | Actors Involved  |  Store Manager |
 | :--------------: | :------------------------------------------------------------------: |
@@ -425,9 +418,9 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |    Exceptions    | inserimento data di arrivo dopo quella corrente |
 
 
-##### Scenario 3.1
+##### Scenario 6.1
 
-|  Scenario 3.1  |                                                                            |
+|  Scenario 6.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | utente loggato come store manager|
 | Post condition |  Registrazione prodotti con molteplicitá > 1 |
@@ -436,9 +429,9 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |      3       |            Store manager inserisce data di arrivo |
 |      4       |            Il sistema registra data di arrivo relativa ai prodotti interessati |
 
-##### Scenario 3.2
+##### Scenario 6.2
 
-|  Scenario 3.2  |                                                                            |
+|  Scenario 6.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
 | Post condition |  sistema mostra errore |
@@ -449,7 +442,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 
 
-### Use case 4, Eliminazione prodotto
+### Use case 7, Eliminazione prodotto
 
 | Actors Involved  |  Store Manager |
 | :--------------: | :------------------------------------------------------------------: |
@@ -460,9 +453,9 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |    Exceptions    | Codice prodtto da eliminare non esistente (ERROR 404) |
 
 
-##### Scenario 4.1
+##### Scenario 7.1
 
-|  Scenario 4.1  |                                                                            |
+|  Scenario 7.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
 | Post condition |  Prodotto eliminato |
@@ -473,9 +466,9 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |      5       |  Sistema elimina il prodotto dall'elenco |
 
 
-##### Scenario 4.2
+##### Scenario 7.2
 
-|  Scenario 4.2  |                                                                            |
+|  Scenario 7.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
 | Post condition |  Sistema mostra errore |
@@ -485,7 +478,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |      4       |  Store manager conferma l'operazione |
 |      5       |  Sistema mostra errore 404  |
 
-### Use case 5, Conferma vendita prodotto
+### Use case 8, Conferma vendita prodotto
 
 | Actors Involved  |  Store Manager |
 | :--------------: | :------------------------------------------------------------------: |
@@ -495,34 +488,34 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |     Variants     | -   |
 |    Exceptions    | il codice prodotto non esiste (ERROR 404), data di vendita dopo data corrente, data di vendita antecedente alla data di arrivo, il prodotto è gia stato venduto|
 
-##### Scenario 5.1
+##### Scenario 8.1
 
-|  Scenario 5.1  |                                                                            |
+|  Scenario 8.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
 | Post condition |  Vendita prodotto confermata |
 |       1        |  Store manager chiede di segnare un prodotto come venduto |
 |      2       |  Sistema aggiorna lo stato del prodotto |
 
-##### Scenario 5.2
+##### Scenario 8.2
 
-|  Scenario 5.2 |                                                                            |
+|  Scenario 8.2 |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
 | Post condition |  sistema mostra errore (404) |
 |       1        |  Store manager chiede di segnare un prodotto come venduto |
 |      2       |  Sistema mostra errore(404) |
 
-##### Scenario 5.2
+##### Scenario 8.3
 
-|  Scenario 5.2 |                                                                            |
+|  Scenario 8.3 |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
 | Post condition |  sistema mostra errore |
 |       1        |  Store manager chiede di segnare un prodotto come venduto |
 |      2       |  Sistema mostra errore (data di vendita antecedente quella di arrivo, data di vendita dopo quella corrente, il prodotto è gia stato venduto) |
 
-### Use case 6, Ricerca prodotti
+### Use case 9, Ricerca prodotti
 
 | Actors Involved  |  Utente |
 | :--------------: | :------------------------------------------------------------------: |
@@ -532,9 +525,9 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |     Variants     | - |
 |    Exceptions    | Errore prodotto non trovato (error 404)|
 
-##### Scenario 6.1
+##### Scenario 9.1
 
-|  Scenario 6.1  |                                                                            |
+|  Scenario 9.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | utente loggato|
 | Post condition |  Prodotto ricercato mostrato |
@@ -542,8 +535,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |       2        |  utente inserisce il codice prodotto nella barra di ricerca |
 |      3       |  Sistema mostra prodotto ricercato |
 
-##### Scenario 6.2
-|  Scenario 6.2  |                                                                            |
+##### Scenario 9.2
+|  Scenario 9.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | utente loggato|
 | Post condition |  Errore prodotto ricercato non trovato |
@@ -652,11 +645,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |2| EZElectronics mostra i prodotti filtrati richiesti|
 
 
-### Use case x, UCx
-
-..
-
-### Use case a, Registrazione utente
+### Use case 10, Registrazione utente
 | Actors Involved  |  Utente |
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
@@ -665,8 +654,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |     Variants     | - |
 |    Exceptions    | l'utente inserisce uno username duplicato(ERROR 409) |
 
-##### Scenario a.1
-|  Scenario a.1  |   |
+##### Scenario 10.1
+|  Scenario 10.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente non registrato|
 | Post condition | Utente registrato|
@@ -676,8 +665,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |3| Utente inserisce dati personali|
 |4| Sistema valida, salva i dati e crea nuovo account| 
 
-##### Scenario a.2
-|  Scenario a.2  |   |
+##### Scenario 10.2
+|  Scenario 10.2  |   |
 | :------------: | :---: |
 |  Precondition  | Utente non registrato|
 | Post condition | Sistema mostra errore|
@@ -688,7 +677,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |4| Sistema individua username duplicato e torna errore 409|
 
 
-### Use case b, Login
+### Use case 11, Login
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | Utente non loggato |
@@ -697,8 +686,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |     Variants     | - |
 |    Exceptions    | l'utente inserisce dei dati non validi|
 
-##### Scenario b.1
-|  Scenario b.1  |   |
+##### Scenario 11.1
+|  Scenario 11.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente non loggato|
 | Post condition | Utente loggato|
@@ -710,8 +699,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |5| Utente inserisce dati di accesso|
 |6| Sistema valida i dati e avvia sessione|
 
-##### Scenario b.2
-|  Scenario b.1  |   |
+##### Scenario 11.2
+|  Scenario 11.2  |   |
 | :------------: | :---: |
 |  Precondition  | Utente non loggato|
 | Post condition | - |
@@ -723,7 +712,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |5| Utente inserisce dati di accesso|
 |6| Sistema rileva errore nei dati e torna errore|
 
-### Use case C, Logout
+### Use case 12, Logout
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | Utente loggato |
@@ -732,8 +721,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |     Variants     | - |
 |    Exceptions    | -|
 
-##### Scenario c.1
-|  Scenario c.1  |   |
+##### Scenario 12.1
+|  Scenario 12.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente loggato|
 | Post condition | Utente non loggato|
@@ -741,7 +730,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |1| Utente chiede di effettuare logout |
 |2| EZElectronics termina la sessione dell'account|
 
-### Use case d, Eliminazione utente
+### Use case 13, Eliminazione utente
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | - |
@@ -750,8 +739,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |     Variants     | -|
 |    Exceptions    | tentativo di eliminare un utente non esistente (ERROR 404)|
 
-##### Scenario d.1
-|  Scenario d.1  |   |
+##### Scenario 13.1
+|  Scenario 13.1  |   |
 | :------------: | :---: |
 |  Precondition  | -|
 | Post condition | utente desiderato eliminato|
@@ -759,8 +748,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |1| Utente chiede di eliminare uno specifico utente |
 |2| EZElectronics elimina utente e relativi dati|
 
-##### Scenario d.2
-|  Scenario d.2  |   |
+##### Scenario 13.2
+|  Scenario 13.2  |   |
 | :------------: | :---: |
 |  Precondition  | --|
 | Post condition |Sistema visualizza errore|
@@ -768,7 +757,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |1| Utente chiede di eliminare l'account |
 |2| EZElectronics torna errore perchè l'account selezionato non esiste|
 
-### Use case e, Filtra utenti
+### Use case 14, Filtra utenti
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | - |
@@ -777,8 +766,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |     Variants     | Utente filtra utenti per ruolo |
 |    Exceptions    | Username cercato non esiste( ERROR 404)|
 
-##### Scenario e.1
-|  Scenario e.1  |   |
+##### Scenario 14.1
+|  Scenario 14.1  |   |
 | :------------: | :---: |
 |  Precondition  | -|
 | Post condition | Visulalizzazione utenti filtrati|
@@ -790,8 +779,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |5| Utente inserisce username|
 |6| EZElectronics visualizza utente cercato|
 
-##### Scenario e.2
-|  Scenario e.2  |   |
+##### Scenario 14.2
+|  Scenario 14.2  |   |
 | :------------: | :---: |
 |  Precondition  | -|
 | Post condition | Sistema visulalizza errore 404|
@@ -803,8 +792,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |5| Utente inserisce username|
 |6| EZElectronics torna errore visto che lo username cercato non esiste|
 
-##### Scenario e.3
-|  Scenario e.3  |   |
+##### Scenario 14.3
+|  Scenario 14.3  |   |
 | :------------: | :---: |
 |  Precondition  | -|
 | Post condition | Visulalizzazione utenti filtrati|
@@ -817,7 +806,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |6| EZElectronics visualizza utenti filtrati|
 
 
-### Use case f, Mostra utenti
+### Use case 15, Mostra utenti
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   |-|
@@ -826,8 +815,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |     Variants     | - |
 |    Exceptions    | -|
 
-##### Scenario f.1
-|  Scenario f.1  |   |
+##### Scenario 15.1
+|  Scenario 15.1  |   |
 | :------------: | :---: |
 |  Precondition  | -|
 | Post condition |Sistema mostra utenti|
@@ -836,7 +825,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |2| EZElectronics mostra utenti|
 
 
-### Use case g, Mostra informazioni utente corrente
+### Use case 16, Mostra informazioni utente corrente
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | utente loggato|
@@ -845,8 +834,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |     Variants     | - |
 |    Exceptions    | -|
 
-##### Scenario g.1
-|  Scenario g.1  |   |
+##### Scenario 16.1
+|  Scenario 16.1  |   |
 | :------------: | :---: |
 |  Precondition  | utente loggato|
 | Post condition |informazioni visualizzate|
@@ -855,7 +844,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |2| EZElectronics mostra le informazioni relative all'utente|
 
 
-### Use case b, Storico carrelli
+### Use case 17, Storico carrelli
 | Actors Involved  |  Customer |
 | :--------------: | :---: |
 |   Precondition   | Utente autenticato come customer |
@@ -865,20 +854,20 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |     Variants     | - |
 |    Exceptions    | carrelli non trovati |
 
-##### Scenario b.1
-|  Scenario b.1  |   |
+##### Scenario 17.1
+|  Scenario 17.1  |   |
 | :------------: | :---: |
-|  Precondition  | Utente autenticato|
+|  Precondition  | Utente autenticato come customer|
 | Post condition | Utente visualizza lista carrelli|
 |     Step#      |Description |
 |1| Utente apre la sezione "i miei ordini"|
 |2| Il sistema cerca i carrelli associati all'utente|
 |3| La lista dei carrelli effettuati viene restituita all'utente|
 
-##### Scenario b.2
-|  Scenario b.2  |   |
+##### Scenario 17.2
+|  Scenario 17.2  |   |
 | :------------: | :---: |
-|  Precondition  | Utente autenticato|
+|  Precondition  | Utente autenticato come customer|
 | Post condition | Lancio errore "Nessun ordine eseguito"|
 |     Step#      |Description |
 |1| Utente apre la sezione "i miei ordini"|
@@ -886,28 +875,28 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 |3| Il sistema restituisce un messaggio di errore "Impossibile visualizzare ordini, nessun ordine eseguito"|
 
 
-### Use case c, Rimozione carrello
+### Use case 18, Rimozione carrello
 | Actors Involved  |  Customer |
 | :--------------: | :---: |
-|   Precondition   | Customer autenticato |
+|   Precondition   | Utente autenticato come customer |
 |  Post condition  | Il carrello corrente viene eliminato|
 | Nominal Scenario | Utente richiede l'eliminaione del suo carrello corrente e questo viene eliminato dal sistema |
 |     Variants     | - |
 |    Exceptions    | il customer non ha un carrello (ERROR 404) |
 
-##### Scenario c.1
-|  Scenario c.1  |   |
+##### Scenario 18.1
+|  Scenario 18.1  |   |
 | :------------: | :---: |
-|  Precondition  | Customer autenticato|
+|  Precondition  | Utente autenticato come customer|
 | Post condition |Il carrello corrente viene eliminato|
 |     Step#      |Description |
 |1| Customer richiede di eleiminare il carrello corrente|
 |2| EZElectronics elimina il carrello corrente dell'utente|
 
-##### Scenario c.2
-|  Scenario c.2  |   |
+##### Scenario 18.2
+|  Scenario 18.2  |   |
 | :------------: | :---: |
-|  Precondition  | Customer autenticato|
+|  Precondition  | Utente autenticato come customer|
 | Post condition | Lancio errore 404|
 |     Step#      |Description |
 |1| Customer richiede di eleiminare il carrello corrente|
