@@ -936,3 +936,5 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 # Deployment Diagram
 
 \<describe here deployment diagram >
+
+![alt text](resources/Deployment.png)
