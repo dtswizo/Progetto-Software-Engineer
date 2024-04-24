@@ -50,44 +50,44 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario 8.1](#scenario-81)
         - [Scenario 8.2](#scenario-82)
         - [Scenario 8.3](#scenario-83)
-    - [Use case 10, Ricerca prodotti](#use-case-10-ricerca-prodotti)
+    - [Use case 9, Ricerca prodotti](#use-case-9-ricerca-prodotti)
+        - [Scenario 9.1](#scenario-91)
+        - [Scenario 9.2](#scenario-92)
+    - [Use case 10, Filtra prodotti](#use-case-10-filtra-prodotti)
         - [Scenario 10.1](#scenario-101)
         - [Scenario 10.2](#scenario-102)
-    - [Use case 11, Filtra prodotti](#use-case-11-filtra-prodotti)
+    - [Use case 11, Crea e registra nuovo prodotto](#use-case-11-crea-e-registra-nuovo-prodotto)
         - [Scenario 11.1](#scenario-111)
         - [Scenario 11.2](#scenario-112)
-    - [Use case 12, Crea e registra nuovo prodotto](#use-case-12-crea-e-registra-nuovo-prodotto)
+        - [Scenario 11.3](#scenario-113)
+    - [Use case 12, Mostra prodotti](#use-case-12-mostra-prodotti)
         - [Scenario 12.1](#scenario-121)
         - [Scenario 12.2](#scenario-122)
-        - [Scenario 12.3](#scenario-123)
-    - [Use case 13, Mostra prodotti](#use-case-13-mostra-prodotti)
+    - [Use case 13, Registrazione utente](#use-case-13-registrazione-utente)
         - [Scenario 13.1](#scenario-131)
         - [Scenario 13.2](#scenario-132)
-    - [Use case 14, Registrazione utente](#use-case-14-registrazione-utente)
+    - [Use case 14, Login](#use-case-14-login)
         - [Scenario 14.1](#scenario-141)
         - [Scenario 14.2](#scenario-142)
-    - [Use case 15, Login](#use-case-15-login)
+    - [Use case 15, Logout](#use-case-15-logout)
         - [Scenario 15.1](#scenario-151)
-        - [Scenario 15.2](#scenario-152)
-    - [Use case 16, Logout](#use-case-16-logout)
+    - [Use case 16, Eliminazione utente](#use-case-16-eliminazione-utente)
         - [Scenario 16.1](#scenario-161)
-    - [Use case 17, Eliminazione utente](#use-case-17-eliminazione-utente)
+        - [Scenario 16.2](#scenario-162)
+    - [Use case 17, Filtra utenti](#use-case-17-filtra-utenti)
         - [Scenario 17.1](#scenario-171)
         - [Scenario 17.2](#scenario-172)
-    - [Use case 18, Filtra utenti](#use-case-18-filtra-utenti)
+        - [Scenario 17.3](#scenario-173)
+    - [Use case 18, Mostra utenti](#use-case-18-mostra-utenti)
         - [Scenario 18.1](#scenario-181)
-        - [Scenario 18.2](#scenario-182)
-        - [Scenario 18.3](#scenario-183)
-    - [Use case 19, Mostra utenti](#use-case-19-mostra-utenti)
+    - [Use case 19, Mostra informazioni utente corrente](#use-case-19-mostra-informazioni-utente-corrente)
         - [Scenario 19.1](#scenario-191)
-    - [Use case 20, Mostra informazioni utente corrente](#use-case-20-mostra-informazioni-utente-corrente)
+    - [Use case 20, Storico carrelli](#use-case-20-storico-carrelli)
         - [Scenario 20.1](#scenario-201)
-    - [Use case 21, Storico carrelli](#use-case-21-storico-carrelli)
+        - [Scenario 20.2](#scenario-202)
+    - [Use case 21, Rimozione carrello](#use-case-21-rimozione-carrello)
         - [Scenario 21.1](#scenario-211)
         - [Scenario 21.2](#scenario-212)
-    - [Use case 22, Rimozione carrello](#use-case-22-rimozione-carrello)
-        - [Scenario 22.1](#scenario-221)
-        - [Scenario 22.2](#scenario-222)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -517,7 +517,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |       1        |  Store manager chiede di segnare un prodotto come venduto |
 |      2       |  Sistema mostra errore (data di vendita antecedente quella di arrivo, data di vendita dopo quella corrente, il prodotto è gia stato venduto) |
 
-### Use case 10, Ricerca prodotti
+### Use case 9, Ricerca prodotti
 
 | Actors Involved  |  Utente |
 | :--------------: | :------------------------------------------------------------------: |
@@ -527,9 +527,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | - |
 |    Exceptions    | Errore prodotto non trovato (error 404)|
 
-##### Scenario 10.1
+##### Scenario 9.1
 
-|  Scenario 10.1  |                                                                            |
+|  Scenario 9.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | utente loggato|
 | Post condition |  Prodotto ricercato mostrato |
@@ -537,8 +537,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |       2        |  utente inserisce il codice prodotto nella barra di ricerca |
 |      3       |  Sistema mostra prodotto ricercato |
 
-##### Scenario 10.2
-|  Scenario 10.2  |                                                                            |
+##### Scenario 9.2
+|  Scenario 9.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | utente loggato|
 | Post condition |  Errore prodotto ricercato non trovato |
@@ -546,7 +546,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |       2        |  utente inserisce il codice prodotto nella barra di ricerca |
 |      3       |  Sistema mostra messaggio di errore 404 |
 
-### Use case 11, Filtra prodotti
+### Use case 10, Filtra prodotti
 
 | Actors Involved  |  utente|
 | :--------------: | :------------------------------------------------------------------: |
@@ -556,18 +556,18 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | utente applica ulteriore filtro per prodotti venduti/non venduti    |
 |    Exceptions    | - |
 
-##### Scenario 11.1
+##### Scenario 10.1
 
-|  Scenario 11.1  |                                                                            |
+|  Scenario 10.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | utente loggato|
 | Post condition |  Visualizzazione lista prodotti filtrata |
 |       1        |  utente seleziona filtro (categoria o modello) |
 |      2       |  Sistema mostra lista prodotti filtrata secondo il filtro selezionato |
 
-##### Scenario 11.2
+##### Scenario 10.2
 
-|  Scenario 11.2  |                                                                            |
+|  Scenario 10.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | utente loggato|
 | Post condition |  Visualizzazione lista prodotti filtrata |
@@ -577,7 +577,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | 4 | sistema mostra lissta prodotti ulteriormente filtrati|
 
 
-### Use case 12, Crea e registra nuovo prodotto
+### Use case 11, Crea e registra nuovo prodotto
 | Actors Involved  | store manager  |
 | :--------------: | :---: |
 |   Precondition   | utente loggato come manager|
@@ -586,8 +586,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | - |
 |    Exceptions    | Inserimento prodotto duplicato (409), inserimento data di arrivo dopo quella corrente |
 
-##### Scenario 12.1
-|  Scenario 12.1  |   |
+##### Scenario 11.1
+|  Scenario 11.1  |   |
 | :------------: | :---: |
 |  Precondition  | utente loggato come manager|
 | Post condition | nuovo prodotto aggiunto|
@@ -597,8 +597,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |3| Manager compila il form e invia i dati|
 |4| EZElectronics valida i dati e inserisce nuovo prodotto|
 
-##### Scenario 12.2
-|  Scenario 12.2  |   |
+##### Scenario 11.2
+|  Scenario 11.2  |   |
 | :------------: | :---: |
 |  Precondition  | utente loggato come manager|
 | Post condition | visualizzazione errore da parte del sisstema|
@@ -608,8 +608,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |3| Manager compila il form e invia i dati|
 |4| EZElectronics verifica i dati e torna errore 409 (prodotto gia esistente)|
 
-##### Scenario 12.3
-|  Scenario 12.3  |   |
+##### Scenario 11.3
+|  Scenario 11.3  |   |
 | :------------: | :---: |
 |  Precondition  | utente loggato come manager|
 | Post condition | visualizzazione errore da parte del sisstema|
@@ -619,7 +619,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |3| Manager compila il form e invia i dati|
 |4| EZElectronics verifica i dati e torna errore (data di arrivo dopo la data odierna)|
 
-### Use case 13, Mostra prodotti
+### Use case 12, Mostra prodotti
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | utente loggato|
@@ -628,8 +628,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | utente richiede di visualizzare prodotti per venduto/non venduto |
 |    Exceptions    | - |
 
-##### Scenario 13.1
-|  Scenario 13.1  |   |
+##### Scenario 12.1
+|  Scenario 12.1  |   |
 | :------------: | :---: |
 |  Precondition  | utente loggato|
 | Post condition | prodotti visualizzati|
@@ -637,8 +637,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |1| utente chiede di visualizzare tutti i prodotti |
 |2| EZElectronics mostra i prodotti|
 
-##### Scenario 13.2
-|  Scenario 13.2  |   |
+##### Scenario 12.2
+|  Scenario 12.2  |   |
 | :------------: | :---: |
 |  Precondition  | utente loggato|
 | Post condition | prodotti filtrati e visualizzati|
@@ -647,7 +647,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| EZElectronics mostra i prodotti filtrati richiesti|
 
 
-### Use case 14, Registrazione utente
+### Use case 13, Registrazione utente
 | Actors Involved  |  Utente |
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
@@ -656,8 +656,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | - |
 |    Exceptions    | l'utente inserisce uno username duplicato(ERROR 409) |
 
-##### Scenario 14.1
-|  Scenario 14.1  |   |
+##### Scenario 13.1
+|  Scenario 13.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente non registrato|
 | Post condition | Utente registrato|
@@ -667,8 +667,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |3| Utente inserisce dati personali|
 |4| Sistema valida, salva i dati e crea nuovo account| 
 
-##### Scenario 14.2
-|  Scenario 14.2  |   |
+##### Scenario 13.2
+|  Scenario 13.2  |   |
 | :------------: | :---: |
 |  Precondition  | Utente non registrato|
 | Post condition | Sistema mostra errore|
@@ -679,7 +679,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |4| Sistema individua username duplicato e torna errore 409|
 
 
-### Use case 15, Login
+### Use case 14, Login
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | Utente non loggato |
@@ -688,8 +688,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | - |
 |    Exceptions    | l'utente inserisce dei dati non validi|
 
-##### Scenario 15.1
-|  Scenario 15.1  |   |
+##### Scenario 14.1
+|  Scenario 14.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente non loggato|
 | Post condition | Utente loggato|
@@ -701,8 +701,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |5| Utente inserisce dati di accesso|
 |6| Sistema valida i dati e avvia sessione|
 
-##### Scenario 15.2
-|  Scenario 15.2  |   |
+##### Scenario 14.2
+|  Scenario 14.2  |   |
 | :------------: | :---: |
 |  Precondition  | Utente non loggato|
 | Post condition | - |
@@ -714,7 +714,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |5| Utente inserisce dati di accesso|
 |6| Sistema rileva errore nei dati e torna errore|
 
-### Use case 16, Logout
+### Use case 15, Logout
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | Utente loggato |
@@ -723,8 +723,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | - |
 |    Exceptions    | -|
 
-##### Scenario 16.1
-|  Scenario 16.1  |   |
+##### Scenario 15.1
+|  Scenario 15.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente loggato|
 | Post condition | Utente non loggato|
@@ -732,7 +732,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |1| Utente chiede di effettuare logout |
 |2| EZElectronics termina la sessione dell'account|
 
-### Use case 17, Eliminazione utente
+### Use case 16, Eliminazione utente
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | - |
@@ -741,8 +741,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | -|
 |    Exceptions    | tentativo di eliminare un utente non esistente (ERROR 404)|
 
-##### Scenario 17.1
-|  Scenario 17.1  |   |
+##### Scenario 16.1
+|  Scenario 16.1  |   |
 | :------------: | :---: |
 |  Precondition  | -|
 | Post condition | utente desiderato eliminato|
@@ -750,8 +750,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |1| Utente chiede di eliminare uno specifico utente |
 |2| EZElectronics elimina utente e relativi dati|
 
-##### Scenario 17.2
-|  Scenario 17.2  |   |
+##### Scenario 16.2
+|  Scenario 16.2  |   |
 | :------------: | :---: |
 |  Precondition  | --|
 | Post condition |Sistema visualizza errore|
@@ -759,7 +759,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |1| Utente chiede di eliminare l'account |
 |2| EZElectronics torna errore perchè l'account selezionato non esiste|
 
-### Use case 18, Filtra utenti
+### Use case 17, Filtra utenti
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | - |
@@ -768,8 +768,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | Utente filtra utenti per ruolo |
 |    Exceptions    | Username cercato non esiste( ERROR 404)|
 
-##### Scenario 18.1
-|  Scenario 18.1  |   |
+##### Scenario 17.1
+|  Scenario 17.1  |   |
 | :------------: | :---: |
 |  Precondition  | -|
 | Post condition | Visulalizzazione utenti filtrati|
@@ -781,8 +781,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |5| Utente inserisce username|
 |6| EZElectronics visualizza utente cercato|
 
-##### Scenario 18.2
-|  Scenario 18.2  |   |
+##### Scenario 17.2
+|  Scenario 17.2  |   |
 | :------------: | :---: |
 |  Precondition  | -|
 | Post condition | Sistema visulalizza errore 404|
@@ -794,8 +794,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |5| Utente inserisce username|
 |6| EZElectronics torna errore visto che lo username cercato non esiste|
 
-##### Scenario 18.3
-|  Scenario 18.3  |   |
+##### Scenario 17.3
+|  Scenario 17.3  |   |
 | :------------: | :---: |
 |  Precondition  | -|
 | Post condition | Visulalizzazione utenti filtrati|
@@ -808,7 +808,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |6| EZElectronics visualizza utenti filtrati|
 
 
-### Use case 19, Mostra utenti
+### Use case 18, Mostra utenti
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   |-|
@@ -817,8 +817,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | - |
 |    Exceptions    | -|
 
-##### Scenario 19.1
-|  Scenario 19.1  |   |
+##### Scenario 18.1
+|  Scenario 18.1  |   |
 | :------------: | :---: |
 |  Precondition  | -|
 | Post condition |Sistema mostra utenti|
@@ -827,7 +827,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| EZElectronics mostra utenti|
 
 
-### Use case 20, Mostra informazioni utente corrente
+### Use case 19, Mostra informazioni utente corrente
 | Actors Involved  | Utente  |
 | :--------------: | :---: |
 |   Precondition   | utente loggato|
@@ -836,8 +836,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | - |
 |    Exceptions    | -|
 
-##### Scenario 20.1
-|  Scenario 20.1  |   |
+##### Scenario 19.1
+|  Scenario 19.1  |   |
 | :------------: | :---: |
 |  Precondition  | utente loggato|
 | Post condition |informazioni visualizzate|
@@ -846,7 +846,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| EZElectronics mostra le informazioni relative all'utente|
 
 
-### Use case 21, Storico carrelli
+### Use case 20, Storico carrelli
 | Actors Involved  |  Customer |
 | :--------------: | :---: |
 |   Precondition   | Utente autenticato come customer |
@@ -856,8 +856,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | - |
 |    Exceptions    | carrelli non trovati |
 
-##### Scenario 21.1
-|  Scenario 21.1  |   |
+##### Scenario 20.1
+|  Scenario 20.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente autenticato come customer|
 | Post condition | Utente visualizza lista carrelli|
@@ -866,8 +866,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| Il sistema cerca i carrelli associati all'utente|
 |3| La lista dei carrelli effettuati viene restituita all'utente|
 
-##### Scenario 21.2
-|  Scenario 21.2  |   |
+##### Scenario 20.2
+|  Scenario 20.2  |   |
 | :------------: | :---: |
 |  Precondition  | Utente autenticato come customer|
 | Post condition | Lancio errore "Nessun ordine eseguito"|
@@ -877,7 +877,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |3| Il sistema restituisce un messaggio di errore "Impossibile visualizzare ordini, nessun ordine eseguito"|
 
 
-### Use case 22, Rimozione carrello
+### Use case 21, Rimozione carrello
 | Actors Involved  |  Customer |
 | :--------------: | :---: |
 |   Precondition   | Utente autenticato come customer |
@@ -886,8 +886,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Variants     | - |
 |    Exceptions    | il customer non ha un carrello (ERROR 404) |
 
-##### Scenario 22.1
-|  Scenario 22.1  |   |
+##### Scenario 21.1
+|  Scenario 21.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente autenticato come customer|
 | Post condition |Il carrello corrente viene eliminato|
@@ -895,8 +895,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |1| Customer richiede di eleiminare il carrello corrente|
 |2| EZElectronics elimina il carrello corrente dell'utente|
 
-##### Scenario 22.2
-|  Scenario 22.2  |   |
+##### Scenario 21.2
+|  Scenario 21.2  |   |
 | :------------: | :---: |
 |  Precondition  | Utente autenticato come customer|
 | Post condition | Lancio errore 404|
