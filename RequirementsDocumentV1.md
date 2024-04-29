@@ -862,7 +862,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Precondition  | Utente autenticato come customer|
 | Post condition | Utente visualizza lista carrelli|
 |     Step#      |Description |
-|1| Utente apre la sezione "i miei ordini"|
+|1| Utente apre la sezione "storico carrelli"|
 |2| Il sistema cerca i carrelli associati all'utente|
 |3| La lista dei carrelli effettuati viene restituita all'utente|
 
@@ -872,7 +872,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Precondition  | Utente autenticato come customer|
 | Post condition | Lancio errore "Nessun ordine eseguito"|
 |     Step#      |Description |
-|1| Utente apre la sezione "i miei ordini"|
+|1| Utente apre la sezione "storico carrelli"|
 |2| Il sistema cerca i carrelli associati all'utente|
 |3| Il sistema restituisce un messaggio di errore "Impossibile visualizzare ordini, nessun ordine eseguito"|
 
