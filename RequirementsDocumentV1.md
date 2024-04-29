@@ -496,7 +496,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
 | Post condition |  Vendita prodotto confermata |
-|       1        |  Store manager chiede di segnare un prodotto come venduto |
+|       1        |  Store manager chiede di segnare un prodotto come venduto (opzionalmente specificando data di vendita) |
 |      2       |  Sistema aggiorna lo stato del prodotto |
 
 ##### Scenario 8.2
@@ -505,7 +505,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
 | Post condition |  sistema mostra errore (404) |
-|       1        |  Store manager chiede di segnare un prodotto come venduto |
+|       1        |  Store manager chiede di segnare un prodotto come venduto (opzionalmente specificando data di vendita) |
 |      2       |  Sistema mostra errore(404) |
 
 ##### Scenario 8.3
@@ -514,7 +514,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Store manager loggato|
 | Post condition |  sistema mostra errore |
-|       1        |  Store manager chiede di segnare un prodotto come venduto |
+|       1        |  Store manager chiede di segnare un prodotto come venduto (opzionalmente specificando data di vendita) |
 |      2       |  Sistema mostra errore (data di vendita antecedente quella di arrivo, data di vendita dopo quella corrente, il prodotto è gia stato venduto) |
 
 ### Use case 9, Ricerca prodotti
