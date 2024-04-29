@@ -210,9 +210,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ### Use case 1, Aggiunta prodotto carrello
 
-| Actors Involved  |        Cliente                                                             |
+| Actors Involved  |        Customer                                                             |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente loggato come cliente |
+|   Precondition   | Utente loggato come Customer |
 |  Post condition  | prodotto aggiunto al carrello |
 | Nominal Scenario |        utente aggiunge un elemento al carrello         |
 |     Variants     |    -           |
@@ -230,7 +230,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 1.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Utente autenticato come cliente |
+|  Precondition  | Utente autenticato come Customer |
 | Post condition |  Aggiunta elemento al carrello|
 |     Step#      |                                Description                                 |
 |       1        |      Il sito mostra la lista dei prodotti                                                                   |
@@ -242,7 +242,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 1.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Utente autenticato come cliente |
+|  Precondition  | Utente autenticato come Customer |
 | Post condition |  Lancio errore 404|
 |     Step#      |                                Description                                 |
 |       1      |      Il sito mostra la lista dei prodotti                                                                   |
@@ -254,7 +254,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 1.3  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Utente autenticato come cliente |
+|  Precondition  | Utente autenticato come Customer |
 | Post condition |  Lancio errore 409 |
 |     Step#      |                                Description                                 |
 |       1        |      Il sito mostra la lista dei prodotti                                                                   |
@@ -263,9 +263,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ### Use case 2, Rimozione prodotto Carrello
 
-| Actors Involved  |         Utente                                                             |
+| Actors Involved  |         Customer                                                             |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente loggato come cliente, carrello con un elemento |
+|   Precondition   | Utente loggato come Customer, carrello con un elemento |
 |  Post condition  |  Elemento rimosso dal carrello |
 | Nominal Scenario |         Rimozione di un elemento dal carrello         |
 |     Variants     |     -        |
@@ -275,7 +275,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 2.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Carrello con almeno un elemento, Utente autenticato come cliente |
+|  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer |
 | Post condition |  Rimozione elemento dal carrello|
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
@@ -287,7 +287,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 2.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Utente autenticato come cliente |
+|  Precondition  | Utente autenticato come Customer |
 | Post condition |  Lancio Errore 404 |
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
@@ -299,7 +299,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 2.3  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Carrello con almeno un elemento, Utente autenticato come cliente |
+|  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer |
 | Post condition |  Lancio Errore 409|
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
@@ -309,9 +309,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ### Use case 3, Eliminazione Carrello
 
-| Actors Involved  |         Utente                                                             |
+| Actors Involved  |         Customer                                                             |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente autenticato come cliente   |
+|   Precondition   | Utente autenticato come Customer   |
 |  Post condition  |  Carrello eliminato|
 | Nominal Scenario | Utente richiede di eliminare il carello corrente         |
 |     Variants     |        -|
@@ -322,7 +322,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 3.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Utente possiede un carrello, Utente autenticato come cliente|
+|  Precondition  | Utente possiede un carrello, Utente autenticato come Customer|
 | Post condition |  Carrello eliminato |
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
@@ -334,7 +334,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 3.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Utente autenticato come cliente|
+|  Precondition  | Utente autenticato come Customer|
 | Post condition | Errore 404 |
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
@@ -344,11 +344,11 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 4, Checkout Carrello
-| Actors Involved  |         Cliente                                                             |
+| Actors Involved  |         Customer                                                             |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente autenticato come Cliente|
+|   Precondition   | Utente autenticato come Customer|
 |  Post condition  |  Checkout effettuato   |
-| Nominal Scenario | Cliente fa il checkout del carrello         |
+| Nominal Scenario | Utente fa il checkout del carrello         |
 |     Variants     |   -   |
 |    Exceptions    |   Il carrello non esiste(Error 404), carrello vuoto (ERROR 404)                      |
 
@@ -356,7 +356,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 4.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Carrello con almeno un elemento, Utente autenticato come cliente|
+|  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
 | Post condition |  Checkout effettuato con successo|
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
@@ -368,7 +368,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 4.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Carrello vuoto, Utente autenticato come cliente|
+|  Precondition  | Carrello vuoto, Utente autenticato come Customer|
 | Post condition |  Checkout non riuscito|
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
@@ -380,7 +380,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 4.3  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Carrello con almeno un elemento, Utente autenticato come cliente|
+|  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
 | Post condition |  Checkout effettuato con successo|
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
@@ -573,8 +573,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | Post condition |  Visualizzazione lista prodotti filtrata |
 |       1        |  utente seleziona filtro (categoria o modello) |
 |      2       |  Sistema mostra lista prodotti filtrata secondo il filtro selezionato |
-| 3 | utente seleziona filtro venduto/venduto|
-| 4 | sistema mostra lissta prodotti ulteriormente filtrati|
+| 3 | utente seleziona filtro venduto/ non venduto|
+| 4 | sistema mostra lista prodotti ulteriormente filtrati|
 
 
 ### Use case 11, Crea e registra nuovo prodotto
@@ -601,7 +601,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Scenario 11.2  |   |
 | :------------: | :---: |
 |  Precondition  | utente loggato come manager|
-| Post condition | visualizzazione errore da parte del sisstema|
+| Post condition | visualizzazione errore da parte del sistema|
 |     Step#      |Description |
 |1| Manager chiede di aggiungere nuovo prodotto |
 |2| EZElectronics mostra form per inserimento informazioni|
@@ -612,7 +612,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Scenario 11.3  |   |
 | :------------: | :---: |
 |  Precondition  | utente loggato come manager|
-| Post condition | visualizzazione errore da parte del sisstema|
+| Post condition | visualizzazione errore da parte del sistema|
 |     Step#      |Description |
 |1| Manager chiede di aggiungere nuovo prodotto |
 |2| EZElectronics mostra form per inserimento informazioni|
@@ -850,7 +850,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | Actors Involved  |  Customer |
 | :--------------: | :---: |
 |   Precondition   | Utente autenticato come customer |
-|  Post condition  | Utente storico carrelli visualizzato|
+|  Post condition  | Storico carrelli utente visualizzato|
 | Nominal Scenario | L'utente visualizza il proprio storico carrelli
  |
 |     Variants     | - |
