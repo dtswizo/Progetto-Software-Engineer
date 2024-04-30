@@ -109,17 +109,12 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 ## Context Diagram
 
-\<Define here Context diagram using UML use case diagram>
 
 ![alt text](resources/Contex_Diagram.png)
 
-\<actors are a subset of stakeholders>
 
 ## Interfaces
 
-\<describe here each interface in the context diagram>
-
-\<GUIs will be described graphically in a separate document>
 
 |   Actor   | Logical Interface | Physical Interface |
 | :-------: | :---------------: | :----------------: |
@@ -133,17 +128,11 @@ Marco è un ragazzo di 25 anni che vuole comprare componenti per assemblare un p
 
 Emma è una donna 30 anni che lavora come manager per lo store online di EZElectronics. Nella sua giornata gestisce il sito, ad esempio aggiungendo i prodotti non appena arrivano e confermare le vendite.
 
-\<Persona is-an-instance-of actor>
-
-\<stories will be formalized later as scenarios in use cases>
 
 # Functional and non functional requirements
 
 ## Functional Requirements
 
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
-
-\<they match to high level use cases>
 
 |  ID   | Description |
 | :---: | :---------: |
@@ -181,7 +170,6 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 ## Non Functional Requirements
 
-\<Describe constraints on functional requirements>
 
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
@@ -201,11 +189,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ## Use case diagram
 
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
-
 ![alt text](resources/UseCase_Diagram.png)
 
-\<next describe here each use case in the UCD>
 
 
 ### Use case 1, Aggiunta prodotto carrello
@@ -214,19 +199,13 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente loggato come Customer |
 |  Post condition  | prodotto aggiunto al carrello |
-| Nominal Scenario |        utente aggiunge un elemento al carrello         |
+| Nominal Scenario |        Scenario 1.1         |
 |     Variants     |    -           |
-|    Exceptions    | il prodotto non esiste (Error 404),il prodotto non è disponibile (venduto o in un altro carrello) (Error 409)                       |
+|    Exceptions    | Scenario 1.2, Scenario 1.3                       |
 
 ##### Scenario 1.1
 
-\<describe here scenarios instances of UC1>
 
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
-
-\<a scenario is a more formal description of a story>
-
-\<only relevant scenarios should be described>
 
 |  Scenario 1.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
@@ -267,9 +246,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente loggato come Customer, carrello con un elemento |
 |  Post condition  |  Elemento rimosso dal carrello |
-| Nominal Scenario |         Rimozione di un elemento dal carrello         |
+| Nominal Scenario |         Scenario 2.1         |
 |     Variants     |     -        |
-|    Exceptions    |    codice prodotto non presente nel carrello (ERROr 404), carrello non esistente (ERROR 404), codice prodotto insesistente (ERROR 409), codice prodotto di un prodotto già venduto (ERROR 409)                       |
+|    Exceptions    |    Scenario 2.2, Scenario 2.3                       |
 
 ##### Scenario 2.1
 
@@ -313,9 +292,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Customer   |
 |  Post condition  |  Carrello eliminato|
-| Nominal Scenario | Utente richiede di eliminare il carello corrente         |
+| Nominal Scenario | Scenario 3.1         |
 |     Variants     |        -|
-|    Exceptions    |                  Carrello non esistente (Error 404)|
+|    Exceptions    |                  Scenario 3.2|
 
 
 ##### Scenario 3.1
@@ -348,9 +327,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Customer|
 |  Post condition  |  Checkout effettuato   |
-| Nominal Scenario | Utente fa il checkout del carrello         |
+| Nominal Scenario | Scenario 4.1         |
 |     Variants     |   -   |
-|    Exceptions    |   Il carrello non esiste(Error 404), carrello vuoto (ERROR 404)                      |
+|    Exceptions    |   Scenario 4.2, Scenario 4.3                     |
 
 ##### Scenario 4.1
 
@@ -386,15 +365,15 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |       1        |      L'utente   apre il carrello                                                           |
 |       2        |      Il sistema mostra il carrello                                         |
 |       3        |        L'utente richiede checkout del carrello                                                               |
-|      4       |  Il sistema lancia l'errore 404 (carrello insesistente)                                       |
+|      4       |  Il sistema lancia l'errore 404 (carrello inesistente)                                       |
 
 ### Use case 5, Mostra carrello
 
 | Actors Involved  |         Customer                                                            |
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente loggato come customer|
-|  Post condition  | carrello dal sistema |
-| Nominal Scenario | Sitstema mostra carrello dell'utente corrente          |
+|  Post condition  | Carrello mostrato dal sistema |
+| Nominal Scenario | Scenario 5.1         |
 |     Variants     |        -          |
 |    Exceptions    |               |
 
@@ -415,9 +394,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Store Manager |
 |  Post condition  | Prodotti registrati all'interno del sistema |
-| Nominal Scenario |Store manager registra più prodotti dello stesso modello       |
+| Nominal Scenario |Scenario 6.1       |
 |     Variants     | - |
-|    Exceptions    | inserimento data di arrivo dopo quella corrente |
+|    Exceptions    | Scenario 6.2 |
 
 
 ##### Scenario 6.1
@@ -450,9 +429,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Store Manager |
 |  Post condition  | Prodotto eliminato dal sistema |
-| Nominal Scenario | Store manager elimina prodotto dal sistema        |
+| Nominal Scenario | Scenario 7.1        |
 |     Variants     | -  |
-|    Exceptions    | Codice prodtto da eliminare non esistente (ERROR 404) |
+|    Exceptions    | Scenario 7.2 |
 
 
 ##### Scenario 7.1
@@ -486,9 +465,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Store Manager |
 |  Post condition  | Prodotto segnato come venduto |
-| Nominal Scenario | Store manager conferma vendita prodotto     |
+| Nominal Scenario | Scenario 8.1     |
 |     Variants     | -   |
-|    Exceptions    | il codice prodotto non esiste (ERROR 404), data di vendita dopo data corrente, data di vendita antecedente alla data di arrivo, il prodotto è gia stato venduto|
+|    Exceptions    | Scenario 8.2, Scenario 8.3|
 
 ##### Scenario 8.1
 
@@ -523,9 +502,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato |
 |  Post condition  | Prodotto mostrato dal sistema |
-| Nominal Scenario | utente ricerca prodotto per codice         |
+| Nominal Scenario | Scenario 9.1         |
 |     Variants     | - |
-|    Exceptions    | Errore prodotto non trovato (error 404)|
+|    Exceptions    | Scenario 9.2|
 
 ##### Scenario 9.1
 
@@ -552,8 +531,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato |
 |  Post condition  | Visualizzazione prodotti filtrati |
-| Nominal Scenario | Utente filtra, per categoria o modello, lista di prodotti       |
-|     Variants     | utente applica ulteriore filtro per prodotti venduti/non venduti    |
+| Nominal Scenario | Scenario 10.1       |
+|     Variants     | Scenario 10.2    |
 |    Exceptions    | - |
 
 ##### Scenario 10.1
@@ -582,9 +561,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :---: |
 |   Precondition   | utente loggato come manager|
 |  Post condition  | nuovo prodotto aggiunto |
-| Nominal Scenario | Manager richiede di aggiungere prodotto ed EZElectronics lo aggiunge|
+| Nominal Scenario | Scenario 11.1|
 |     Variants     | - |
-|    Exceptions    | Inserimento prodotto duplicato (409), inserimento data di arrivo dopo quella corrente |
+|    Exceptions    | Scenario 11.2, Scenario 11.3 |
 
 ##### Scenario 11.1
 |  Scenario 11.1  |   |
@@ -624,8 +603,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :---: |
 |   Precondition   | utente loggato|
 |  Post condition  | visualizzazione prodotti |
-| Nominal Scenario | utente richiede di visualizzare tutti i prodotti e EZElectronics li mostra |
-|     Variants     | utente richiede di visualizzare prodotti per venduto/non venduto |
+| Nominal Scenario | Scenario 12.1|
+|     Variants     | Scenario 12.2 |
 |    Exceptions    | - |
 
 ##### Scenario 12.1
@@ -652,9 +631,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
 |  Post condition  | Utente Registrato |
-| Nominal Scenario | Utente visita EZElectronics e si registra inserendo i dati personali|
+| Nominal Scenario | Scenario 13.1|
 |     Variants     | - |
-|    Exceptions    | l'utente inserisce uno username duplicato(ERROR 409) |
+|    Exceptions    | Scenario 13.2 |
 
 ##### Scenario 13.1
 |  Scenario 13.1  |   |
@@ -684,9 +663,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :---: |
 |   Precondition   | Utente non loggato |
 |  Post condition  | Utente loggato |
-| Nominal Scenario | Utente visita EZElectronics e accede al proprio account|
+| Nominal Scenario | Scenario 14.1|
 |     Variants     | - |
-|    Exceptions    | l'utente inserisce dei dati non validi|
+|    Exceptions    | Scenario 14.2|
 
 ##### Scenario 14.1
 |  Scenario 14.1  |   |
@@ -719,7 +698,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :---: |
 |   Precondition   | Utente loggato |
 |  Post condition  | Utente non loggato |
-| Nominal Scenario | Utente si disconnette dal proprio account EZElectronics|
+| Nominal Scenario | Scenario 15.1|
 |     Variants     | - |
 |    Exceptions    | -|
 
@@ -737,9 +716,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :---: |
 |   Precondition   | - |
 |  Post condition  | utente desiderato eliminato |
-| Nominal Scenario | Utente elimina un utente EZElectronics|
+| Nominal Scenario | Scenario 16.1 |
 |     Variants     | -|
-|    Exceptions    | tentativo di eliminare un utente non esistente (ERROR 404)|
+|    Exceptions    | Scenario 16.2 |
 
 ##### Scenario 16.1
 |  Scenario 16.1  |   |
@@ -764,9 +743,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :---: |
 |   Precondition   | - |
 |  Post condition  | Visulalizzazione utenti filtrati|
-| Nominal Scenario | Utente filtra utenti per username|
-|     Variants     | Utente filtra utenti per ruolo |
-|    Exceptions    | Username cercato non esiste( ERROR 404)|
+| Nominal Scenario | Scenario 17.1 |
+|     Variants     | Scenario 17.3 |
+|    Exceptions    | Scenario 17.2 |
 
 ##### Scenario 17.1
 |  Scenario 17.1  |   |
@@ -813,7 +792,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :---: |
 |   Precondition   |-|
 |  Post condition  | Sistema mostra utenti |
-| Nominal Scenario | Dopo richiesta da parte dell'utente EZElectronics mostra lista degli utenti|
+| Nominal Scenario | Scenario 18.1|
 |     Variants     | - |
 |    Exceptions    | -|
 
@@ -832,7 +811,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :---: |
 |   Precondition   | utente loggato|
 |  Post condition  | informazioni visualizzate |
-| Nominal Scenario | Dopo richiesta da parte dell'utente EZElectronics mostra informazione relative all'utente|
+| Nominal Scenario | Scenario 19.1|
 |     Variants     | - |
 |    Exceptions    | -|
 
@@ -851,10 +830,10 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :---: |
 |   Precondition   | Utente autenticato come customer |
 |  Post condition  | Storico carrelli utente visualizzato|
-| Nominal Scenario | L'utente visualizza il proprio storico carrelli
+| Nominal Scenario |Scenario 20.1
  |
 |     Variants     | - |
-|    Exceptions    | carrelli non trovati |
+|    Exceptions    | Scenario 20.2 |
 
 ##### Scenario 20.1
 |  Scenario 20.1  |   |
@@ -882,9 +861,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :---: |
 |   Precondition   | Utente autenticato come customer |
 |  Post condition  | Il carrello corrente viene eliminato|
-| Nominal Scenario | Utente richiede l'eliminaione del suo carrello corrente e questo viene eliminato dal sistema |
+| Nominal Scenario | Scenario 21.1 |
 |     Variants     | - |
-|    Exceptions    | il customer non ha un carrello (ERROR 404) |
+|    Exceptions    | Scenario 21.2 |
 
 ##### Scenario 21.1
 |  Scenario 21.1  |   |
@@ -924,20 +903,17 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 # Glossary
 
-\<use UML class diagram to define important terms, or concepts in the domain of the application, and their relationships>
+
 ![alt text](resources/Glossary.png)
 
-\<concepts must be used consistently all over the document, ex in use cases, requirements etc>
+
 
 # System Design
 
-\<describe here system design>
 ![alt text](resources/SystemDesign.png)
 
-\<must be consistent with Context diagram>
 
 # Deployment Diagram
 
-\<describe here deployment diagram >
 
 ![alt text](resources/Deployment.png)

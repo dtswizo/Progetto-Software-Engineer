@@ -10,12 +10,12 @@ Consider the EZElectronics  project in CURRENT version (as given by the teachers
 ### 
 |             | Estimate                        |             
 | ----------- | ------------------------------- |  
-| NC =  Estimated number of classes to be developed   |                             |             
-|  A = Estimated average size per class, in LOC       |                            | 
-| S = Estimated size of project, in LOC (= NC * A) | |
-| E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)  |                                      |   
-| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | | 
-| Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) |                    |               
+| NC =  Estimated number of classes to be developed   |               21              |             
+|  A = Estimated average size per class, in LOC       |               250             | 
+| S = Estimated size of project, in LOC (= NC * A) | 5250 |
+| E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)  |               525                       |   
+| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | 15750 | 
+| Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) |        Circa 3 calendar weeks            |               
 
 # Estimate by product decomposition
 ### 
