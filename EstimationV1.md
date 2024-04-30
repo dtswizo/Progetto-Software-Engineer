@@ -21,13 +21,13 @@ Consider the EZElectronics  project in CURRENT version (as given by the teachers
 ### 
 |         component name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- | 
-|requirement document    | |
-| GUI prototype ||
-|design document ||
-|code ||
-| unit tests ||
-| api tests ||
-| management documents  ||
+|requirement document    | 80 ore |
+| GUI prototype | 20 ore|
+|design document | 40 ore ? |
+|code | 150 ore |
+| unit tests | 40 ore|
+| api tests | 30 ore |
+| management documents  | 40 ore ? |
 
 
 
@@ -35,9 +35,15 @@ Consider the EZElectronics  project in CURRENT version (as given by the teachers
 ### 
 |         Activity name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- | 
-| | |
+| Requirement document | 100 ore |
+| GUI Prototype | 20 ore |
+| Design Document | 60 ore? |
+| Code | 160 ore |
+| Unit Tests | 60 ore |
+| Api Tests | 60 ore |
+| Management Documents | 40 ore ?|
 ###
-Insert here Gantt chart with above activities
+![alt text](resources/Gantt.png)
 
 # Summary
 
@@ -45,9 +51,9 @@ Report here the results of the three estimation approaches. The  estimates may d
 
 |             | Estimated effort                        |   Estimated duration |          
 | ----------- | ------------------------------- | ---------------|
-| estimate by size ||
-| estimate by product decomposition ||
-| estimate by activity decomposition ||
+| estimate by size |525 ore | 15-16 giorni lavorativi
+| estimate by product decomposition |400 ore | 10 giorni lavorativi
+| estimate by activity decomposition |480 ore| 14 giorni lavorativi?
 
 
 
