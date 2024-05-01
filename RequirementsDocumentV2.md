@@ -133,6 +133,7 @@ Marco è un ragazzo di 25 anni che vuole comprare componenti per assemblare un p
 
 Emma è una donna 30 anni che lavora come manager per lo store online di EZElectronics. Nella sua giornata gestisce il sito, ad esempio aggiungendo i prodotti non appena arrivano e confermare le vendite.
 
+Luca è un ragazzo di 23 anni parte integrante del team dello store online EZElectronics. Il suo ruolo consiste nell'amministrare gli account degli utenti (creazione, cambio di ruolo, eliminazione).
 \<Persona is-an-instance-of actor>
 
 \<stories will be formalized later as scenarios in use cases>
@@ -942,4 +943,4 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 \<describe here deployment diagram >
 
-![alt text](resources/Deployment.png)
+![alt text](resources/DeploymentV2.png)
