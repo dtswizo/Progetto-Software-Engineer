@@ -10,7 +10,7 @@ Consider the EZElectronics  project in CURRENT version (as given by the teachers
 ### 
 |             | Estimate                        |             
 | ----------- | ------------------------------- |  
-| NC =  Estimated number of classes to be developed   |               21              |             
+| NC =  Estimated number of classes to be developed   |               21 ???????              |             
 |  A = Estimated average size per class, in LOC       |               250             | 
 | S = Estimated size of project, in LOC (= NC * A) | 5250 |
 | E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)  |               525                       |   
