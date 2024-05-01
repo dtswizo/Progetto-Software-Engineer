@@ -109,7 +109,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 \<Define here Context diagram using UML use case diagram>
 
-![alt text](resources/Contex_Diagram.png)
+![alt text](resources/ContextDiagramV2.png)
 
 \<actors are a subset of stakeholders>
 
@@ -123,8 +123,9 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | :-------: | :---------------: | :----------------: |
 | Customer  |      GUI          |     PC /  Smartphone|
 | Store Manager | GUI | PC / Smartphone|
-| Payment Service | https://developer.paypal.com/docs/payouts/standard/integrate-api/ | Internet |
 |Admin    | GUI                 | PC / smartphone|
+| Payment Service | https://developer.paypal.com/docs/payouts/standard/integrate-api/ | Internet |
+| Transport Service | https://www.sda.it/wps/portal/sdait.home/Soluzioni_digitali/Integrazioni_di_sistema/WEBSERVICES?locale=it | Internet |
 
 # Stories and personas
 
