@@ -928,7 +928,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 # Glossary
 
 \<use UML class diagram to define important terms, or concepts in the domain of the application, and their relationships>
-![alt text](resources/Glossary.png)
+![alt text](resources/GlossaryV2.png)
 
 \<concepts must be used consistently all over the document, ex in use cases, requirements etc>
 
