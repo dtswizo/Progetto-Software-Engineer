@@ -86,6 +86,12 @@ Version: V2 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 21, Rimozione carrello](#use-case-21-rimozione-carrello)
         - [Scenario 21.1](#scenario-211)
         - [Scenario 21.2](#scenario-212)
+    - [Use case 22, Modifica ruolo utente](#use-case-22-modifica-ruolo-utente)
+        - [Scenario 22.1](#scenario-221)
+        - [Scenario 22.2](#scenario-222)
+    - [Use case 23, Modifica indirizzo](#use-case-23-modifica-indirizzo)
+        - [Scenario 23.1](#scenario-231)
+        - [Scenario 23.2](#scenario-232)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -912,17 +918,64 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| EZElectronics lancia errore perchè il customer non ha un carrello (ERROR 404)
 
 
+### Use case 22, Modifica ruolo utente
+| Actors Involved  |  Admin |
+| :--------------: | :---: |
+|   Precondition   | Utente autenticato come admin |
+|  Post condition  | Il ruolo di uno specifico utente è stato modificato|
+| Nominal Scenario | 22.1 (admin accede al profilo di un determinato utente e ne cambia il ruolo) |
+|     Variants     | - |
+|    Exceptions    | 22.2 (tentativo di eliminare un utente non esistente (ERROR 404)) |
+
+##### Scenario 22.1
+|  Scenario 22.1  |   |
+| :------------: | :---: |
+|  Precondition  | Utente autenticato come admin|
+| Post condition |Il ruolo di uno specifico utente è stato modificato|
+|     Step#      |Description |
+|1| Admin richiede di modificare il ruolo di un utente|
+|2| EZElectronics mostra possibili scelte del ruolo|
+|3| Admin seleziona il nuovo ruolo da assegnare e conferma scelta|
+|2| EZElectronics salva il nuovo ruolo asegnato all'utente|
+
+##### Scenario 22.2
+|  Scenario 22.2  |   |
+| :------------: | :---: |
+|  Precondition  | Utente autenticato come admin|
+| Post condition |Sistema mostra errore 404|
+|     Step#      |Description |
+|1| Admin richiede di modificare il ruolo di un utente|
+|2| EZElectronics mostra errore 404 (utente richiesto non esistente)|
 
 
+### Use case 23, Modifica indirizzo
+| Actors Involved  |  Utente |
+| :--------------: | :---: |
+|   Precondition   | Utente loggato |
+|  Post condition  | l'indirizzo dell'utente è stato modificato|
+| Nominal Scenario | 23.1 (utente accede al profilo e cambia il proprio indirizzo) |
+|     Variants     | - |
+|    Exceptions    | 23.2 (tentativo di modificare indirizzo di un utente non esistente (ERROR 404)) |
 
+##### Scenario 23.1
+|  Scenario 23.1  |   |
+| :------------: | :---: |
+|  Precondition  | Utente loggato|
+| Post condition |Il ruolo di uno specifico utente è stato modificato|
+|     Step#      |Description |
+|1| Utente richiede di modificare il proprio indirizzo|
+|2| EZElectronics mostra form di inserimento|
+|3| Utente inserisce nuovo indirizzo|
+|2| EZElectronics aggiorna l'indirizzo|
 
-
-
-
-
-
-
-
+##### Scenario 23.2
+|  Scenario 23.2  |   |
+| :------------: | :---: |
+|  Precondition  | Utente loggato|
+| Post condition |Sistema mostra errore 404|
+|     Step#      |Description |
+|1| utente richiede di modificare il proprio indirizzo|
+|2| EZElectronics mostra errore 404 (utente non esistente)|
 
 
 
