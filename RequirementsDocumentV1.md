@@ -102,25 +102,28 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | :--------------: | :---------: |
 | Customer  |  Utente che acquista i prodotti     |
 | Store Manager  | Utente che gestisce l'inventario e conferma gli ordini           |
-| Payment service  | Utilizzato per gestire le transazioni            |
-| Software Factory  |  Programmatori e manutentori del sistema          |
+
 
 # Context Diagram and interfaces
 
 ## Context Diagram
 
+\<Define here Context diagram using UML use case diagram>
 
-![alt text](resources/Contex_Diagram.png)
+![alt text](resources/ContextDiagramV1.png)
 
 
 ## Interfaces
 
+\<describe here each interface in the context diagram>
+
+\<GUIs will be described graphically in a separate document>
 
 |   Actor   | Logical Interface | Physical Interface |
 | :-------: | :---------------: | :----------------: |
 | Customer  |      GUI          |     PC /  Smartphone|
 | Store Manager | GUI | PC / Smartphone|
-| Payment Service | https://developer.paypal.com/docs/payouts/standard/integrate-api/ | Internet |
+
 
 # Stories and personas
 
@@ -170,6 +173,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 ## Non Functional Requirements
 
+\<Describe constraints on functional requirements>
 
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
@@ -188,6 +192,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è seguito alla lettera il documento di riferimento delle API, pertanto si è permesso l'accesso alle suddette funzionalità senza requisiti di login specifici, anche se sarebbe opportuno considerarne l'utilizzo solo per utenti autenticati come store manager.
 
 ## Use case diagram
+
+\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
 
 ![alt text](resources/UseCase_Diagram.png)
 
@@ -906,7 +912,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ![alt text](resources/Glossary.png)
 
-
+\<concepts must be used consistently all over the document, ex in use cases, requirements etc>
 
 # System Design
 
@@ -915,5 +921,6 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 # Deployment Diagram
 
+\<describe here deployment diagram >
 
 ![alt text](resources/Deployment.png)
