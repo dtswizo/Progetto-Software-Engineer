@@ -165,12 +165,13 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 | FR3| Gestione Account |
 | FR3.1| Creazione utente| 
 | FR3.2| Eliminazione utente| 
-| FR3.3| Login utenti| 
-| FR3.4| Filtra utenti| 
-| FR3.5| Mostra lista utenti| 
-| FR3.6| Mostra utente loggato| 
-| FR3.7| Ricerca utente| 
-| FR3.8| Logout utente| 
+| FR3.3| Cambio ruolo utente| 
+| FR3.4| Login utenti| 
+| FR3.5| Filtra utenti| 
+| FR3.6| Mostra lista utenti| 
+| FR3.7| Mostra utente loggato| 
+| FR3.8| Ricerca utente| 
+| FR3.9| Logout utente| 
 | FR4| Gestione ordini |
 | FR4.1| Mostra storico ordini/carrelli pagati| 
 | FR5| Gestione privacy|
@@ -178,6 +179,9 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 | FR6 | Gestione dei pagamenti |
 | FR6.1| Richiesta di pagamento |
 | FR6.2| Gestione dati di pagamento|
+| FR7 | Gestione spedizione |
+| FR7.1| Richiesta di spedizione |
+| FR7.2| Gestione dati di spedizione |
 
 
 
