@@ -61,7 +61,7 @@ Version: V2 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 12, Mostra prodotti](#use-case-12-mostra-prodotti)
         - [Scenario 12.1](#scenario-121)
         - [Scenario 12.2](#scenario-122)
-    - [Use case 13, Registrazione utente](#use-case-13-registrazione-utente)
+    - [Use case 13, Creazione Account utente](#use-case-13-creazione-account-utente)
         - [Scenario 13.1](#scenario-131)
         - [Scenario 13.2](#scenario-132)
     - [Use case 14, Login](#use-case-14-login)
@@ -83,9 +83,6 @@ Version: V2 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 20, Storico carrelli](#use-case-20-storico-carrelli)
         - [Scenario 20.1](#scenario-201)
         - [Scenario 20.2](#scenario-202)
-    - [Use case 21, Rimozione carrello](#use-case-21-rimozione-carrello)
-        - [Scenario 21.1](#scenario-211)
-        - [Scenario 21.2](#scenario-212)
     - [Use case 22, Modifica ruolo utente](#use-case-22-modifica-ruolo-utente)
         - [Scenario 22.1](#scenario-221)
         - [Scenario 22.2](#scenario-222)
@@ -113,17 +110,17 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 ## Context Diagram
 
-\<Define here Context diagram using UML use case diagram>
+
 
 ![alt text](resources/ContextDiagramV2.png)
 
-\<actors are a subset of stakeholders>
+
 
 ## Interfaces
 
-\<describe here each interface in the context diagram>
 
-\<GUIs will be described graphically in a separate document>
+
+
 
 |   Actor   | Logical Interface | Physical Interface |
 | :-------: | :---------------: | :----------------: |
@@ -140,17 +137,17 @@ Marco è un ragazzo di 25 anni che vuole comprare componenti per assemblare un p
 Emma è una donna 30 anni che lavora come manager per lo store online di EZElectronics. Nella sua giornata gestisce il sito, ad esempio aggiungendo i prodotti non appena arrivano e confermare le vendite.
 
 Luca è un ragazzo di 23 anni parte integrante del team dello store online EZElectronics. Il suo ruolo consiste nell'amministrare gli account degli utenti (creazione, cambio di ruolo, eliminazione).
-\<Persona is-an-instance-of actor>
 
-\<stories will be formalized later as scenarios in use cases>
+
+
 
 # Functional and non functional requirements
 
 ## Functional Requirements
 
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
 
-\<they match to high level use cases>
+
+
 
 |  ID   | Description |
 | :---: | :---------: |
@@ -196,7 +193,7 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 
 ## Non Functional Requirements
 
-\<Describe constraints on functional requirements>
+
 
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
@@ -223,11 +220,12 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ## Use case diagram
 
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
+
+
 
 ![alt text](resources/UseCase_Diagram.png)
 
-\<next describe here each use case in the UCD>
+
 
 
 ### Use case 1, Aggiunta prodotto carrello
@@ -242,13 +240,14 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ##### Scenario 1.1
 
-\<describe here scenarios instances of UC1>
 
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
 
-\<a scenario is a more formal description of a story>
 
-\<only relevant scenarios should be described>
+
+
+
+
+
 
 |  Scenario 1.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
@@ -512,9 +511,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | Post condition |  Prodotto eliminato |
 |       1        |  Sistema mostra elenco prodotti |
 |       2        |  Store manager seleziona 'elimina' accanto al prodotto che desidera eliminare |
-|      3       |  Sistema chiede conferma dell'operazione |
-|      4       |  Store manager conferma l'operazione |
-|      5       |  Sistema elimina il prodotto dall'elenco |
+|      3      |  Store manager conferma l'operazione |
+|      4      |  Sistema elimina il prodotto dall'elenco |
 
 
 ##### Scenario 7.2
@@ -660,7 +658,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| EZElectronics mostra i prodotti filtrati richiesti|
 
 
-### Use case 13, Registrazione utente
+### Use case 13, Creazione Account utente
 | Actors Involved  |  Utente |
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
@@ -890,32 +888,6 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |3| Il sistema restituisce un messaggio di errore "Impossibile visualizzare ordini, nessun ordine eseguito"|
 
 
-### Use case 21, Rimozione carrello
-| Actors Involved  |  Customer |
-| :--------------: | :---: |
-|   Precondition   | Utente autenticato come customer |
-|  Post condition  | Il carrello corrente viene eliminato|
-| Nominal Scenario | Utente richiede l'eliminaione del suo carrello corrente e questo viene eliminato dal sistema |
-|     Variants     | - |
-|    Exceptions    | il customer non ha un carrello (ERROR 404) |
-
-##### Scenario 21.1
-|  Scenario 21.1  |   |
-| :------------: | :---: |
-|  Precondition  | Utente autenticato come customer|
-| Post condition |Il carrello corrente viene eliminato|
-|     Step#      |Description |
-|1| Customer richiede di eleiminare il carrello corrente|
-|2| EZElectronics elimina il carrello corrente dell'utente|
-
-##### Scenario 21.2
-|  Scenario 21.2  |   |
-| :------------: | :---: |
-|  Precondition  | Utente autenticato come customer|
-| Post condition | Lancio errore 404|
-|     Step#      |Description |
-|1| Customer richiede di eleiminare il carrello corrente|
-|2| EZElectronics lancia errore perchè il customer non ha un carrello (ERROR 404)
 
 
 ### Use case 22, Modifica ruolo utente
@@ -987,17 +959,18 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 \<use UML class diagram to define important terms, or concepts in the domain of the application, and their relationships>
 ![alt text](resources/GlossaryV2.png)
 
-\<concepts must be used consistently all over the document, ex in use cases, requirements etc>
+
+
 
 # System Design
 
-\<describe here system design>
+
 ![alt text](resources/SystemDesign.png)
 
-\<must be consistent with Context diagram>
+
 
 # Deployment Diagram
 
-\<describe here deployment diagram >
+
 
 ![alt text](resources/DeploymentV2.png)
