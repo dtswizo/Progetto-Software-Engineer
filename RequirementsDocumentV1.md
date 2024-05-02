@@ -107,7 +107,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 
 
-![alt text](resources/Contex_Diagram.png)
+![alt text](resources/ContextDiagramV1.png)
 
 
 ## Interfaces
