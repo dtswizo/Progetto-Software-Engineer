@@ -107,17 +107,17 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 ## Context Diagram
 
-\<Define here Context diagram using UML use case diagram>
+
 
 ![alt text](resources/ContextDiagramV2.png)
 
-\<actors are a subset of stakeholders>
+
 
 ## Interfaces
 
-\<describe here each interface in the context diagram>
 
-\<GUIs will be described graphically in a separate document>
+
+
 
 |   Actor   | Logical Interface | Physical Interface |
 | :-------: | :---------------: | :----------------: |
@@ -134,17 +134,17 @@ Marco è un ragazzo di 25 anni che vuole comprare componenti per assemblare un p
 Emma è una donna 30 anni che lavora come manager per lo store online di EZElectronics. Nella sua giornata gestisce il sito, ad esempio aggiungendo i prodotti non appena arrivano e confermare le vendite.
 
 Luca è un ragazzo di 23 anni parte integrante del team dello store online EZElectronics. Il suo ruolo consiste nell'amministrare gli account degli utenti (creazione, cambio di ruolo, eliminazione).
-\<Persona is-an-instance-of actor>
 
-\<stories will be formalized later as scenarios in use cases>
+
+
 
 # Functional and non functional requirements
 
 ## Functional Requirements
 
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
 
-\<they match to high level use cases>
+
+
 
 |  ID   | Description |
 | :---: | :---------: |
@@ -190,7 +190,7 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 
 ## Non Functional Requirements
 
-\<Describe constraints on functional requirements>
+
 
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
@@ -217,11 +217,12 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ## Use case diagram
 
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
+
+
 
 ![alt text](resources/UseCase_Diagram.png)
 
-\<next describe here each use case in the UCD>
+
 
 
 ### Use case 1, Aggiunta prodotto carrello
@@ -236,13 +237,14 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ##### Scenario 1.1
 
-\<describe here scenarios instances of UC1>
 
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
 
-\<a scenario is a more formal description of a story>
 
-\<only relevant scenarios should be described>
+
+
+
+
+
 
 |  Scenario 1.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
@@ -931,20 +933,22 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 # Glossary
 
-\<use UML class diagram to define important terms, or concepts in the domain of the application, and their relationships>
+
+
 ![alt text](resources/GlossaryV2.png)
 
-\<concepts must be used consistently all over the document, ex in use cases, requirements etc>
+
+
 
 # System Design
 
-\<describe here system design>
+
 ![alt text](resources/SystemDesign.png)
 
-\<must be consistent with Context diagram>
+
 
 # Deployment Diagram
 
-\<describe here deployment diagram >
+
 
 ![alt text](resources/DeploymentV2.png)
