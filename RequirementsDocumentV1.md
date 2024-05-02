@@ -63,7 +63,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 12, Mostra prodotti](#use-case-12-mostra-prodotti)
         - [Scenario 12.1](#scenario-121)
         - [Scenario 12.2](#scenario-122)
-    - [Use case 13, Registrazione utente](#use-case-13-registrazione-utente)
+    - [Use case 13, Creazione account utente](#use-case-13-creazione-account-utente)
         - [Scenario 13.1](#scenario-131)
         - [Scenario 13.2](#scenario-132)
     - [Use case 14, Login](#use-case-14-login)
@@ -628,7 +628,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| EZElectronics mostra i prodotti filtrati richiesti|
 
 
-### Use case 13, Registrazione utente
+### Use case 13, Creazione account utente
 | Actors Involved  |  Utente |
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
