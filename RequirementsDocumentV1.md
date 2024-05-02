@@ -85,9 +85,6 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 20, Storico carrelli](#use-case-20-storico-carrelli)
         - [Scenario 20.1](#scenario-201)
         - [Scenario 20.2](#scenario-202)
-    - [Use case 21, Rimozione carrello](#use-case-21-rimozione-carrello)
-        - [Scenario 21.1](#scenario-211)
-        - [Scenario 21.2](#scenario-212)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -108,16 +105,16 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 
 ## Context Diagram
 
-\<Define here Context diagram using UML use case diagram>
+
 
 ![alt text](resources/ContextDiagramV1.png)
 
 
 ## Interfaces
 
-\<describe here each interface in the context diagram>
 
-\<GUIs will be described graphically in a separate document>
+
+
 
 |   Actor   | Logical Interface | Physical Interface |
 | :-------: | :---------------: | :----------------: |
@@ -173,7 +170,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 ## Non Functional Requirements
 
-\<Describe constraints on functional requirements>
+
 
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
@@ -461,9 +458,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | Post condition |  Sistema mostra errore |
 |       1        |  Sistema mostra elenco prodotti |
 |       2        |  Store manager seleziona 'elimina' accanto al prodotto che desidera eliminare |
-|      3       |  Sistema chiede conferma dell'operazione |
-|      4       |  Store manager conferma l'operazione |
-|      5       |  Sistema mostra errore 404  |
+|      3       |  Store manager conferma l'operazione |
+|      4       |  Sistema mostra errore 404  |
 
 ### Use case 8, Conferma vendita prodotto
 
@@ -862,32 +858,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |3| Il sistema restituisce un messaggio di errore "Impossibile visualizzare ordini, nessun ordine eseguito"|
 
 
-### Use case 21, Rimozione carrello
-| Actors Involved  |  Customer |
-| :--------------: | :---: |
-|   Precondition   | Utente autenticato come customer |
-|  Post condition  | Il carrello corrente viene eliminato|
-| Nominal Scenario | Scenario 21.1 |
-|     Variants     | - |
-|    Exceptions    | Scenario 21.2 |
 
-##### Scenario 21.1
-|  Scenario 21.1  |   |
-| :------------: | :---: |
-|  Precondition  | Utente autenticato come customer|
-| Post condition |Il carrello corrente viene eliminato|
-|     Step#      |Description |
-|1| Customer richiede di eleiminare il carrello corrente|
-|2| EZElectronics elimina il carrello corrente dell'utente|
-
-##### Scenario 21.2
-|  Scenario 21.2  |   |
-| :------------: | :---: |
-|  Precondition  | Utente autenticato come customer|
-| Post condition | Lancio errore 404|
-|     Step#      |Description |
-|1| Customer richiede di eleiminare il carrello corrente|
-|2| EZElectronics lancia errore perchè il customer non ha un carrello (ERROR 404)
 
 
 
@@ -912,7 +883,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ![alt text](resources/Glossary.png)
 
-\<concepts must be used consistently all over the document, ex in use cases, requirements etc>
+
+
 
 # System Design
 
@@ -921,6 +893,6 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 # Deployment Diagram
 
-\<describe here deployment diagram >
+
 
 ![alt text](resources/Deployment.png)
