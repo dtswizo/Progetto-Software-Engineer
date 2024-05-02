@@ -102,30 +102,24 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | :--------------: | :---------: |
 | Customer  |  Utente che acquista i prodotti     |
 | Store Manager  | Utente che gestisce l'inventario e conferma gli ordini           |
-| Payment service  | Utilizzato per gestire le transazioni            |
-| Software Factory  |  Programmatori e manutentori del sistema          |
+
 
 # Context Diagram and interfaces
 
 ## Context Diagram
 
-\<Define here Context diagram using UML use case diagram>
-
 ![alt text](resources/Contex_Diagram.png)
 
-\<actors are a subset of stakeholders>
 
 ## Interfaces
 
-\<describe here each interface in the context diagram>
 
-\<GUIs will be described graphically in a separate document>
 
 |   Actor   | Logical Interface | Physical Interface |
 | :-------: | :---------------: | :----------------: |
 | Customer  |      GUI          |     PC /  Smartphone|
 | Store Manager | GUI | PC / Smartphone|
-| Payment Service | https://developer.paypal.com/docs/payouts/standard/integrate-api/ | Internet |
+
 
 # Stories and personas
 
@@ -133,17 +127,11 @@ Marco è un ragazzo di 25 anni che vuole comprare componenti per assemblare un p
 
 Emma è una donna 30 anni che lavora come manager per lo store online di EZElectronics. Nella sua giornata gestisce il sito, ad esempio aggiungendo i prodotti non appena arrivano e confermare le vendite.
 
-\<Persona is-an-instance-of actor>
-
-\<stories will be formalized later as scenarios in use cases>
 
 # Functional and non functional requirements
 
 ## Functional Requirements
 
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
-
-\<they match to high level use cases>
 
 |  ID   | Description |
 | :---: | :---------: |
@@ -181,8 +169,6 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 ## Non Functional Requirements
 
-\<Describe constraints on functional requirements>
-
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
 |  NFR1 | Usabilità | Utenti non hanno bisogno di training | FR3 |
@@ -201,11 +187,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ## Use case diagram
 
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
 
 ![alt text](resources/UseCase_Diagram.png)
 
-\<next describe here each use case in the UCD>
 
 
 ### Use case 1, Aggiunta prodotto carrello
@@ -924,20 +908,15 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 # Glossary
 
-\<use UML class diagram to define important terms, or concepts in the domain of the application, and their relationships>
+
 ![alt text](resources/Glossary.png)
 
-\<concepts must be used consistently all over the document, ex in use cases, requirements etc>
 
 # System Design
 
-\<describe here system design>
 ![alt text](resources/SystemDesign.png)
 
-\<must be consistent with Context diagram>
 
 # Deployment Diagram
-
-\<describe here deployment diagram >
 
 ![alt text](resources/Deployment.png)
