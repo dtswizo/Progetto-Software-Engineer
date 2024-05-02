@@ -61,7 +61,7 @@ Version: V2 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 12, Mostra prodotti](#use-case-12-mostra-prodotti)
         - [Scenario 12.1](#scenario-121)
         - [Scenario 12.2](#scenario-122)
-    - [Use case 13, Registrazione utente](#use-case-13-registrazione-utente)
+    - [Use case 13, Creazione Account utente](#use-case-13-creazione-account-utente)
         - [Scenario 13.1](#scenario-131)
         - [Scenario 13.2](#scenario-132)
     - [Use case 14, Login](#use-case-14-login)
@@ -83,9 +83,6 @@ Version: V2 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 20, Storico carrelli](#use-case-20-storico-carrelli)
         - [Scenario 20.1](#scenario-201)
         - [Scenario 20.2](#scenario-202)
-    - [Use case 21, Rimozione carrello](#use-case-21-rimozione-carrello)
-        - [Scenario 21.1](#scenario-211)
-        - [Scenario 21.2](#scenario-212)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -508,9 +505,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | Post condition |  Prodotto eliminato |
 |       1        |  Sistema mostra elenco prodotti |
 |       2        |  Store manager seleziona 'elimina' accanto al prodotto che desidera eliminare |
-|      3       |  Sistema chiede conferma dell'operazione |
-|      4       |  Store manager conferma l'operazione |
-|      5       |  Sistema elimina il prodotto dall'elenco |
+|      3      |  Store manager conferma l'operazione |
+|      4      |  Sistema elimina il prodotto dall'elenco |
 
 
 ##### Scenario 7.2
@@ -656,7 +652,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| EZElectronics mostra i prodotti filtrati richiesti|
 
 
-### Use case 13, Registrazione utente
+### Use case 13, Creazione Account utente
 | Actors Involved  |  Utente |
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
@@ -886,32 +882,6 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |3| Il sistema restituisce un messaggio di errore "Impossibile visualizzare ordini, nessun ordine eseguito"|
 
 
-### Use case 21, Rimozione carrello
-| Actors Involved  |  Customer |
-| :--------------: | :---: |
-|   Precondition   | Utente autenticato come customer |
-|  Post condition  | Il carrello corrente viene eliminato|
-| Nominal Scenario | Utente richiede l'eliminaione del suo carrello corrente e questo viene eliminato dal sistema |
-|     Variants     | - |
-|    Exceptions    | il customer non ha un carrello (ERROR 404) |
-
-##### Scenario 21.1
-|  Scenario 21.1  |   |
-| :------------: | :---: |
-|  Precondition  | Utente autenticato come customer|
-| Post condition |Il carrello corrente viene eliminato|
-|     Step#      |Description |
-|1| Customer richiede di eleiminare il carrello corrente|
-|2| EZElectronics elimina il carrello corrente dell'utente|
-
-##### Scenario 21.2
-|  Scenario 21.2  |   |
-| :------------: | :---: |
-|  Precondition  | Utente autenticato come customer|
-| Post condition | Lancio errore 404|
-|     Step#      |Description |
-|1| Customer richiede di eleiminare il carrello corrente|
-|2| EZElectronics lancia errore perchè il customer non ha un carrello (ERROR 404)
 
 
 
