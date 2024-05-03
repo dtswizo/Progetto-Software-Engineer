@@ -160,7 +160,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 | FR3.7| Ricerca utente| 
 | FR3.8| Logout utente| 
 | FR4| Gestione ordini |
-| FR4.1| Mostra storico ordini/carrelli pagati| 
+| FR4.1| Mostra storico carrelli pagati| 
 
 
 
@@ -407,7 +407,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Scenario 6.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | utente loggato come store manager|
-| Post condition |  Registrazione prodotti con molteplicitá > 1 |
+| Post condition |  Registrazione arrivo prodotti |
 |       1        |        Store manager chiede di registrare nuovi arrivi |
 |      2       |            Sistema mostra form di inserimento data di arrivo |
 |      3       |            Store manager inserisce data di arrivo |
