@@ -20,6 +20,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
 - [Stories and personas](#stories-and-personas)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
   - [Functional Requirements](#functional-requirements)
+  - [Table of rights](#table-of-rights)
   - [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
   - [Use case diagram](#use-case-diagram)
@@ -63,7 +64,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 12, Mostra prodotti](#use-case-12-mostra-prodotti)
         - [Scenario 12.1](#scenario-121)
         - [Scenario 12.2](#scenario-122)
-    - [Use case 13, Registrazione utente](#use-case-13-registrazione-utente)
+    - [Use case 13, Creazione account utente](#use-case-13-creazione-account-utente)
         - [Scenario 13.1](#scenario-131)
         - [Scenario 13.2](#scenario-132)
     - [Use case 14, Login](#use-case-14-login)
@@ -160,12 +161,11 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 | FR3.7| Ricerca utente| 
 | FR3.8| Logout utente| 
 | FR4| Gestione ordini |
-| FR4.1| Mostra storico ordini/carrelli pagati| 
+| FR4.1| Mostra storico carrelli pagati| 
 
 
-
-
-
+## Table of rights
+![alt text](resources/tbr_v1.png)
 
 
 ## Non Functional Requirements
@@ -190,7 +190,6 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ## Use case diagram
 
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
 
 ![alt text](resources/UseCase_Diagram.png)
 
@@ -407,7 +406,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Scenario 6.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | utente loggato come store manager|
-| Post condition |  Registrazione prodotti con molteplicitá > 1 |
+| Post condition |  Registrazione arrivo prodotti |
 |       1        |        Store manager chiede di registrare nuovi arrivi |
 |      2       |            Sistema mostra form di inserimento data di arrivo |
 |      3       |            Store manager inserisce data di arrivo |
@@ -628,7 +627,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| EZElectronics mostra i prodotti filtrati richiesti|
 
 
-### Use case 13, Registrazione utente
+### Use case 13, Creazione account utente
 | Actors Involved  |  Utente |
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
