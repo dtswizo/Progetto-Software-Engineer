@@ -42,6 +42,7 @@ Version: V2 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario 4.4](#scenario-44)
         - [Scenario 4.5](#scenario-45)
         - [Scenario 4.6](#scenario-46)
+        - [Scenario 4.7](#scenario-47)
     - [Use case 5, Mostra carrello](#use-case-5-mostra-carrello)
       - [Scenario 5.1](#scenario-51)
     - [Use case 6, Registrazione arrivo prodotti](#use-case-6-registrazione-arrivo-prodotti)
@@ -91,6 +92,11 @@ Version: V2 - description of EZElectronics in CURRENT form (as received by teach
     - [Use case 21, Modifica indirizzo](#use-case-21-modifica-indirizzo)
         - [Scenario 21.1](#scenario-211)
         - [Scenario 21.2](#scenario-212)
+    - [Use case 22, Conferma vendita prodotto/i](#use-case-22-conferma-vendita-prodottoi)
+        - [Scenario 22.1](#scenario-221)
+        - [Scenario 22.2](#scenario-222)
+        - [Scenario 22.3](#scenario-223)
+        - [Scenario 22.4](#scenario-224)
 - [Glossary](#glossary)
 - [System Design](#system-design)
 - [Deployment Diagram](#deployment-diagram)
@@ -164,7 +170,7 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 | FR2.2 | Filtra prodotti (category, model, sold)| 
 | FR2.3 | Mostra prodotti | 
 | FR2.4 | Crea prodotto | 
-| FR2.5 | Conferma vendita prodotto | 
+| FR2.5 | Conferma vendita/e prodotto/i | 
 | FR2.6 | Eliminazione prodotto | 
 | FR2.7 | Registra arrivo prodotti dello stesso modello| 
 | FR3| Gestione Account |
@@ -376,19 +382,21 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Post condition  |  Checkout effettuato   |
 | Nominal Scenario | Scenario 4.1 (Utente fa il checkout online del carrello)         |
 |     Variants     |   Scenario 4.6 (Utente fa checkout carrello ma con ritiro in negozio)   |
-|    Exceptions    |  Scenario 4.2 (Il carrello non esiste(Error 404)), Scenario 4.3(carrello vuoto (ERROR 404)), Scenario 4.4 (almeno uno dei codici prodotto non esiste (ERROR 404)), Scenario 4.5 (il prodotto è gia stato venduto)   |
+|    Exceptions    |  Scenario 4.2 (Il carrello non esiste(Error 404)), Scenario 4.3(carrello vuoto (ERROR 404)), Scenario 4.4 (almeno uno dei codici prodotto non esiste (ERROR 404)), Scenario 4.5 (il prodotto è gia stato venduto), 4.7 (checkout con metodo:"paga e spedisci a casa" effettuato senza un indirizzo associato all'utente)  |
 
 ##### Scenario 4.1
 
 |  Scenario 4.1  |     |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
+|  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer, indirizzo specificato|
 | Post condition |  Checkout effettuato con successo|
 |     Step#      |    Description     |
 |       1        |      L'utente apre il carrello          |
 |       2        |      Il sistema mostra il carrello          |
-|       3        |    L'utente richiede checkout del carrello  |
-| 4 | EZElectronics verifica disponibilità dei prodotti richiesti e in caso di esito positvo invia richiesta di pagamento al sistema di pagamento e ne visualizza l'esito| 
+|       3        |    L'utente richiede checkout del carrello e seleziona il metodo di pagamento: "paga e spedisci a casa"  |
+| 4 | EZElectronics verifica disponibilità dei prodotti richiesti, controlla presenza di un indirizzo dell'utente e in caso di esito positivo invia reindirizza l'utente verso la pagina di pagamento|
+|5| L'utente inserisce dati di pagamento e conferma |
+|6| EZElectronics ingaggia servizio di trasporto che genera il numero di tracking, aggiorna stato carrello e mostra conferma |
 
 
 ##### Scenario 4.2
@@ -449,8 +457,20 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |     Step#      |    Description     |
 |       1        |      L'utente apre il carrello          |
 |       2        |      Il sistema mostra il carrello          |
-|       3        |    L'utente richiede checkout del carrello  |
+|       3        |    L'utente richiede checkout del carrello con metodo di pagamento:"ritiro e pagamento in negozio"  |
 | 4 | EZElectronics effettua il checkout| 
+
+##### Scenario 4.7
+
+|  Scenario 4.7  |                 |
+| :------------: | :---------: |
+|  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
+| Post condition |  Checkout effettuato con successo|
+|     Step#      |    Description     |
+|       1        |      L'utente apre il carrello          |
+|       2        |      Il sistema mostra il carrello          |
+|       3        |    L'utente richiede checkout del carrello con metodo di pagamento:"paga e spedisci a casa"  |
+| 4 | EZElectronics rileva mancanza di un indirizzo associato all'account e mostra errore| 
 
 
 ### Use case 5, Mostra carrello
@@ -964,13 +984,68 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| EZElectronics mostra errore 404 (utente non esistente)|
 
 
+### Use case 22, Conferma vendita prodotto/i
+
+| Actors Involved  |  Store Manager |
+| :--------------: | :------------------------------------------------------------------: |
+|   Precondition   | Utente autenticato come Store Manager |
+|  Post condition  | Prodotto segnato come venduto |
+| Nominal Scenario | Scenario 22.1     |
+|     Variants     | Scenario 22.4   |
+|    Exceptions    | Scenario 22.2, Scenario 22.3|
+
+##### Scenario 22.1
+
+|  Scenario 22.1  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  Vendita prodotto confermata |
+|1| Store manager preme su pulsante conferma vendite|
+|2| EZElectronics mostra lista dei prodotti di cui è stato fatto il checkout tramite metodo di pagamento: "ritiro e pagamento in negozio"|
+| 3|  Store manager chiede di segnare un prodotto come venduto (opzionalmente specificando data di vendita) |
+| 4 |  Sistema aggiorna lo stato del prodotto |
+
+##### Scenario 22.2
+
+|  Scenario 22.2 |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  sistema mostra errore (404) |
+|1| Store manager preme su pulsante conferma vendite|
+|2| EZElectronics mostra lista dei prodotti di cui è stato fatto il checkout tramite metodo di pagamento: "ritiro e pagamento in negozio"|
+|       3        |  Store manager chiede di segnare un prodotto come venduto (opzionalmente specificando data di vendita) |
+|      4      |  Sistema mostra errore(404) |
+
+##### Scenario 22.3
+
+|  Scenario 22.3 |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  sistema mostra errore |
+|1| Store manager preme su pulsante conferma vendite|
+|2| EZElectronics mostra lista dei prodotti di cui è stato fatto il checkout tramite metodo di pagamento: "ritiro e pagamento in negozio"|
+|       3       |  Store manager chiede di segnare un prodotto come venduto (opzionalmente specificando data di vendita) |
+|      4     |  Sistema mostra errore (data di vendita antecedente quella di arrivo, data di vendita dopo quella corrente, il prodotto è gia stato venduto) |
+
+##### Scenario 22.4
+
+|  Scenario 22.4 |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  | Store manager loggato|
+| Post condition |  Vendita prodotto confermata |
+|1| Store manager preme su pulsante conferma vendite|
+|2| EZElectronics mostra lista dei prodotti di cui è stato fatto il checkout tramite metodo di pagamento: "ritiro e pagamento in negozio"|
+|       3       |  Store manager chiede di segnare come venduti tutti i prodotti visualizzati |
+|      4     |  EZElectronics aggiorna lo stato dei prodotti |
+
+
+
 
 
 
 
 # Glossary
 
-\<use UML class diagram to define important terms, or concepts in the domain of the application, and their relationships>
 ![alt text](resources/GlossaryV2.png)
 
 
