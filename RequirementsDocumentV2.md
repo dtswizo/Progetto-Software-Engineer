@@ -157,10 +157,9 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 | FR1.3 | Checkout carrello | 
 | FR1.4 | Mostra carrello | 
 | FR1.5 | Rimuovi prodotto| 
-| FR1.6 | Mostra status carrello|
 | FR2 | Gestione prodotti| 
 | FR2.1 | Ricerca prodotto| 
-| FR2.2 | Filtra prodotti (categoria, modello, sold)| 
+| FR2.2 | Filtra prodotti (category, model, sold)| 
 | FR2.3 | Mostra prodotti | 
 | FR2.4 | Crea prodotto | 
 | FR2.5 | Eliminazione prodotto | 
@@ -175,10 +174,11 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 | FR3.7| Mostra utente loggato| 
 | FR3.8| Ricerca utente| 
 | FR3.9| Logout utente| 
+| FR3.10 | Modifica indirizzo utente |
 | FR4| Gestione ordini |
-| FR4.1| Mostra storico ordini/carrelli pagati| 
+| FR4.1| Mostra storico carrelli pagati| 
 | FR5| Gestione privacy|
-| FR5.1 | Mostra cookie policy|
+| FR5.1 | Mostra termini di servizio|
 | FR6 | Gestione dei pagamenti |
 | FR6.1| Richiesta di pagamento |
 | FR6.2| Gestione dati di pagamento|
@@ -886,9 +886,6 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |1| Utente apre la sezione "storico carrelli"|
 |2| Il sistema cerca i carrelli associati all'utente|
 |3| Il sistema restituisce un messaggio di errore "Impossibile visualizzare ordini, nessun ordine eseguito"|
-
-
-
 
 ### Use case 20, Modifica ruolo utente
 | Actors Involved  |  Admin |
