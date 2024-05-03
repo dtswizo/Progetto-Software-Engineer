@@ -162,8 +162,9 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 | FR2.2 | Filtra prodotti (category, model, sold)| 
 | FR2.3 | Mostra prodotti | 
 | FR2.4 | Crea prodotto | 
-| FR2.5 | Eliminazione prodotto | 
-| FR2.6 | Registra arrivo prodotti dello stesso modello| 
+| FR2.5 | Conferma vendita prodotto | 
+| FR2.6 | Eliminazione prodotto | 
+| FR2.7 | Registra arrivo prodotti dello stesso modello| 
 | FR3| Gestione Account |
 | FR3.1| Creazione utente| 
 | FR3.2| Eliminazione utente| 
