@@ -41,6 +41,7 @@ Version: V2 - description of EZElectronics in CURRENT form (as received by teach
         - [Scenario 4.3](#scenario-43)
         - [Scenario 4.4](#scenario-44)
         - [Scenario 4.5](#scenario-45)
+        - [Scenario 4.6](#scenario-46)
     - [Use case 5, Mostra carrello](#use-case-5-mostra-carrello)
       - [Scenario 5.1](#scenario-51)
     - [Use case 6, Registrazione arrivo prodotti](#use-case-6-registrazione-arrivo-prodotti)
@@ -373,8 +374,8 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Customer|
 |  Post condition  |  Checkout effettuato   |
-| Nominal Scenario | Scenario 4.1 (Utente fa il checkout del carrello)         |
-|     Variants     |   -   |
+| Nominal Scenario | Scenario 4.1 (Utente fa il checkout online del carrello)         |
+|     Variants     |   Scenario 4.6 (Utente fa checkout carrello ma con ritiro in negozio)   |
 |    Exceptions    |  Scenario 4.2 (Il carrello non esiste(Error 404)), Scenario 4.3(carrello vuoto (ERROR 404)), Scenario 4.4 (almeno uno dei codici prodotto non esiste (ERROR 404)), Scenario 4.5 (il prodotto è gia stato venduto)   |
 
 ##### Scenario 4.1
@@ -384,7 +385,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
 | Post condition |  Checkout effettuato con successo|
 |     Step#      |    Description     |
-|       1        |      L'utente   apre il carrello          |
+|       1        |      L'utente apre il carrello          |
 |       2        |      Il sistema mostra il carrello          |
 |       3        |    L'utente richiede checkout del carrello  |
 | 4 | EZElectronics verifica disponibilità dei prodotti richiesti e in caso di esito positvo invia richiesta di pagamento al sistema di pagamento e ne visualizza l'esito| 
@@ -397,7 +398,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Precondition  | Carrello vuoto, Utente autenticato come Customer|
 | Post condition |  Checkout non riuscito|
 |     Step#      |                                Description                                 |
-|       1        |      L'utente   apre il carrello    |
+|       1        |      L'utente apre il carrello    |
 |       2        |      Il sistema mostra il carrello       |
 |       3        |        L'utente richiede checkout del carrello       |
 |      4       |            Il sistema lancia l'errore 404 perchè il carrello è vuoto      |
@@ -409,7 +410,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
 | Post condition |  Checkout effettuato con successo|
 |     Step#      |                                Description     |
-|       1        |      L'utente   apre il carrello      |
+|       1        |      L'utente apre il carrello      |
 |       2        |      Il sistema mostra il carrello  |
 |       3        |        L'utente richiede checkout del carrello     |
 |      4     |  Il sistema lancia l'errore 404 (carrello insesistente)   |
@@ -422,7 +423,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
 | Post condition |  Checkout effettuato con successo|
 |     Step#      |         Description     |
-|       1        |      L'utente   apre il carrello     |
+|       1        |      L'utente apre il carrello     |
 |       2        |      Il sistema mostra il carrello    |
 |       3  | L'utente richiede checkout del carrello         |
 |      4       |  EZElectronics verifica disponibilità dei prodotti richiesti e lancia l'errore 404 (almeno uno dei codici prodotto non esiste)    |
@@ -434,10 +435,22 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
 | Post condition |  Checkout effettuato con successo|
 |     Step#      |         Description     |
-|       1        |      L'utente   apre il carrello     |
+|       1        |      L'utente apre il carrello     |
 |       2        |      Il sistema mostra il carrello    |
 |       3  | L'utente richiede checkout del carrello         |
 |      4       |  EZElectronics verifica disponibilità dei prodotti richiesti e lancia l'errore (il prodotto è già stato venduto)    |
+
+##### Scenario 4.6
+
+|  Scenario 4.6  |                 |
+| :------------: | :---------: |
+|  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
+| Post condition |  Checkout effettuato con successo|
+|     Step#      |    Description     |
+|       1        |      L'utente apre il carrello          |
+|       2        |      Il sistema mostra il carrello          |
+|       3        |    L'utente richiede checkout del carrello  |
+| 4 | EZElectronics effettua il checkout| 
 
 
 ### Use case 5, Mostra carrello
