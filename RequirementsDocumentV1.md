@@ -20,6 +20,7 @@ Version: V1 - description of EZElectronics in CURRENT form (as received by teach
 - [Stories and personas](#stories-and-personas)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
   - [Functional Requirements](#functional-requirements)
+  - [Table of rigths](#table-of-rigths)
   - [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
   - [Use case diagram](#use-case-diagram)
@@ -163,9 +164,8 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 | FR4.1| Mostra storico carrelli pagati| 
 
 
-
-
-
+## Table of rigths
+![alt text](resources/table_of_rights_v1.png)
 
 
 ## Non Functional Requirements
@@ -190,7 +190,6 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ## Use case diagram
 
-\<define here UML Use case diagram UCD summarizing all use cases, and their relationships>
 
 ![alt text](resources/UseCase_Diagram.png)
 
