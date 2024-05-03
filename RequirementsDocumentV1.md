@@ -407,7 +407,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |  Scenario 6.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | utente loggato come store manager|
-| Post condition |  Registrazione prodotti con molteplicitá > 1 |
+| Post condition |  Registrazione arrivo prodotti |
 |       1        |        Store manager chiede di registrare nuovi arrivi |
 |      2       |            Sistema mostra form di inserimento data di arrivo |
 |      3       |            Store manager inserisce data di arrivo |
