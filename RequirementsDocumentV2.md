@@ -20,6 +20,7 @@ Version: V2 - description of EZElectronics in CURRENT form (as received by teach
 - [Stories and personas](#stories-and-personas)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
   - [Functional Requirements](#functional-requirements)
+  - [Table of rights](#table-of-rights)
   - [Non Functional Requirements](#non-functional-requirements)
 - [Use case diagram and use cases](#use-case-diagram-and-use-cases)
   - [Use case diagram](#use-case-diagram)
@@ -188,7 +189,9 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 | FR7.2| Gestione dati di spedizione |
 
 
+## Table of rights
 
+![alt text](resources/tbr_v2.png)
 
 
 
