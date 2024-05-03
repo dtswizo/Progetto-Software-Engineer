@@ -165,7 +165,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 
 ## Table of rights
-![alt text](resources/table_of_rights_v1.png)
+![alt text](resources/tbr_v1.png)
 
 
 ## Non Functional Requirements
