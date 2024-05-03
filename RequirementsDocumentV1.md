@@ -160,7 +160,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 | FR3.7| Ricerca utente| 
 | FR3.8| Logout utente| 
 | FR4| Gestione ordini |
-| FR4.1| Mostra storico ordini/carrelli pagati| 
+| FR4.1| Mostra storico carrelli pagati| 
 
 
 
