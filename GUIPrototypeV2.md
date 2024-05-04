@@ -1,10 +1,10 @@
 # Graphical User Interface Prototype - FUTURE
 
-Authors: 
+Authors: Federico Sciascia, Davide Licitra, Lorenzo Lombardi, Matteo D'Alicarnassi
 
-Date:
+Date: 03/05/2024
 
-Version:
+Version: 1.0.0
 
 
 ![alt text](<resources/GUI v2/Login Page.png>)
