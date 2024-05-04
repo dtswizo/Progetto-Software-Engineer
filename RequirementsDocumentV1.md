@@ -499,7 +499,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ### Use case 9, Ricerca prodotti
 
-| Actors Involved  |  Utente |
+| Actors Involved  |  Customer, Store Manager |
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato |
 |  Post condition  | Prodotto mostrato dal sistema |
@@ -528,7 +528,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ### Use case 10, Filtra prodotti
 
-| Actors Involved  |  utente|
+| Actors Involved  |  Customer, Store Manager|
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato |
 |  Post condition  | Visualizzazione prodotti filtrati |
@@ -558,7 +558,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 11, Crea e registra nuovo prodotto
-| Actors Involved  | store manager  |
+| Actors Involved  | Store Manager  |
 | :--------------: | :---: |
 |   Precondition   | utente loggato come manager|
 |  Post condition  | nuovo prodotto aggiunto |
@@ -600,7 +600,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |4| EZElectronics verifica i dati e torna errore (data di arrivo dopo la data odierna)|
 
 ### Use case 12, Mostra prodotti
-| Actors Involved  | Utente  |
+| Actors Involved  | Customer, Store Manager  |
 | :--------------: | :---: |
 |   Precondition   | utente loggato|
 |  Post condition  | visualizzazione prodotti |
@@ -628,7 +628,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 13, Creazione account utente
-| Actors Involved  |  Utente |
+| Actors Involved  |  Customer, Store Manager |
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
 |  Post condition  | Utente Registrato |
@@ -660,7 +660,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 14, Login
-| Actors Involved  | Utente  |
+| Actors Involved  | Customer, Store Manager  |
 | :--------------: | :---: |
 |   Precondition   | Utente non loggato |
 |  Post condition  | Utente loggato |
@@ -695,7 +695,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |6| Sistema rileva errore nei dati e torna errore|
 
 ### Use case 15, Logout
-| Actors Involved  | Utente  |
+| Actors Involved  | Customer, Store Manager  |
 | :--------------: | :---: |
 |   Precondition   | Utente loggato |
 |  Post condition  | Utente non loggato |
@@ -713,7 +713,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| EZElectronics termina la sessione dell'account|
 
 ### Use case 16, Eliminazione utente
-| Actors Involved  | Utente  |
+| Actors Involved  | Customer, Store Manager  |
 | :--------------: | :---: |
 |   Precondition   | - |
 |  Post condition  | utente desiderato eliminato |
@@ -740,7 +740,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |2| EZElectronics torna errore perchè l'account selezionato non esiste|
 
 ### Use case 17, Filtra utenti
-| Actors Involved  | Utente  |
+| Actors Involved  | Customer, Store Manager  |
 | :--------------: | :---: |
 |   Precondition   | - |
 |  Post condition  | Visulalizzazione utenti filtrati|
@@ -789,7 +789,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 18, Mostra utenti
-| Actors Involved  | Utente  |
+| Actors Involved  | Customer, Store Manager  |
 | :--------------: | :---: |
 |   Precondition   |-|
 |  Post condition  | Sistema mostra utenti |
@@ -808,7 +808,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 19, Mostra informazioni utente corrente
-| Actors Involved  | Utente  |
+| Actors Involved  | Customer, Store Manager  |
 | :--------------: | :---: |
 |   Precondition   | utente loggato|
 |  Post condition  | informazioni visualizzate |
