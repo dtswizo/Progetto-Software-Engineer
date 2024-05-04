@@ -149,7 +149,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 Luca è un ragazzo di 23 anni parte integrante del team dello store online EZElectronics. Il suo ruolo consiste nell'amministrare gli account degli utenti (creazione, cambio di ruolo, eliminazione).
 
-Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics per confrontare i prezzi con il suo negozio di fiducia; Naviga sul sito senza effettuare la registrazione.
+Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics per confrontare i prezzi con il suo negozio di fiducia; naviga sul sito senza effettuare la registrazione.
 
 
 # Functional and non functional requirements
@@ -244,22 +244,13 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 
 | Actors Involved  |        Customer                                                             |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente loggato come Customer |
-|  Post condition  | prodotto aggiunto al carrello |
+|   Precondition   | Utente loggato come Customer|
+|  Post condition  | Prodotto aggiunto al carrello |
 | Nominal Scenario |       Scenario 1.1 ( utente aggiunge un elemento al carrello)         |
 |     Variants     |    -           |
 |    Exceptions    | Scenario 1.2(il prodotto non esiste ,Error 404), Scenario 1.3 ( il prodotto non è disponibile (venduto o in un altro carrello) (Error 409))                       |
 
 ##### Scenario 1.1
-
-
-
-
-
-
-
-
-
 
 |  Scenario 1.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
@@ -302,7 +293,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Post condition  |  Elemento rimosso dal carrello |
 | Nominal Scenario |        Scenario 2.1 (Rimozione di un elemento dal carrello)         |
 |     Variants     |     -        |
-|    Exceptions    |   Scenario 2.2  (codice prodotto non presente nel carrello (ERROr 404),carrello non esistente (ERROR 404)), Scenario 2.3(codice prodotto insesistente (ERROR 409), codice prodotto di un prodotto già venduto (ERROR 409))                       |
+|    Exceptions    |   Scenario 2.2  (codice prodotto non presente nel carrello (ERROR 404),carrello non esistente (ERROR 404)), Scenario 2.3(codice prodotto insesistente (ERROR 404), codice prodotto di un prodotto già venduto (ERROR 409))    |
 
 ##### Scenario 2.1
 
@@ -325,7 +316,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |     Step#      |                                Description                                 |
 |       1        |      L'utente   apre il carrello                                                           |
 |       2        |      Il sistema mostra il carrello                                         |
-|       3        |        L'utente chiede di rimuovere un prodotto                                                                    |
+|       3        |        L'utente chiede di rimuovere un prodotto                           |
 |      4       |            Il sistema lancia l'errore 404 (prodotto non nel carrello, prodotto e/o carrello non esistente)           |
 
 ##### Scenario 2.3
@@ -335,10 +326,10 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer |
 | Post condition |  Lancio Errore 409|
 |     Step#      |                                Description                                 |
-|       1        |      L'utente   apre il carrello                                                           |
-|       2        |      Il sistema chiede di rimuovere un prodotto                                        |
-|       3        |        L'utente rimuove un elemento                                                                    |
-|      4       |            Il sistema lancia l'errore 409 (prodotto già venduto)                                                         |
+|       1        |      L'utente   apre il carrello                            |
+|       2        |      Il sistema mostra il carrello        |
+|       3        |        L'utente chiede di rimuovere un prodotto              |
+|      4       |            Il sistema lancia l'errore 409 (prodotto già venduto)      |
 
 ### Use case 3, Eliminazione Carrello
 
@@ -348,7 +339,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Post condition  |  Carrello eliminato|
 | Nominal Scenario |  Scenario 3.1 (Utente richiede di eliminare il carello corrente)         |
 |     Variants     |        -|
-|    Exceptions    |                Scenario 3.2  (Carrello non esistente (Error 404))|
+|    Exceptions    | Scenario 3.2  (Carrello non esistente (Error 404))|
 
 
 ##### Scenario 3.1
@@ -368,12 +359,12 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 3.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Utente autenticato come Customer|
-| Post condition | Errore 404 |
+| Post condition | Lancio Errore 404 |
 |     Step#      |                                Description                                 |
-|       1        |      L'utente   apre il carrello                                                           |
-|       2        |      Il sistema mostra il carrello                                         |
+|       1        |      L'utente   apre il carrello        |
+|       2        |      Il sistema mostra la schermata del carrello      |
 |       3        |        L'utente richiede eliminazione del carrello                                                               |
-|      4       |            Il sistema lancia l'errore 404                                                        |
+|      4       |            Il sistema lancia l'errore 404    |
 
 
 ### Use case 4, Checkout Carrello
@@ -395,7 +386,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |       1        |      L'utente apre il carrello          |
 |       2        |      Il sistema mostra il carrello          |
 |       3        |    L'utente richiede checkout del carrello e seleziona il metodo di pagamento: "paga e spedisci a casa"  |
-| 4 | EZElectronics verifica disponibilità dei prodotti richiesti, controlla presenza di un indirizzo dell'utente e in caso di esito positivo invia reindirizza l'utente verso la pagina di pagamento|
+| 4 | EZElectronics verifica disponibilità dei prodotti richiesti, controlla presenza di un indirizzo dell'utente e reindirizza l'utente verso la pagina di pagamento|
 |5| L'utente inserisce dati di pagamento e conferma |
 |6| EZElectronics ingaggia servizio di trasporto che genera il numero di tracking, aggiorna stato carrello e mostra conferma |
 
@@ -417,7 +408,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 4.3  |                 |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
-| Post condition |  Checkout effettuato con successo|
+| Post condition |  Lancio errore 404|
 |     Step#      |                                Description     |
 |       1        |      L'utente apre il carrello      |
 |       2        |      Il sistema mostra il carrello  |
@@ -430,11 +421,11 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 4.4  |                 |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
-| Post condition |  Checkout effettuato con successo|
+| Post condition |  Lancio errore 404|
 |     Step#      |         Description     |
 |       1        |      L'utente apre il carrello     |
 |       2        |      Il sistema mostra il carrello    |
-|       3  | L'utente richiede checkout del carrello         |
+|       3  | L'utente richiede checkout del carrello e seleziona il metodo di pagamento: "paga e spedisci a casa"         |
 |      4       |  EZElectronics verifica disponibilità dei prodotti richiesti e lancia l'errore 404 (almeno uno dei codici prodotto non esiste)    |
 
 ##### Scenario 4.5
@@ -442,11 +433,11 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 4.5  |                 |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
-| Post condition |  Checkout effettuato con successo|
+| Post condition |  Checkout non riuscito|
 |     Step#      |         Description     |
 |       1        |      L'utente apre il carrello     |
 |       2        |      Il sistema mostra il carrello    |
-|       3  | L'utente richiede checkout del carrello         |
+|       3  | L'utente richiede checkout del carrello e seleziona il metodo di pagamento: "paga e spedisci a casa"         |
 |      4       |  EZElectronics verifica disponibilità dei prodotti richiesti e lancia l'errore (il prodotto è già stato venduto)    |
 
 ##### Scenario 4.6
@@ -466,7 +457,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 4.7  |                 |
 | :------------: | :---------: |
 |  Precondition  | Carrello con almeno un elemento, Utente autenticato come Customer|
-| Post condition |  Checkout effettuato con successo|
+| Post condition |  Checkout non riuscito|
 |     Step#      |    Description     |
 |       1        |      L'utente apre il carrello          |
 |       2        |      Il sistema mostra il carrello          |
@@ -478,20 +469,20 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 
 | Actors Involved  |         Customer                                                            |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente loggato come customer|
-|  Post condition  | carrello dal sistema |
+|   Precondition   | Utente loggato come Customer|
+|  Post condition  | Carrello mostrato dal sistema |
 | Nominal Scenario | Scenario 5.1 (Sitstema mostra carrello dell'utente corrente)          |
 |     Variants     |        -          |
-|    Exceptions    |               |
+|    Exceptions    |        -       |
 
 
 #### Scenario 5.1
 
 |  Scenario 5.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | utente loggato come customer|
-| Post condition | carrello mostrato dal sistema|
-|    1   |       customer richiede di visualizzare il carrello |
+|  Precondition  | Utente loggato come Customer|
+| Post condition | Carrello mostrato dal sistema|
+|    1   |       Utente richiede di visualizzare il carrello |
 |    2   |            Sistema mostra il carrello |
 
 
@@ -503,30 +494,30 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Post condition  | Prodotti registrati all'interno del sistema |
 | Nominal Scenario | Scenario 6.1 (Store manager registra più prodotti dello stesso modello)       |
 |     Variants     | - |
-|    Exceptions    | Scenario 6.2 (inserimento data di arrivo dopo quella corrente) |
+|    Exceptions    | Scenario 6.2 (inserimento data di arrivo successiva a quella corrente) |
 
 
 ##### Scenario 6.1
 
 |  Scenario 6.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | utente loggato come store manager|
+|  Precondition  | Utente loggato come Store Manager|
 | Post condition |  Registrazione prodotti con molteplicitá > 1 |
-|       1        |        Store manager chiede di registrare nuovi arrivi |
-|      2       |            Sistema mostra form di inserimento data di arrivo |
-|      3       |            Store manager inserisce data di arrivo |
-|      4       |            Il sistema registra data di arrivo relativa ai prodotti interessati |
+|       1        |        Utente chiede di registrare nuovi arrivi |
+|      2       |            Sistema mostra form di inserimento |
+|      3       |            Store manager inserisce i dati |
+|      4       |            Il sistema registra dati inseriti |
 
 ##### Scenario 6.2
 
 |  Scenario 6.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Store manager loggato|
-| Post condition |  sistema mostra errore |
-|       1       |        Store manager chiede di registrare nuovi arrivi |
-|      2       |            Sistema mostra form di inserimento data di arrivo |
-|      3       |            Store manager inserisce data/e di arrivo |
-|      4       |            Il sistema mostra errore perchè la data di arrivo è dopo la data odierna |
+|  Precondition  | Store Manager loggato|
+| Post condition |  Sistema mostra errore |
+|       1       |        Store Manager chiede di registrare nuovi arrivi |
+|      2       |   Sistema mostra form di inserimento |
+|      3       |  Store Manager inserisce i dati |
+|      4       |  Il sistema mostra errore perchè la data di arrivo inserita è successiva alla data odierna |
 
 
 
@@ -534,7 +525,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 
 | Actors Involved  |  Store Manager |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente autenticato come Store Manager |
+|   Precondition   | Utente loggato come Store Manager |
 |  Post condition  | Prodotto eliminato dal sistema |
 | Nominal Scenario | Scenario 7.1 (Store manager elimina prodotto dal sistema)        |
 |     Variants     | -  |
