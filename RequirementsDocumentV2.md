@@ -103,7 +103,7 @@ Version: V2 - description of EZElectronics in CURRENT form (as received by teach
 
 # Informal description
 
-EZElectronics (read EaSy Electronics) is a software application designed to help managers of electronics stores to manage their products and offer them to customers through a dedicated website. Managers can assess the available products, record new ones, and confirm purchases. Customers can see available products, add them to a cart and see the history of their past purchases.
+EZElctronics è un'applicazione software pensata per aiutare i manager di negozi di elettronica a gestire i loro prodotti e venderli attraverso un sito web dedicato. I manager possono inserire nuovi prodotti, registrarne l'arrivo e confermare la vendita dei prodotti acquistati in negozio. I visitatori non autenticati possono solamente navigare la lista dei prodotti disponibili. I customer in aggiunta possono aggiungere i prodotti al loro carrello, vedere lo storico dei carrelli acquistati e acquistare i prodotti o direttamente online o con ritiro e pagamento in negozio. Gli admin invece si occupano della gestione degli utenti e dei rispettivi profili.
 
 # Stakeholders
 
@@ -113,6 +113,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 | Store Manager  | Utente che gestisce l'inventario e conferma gli ordini           |
 | Payment service  | Utilizzato per gestire le transazioni            |
 | Admin  |  Utente che gestisce gli altri utenti       |
+| Visitor| Fruitore del sito che non è autenticato |
 
 # Context Diagram and interfaces
 
@@ -137,6 +138,7 @@ EZElectronics (read EaSy Electronics) is a software application designed to help
 |Admin    | GUI                 | PC / smartphone|
 | Payment Service | https://developer.paypal.com/docs/payouts/standard/integrate-api/ | Internet |
 | Transport Service | https://www.sda.it/wps/portal/sdait.home/Soluzioni_digitali/Integrazioni_di_sistema/WEBSERVICES?locale=it | Internet |
+| Visitor | GUI | PC/smartphone |
 
 # Stories and personas
 
@@ -567,9 +569,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ### Use case 8, Ricerca prodotti
 
-| Actors Involved  |  Utente |
+| Actors Involved  |  Visitor, Customer, Store manager, Admin |
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente autenticato |
+|   Precondition   | - |
 |  Post condition  | Prodotto mostrato dal sistema |
 | Nominal Scenario | Scenario 8.1(utente ricerca prodotto per codice)         |
 |     Variants     | - |
@@ -579,7 +581,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 8.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | utente loggato|
+|  Precondition  | -|
 | Post condition |  Prodotto ricercato mostrato |
 |       1        |  Sistema mostra elenco prodotti |
 |       2        |  utente inserisce il codice prodotto nella barra di ricerca |
@@ -588,7 +590,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 ##### Scenario 8.2
 |  Scenario 8.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | utente loggato|
+|  Precondition  |- |
 | Post condition |  Errore prodotto ricercato non trovato |
 |       1        |  Sistema mostra elenco prodotti |
 |       2        |  utente inserisce il codice prodotto nella barra di ricerca |
@@ -596,9 +598,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 ### Use case 9, Filtra prodotti
 
-| Actors Involved  |  utente|
+| Actors Involved  |  Visitor, Customer, Admin, Store manager|
 | :--------------: | :------------------------------------------------------------------: |
-|   Precondition   | Utente autenticato |
+|   Precondition   |- |
 |  Post condition  | Visualizzazione prodotti filtrati |
 | Nominal Scenario | Scenario 9.1 (Utente filtra, per categoria o modello, lista di prodotti)       |
 |     Variants     | Scenario 9.2 (utente applica ulteriore filtro per prodotti venduti/non venduti)    |
@@ -608,7 +610,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 9.1  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | utente loggato|
+|  Precondition  |-|
 | Post condition |  Visualizzazione lista prodotti filtrata |
 |       1        |  utente seleziona filtro (categoria o modello) |
 |      2       |  Sistema mostra lista prodotti filtrata secondo il filtro selezionato |
@@ -617,7 +619,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 |  Scenario 9.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | utente loggato|
+|  Precondition  |-|
 | Post condition |  Visualizzazione lista prodotti filtrata |
 |       1        |  utente seleziona filtro (categoria o modello) |
 |      2       |  Sistema mostra lista prodotti filtrata secondo il filtro selezionato |
@@ -668,9 +670,9 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |4| EZElectronics verifica i dati e torna errore (data di arrivo dopo la data odierna)|
 
 ### Use case 11, Mostra prodotti
-| Actors Involved  | Utente  |
+| Actors Involved  | Visitor, Customer, Store manager, Admin  |
 | :--------------: | :---: |
-|   Precondition   | utente loggato|
+|   Precondition   | - |
 |  Post condition  | visualizzazione prodotti |
 | Nominal Scenario | Scenario 11.1 (utente richiede di visualizzare tutti i prodotti e EZElectronics li mostra) |
 |     Variants     | Scenario 11.2 (utente richiede di visualizzare prodotti per venduto/non venduto) |
@@ -679,7 +681,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 ##### Scenario 11.1
 |  Scenario 11.1  |   |
 | :------------: | :---: |
-|  Precondition  | utente loggato|
+|  Precondition  | - |
 | Post condition | prodotti visualizzati|
 |     Step#      |Description |
 |1| utente chiede di visualizzare tutti i prodotti |
@@ -688,7 +690,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 ##### Scenario 11.2
 |  Scenario 11.2  |   |
 | :------------: | :---: |
-|  Precondition  | utente loggato|
+|  Precondition  | - |
 | Post condition | prodotti filtrati e visualizzati|
 |     Step#      |Description |
 |1| utente chiede di visualizzare i prodotti venduti/non venduti |
@@ -696,7 +698,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 12, Creazione Account utente
-| Actors Involved  |  Utente |
+| Actors Involved  |  Visitor |
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
 |  Post condition  | Utente Registrato |
@@ -728,7 +730,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 13, Login
-| Actors Involved  | Utente  |
+| Actors Involved  | Visitor |
 | :--------------: | :---: |
 |   Precondition   | Utente non loggato |
 |  Post condition  | Utente loggato |
