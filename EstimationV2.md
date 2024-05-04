@@ -42,9 +42,12 @@ Consider the EZElectronics  project in FUTURE version (as proposed by your team 
 | Definire System Design e Deployment Diagram | 10 ore |
 | Sviluppare GUI Prototype | 40 ore |
 | Definire Design Document | 80 ore |
-| Scrivere il Codice | 240 ore |
-| Svolgere Unit Tests | 60 ore |
-| Svolgere Api Tests | 60 ore |
+| Scrivere il Codice | 200 ore |
+| Revisionare il Codice | 40 ore |
+| Svolgere Unit Tests | 40 ore |
+| Svolgere Unit Tests | 20 ore |
+| Svolgere Api Tests | 40 ore |
+| Svolgere Unit Tests | 20 ore |
 | Definire Management Documents | 60 ore |
 ###
 (Considerando un team di 4 persone)
