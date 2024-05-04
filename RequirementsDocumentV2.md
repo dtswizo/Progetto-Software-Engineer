@@ -2,11 +2,11 @@
 
 Date:
 
-Version: V2 - description of EZElectronics in CURRENT form (as received by teachers)
+Version: V2 - description of EZElectronics in improved form
 
 | Version number | Change |
 | :------------: | :----: |
-|                |        |
+|  1.0.0              |  -      |
 
 # Contents
 
@@ -103,7 +103,7 @@ Version: V2 - description of EZElectronics in CURRENT form (as received by teach
 
 # Informal description
 
-EZElctronics è un'applicazione software pensata per aiutare i manager di negozi di elettronica a gestire i loro prodotti e venderli attraverso un sito web dedicato. I manager possono inserire nuovi prodotti, registrarne l'arrivo e confermare la vendita dei prodotti acquistati in negozio. I visitatori non autenticati possono solamente navigare la lista dei prodotti disponibili. I customer in aggiunta possono aggiungere i prodotti al loro carrello, vedere lo storico dei carrelli acquistati e acquistare i prodotti o direttamente online o con ritiro e pagamento in negozio. Gli admin invece si occupano della gestione degli utenti e dei rispettivi profili.
+EZElctronics è un'applicazione software pensata per aiutare i manager di negozi di elettronica a gestire i loro prodotti e venderli attraverso un sito web dedicato. I manager possono inserire nuovi prodotti, registrarne l'arrivo e confermare la vendita dei prodotti acquistati in negozio. I visitatori non autenticati possono solamente navigare la lista dei prodotti disponibili. I customer in aggiunta possono aggiungere i prodotti al loro carrello, vedere lo storico dei carrelli acquistati e acquistare prodotti o direttamente online o con ritiro e pagamento in negozio. Gli admin invece si occupano della gestione degli utenti e dei rispettivi profili, con possibilità di visualizzare i prodotti.
 
 # Stakeholders
 
@@ -111,8 +111,9 @@ EZElctronics è un'applicazione software pensata per aiutare i manager di negozi
 | :--------------: | :---------: |
 | Customer  |  Utente che acquista i prodotti     |
 | Store Manager  | Utente che gestisce l'inventario e conferma gli ordini           |
-| Payment service  | Utilizzato per gestire le transazioni            |
-| Admin  |  Utente che gestisce gli altri utenti       |
+| Servizio di pagamento  | Servizio utilizzato per gestire le transazioni degli acquisti 'paga e spedisci a casa'    |
+| Servizio di spedizione  | Servizio utilizzato per gestire le spedizioni degli acquisti 'paga e spedisci a casa'   |
+| Admin  |  Utente che gestisce gli utenti       |
 | Visitor| Fruitore del sito che non si registra |
 
 # Context Diagram and interfaces
@@ -136,9 +137,9 @@ EZElctronics è un'applicazione software pensata per aiutare i manager di negozi
 | Customer  |      GUI          |     PC /  Smartphone|
 | Store Manager | GUI | PC / Smartphone|
 |Admin    | GUI                 | PC / smartphone|
+| Visitor | GUI | PC/smartphone |
 | Payment Service | https://developer.paypal.com/docs/payouts/standard/integrate-api/ | Internet |
 | Transport Service | https://www.sda.it/wps/portal/sdait.home/Soluzioni_digitali/Integrazioni_di_sistema/WEBSERVICES?locale=it | Internet |
-| Visitor | GUI | PC/smartphone |
 
 # Stories and personas
 
@@ -148,7 +149,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 Luca è un ragazzo di 23 anni parte integrante del team dello store online EZElectronics. Il suo ruolo consiste nell'amministrare gli account degli utenti (creazione, cambio di ruolo, eliminazione).
 
-
+Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics per confrontare i prezzi con il suo negozio di fiducia; Naviga sul sito senza effettuare la registrazione.
 
 
 # Functional and non functional requirements
@@ -182,11 +183,11 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 | FR3.4| Login utenti| 
 | FR3.5| Filtra utenti| 
 | FR3.6| Mostra lista utenti| 
-| FR3.7| Mostra utente loggato| 
+| FR3.7| Mostra info utente loggato| 
 | FR3.8| Ricerca utente| 
 | FR3.9| Logout utente| 
 | FR3.10 | Modifica indirizzo utente |
-| FR4| Gestione ordini |
+| FR4| Gestione carrelli |
 | FR4.1| Mostra storico carrelli pagati| 
 | FR5| Gestione privacy|
 | FR5.1 | Mostra termini di servizio|
@@ -210,17 +211,17 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
-|  NFR1 | Usabilità | Utenti non hanno bisogno di training | FR3 |
+|  NFR1 | Usabilità | Utenti non hanno bisogno di training | FR1,FR2,FR3,FR4,FR5,FR6,FR7 |
 | NFR2 | Usabilità | La sessione deve essere mantenuta attiva almeno 12 ore |    FR3       |
-| NFR3 |   Portabilità | Chrome: 97.0.4692.99, Firefox:  96.0.1, Safari: 15.1|      FR1,FR2,FR3,FR4     |
-| NFR4 |  Portabilità | Il sito deve essere responsive per schermi che vanno da 360x720 pixels a 3840x2160 pixels |    FR1,FR2,FR3,FR4       |
-| NFR5 | Sicurezza | Le password devono essere salvate sul database con un algoritmo di hashing salted|   FR3        | 
+| NFR3 |   Portabilità | Chrome: 97.0.4692.99, Firefox:  96.0.1, Safari: 15.1|      FR1,FR2,FR3,FR4,FR5,FR6,FR7     |
+| NFR4 |  Portabilità | Il sito deve essere responsive per schermi che vanno da 360x720 pixels a 3840x2160 pixels |    FR1,FR2,FR3,FR4,FR5,FR6,FR7       |
+| NFR5 | Sicurezza | Le password devono essere salvate sul database con un algoritmo di hashing salted |   FR3        | 
 | NFR6|Sicurezza|GDPR privacy policy requirements| FR5 |
-|  NFR7 | Efficienza | Tempo di risposta del server inferiore a 0.2s |      FR1,FR2,FR3,FR4     |
+|  NFR7 | Efficienza | Tempo di risposta del server inferiore a 0.2s |      FR1,FR2,FR3,FR4,FR5     |
 |  NFR8 | Affidabilità | Sito non deve essere offline per più di 7gg all'anno|      FR1,FR2,FR3,FR4,FR5     |
-| NFR9 |   Correttezza | Test Coverage >= 80%  |     FR1,FR2,FR3,FR4,FR5,FR6      |
-| NFR10 | Manutenibilità | 8 ore/persona necessarie per sistemare un malfunzionamento |      FR1,FR2,FR3,FR4,FR5,FR6     |
-| NFR11 | Manutenibilità | 20 ore/persona necessarie per tempistiche di deploy per una nuova versione|     FR1,FR2,FR3,FR4,FR5,FR6      |
+| NFR9 |   Correttezza | Test Coverage >= 80%  |     FR1,FR2,FR3,FR4,FR5,FR6,FR7      |
+| NFR10 | Manutenibilità | 8 ore/persona necessarie per sistemare un malfunzionamento |      FR1,FR2,FR3,FR4,FR5,FR6,FR7     |
+| NFR11 | Manutenibilità | 20 ore/persona necessarie per tempistiche di deploy per una nuova versione|     FR1,FR2,FR3,FR4,FR5,FR6,FR7      |
 
 
 
@@ -228,8 +229,6 @@ Luca è un ragazzo di 23 anni parte integrante del team dello store online EZEle
 
 
 # Use case diagram and use cases
-
-Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è seguito alla lettera il documento di riferimento delle API, pertanto si è permesso l'accesso alle suddette funzionalità senza requisiti di login specifici, anche se sarebbe opportuno considerarne l'utilizzo solo per utenti autenticati come store manager.
 
 ## Use case diagram
 
