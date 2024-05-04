@@ -628,7 +628,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 10, Crea e registra nuovo prodotto
-| Actors Involved  | store manager  |
+| Actors Involved  | Store Manager  |
 | :--------------: | :---: |
 |   Precondition   | utente loggato come manager|
 |  Post condition  | nuovo prodotto aggiunto |
@@ -670,7 +670,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |4| EZElectronics verifica i dati e torna errore (data di arrivo dopo la data odierna)|
 
 ### Use case 11, Mostra prodotti
-| Actors Involved  | Visitor, Customer, Store manager, Admin  |
+| Actors Involved  | Visitor, Customer, Store Manager, Admin  |
 | :--------------: | :---: |
 |   Precondition   | - |
 |  Post condition  | visualizzazione prodotti |
@@ -698,7 +698,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 12, Creazione Account utente
-| Actors Involved  |  Visitor |
+| Actors Involved  |  Admin, Customer, Store Manager |
 | :--------------: | :---: |
 |   Precondition   | Utente non registrato |
 |  Post condition  | Utente Registrato |
@@ -730,7 +730,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 13, Login
-| Actors Involved  | Visitor |
+| Actors Involved  | Store Manager, Customer, Admin |
 | :--------------: | :---: |
 |   Precondition   | Utente non loggato |
 |  Post condition  | Utente loggato |
@@ -765,7 +765,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 |6| Sistema rileva errore nei dati e torna errore|
 
 ### Use case 14, Logout
-| Actors Involved  | Utente  |
+| Actors Involved  | Customer, Store Manager, Admin  |
 | :--------------: | :---: |
 |   Precondition   | Utente loggato |
 |  Post condition  | Utente non loggato |
@@ -878,7 +878,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 18, Mostra informazioni utente corrente
-| Actors Involved  | Utente |
+| Actors Involved  | Customer, Store Manager, Admin |
 | :--------------: | :---: |
 |   Precondition   | utente loggato|
 |  Post condition  | informazioni visualizzate |
@@ -957,7 +957,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 ### Use case 21, Modifica indirizzo
-| Actors Involved  |  Utente |
+| Actors Involved  |  Customer, Store Manager, Admin |
 | :--------------: | :---: |
 |   Precondition   | Utente loggato |
 |  Post condition  | l'indirizzo dell'utente è stato modificato|
