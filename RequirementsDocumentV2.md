@@ -113,7 +113,7 @@ EZElctronics è un'applicazione software pensata per aiutare i manager di negozi
 | Store Manager  | Utente che gestisce l'inventario e conferma gli ordini           |
 | Payment service  | Utilizzato per gestire le transazioni            |
 | Admin  |  Utente che gestisce gli altri utenti       |
-| Visitor| Fruitore del sito che non è autenticato |
+| Visitor| Fruitore del sito che non si registra |
 
 # Context Diagram and interfaces
 
@@ -236,7 +236,7 @@ Per gli use case: mostra utenti, eliminazione utente e filtra utenti si è segui
 
 
 
-![alt text](resources/UseCase_Diagram.png)
+![alt text](resources/UseCase_Diagram_V2.png)
 
 
 
