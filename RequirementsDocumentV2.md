@@ -57,6 +57,7 @@ Version: V2 - description of EZElectronics in improved form
     - [Use case 9, Filtra prodotti](#use-case-9-filtra-prodotti)
         - [Scenario 9.1](#scenario-91)
         - [Scenario 9.2](#scenario-92)
+        - [Scenario 9.3](#scenario-93)
     - [Use case 10, Crea e registra nuovo prodotto](#use-case-10-crea-e-registra-nuovo-prodotto)
         - [Scenario 10.1](#scenario-101)
         - [Scenario 10.2](#scenario-102)
@@ -539,22 +540,19 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Precondition  | Store manager loggato|
 | Post condition |  Prodotto eliminato |
 |       1        |  Sistema mostra elenco prodotti |
-|       2        |  Store manager seleziona 'elimina' accanto al prodotto che desidera eliminare |
-|      3      |  Store manager conferma l'operazione |
-|      4      |  Sistema elimina il prodotto dall'elenco |
+|       2        |  Store Manager seleziona 'Elimina prodotto' accanto al prodotto che desidera eliminare |
+|      3      |  Sistema elimina il prodotto dall'elenco |
 
 
 ##### Scenario 7.2
 
 |  Scenario 7.2  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
-|  Precondition  | Store manager loggato|
-| Post condition |  Sistema mostra errore |
+|  Precondition  | Store Manager loggato|
+| Post condition |  Lancio errore 404 |
 |       1        |  Sistema mostra elenco prodotti |
-|       2        |  Store manager seleziona 'elimina' accanto al prodotto che desidera eliminare |
-|      3       |  Sistema chiede conferma dell'operazione |
-|      4       |  Store manager conferma l'operazione |
-|      5       |  Sistema mostra errore 404  |
+|       2        |  Store Manager seleziona 'Elimina prodotto' accanto al prodotto che desidera eliminare |
+|      2       |  Sistema lancia errore 404  |
 
 
 ### Use case 8, Ricerca prodotti
@@ -574,7 +572,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Precondition  | -|
 | Post condition |  Prodotto ricercato mostrato |
 |       1        |  Sistema mostra elenco prodotti |
-|       2        |  utente inserisce il codice prodotto nella barra di ricerca |
+|       2        |  Utente inserisce il codice prodotto nella barra di ricerca |
 |      3       |  Sistema mostra prodotto ricercato |
 
 ##### Scenario 8.2
@@ -592,8 +590,8 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   |- |
 |  Post condition  | Visualizzazione prodotti filtrati |
-| Nominal Scenario | Scenario 9.1 (Utente filtra, per categoria o modello, lista di prodotti)       |
-|     Variants     | Scenario 9.2 (utente applica ulteriore filtro per prodotti venduti/non venduti)    |
+| Nominal Scenario | Scenario 9.1 (Utente filtra lista di prodotti per categoria)       |
+|     Variants     | Scenario 9.2 (Utente applica filtro su modello in alternativa a quello per categoria), Scenario 9.3 (Utente applica ulteriore filtro per prodotti venduti/non venduti)    |
 |    Exceptions    | - |
 
 ##### Scenario 9.1
@@ -602,12 +600,21 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  |-|
 | Post condition |  Visualizzazione lista prodotti filtrata |
-|       1        |  utente seleziona filtro (categoria o modello) |
+|       1        |  utente seleziona filtro categoria|
 |      2       |  Sistema mostra lista prodotti filtrata secondo il filtro selezionato |
 
 ##### Scenario 9.2
 
 |  Scenario 9.2  |                                                                            |
+| :------------: | :------------------------------------------------------------------------: |
+|  Precondition  |-|
+| Post condition |  Visualizzazione lista prodotti filtrata |
+|       1        |  utente seleziona filtro modello |
+|      2       |  Sistema mostra lista prodotti filtrata secondo il filtro selezionato |
+
+##### Scenario 9.3
+
+|  Scenario 9.3  |                                                                            |
 | :------------: | :------------------------------------------------------------------------: |
 |  Precondition  |-|
 | Post condition |  Visualizzazione lista prodotti filtrata |
@@ -620,50 +627,50 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 ### Use case 10, Crea e registra nuovo prodotto
 | Actors Involved  | Store Manager  |
 | :--------------: | :---: |
-|   Precondition   | utente loggato come manager|
+|   Precondition   | Utente loggato come Store Manager|
 |  Post condition  | nuovo prodotto aggiunto |
-| Nominal Scenario | Scenario 10.1(Manager richiede di aggiungere prodotto ed EZElectronics lo aggiunge)|
+| Nominal Scenario | Scenario 10.1(Store Manager richiede di aggiungere prodotto ed EZElectronics lo aggiunge)|
 |     Variants     | - |
-|    Exceptions    | Scenario 10.2 (Inserimento prodotto duplicato (409)), Scenario 10.3 (inserimento data di arrivo dopo quella corrente) |
+|    Exceptions    | Scenario 10.2 (Inserimento prodotto duplicato (409)), Scenario 10.3 (Inserimento data di arrivo dopo quella corrente) |
 
 ##### Scenario 10.1
 |  Scenario 10.1  |   |
 | :------------: | :---: |
-|  Precondition  | utente loggato come manager|
-| Post condition | nuovo prodotto aggiunto|
+|  Precondition  | Utente loggato come Store Manager|
+| Post condition | Nuovo prodotto aggiunto|
 |     Step#      |Description |
-|1| Manager chiede di aggiungere nuovo prodotto |
+|1| Store Manager chiede di aggiungere nuovo prodotto |
 |2| EZElectronics mostra form per inserimento informazioni|
-|3| Manager compila il form e invia i dati|
+|3| Store Manager compila il form e invia i dati|
 |4| EZElectronics valida i dati e inserisce nuovo prodotto|
 
 ##### Scenario 10.2
 |  Scenario 10.2  |   |
 | :------------: | :---: |
-|  Precondition  | utente loggato come manager|
-| Post condition | visualizzazione errore da parte del sistema|
+|  Precondition  | Utente loggato come Store Manager|
+| Post condition | Lancio errore 409|
 |     Step#      |Description |
-|1| Manager chiede di aggiungere nuovo prodotto |
+|1| Store Manager chiede di aggiungere nuovo prodotto |
 |2| EZElectronics mostra form per inserimento informazioni|
-|3| Manager compila il form e invia i dati|
-|4| EZElectronics verifica i dati e torna errore 409 (prodotto gia esistente)|
+|3| Store Manager compila il form e invia i dati|
+|4| EZElectronics verifica i dati e lancia errore 409 (prodotto gia esistente)|
 
 ##### Scenario 10.3
 |  Scenario 10.3  |   |
 | :------------: | :---: |
-|  Precondition  | utente loggato come manager|
-| Post condition | visualizzazione errore da parte del sistema|
+|  Precondition  | Utente loggato come Store Manager|
+| Post condition | Lancio errore da parte del sistema|
 |     Step#      |Description |
-|1| Manager chiede di aggiungere nuovo prodotto |
+|1| Store Manager chiede di aggiungere nuovo prodotto |
 |2| EZElectronics mostra form per inserimento informazioni|
-|3| Manager compila il form e invia i dati|
-|4| EZElectronics verifica i dati e torna errore (data di arrivo dopo la data odierna)|
+|3| Store Manager compila il form e invia i dati|
+|4| EZElectronics verifica i dati e lancia errore (data di arrivo dopo la data odierna)|
 
 ### Use case 11, Mostra prodotti
 | Actors Involved  | Visitor, Customer, Store Manager, Admin  |
 | :--------------: | :---: |
 |   Precondition   | - |
-|  Post condition  | visualizzazione prodotti |
+|  Post condition  | Visualizzazione prodotti |
 | Nominal Scenario | Scenario 11.1 (utente richiede di visualizzare tutti i prodotti e EZElectronics li mostra) |
 |     Variants     | Scenario 11.2 (utente richiede di visualizzare prodotti per venduto/non venduto) |
 |    Exceptions    | - |
@@ -672,18 +679,18 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 11.1  |   |
 | :------------: | :---: |
 |  Precondition  | - |
-| Post condition | prodotti visualizzati|
+| Post condition | Prodotti visualizzati|
 |     Step#      |Description |
-|1| utente chiede di visualizzare tutti i prodotti |
+|1| Utente chiede di visualizzare tutti i prodotti |
 |2| EZElectronics mostra i prodotti|
 
 ##### Scenario 11.2
 |  Scenario 11.2  |   |
 | :------------: | :---: |
 |  Precondition  | - |
-| Post condition | prodotti filtrati e visualizzati|
+| Post condition | Prodotti filtrati e visualizzati|
 |     Step#      |Description |
-|1| utente chiede di visualizzare i prodotti venduti/non venduti |
+|1| Utente chiede di visualizzare i prodotti venduti/non venduti |
 |2| EZElectronics mostra i prodotti filtrati richiesti|
 
 
@@ -711,12 +718,12 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 12.2  |   |
 | :------------: | :---: |
 |  Precondition  | Utente non registrato|
-| Post condition | Sistema mostra errore|
+| Post condition | Lancio errore 409|
 |     Step#      |Description |
 |1| Utente chiede di effettuare registrazione |
-|2| EZElectronics chiede dati personali|
+|2| EZElectronics mostra form registrazione|
 |3| Utente inserisce dati personali e accetta termini di servizio|
-|4| Sistema individua username duplicato e torna errore 409|
+|4| Sistema individua username duplicato e lancia errore 409|
 
 
 ### Use case 13, Login
@@ -735,7 +742,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 | Post condition | Utente loggato|
 |     Step#      |Description |
 |1| Utente visita EZElectronics|
-|2| EZElectronics visualizza pagina principale|
+|2| EZElectronics mostra pagina principale|
 |3| Utente chiede di effettuare login |
 |4| EZElectronics chiede dati di accesso|
 |5| Utente inserisce dati di accesso|
@@ -745,7 +752,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 13.2  |   |
 | :------------: | :---: |
 |  Precondition  | Utente non loggato|
-| Post condition | - |
+| Post condition | Lancio errore |
 |     Step#      |Description |
 |1| Utente visita EZElectronics|
 |2| EZElectronics visualizza pagina principale|
@@ -776,7 +783,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 | Actors Involved  | Admin  |
 | :--------------: | :---: |
 |   Precondition   | Utente autenticato come Admin |
-|  Post condition  | utente desiderato eliminato |
+|  Post condition  | Utente desiderato eliminato |
 | Nominal Scenario | Scenario 15.1 (Utente elimina un utente EZElectronics)|
 |     Variants     | -|
 |    Exceptions    | Scenario 15.2 (tentativo di eliminare un utente non esistente (ERROR 404))|
@@ -785,7 +792,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 15.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente autenticato come Admin |
-| Post condition | utente desiderato eliminato|
+| Post condition | Utente desiderato eliminato|
 |     Step#      |Description |
 |1| Utente chiede di eliminare uno specifico utente |
 |2| EZElectronics elimina utente e relativi dati|
@@ -794,7 +801,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 15.2  |   |
 | :------------: | :---: |
 |  Precondition  |Utente autenticato come Admin|
-| Post condition |Sistema visualizza errore|
+| Post condition |Sistema lancia errore|
 |     Step#      |Description |
 |1| Utente chiede di eliminare l'account |
 |2| EZElectronics torna errore perchè l'account selezionato non esiste|
@@ -805,8 +812,8 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |   Precondition   | Utente autenticato come Admin |
 |  Post condition  | Visulalizzazione utenti filtrati|
 | Nominal Scenario | Scenario 16.1 (Utente filtra utenti per username)|
-|     Variants     | Scenario 16.2 (Utente filtra utenti per ruolo) |
-|    Exceptions    | Scenario 16.3 (Username cercato non esiste( ERROR 404))|
+|     Variants     | Scenario 16.3 (Utente filtra utenti per ruolo) |
+|    Exceptions    | Scenario 16.2 (Username cercato non esiste( ERROR 404))|
 
 ##### Scenario 16.1
 |  Scenario 16.1  |   |
@@ -825,7 +832,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 16.2  |   |
 | :------------: | :---: |
 |  Precondition  |Utente autenticato come Admin|
-| Post condition | Sistema visulalizza errore 404|
+| Post condition | Lancio errore 404|
 |     Step#      |Description |
 |1| Utente chiede di visualizzare utenti |
 |2| EZElectronics mostra utenti|
@@ -870,8 +877,8 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 ### Use case 18, Mostra informazioni utente corrente
 | Actors Involved  | Customer, Store Manager, Admin |
 | :--------------: | :---: |
-|   Precondition   | utente loggato|
-|  Post condition  | informazioni visualizzate |
+|   Precondition   | Utente loggato|
+|  Post condition  | Informazioni visualizzate |
 | Nominal Scenario | Scenario 18.1 (Dopo richiesta da parte dell'utente EZElectronics mostra informazione relative all'utente)|
 |     Variants     | - |
 |    Exceptions    | -|
@@ -879,8 +886,8 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 ##### Scenario 18.1
 |  Scenario 18.1  |   |
 | :------------: | :---: |
-|  Precondition  | utente loggato|
-| Post condition |informazioni visualizzate|
+|  Precondition  | Utente loggato|
+| Post condition |Informazioni visualizzate|
 |     Step#      |Description |
 |1| Utente chiede di visualizzare le proprie informazioni |
 |2| EZElectronics mostra le informazioni relative all'utente|
@@ -889,7 +896,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 ### Use case 19, Storico carrelli
 | Actors Involved  |  Customer |
 | :--------------: | :---: |
-|   Precondition   | Utente autenticato come customer |
+|   Precondition   | Utente autenticato come Customer |
 |  Post condition  | Storico carrelli utente visualizzato|
 | Nominal Scenario | Scenario 19.1 (L'utente visualizza il proprio storico carrelli)
  |
@@ -899,36 +906,34 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 ##### Scenario 19.1
 |  Scenario 19.1  |   |
 | :------------: | :---: |
-|  Precondition  | Utente autenticato come customer|
+|  Precondition  | Utente autenticato come Customer|
 | Post condition | Utente visualizza lista carrelli|
 |     Step#      |Description |
 |1| Utente apre la sezione "storico carrelli"|
-|2| Il sistema cerca i carrelli associati all'utente|
-|3| La lista dei carrelli effettuati viene restituita all'utente|
+|2| Il sistema cerca i carrelli associati all'utentee li restituisce all'utente|
 
 ##### Scenario 19.2
 |  Scenario 19.2  |   |
 | :------------: | :---: |
-|  Precondition  | Utente autenticato come customer|
-| Post condition | Lancio errore "Nessun ordine eseguito"|
+|  Precondition  | Utente autenticato come Customer|
+| Post condition | Lancio errore |
 |     Step#      |Description |
-|1| Utente apre la sezione "storico carrelli"|
-|2| Il sistema cerca i carrelli associati all'utente|
-|3| Il sistema restituisce un messaggio di errore "Impossibile visualizzare ordini, nessun ordine eseguito"|
+|1| Utente apre la sezione "Storico carrelli"|
+|2| Il sistema cerca i carrelli associati all'utente e non trovandone restituisce Errore|
 
 ### Use case 20, Modifica ruolo utente
 | Actors Involved  |  Admin |
 | :--------------: | :---: |
-|   Precondition   | Utente autenticato come admin |
+|   Precondition   | Utente autenticato come Admin |
 |  Post condition  | Il ruolo di uno specifico utente è stato modificato|
-| Nominal Scenario | Scenario 20.1 (admin accede al profilo di un determinato utente e ne cambia il ruolo) |
+| Nominal Scenario | Scenario 20.1 (Admin accede al profilo di un determinato utente e ne cambia il ruolo) |
 |     Variants     | - |
-|    Exceptions    | Scenario 20.2 (tentativo di eliminare un utente non esistente (ERROR 404)) |
+|    Exceptions    | Scenario 20.2 (tentativo di modificare ruolo di un utente non esistente (ERROR 404)) |
 
 ##### Scenario 20.1
 |  Scenario 20.1  |   |
 | :------------: | :---: |
-|  Precondition  | Utente autenticato come admin|
+|  Precondition  | Utente autenticato come Admin|
 | Post condition |Il ruolo di uno specifico utente è stato modificato|
 |     Step#      |Description |
 |1| Admin richiede di modificare il ruolo di un utente|
@@ -939,8 +944,8 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 ##### Scenario 20.2
 |  Scenario 20.2  |   |
 | :------------: | :---: |
-|  Precondition  | Utente autenticato come admin|
-| Post condition |Sistema mostra errore 404|
+|  Precondition  | Utente autenticato come Admin|
+| Post condition |Lancio errore 404|
 |     Step#      |Description |
 |1| Admin richiede di modificare il ruolo di un utente|
 |2| EZElectronics mostra errore 404 (utente richiesto non esistente)|
@@ -950,7 +955,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 | Actors Involved  |  Customer, Store Manager, Admin |
 | :--------------: | :---: |
 |   Precondition   | Utente loggato |
-|  Post condition  | l'indirizzo dell'utente è stato modificato|
+|  Post condition  | L'indirizzo dell'utente è stato modificato|
 | Nominal Scenario | Scenario 21.1 (utente accede al profilo e cambia il proprio indirizzo) |
 |     Variants     | - |
 |    Exceptions    | Scenario 21.2 (tentativo di modificare indirizzo di un utente non esistente (ERROR 404)) |
@@ -959,7 +964,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Scenario 21.1  |   |
 | :------------: | :---: |
 |  Precondition  | Utente loggato|
-| Post condition |Il ruolo di uno specifico utente è stato modificato|
+| Post condition |L'indirizzo di uno specifico utente è stato modificato|
 |     Step#      |Description |
 |1| Utente richiede di modificare il proprio indirizzo|
 |2| EZElectronics mostra form di inserimento|
@@ -972,8 +977,8 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 |  Precondition  | Utente loggato|
 | Post condition |Sistema mostra errore 404|
 |     Step#      |Description |
-|1| utente richiede di modificare il proprio indirizzo|
-|2| EZElectronics mostra errore 404 (utente non esistente)|
+|1| Utente richiede di modificare il proprio indirizzo|
+|2| EZElectronics lancia errore 404 |
 
 
 ### Use case 22, Conferma vendita prodotto/i
