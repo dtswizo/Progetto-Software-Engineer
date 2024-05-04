@@ -1,6 +1,6 @@
 # Graphical User Interface Prototype - CURRENT
 
-Authors: Federico Sciascia, Davide Licitra, Lorenzo Lombardi, Mattero D'Alicarnassi
+Authors: Federico Sciascia, Davide Licitra, Lorenzo Lombardi, Matteo D'Alicarnasso
 
 Date: 03/05/2024
 
