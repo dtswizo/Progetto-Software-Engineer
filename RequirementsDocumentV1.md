@@ -173,7 +173,7 @@ Emma è una donna 30 anni che lavora come manager per lo store online di EZElect
 
 |   ID    | Type (efficiency, reliability, ..) | Description | Refers to |
 | :-----: | :--------------------------------: | :---------: | :-------: |
-|  NFR1 | Usabilità | Utenti non hanno bisogno di training | FR3 |
+|  NFR1 | Usabilità | Utenti non hanno bisogno di training | FR1,FR2,FR3,FR4 |
 | NFR2 | Usabilità | La sessione deve essere mantenuta attiva almeno 12 ore |    FR3       |
 | NFR3 |   Portabilità | Chrome: 97.0.4692.99, Firefox:  96.0.1, Safari: 15.1|      FR1,FR2,FR3,FR4     |
 | NFR4 |  Portabilità | Il sito deve essere responsive per schermi che vanno da 360x720 pixels a 3840x2160 pixels |    FR1,FR2,FR3,FR4       |
