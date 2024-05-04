@@ -62,7 +62,7 @@ Report here the results of the three estimation approaches. The  estimates may d
 | ----------- | ------------------------------- | ---------------|
 | estimate by size |750| 23 giorni lavorativi
 | estimate by product decomposition |690| 21-22 giorni lavorativi
-| estimate by activity decomposition |690| 21-22 giorni lavorativi
+| estimate by activity decomposition |690| 20 giorni lavorativi
 
 
 
