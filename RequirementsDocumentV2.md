@@ -987,9 +987,9 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 | :--------------: | :------------------------------------------------------------------: |
 |   Precondition   | Utente autenticato come Store Manager |
 |  Post condition  | Prodotto segnato come venduto |
-| Nominal Scenario | Scenario 22.1     |
-|     Variants     | Scenario 22.4   |
-|    Exceptions    | Scenario 22.2, Scenario 22.3|
+| Nominal Scenario | Scenario 22.1 (Store Manager conferma la vendita di un prodotto)    |
+|     Variants     | Scenario 22.4 (Store Manager conferma la vendita di tutti i prodotti)  |
+|    Exceptions    | Scenario 22.2 (Errore 404), Scenario 22.3 (Lancio Errore)|
 
 ##### Scenario 22.1
 
