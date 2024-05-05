@@ -21,13 +21,13 @@ Consider the EZElectronics  project in FUTURE version (as proposed by your team 
 ### 
 |         component name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- | 
-|requirement document    | 150 ore |
-| GUI prototype | 40 ore |
-|design document | 80 ore|
-|code |240 ore|
-| unit tests | 80 ore|
-| api tests |80 ore |
-| management documents  | 60 ore|
+|requirement document    | 150|
+| GUI prototype | 40|
+|design document | 80|
+|code |240 |
+| unit tests | 80 |
+| api tests |80 |
+| management documents  | 60|
 
 
 
@@ -35,20 +35,20 @@ Consider the EZElectronics  project in FUTURE version (as proposed by your team 
 ### 
 |         Activity name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- | 
-| Definire Functional e Non Functional Requirements | 30 ore |
-| Definire Personas | 30 ore | 
-| Definire Use Case | 40 ore |
-| Definire Glossario | 40 ore |
-| Definire System Design e Deployment Diagram | 10 ore |
-| Sviluppare GUI Prototype | 40 ore |
-| Definire Design Document | 80 ore |
-| Scrivere il Codice | 200 ore |
-| Revisionare il Codice | 40 ore |
-| Scrivere Unit Tests | 40 ore |
-| Svolgere Unit Tests | 20 ore |
-| Scrivere Api Tests | 40 ore |
-| Svolgere Api Tests | 20 ore |
-| Definire Management Documents | 60 ore |
+| Definire Functional e Non Functional Requirements | 30 |
+| Definire Personas | 30 | 
+| Definire Use Case | 40 |
+| Definire Glossario | 40 |
+| Definire System Design e Deployment Diagram | 10|
+| Sviluppare GUI Prototype | 40 |
+| Definire Design Document | 80  |
+| Scrivere il Codice | 200 |
+| Revisionare il Codice | 40  |
+| Scrivere Unit Tests | 40  |
+| Svolgere Unit Tests | 20  |
+| Scrivere Api Tests | 40  |
+| Svolgere Api Tests | 20  |
+| Definire Management Documents | 60  |
 ###
 (Considerando un team di 4 persone)
 ![alt text](resources/Ganttv2.png)
@@ -56,13 +56,13 @@ Consider the EZElectronics  project in FUTURE version (as proposed by your team 
 
 # Summary
 
-Report here the results of the three estimation approaches. The  estimates may differ. Discuss here the possible reasons for the difference
+Mentre la estimate by size ci indica un quantitativo più realistico di person hours (essendo basata sulle classi), la estimate by activity decomposition ci permette di avere una visione più ottimistica dei tempi, e rende più chiaro ciò che va svolto in parallelo grazie anche alla divisione in attività e al diagramma di Gantt.
 
 |             | Estimated effort                        |   Estimated duration |          
 | ----------- | ------------------------------- | ---------------|
-| estimate by size |750| 23 giorni lavorativi
-| estimate by product decomposition |690| 21-22 giorni lavorativi
-| estimate by activity decomposition |690| 20 giorni lavorativi
+| estimate by size |750 person hours| 23 giorni lavorativi
+| estimate by product decomposition |690 person hours| 22 giorni lavorativi
+| estimate by activity decomposition |630 person hours| 20 giorni lavorativi
 
 
 

@@ -236,7 +236,7 @@ Giovanni è un uomo di 40 anni che vuole visionare il catalogo di EZElectronics 
 
 
 
-![alt text](resources/UseCase_Diagram_V2.png)
+![alt text](resources/UseCase_Diagram_V2.jpeg)
 
 
 
