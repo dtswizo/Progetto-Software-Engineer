@@ -60,9 +60,9 @@ Mentre la estimate by size ci indica un quantitativo più realistico di person h
 
 |             | Estimated effort                        |   Estimated duration |          
 | ----------- | ------------------------------- | ---------------|
-| estimate by size |750| 23 giorni lavorativi
-| estimate by product decomposition |690| 21-22 giorni lavorativi
-| estimate by activity decomposition |630| 20 giorni lavorativi
+| estimate by size |750 person hours| 23 giorni lavorativi
+| estimate by product decomposition |690 person hours| 21-22 giorni lavorativi
+| estimate by activity decomposition |630 person hours| 20 giorni lavorativi
 
 
 
