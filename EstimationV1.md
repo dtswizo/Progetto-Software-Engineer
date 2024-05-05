@@ -55,13 +55,13 @@ Consider the EZElectronics  project in CURRENT version (as given by the teachers
 
 # Summary
 
-Report here the results of the three estimation approaches. The  estimates may differ. Discuss here the possible reasons for the difference
+Mentre la estimate by size ci indica un quantitativo più realistico di person hours (essendo basata sulle classi), la estimate by activity decomposition ci permette di avere una visione più ottimistica dei tempi, e rende più chiaro ciò che va svolto in parallelo grazie anche alla divisione in attività e al diagramma di Gantt.
 
 |             | Estimated effort                        |   Estimated duration |          
 | ----------- | ------------------------------- | ---------------|
 | estimate by size |450 person hours | 14 giorni lavorativi
 | estimate by product decomposition |470 person hours | 14 giorni lavorativi
-| estimate by activity decomposition |470 person hours| 14 giorni lavorativi
+| estimate by activity decomposition |430 person hours| 14 giorni lavorativi
 
 
 
