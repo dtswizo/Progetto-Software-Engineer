@@ -61,7 +61,7 @@ Report here the results of the three estimation approaches. The  estimates may d
 | ----------- | ------------------------------- | ---------------|
 | estimate by size |450 person hours | 14 giorni lavorativi
 | estimate by product decomposition |470 person hours | 14 giorni lavorativi
-| estimate by activity decomposition |470 person hours| 14 giorni lavorativi
+| estimate by activity decomposition |430 person hours| 14 giorni lavorativi
 
 
 
