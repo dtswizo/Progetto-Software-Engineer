@@ -17,14 +17,14 @@ class ProductDAO {
      * @param sellingPrice The price at which one unit of the product is sold.
      * @param arrivalDate The optional date in which the product arrived.
      * @returns A Promise that resolves to nothing.
-     */
+    */
         registerProducts(model: string, category: string, quantity: number, details: string | null, sellingPrice: number, arrivalDate: string | null) :Promise<void> {
             return new Promise<void>((resolve, reject) => {
                 try {
                     const sql = "INSERT INTO products(model, sellingPrice, category, arrivalDate, details,quantity) VALUES( ?,?, ?, ?, ?, ?)"
                     db.run(sql, [model, sellingPrice, category, arrivalDate, details,quantity], (err: Error | null) => {
                         if (err) {
-                            if (err.message.includes("UNIQUE constraint failed: products.model")) reject(new ProductAlreadyExistsError)
+                            if (err.message.includes("UNIQUE constraint failed: products.model")) reject(new ProductAlreadyExistsError())
                             reject(err)
                         }
                         resolve()
@@ -36,6 +36,29 @@ class ProductDAO {
             });
         }
 
+        getArrivalDate(model:string):Promise<string>{
+            return new Promise<string>((resolve, reject) => {
+                try {
+                    const sql = "SELECT arrivalDate FROM products WHERE model=?;"
+                    db.get(sql, [model], (err: Error | null, row: any) => {
+                        if (err) {
+                            reject(err)
+                            return
+                        }
+                        if (!row) {
+                            reject(new ProductNotFoundError())
+                            return
+                        }
+                        resolve(row.arrivalDate)
+                    })
+                } catch (error) {
+                    reject(error)
+                }
+    
+            });
+        }
+    
+
     /**
      * Increases the available quantity of a product through the addition of new units.
      * @param model The model of the product to increase.
@@ -43,14 +66,14 @@ class ProductDAO {
      * @param changeDate The optional date in which the change occurred.
      * @returns A Promise that resolves to the new available quantity of the product.
      */
-    //finire
+
     changeProductQuantity(model: string, newQuantity: number, changeDate: string | null) :Promise<number> {
         return new Promise<number>((resolve, reject) => {
             try {
                 const sql = "UPDATE products\
-                            SET quantity=?\
+                            SET quantity=?, arrivalDate=?\
                             WHERE model=?;" 
-                db.run(sql, [newQuantity,model], function (err: Error | null) {
+                db.run(sql, [newQuantity,changeDate,model], function (err: Error | null) {
                     
                     if (err) {
                         if(this.changes==0){
@@ -67,25 +90,29 @@ class ProductDAO {
         });
      }
 
-    /*
+    
     async getProductQuantity(model: string) :Promise<number> { 
         return new Promise<number>((resolve, reject) => {
             try {
-                const sql = "SELECT quantity FROM products WHERE model=?" 
-                db.run(sql, [model], (err: Error | null) => {
-                    if (err) {
-                        if (err.message.includes("Product model not found: products.model")) reject(new ProductNotFoundError)
-                        reject(err)
-                    }
-                    resolve()
-                })
+                const sql = "SELECT quantity FROM products WHERE model=?;"
+                    db.get(sql, [model], (err: Error | null, row: any) => {
+                        if (err) {
+                            reject(err)
+                            return
+                        }
+                        if (!row) {
+                            reject(new ProductNotFoundError())
+                            return
+                        }
+                        resolve(row.quantity)
+                    })
             } catch (error) {
                 reject(error)
             }
 
         });
     }
-    */
+
 
 }
 

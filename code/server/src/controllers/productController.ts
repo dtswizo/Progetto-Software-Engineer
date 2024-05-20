@@ -1,3 +1,4 @@
+import { ERROR } from "sqlite3";
 import ProductDAO from "../dao/productDAO";
 import dayjs from "dayjs";
 
@@ -23,9 +24,24 @@ class ProductController {
      * @returns A Promise that resolves to nothing.
      */
     async registerProducts(model: string, category: string, quantity: number, details: string | null, sellingPrice: number, arrivalDate: string | null) /**:Promise<void> */ {
+        
+        if (arrivalDate===null){
+            arrivalDate=dayjs().format('YYYY-MM-DD');
+        }
         if (dayjs(arrivalDate).isAfter(dayjs())){
             return DateAfterToday;
         }
+        if (model=="" || model==null){
+            return Error("parameter model is not valid");
+        }
+        if (category!="Smartphone" && category!="Laptop" && category!="Appliance"){
+            return Error("parameter category is not valid");
+        }
+        if(quantity<=0){
+            return Error("parameter quantity is not valid");
+        }
+        
+
         const result = await this.dao.registerProducts(model, category,quantity,details,sellingPrice,arrivalDate);
         return result;
      }
@@ -38,7 +54,27 @@ class ProductController {
      * @returns A Promise that resolves to the new available quantity of the product.
      */
     async changeProductQuantity(model: string, newQuantity: number, changeDate: string | null) /**:Promise<number> */ { 
+        
+        if (changeDate===null){
+            changeDate=dayjs().format('YYYY-MM-DD');
+        }
+        if (dayjs(changeDate).isAfter(dayjs())){
+            return DateAfterToday;
+        }
+        let arrival= await this.dao.getArrivalDate(model);
+        if (dayjs(changeDate).isBefore(dayjs(arrival))){
+            return DateBeforeArrival;
+        }
+        if (model=="" || model==null){
+            return Error("parameter model is not valid");
+        }
+        if(newQuantity<=0){
+            return Error("parameter quantity is not valid");
+        }
 
+        return await this.dao.changeProductQuantity(model,newQuantity,changeDate);
+
+        
     }
 
     /**
@@ -48,7 +84,26 @@ class ProductController {
      * @param sellingDate The optional date in which the sale occurred.
      * @returns A Promise that resolves to the new available quantity of the product.
      */
-    async sellProduct(model: string, quantity: number, sellingDate: string | null) /**:Promise<number> */ { }
+    async sellProduct(model: string, quantity: number, sellingDate: string | null) /**:Promise<number> */ { 
+        if (sellingDate===null){
+            sellingDate=dayjs().format('YYYY-MM-DD');
+        }
+        if (dayjs(sellingDate).isAfter(dayjs())){
+            return DateAfterToday;
+        }
+        let arrival= await this.dao.getArrivalDate(model);
+        if (dayjs(sellingDate).isBefore(dayjs(arrival))){
+            return DateBeforeArrival;
+        }
+        if (model=="" || model==null){
+            return Error("parameter model is not valid");
+        }
+        if(quantity<=0){
+            return Error("parameter quantity is not valid");
+        }
+
+        //finire controlli guarda API;
+    }
 
     /**
      * Returns all products in the database, with the option to filter them by category or model.
