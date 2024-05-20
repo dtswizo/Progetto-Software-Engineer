@@ -1,4 +1,5 @@
 import ProductDAO from "../dao/productDAO";
+import dayjs from "dayjs";
 
 /**
  * Represents a controller for managing products.
@@ -21,7 +22,13 @@ class ProductController {
      * @param arrivalDate The optional date in which the product arrived.
      * @returns A Promise that resolves to nothing.
      */
-    async registerProducts(model: string, category: string, quantity: number, details: string | null, sellingPrice: number, arrivalDate: string | null) /**:Promise<void> */ { }
+    async registerProducts(model: string, category: string, quantity: number, details: string | null, sellingPrice: number, arrivalDate: string | null) /**:Promise<void> */ {
+        if (dayjs(arrivalDate).isAfter(dayjs())){
+            return DateAfterToday;
+        }
+        const result = await this.dao.registerProducts(model, category,quantity,details,sellingPrice,arrivalDate);
+        return result;
+     }
 
     /**
      * Increases the available quantity of a product through the addition of new units.
@@ -30,7 +37,9 @@ class ProductController {
      * @param changeDate The optional date in which the change occurred.
      * @returns A Promise that resolves to the new available quantity of the product.
      */
-    async changeProductQuantity(model: string, newQuantity: number, changeDate: string | null) /**:Promise<number> */ { }
+    async changeProductQuantity(model: string, newQuantity: number, changeDate: string | null) /**:Promise<number> */ { 
+
+    }
 
     /**
      * Decreases the available quantity of a product through the sale of units.
