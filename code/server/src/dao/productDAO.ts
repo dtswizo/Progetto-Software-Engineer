@@ -2,6 +2,7 @@ import { ProductAlreadyExistsError, ProductNotFoundError } from "../errors/produ
 import db from "../db/db";
 import sqlite from 'sqlite3';
 import e from "express";
+import { Category, Product } from "../components/product";
 
 /**
  * A class that implements the interaction with the database for all product-related operations.
@@ -76,10 +77,12 @@ class ProductDAO {
                 db.run(sql, [newQuantity,changeDate,model], function (err: Error | null) {
                     
                     if (err) {
-                        if(this.changes==0){
-                            reject(ProductNotFoundError);
-                        }
                         reject(err);
+                        return
+                    }
+                    if(this.changes==0){
+                        reject(ProductNotFoundError);
+                        return
                     }
                     resolve(newQuantity)
                 })
@@ -112,6 +115,94 @@ class ProductDAO {
 
         });
     }
+
+    getFilteredProducts(filterType:string, filterValue:string):Promise<Product[]> {
+        return new Promise<Product[]>((resolve, reject) => {
+            try {
+                //ipotizzo filterType category altrimenti cambio
+                let sql="SELECT * FROM products WHERE category=?;"
+                if (filterType==="model"){
+                    sql = "SELECT * FROM products WHERE model=?;"
+                }
+                db.all(sql, [filterValue], (err: Error | null, rows:any) => {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    if (filterType==="model" && !rows) {
+                        reject(new ProductNotFoundError())
+                        return
+                    }
+                    const products=rows.map((p: { sellingPrice: number; model: string; category: Category; arrivalDate: string|null; details: string|null; quantity: number; })=>new Product(p.sellingPrice,p.model,p.category,p.arrivalDate,p.details,p.quantity));
+                    resolve(products);
+                })
+            } catch (error) {
+                reject(error)
+            }
+
+        });
+    }
+
+    getAllProducts():Promise<Product[]> {
+        return new Promise<Product[]>((resolve, reject) => {
+            try {
+                let sql="SELECT * FROM products;"
+                db.all(sql, [], (err: Error | null, rows:any) => {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    const products=rows.map((p: { sellingPrice: number; model: string; category: Category; arrivalDate: string|null; details: string|null; quantity: number; })=>new Product(p.sellingPrice,p.model,p.category,p.arrivalDate,p.details,p.quantity));
+                    resolve(products);
+                })
+            } catch (error) {
+                reject(error)
+            }
+
+        });
+    }
+
+    deleteAllProducts():Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            try {
+                let sql="DELETE FROM products;"
+                db.run(sql, [], (err: Error | null) => {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    resolve(true);
+                })
+            } catch (error) {
+                reject(error)
+            }
+
+        });
+    }
+
+    deleteProduct(model: string) :Promise <Boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            try {
+                let sql="DELETE FROM products WHERE model=?;"
+                db.run(sql, [model], function (err: Error | null) {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    if(this.changes==0){
+                        reject(ProductNotFoundError);
+                        return
+                    }
+                    resolve(true);
+                })
+            } catch (error) {
+                reject(error)
+            }
+
+        });
+    }
+
+
 
 
 }

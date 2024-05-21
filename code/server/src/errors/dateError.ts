@@ -23,3 +23,5 @@ class DateBeforeArrival extends Error {
         this.customCode = 400
     }
 }
+
+export {DateAfterToday,DateBeforeArrival}
