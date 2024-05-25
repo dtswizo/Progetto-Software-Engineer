@@ -72,9 +72,9 @@ class ProductDAO {
         return new Promise<number>((resolve, reject) => {
             try {
                 const sql = "UPDATE products\
-                            SET quantity=?, arrivalDate=?\
+                            SET quantity=?\
                             WHERE model=?;" 
-                db.run(sql, [newQuantity,changeDate,model], function (err: Error | null) {
+                db.run(sql, [newQuantity,model], function (err: Error | null) {
                     
                     if (err) {
                         reject(err);
