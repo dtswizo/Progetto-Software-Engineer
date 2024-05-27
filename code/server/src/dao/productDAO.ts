@@ -81,7 +81,7 @@ class ProductDAO {
                         return
                     }
                     if(this.changes==0){
-                        reject(ProductNotFoundError);
+                        reject(new ProductNotFoundError());
                         return
                     }
                     resolve(newQuantity)
@@ -190,7 +190,7 @@ class ProductDAO {
                         return
                     }
                     if(this.changes==0){
-                        reject(ProductNotFoundError);
+                        reject(new ProductNotFoundError());
                         return
                     }
                     resolve(true);

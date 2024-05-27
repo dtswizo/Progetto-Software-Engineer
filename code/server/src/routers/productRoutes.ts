@@ -56,6 +56,7 @@ class ProductRoutes {
          * - arrivalDate: string. It can be omitted. If present, it must be a valid date in the format YYYY-MM-DD that is not after the current date
          * It returns a 200 status code if the arrival was registered successfully.
          */
+
         this.router.post(
             "/",
             (req: any, res: any, next: any) => this.controller.registerProducts(req.body.model, req.body.category, req.body.quantity, req.body.details, req.body.sellingPrice, req.body.arrivalDate)
@@ -88,6 +89,7 @@ class ProductRoutes {
          * - sellingDate: string. It can be omitted. If present, it must be a valid date in the format YYYY-MM-DD that is not after the current date and is after the arrival date of the product.
          * It returns the new quantity of the product.
          */
+
         this.router.patch(
             "/:model/sell",
             (req: any, res: any, next: any) => this.controller.sellProduct(req.params.model, req.body.quantity, req.body.sellingDate)
@@ -107,6 +109,12 @@ class ProductRoutes {
          * - model: string. It can only be present if grouping is equal to "model" (in which case it must be present and not empty).
          * It returns an array of Product objects.
          */
+        /* +++++++++++++++++++++++++++ TEST CONTROLLO PERMESSI ROUTE ++++++++++++++++++++++++++++
+        // a middleware sub-stack shows request info for any type of HTTP request to the /user/:id path
+        this.router.use('/', (req, res, next) => {
+            this.authenticator.isLoggedIn(req,res,next)
+            next()
+        })*/
         this.router.get(
             "/",
             (req: any, res: any, next: any) => this.controller.getProducts(req.query.grouping, req.query.category, req.query.model)

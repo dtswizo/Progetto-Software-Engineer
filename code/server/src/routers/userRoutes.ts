@@ -68,6 +68,11 @@ class UserRoutes {
          * It requires the user to be logged in and to be an admin.
          * It returns an array of users.
          */
+        /*++++++++++++++++++++++ TEST PERMESSI ROUTE ++++++++++++++++++++++++
+        this.router.use('/', (req, res, next) => {
+            this.authService.isAdmin(req,res,next)
+            next()
+        })*/
         this.router.get(
             "/",
             (req: any, res: any, next: any) => this.controller.getUsers()
