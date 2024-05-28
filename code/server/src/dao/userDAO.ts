@@ -2,6 +2,7 @@ import db from "../db/db"
 import { Role, User } from "../components/user"
 import crypto from "crypto"
 import { UserAlreadyExistsError, UserNotFoundError } from "../errors/userError";
+import dayjs from "dayjs";
 
 /**
  * A class that implements the interaction with the database for all user-related operations.
@@ -91,7 +92,7 @@ class UserDAO {
                         reject(new UserNotFoundError())
                         return
                     }
-                    const user: User = new User(row.username, row.name, row.surname, row.role, row.address, row.birthdate)
+                    const user: User = new User(row.username, row.name, row.surname, row.role, row.address, row.birthdate ? dayjs(row.birthdate).format("YYYY-MM-DD") : null)
                     resolve(user)
                 })
             } catch (error) {
@@ -118,7 +119,7 @@ class UserDAO {
                         reject(err);
                         return;
                     }
-                    const users = rows.map((p: { username: string; name: string; surname: string; role: Role; address: string | null; birthdate: string | null; }) => new User(p.username, p.name, p.surname, p.role, p.address, p.birthdate));
+                    const users = rows.map((p: { username: string; name: string; surname: string; role: Role; address: string | null; birthdate: string | null; }) => new User(p.username, p.name, p.surname, p.role, p.address, p.birthdate ? dayjs(p.birthdate).format("YYYY-MM-DD") : null));
                     resolve(users);
 
                 });
@@ -146,7 +147,7 @@ class UserDAO {
                         reject(err);
                         return;
                     }
-                    const products = rows.map((p: { username: string; name: string; surname: string; role: Role; address: string | null; birthdate: string | null; }) => new User(p.username, p.name, p.surname, p.role, p.address, p.birthdate));
+                    const products = rows.map((p: { username: string; name: string; surname: string; role: Role; address: string | null; birthdate: string | null; }) => new User(p.username, p.name, p.surname, p.role, p.address, p.birthdate ? dayjs(p.birthdate).format("YYYY-MM-DD") : null));
                     resolve(products);
 
                 });
