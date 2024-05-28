@@ -109,7 +109,7 @@ class UserDAO {
         return new Promise<User[]>((resolve, reject) => {
             try {
                 const sql = "SELECT * FROM users";
-                db.get(sql, [], (err: Error | null, rows: any) => {
+                db.all(sql, [], (err: Error | null, rows: any[]) => {
                     if (err) {
                         reject(err);
                         return;
@@ -137,7 +137,7 @@ class UserDAO {
         return new Promise<User[]>((resolve, reject) => {
             try {
                 const sql = "SELECT * FROM users WHERE role = ?";
-                db.get(sql, [role], (err: Error | null, rows: any) => {
+                db.all(sql, [role], (err: Error | null, rows: any[]) => {
                     if (err) {
                         reject(err);
                         return;
@@ -182,7 +182,7 @@ class UserDAO {
     deleteAll(): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             try {
-                const sql = "DELETE FROM users WHERE role != 'Admin";
+                const sql = "DELETE FROM users WHERE role != 'Admin'";
                 db.run(sql, [], (err: Error | null) => {
                     if (err) {
                         reject(err);
