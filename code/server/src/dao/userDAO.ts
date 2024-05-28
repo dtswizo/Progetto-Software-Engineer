@@ -1,5 +1,5 @@
 import db from "../db/db"
-import { User } from "../components/user"
+import { Role, User } from "../components/user"
 import crypto from "crypto"
 import { UserAlreadyExistsError, UserNotFoundError } from "../errors/userError";
 
@@ -100,5 +100,132 @@ class UserDAO {
 
         })
     }
+
+    /**
+     * Returns all user objects from the database.
+     * @returns  Promise that resolves to an array of users.
+     */
+    getUsers(): Promise<User[]> {
+        return new Promise<User[]>((resolve, reject) => {
+            try {
+                const sql = "SELECT * FROM users";
+                db.get(sql, [], (err: Error | null, rows: any) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    if (!rows) {
+                        reject(err);
+                        return;
+                    }
+                    const users = rows.map((p: { username: string; name: string; surname: string; role: Role; address: string | null; birthdate: string | null; }) => new User(p.username, p.name, p.surname, p.role, p.address, p.birthdate));
+                    resolve(users);
+
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    /**
+     * Returns all user objects from the database based on the role.
+     * @param role The role of the users to retrieve
+     * @returns A Promise that resolves to an array of users with the specified role
+     */
+    getUsersByRole(role: string): Promise<User[]> {
+        return new Promise<User[]>((resolve, reject) => {
+            try {
+                const sql = "SELECT * FROM users WHERE role = ?";
+                db.get(sql, [role], (err: Error | null, rows: any) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    if (!rows) {
+                        reject(err);
+                        return;
+                    }
+                    const products = rows.map((p: { username: string; name: string; surname: string; role: Role; address: string | null; birthdate: string | null; }) => new User(p.username, p.name, p.surname, p.role, p.address, p.birthdate));
+                    resolve(products);
+
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    deleteUser(username: String): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            try {
+                const sql = "DELETE FROM users WHERE username = ?";
+                db.run(sql, [username], function (err: Error | null) {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+
+                    if ( this.changes === 0) {
+                        reject(new UserNotFoundError());
+                        return;
+                    }
+
+                    resolve(true);
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    deleteAll(): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            try {
+                const sql = "DELETE FROM users WHERE role != 'Admin";
+                db.run(sql, [], (err: Error | null) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(true);
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    //Ottimizzabile non richiamando getUserByUsername e passando il role nella firma del metodo
+    updateUserInfo(username: string, name: string, surname: string, address: string, birthdate: string): Promise<User> {
+        return new Promise<User>((resolve, reject) => {
+            try {
+                const sql = `UPDATE users SET name = ?, surname = ?, address = ?, birthdate = ? WHERE username = ?`;
+                db.run(sql, [name, surname, address, birthdate, username], function (err: Error | null) {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+
+                    //Questo controllo dovrebbe essere superfluo
+                    if (this.changes === 0) {
+                        reject(new UserNotFoundError());
+                        return;
+                    }
+
+                    this.getUserByUsername(username).then((updatedUser: User) => {
+                        resolve(updatedUser);
+                    }).catch((error: Error) => {
+                        reject(error);
+                    });
+
+                }.bind(this));
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+
 }
 export default UserDAO

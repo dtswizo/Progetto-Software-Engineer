@@ -56,6 +56,12 @@ class UserRoutes {
          */
         this.router.post(
             "/",
+            body("username").isString().isLength({ min: 1 }),
+            body("name").isString().isLength({ min: 1 }),
+            body("surname").isString().isLength({ min: 1 }),
+            body("password").isString().isLength({ min: 1 }),
+            body("role").isString().isIn(["Manager", "Customer", "Admin"]),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.createUser(req.body.username, req.body.name, req.body.surname, req.body.password, req.body.role)
                 .then(() => res.status(200).end())
                 .catch((err) => {
@@ -68,15 +74,12 @@ class UserRoutes {
          * It requires the user to be logged in and to be an admin.
          * It returns an array of users.
          */
-        /*++++++++++++++++++++++ TEST PERMESSI ROUTE ++++++++++++++++++++++++
-        this.router.use('/', (req, res, next) => {
-            this.authService.isAdmin(req,res,next)
-            next()
-        })*/
         this.router.get(
             "/",
+            this.authService.isAdmin,
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getUsers()
-                .then((users: any /**User[] */) => res.status(200).json(users))
+                .then((users: User[]) => res.status(200).json(users))
                 .catch((err) => next(err))
         )
 
@@ -88,8 +91,11 @@ class UserRoutes {
          */
         this.router.get(
             "/roles/:role",
+            this.authService.isAdmin,
+            param("role").isString().isIn(["Manager", "Customer", "Admin"]),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getUsersByRole(req.params.role)
-                .then((users: any /**User[] */) => res.status(200).json(users))
+                .then((users: User[]) => res.status(200).json(users))
                 .catch((err) => next(err))
         )
 
@@ -101,8 +107,11 @@ class UserRoutes {
          */
         this.router.get(
             "/:username",
+            this.authService.isLoggedIn,
+            param("username").isString().isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getUserByUsername(req.user, req.params.username)
-                .then((user: any /**User */) => res.status(200).json(user))
+                .then((user: User) => res.status(200).json(user))
                 .catch((err) => next(err))
         )
 
@@ -114,6 +123,9 @@ class UserRoutes {
          */
         this.router.delete(
             "/:username",
+            this.authService.isLoggedIn,
+            param("username").isString().isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.deleteUser(req.user, req.params.username)
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))
@@ -126,6 +138,8 @@ class UserRoutes {
          */
         this.router.delete(
             "/",
+            this.authService.isAdmin,
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.deleteAll()
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))
@@ -144,8 +158,15 @@ class UserRoutes {
          */
         this.router.patch(
             "/:username",
+            this.authService.isLoggedIn,
+            body("name").isString().isLength({ min: 1 }),
+            body("surname").isString().isLength({ min: 1 }),
+            body("address").isString().isLength({ min: 1 }),
+            body('birthdate').isString().isLength({ min: 1 }),
+            param("username").isString().isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.updateUserInfo(req.user, req.body.name, req.body.surname, req.body.address, req.body.birthdate, req.params.username)
-                .then((user: any /**User */) => res.status(200).json(user))
+                .then((user: User) => res.status(200).json(user))
                 .catch((err: any) => next(err))
         )
 
@@ -195,6 +216,9 @@ class AuthRoutes {
          */
         this.router.post(
             "/",
+            body("username").isString().isLength({ min: 1 }),
+            body("password").isString().isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
             (req, res, next) => this.authService.login(req, res, next)
                 .then((user: User) => res.status(200).json(user))
                 .catch((err: any) => { res.status(401).json(err) })
@@ -207,6 +231,8 @@ class AuthRoutes {
          */
         this.router.delete(
             "/current",
+            this.authService.isLoggedIn,
+            this.errorHandler.validateRequest,
             (req, res, next) => this.authService.logout(req, res, next)
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))
@@ -219,6 +245,8 @@ class AuthRoutes {
          */
         this.router.get(
             "/current",
+            this.authService.isLoggedIn,
+            this.errorHandler.validateRequest,
             (req: any, res: any) => res.status(200).json(req.user)
         )
     }

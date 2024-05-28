@@ -1,5 +1,9 @@
-import { User } from "../components/user"
+import { Utility } from "../utilities"
+import { User, Role } from "../components/user"
 import UserDAO from "../dao/userDAO"
+import { UnauthorizedUserError, UserNotAdminError, UserIsAdminError } from "../errors/userError"
+import { DateError } from "../utilities"
+import dayjs, { Dayjs } from "dayjs"
 
 /**
  * Represents a controller for managing users.
@@ -21,7 +25,7 @@ class UserController {
      * @param role - The role of the new user. It must not be null and it can only be one of the three allowed types ("Manager", "Customer", "Admin")
      * @returns A Promise that resolves to true if the user has been created.
      */
-    async createUser(username: string, name: string, surname: string, password: string, role: string) /**:Promise<Boolean> */ {
+    async createUser(username: string, name: string, surname: string, password: string, role: string): Promise<Boolean> {
         return this.dao.createUser(username, name, surname, password, role)
     }
 
@@ -29,14 +33,18 @@ class UserController {
      * Returns all users.
      * @returns A Promise that resolves to an array of users.
      */
-    async getUsers() /**:Promise<User[]> */ { }
+    async getUsers(): Promise<User[]> {
+        return this.dao.getUsers();
+    }
 
     /**
      * Returns all users with a specific role.
      * @param role - The role of the users to retrieve. It can only be one of the three allowed types ("Manager", "Customer", "Admin")
      * @returns A Promise that resolves to an array of users with the specified role.
      */
-    async getUsersByRole(role: string) /**:Promise<User[]> */ { }
+    async getUsersByRole(role: string): Promise<User[]> {
+        return this.dao.getUsersByRole(role);
+    }
 
     /**
      * Returns a specific user.
@@ -46,7 +54,13 @@ class UserController {
      * @param username - The username of the user to retrieve. The user must exist.
      * @returns A Promise that resolves to the user with the specified username.
      */
-    async getUserByUsername(user: User, username: string) /**:Promise<User> */ { }
+    async getUserByUsername(user: User, username: string): Promise<User> {
+        if (Utility.isAdmin(user) || user.username === username) {
+            return this.dao.getUserByUsername(username);
+        } else {
+            throw new UnauthorizedUserError();
+        }
+    }
 
     /**
      * Deletes a specific user
@@ -56,13 +70,28 @@ class UserController {
      * @param username - The username of the user to delete. The user must exist.
      * @returns A Promise that resolves to true if the user has been deleted.
      */
-    async deleteUser(user: User, username: string) /**:Promise<Boolean> */ { }
+    async deleteUser(user: User, username: string): Promise<Boolean> {
+        if (user.username === username) {
+            //DO NOTHING
+        } else if (Utility.isAdmin(user)) {
+            const targetUser = await this.dao.getUserByUsername(username);
+            if (targetUser.role === Role.ADMIN) {
+                throw new UserIsAdminError();
+            }
+        } else {
+            throw new UserNotAdminError();
+        }
+
+        return this.dao.deleteUser(username);
+    }
 
     /**
      * Deletes all non-Admin users
      * @returns A Promise that resolves to true if all non-Admin users have been deleted.
      */
-    async deleteAll() { }
+    async deleteAll() {
+        this.dao.deleteAll();
+    }
 
     /**
      * Updates the personal information of one user. The user can only update their own information.
@@ -74,7 +103,37 @@ class UserController {
      * @param username The username of the user to update. It must be equal to the username of the user parameter.
      * @returns A Promise that resolves to the updated user
      */
-    async updateUserInfo(user: User, name: string, surname: string, address: string, birthdate: string, username: string) /**:Promise<User> */ { }
+    async updateUserInfo(user: User, name: string, surname: string, address: string, birthdate: string, username: string): Promise<User> {
+        let targetUser: User;
+        const birthdateValid = this.getValidDate(birthdate);
+        if (user.username === username) {
+            targetUser = user;
+        } else if (Utility.isAdmin(user)) {
+            targetUser = await this.dao.getUserByUsername(username);
+            if (targetUser.role === Role.ADMIN) {
+                //TODO()
+                throw new UserIsAdminError();
+            }
+        } else {
+            throw new UserNotAdminError();
+        }
+
+        if (targetUser.name === name && targetUser.surname === surname && targetUser.address === address && targetUser.birthdate === birthdateValid.toString()) {
+            return new Promise<User>((resolve, reject) => { resolve(targetUser); });
+        }
+
+        return this.dao.updateUserInfo(username, name, surname, address, birthdateValid.toString());
+    }
+
+    getValidDate(birthdate: string): Dayjs {
+        const format = "YYYY-MM-DD";
+        const birthdateValid = dayjs(birthdate, format);
+
+        if (!birthdateValid.isValid() || birthdateValid.isAfter(dayjs())) {
+            throw new DateError();
+        }
+        return birthdateValid;
+    }
 }
 
 export default UserController
