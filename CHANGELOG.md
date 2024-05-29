@@ -1,5 +1,18 @@
 # EZElectronics - Changelog
 
+## V2.1 - 29/05/2024
+
+- A new [template](TestReport.md) for the test report has been added
+- Test scripts for executing unit/integration/official tests have been added
+- The definitions of some routes in [API.md](API.md) have been changed to be consistent with the code. The changed routes are
+  - GET `ezelectronics/users/role/:role` was changed to GET `ezelectronics/users/roles/:role`
+  - DELETE `ezelectronics/:model` was changed to DELETE `ezelectronics/products/:model`
+- The comments in the product routes have been changed to reflect the API specifications and the official requirements
+- The total count of products in the current cart now counts all instances instead of just the different models ([issue 36](https://git-softeng.polito.it/se-2023-24/ezelectronics/-/issues/36))
+- The modal for editing other users in the admin page can now be closed by clicking on the :x: or outside the modal ([issue 34](https://git-softeng.polito.it/se-2023-24/ezelectronics/-/issues/34))
+- The form for registering the arrival of a new product model now has a field for specifying the arrival date. ([issue 33](https://git-softeng.polito.it/se-2023-24/ezelectronics/-/issues/33) and [issue 26](https://git-softeng.polito.it/se-2023-24/ezelectronics/-/issues/26)). A similar change has been made on the forms for changing the quantity of an existing product. Note: the field accepts an empty string, so the express-validator chain for the date fields to include `.optional({ checkFalsy: true })`: this ensures that an empty string is accepted by the evaluator (and the current date is used for the operation).
+- The stock view for the manager/admin now displays the filtering buttons even when there are no products, to avoid softlocks in case there are no available products ([issue 31](https://git-softeng.polito.it/se-2023-24/ezelectronics/-/issues/31))
+
 ## V2.0 - 14/05/2024
 
 ### Additions
