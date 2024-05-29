@@ -75,6 +75,9 @@ class UserRoutes {
         })*/
         this.router.get(
             "/",
+            // ++++ PERMESSI ROUTE +++++++
+            //this.authService.isAdmin,
+            //this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getUsers()
                 .then((users: any /**User[] */) => res.status(200).json(users))
                 .catch((err) => next(err))
