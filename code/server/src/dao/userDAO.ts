@@ -157,6 +157,11 @@ class UserDAO {
         });
     }
 
+    /**
+     *  Deletes a specific user.
+     * @param username The username of the user to delete
+     * @returns A Promise that resolves to true if the user has been deleted.
+     */
     deleteUser(username: String): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             try {
@@ -167,7 +172,7 @@ class UserDAO {
                         return;
                     }
 
-                    if ( this.changes === 0) {
+                    if (this.changes === 0) {
                         reject(new UserNotFoundError());
                         return;
                     }
@@ -180,6 +185,10 @@ class UserDAO {
         });
     }
 
+    /**
+     * Deletes all non-Admin users
+     * @returns A Promise that resolves to true if all non-Admin users have been deleted.
+     */
     deleteAll(): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             try {
@@ -198,6 +207,15 @@ class UserDAO {
     }
 
     //Ottimizzabile non richiamando getUserByUsername e passando il role nella firma del metodo
+    /**
+     * Updates the personal information of one user.
+     * @param name The new name of the user
+     * @param surname The new surname of the user
+     * @param address The new address of the user
+     * @param birthdate The new birthdate of the user
+     * @param username The username of the user to update
+     * @returns A Promise that resolves to the updated user
+     */
     updateUserInfo(username: string, name: string, surname: string, address: string, birthdate: string): Promise<User> {
         return new Promise<User>((resolve, reject) => {
             try {
