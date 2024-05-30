@@ -35,16 +35,6 @@ class ProductController {
         if (dayjs(arrivalDate).isAfter(dayjs())){
             throw new DateError();
         }
-        if (model=="" || model==null){
-            throw new ProductNotFoundError();
-        }
-        if (category!="Smartphone" && category!="Laptop" && category!="Appliance"){
-            throw new Error("parameter category is not valid");
-        }
-        if(quantity<=0){
-            throw new Error("parameter quantity is not valid");
-        }
-        
 
         const result = await this.dao.registerProducts(model, category,quantity,details,sellingPrice,arrivalDate);
         return result;
@@ -69,15 +59,8 @@ class ProductController {
         if (dayjs(changeDate).isBefore(dayjs(arrival))){
             throw new DateError();
         }
-        if (model=="" || model==null){
-            throw new ProductNotFoundError();
-        }
-        if(newQuantity<=0){
-            throw new Error("parameter quantity is not valid");
-        }
 
         return await this.dao.changeProductQuantity(model,newQuantity,changeDate);
-
         
     }
 
@@ -99,12 +82,6 @@ class ProductController {
         let arrival= await this.dao.getArrivalDate(model);
         if (dayjs(sellingDate).isBefore(dayjs(arrival))){
             throw new DateError();
-        }
-        if (model=="" || model==null){
-            throw new ProductNotFoundError();
-        }
-        if(quantity<=0){
-            throw new Error("parameter quantity is not valid");
         }
         let q= await this.dao.getProductQuantity(model);
         if(q==0){
@@ -135,23 +112,14 @@ class ProductController {
         if(grouping==="model" && (category!==null || model===null)){
             throw new FilteringError();
         }
-        if (category!==null && category!="Smartphone" && category!="Laptop" && category!="Appliance"){
-            throw new Error("parameter category is not valid");
-        }
 
         if(grouping==="category"){
             return await this.dao.getFilteredProducts("category",category);
         }else if(grouping==="model"){
-            if (model===""){
-                throw new Error("parameter model can't be empty");
-            }
             return await this.dao.getFilteredProducts("model",model);
         }else if (grouping===null){
             return await this.dao.getAllProducts();
-        }else{
-            throw new Error("parameter grouping is not valid");
         }
-
     }
 
     /**
@@ -185,10 +153,6 @@ class ProductController {
      * @returns A Promise that resolves to `true` if the product has been successfully deleted.
      */
     async deleteProduct(model: string) /**:Promise <Boolean> */ { 
-        if (model===""){
-            throw new Error("parameter model can't be empty");
-        }
-
         return await this.dao.deleteProduct(model);
     }
 
