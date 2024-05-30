@@ -86,6 +86,7 @@ class ReviewRoutes {
         this.router.delete(
             "/:model",
             this.authenticator.isCustomer,
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.deleteReview(req.params.model, req.user)
                 .then(() => res.status(200).send())
                 .catch((err: Error) => {
@@ -103,6 +104,7 @@ class ReviewRoutes {
         this.router.delete(
             "/:model/all",
             this.authenticator.isAdminOrManager,
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.deleteReviewsOfProduct(req.params.model)
                 .then(() => res.status(200).send())
                 .catch((err: Error) => next(err))
@@ -116,6 +118,7 @@ class ReviewRoutes {
         this.router.delete(
             "/",
             this.authenticator.isAdminOrManager,
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.deleteAllReviews()
                 .then(() => res.status(200).send())
                 .catch((err: Error) => next(err))
