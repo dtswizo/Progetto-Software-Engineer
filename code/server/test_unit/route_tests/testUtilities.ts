@@ -153,4 +153,4 @@ const initMockedApp = () => {
     return app;
 }
 
-export {spyCustomer, spyManager, spyAdmin,enableMockedAuth, initMockedApp};
+export {spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, initMockedApp};
