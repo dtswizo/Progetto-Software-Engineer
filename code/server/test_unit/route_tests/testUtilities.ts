@@ -116,6 +116,29 @@ const spyAdmin = () => {
     return testLoggedUser;
 }
 
+const spyNotLogged = () => {
+    jest.spyOn(Authenticator.prototype, "isCustomer").mockImplementation((req: any, res: any, next: any) => {
+        req.isAuthenticated = () => false;
+        return res.status(401).json({ error: "User is not a customer", status: 401 });
+    });
+    jest.spyOn(Authenticator.prototype, "isManager").mockImplementation((req: any, res: any, next: any) => {
+        req.isAuthenticated = () => false;
+        return res.status(401).json({ error: "User is not a customer", status: 401 });
+    });
+    jest.spyOn(Authenticator.prototype, "isAdmin").mockImplementation((req: any, res: any, next: any) => {
+        req.isAuthenticated = () => false;
+        return res.status(401).json({ error: "User is not a customer", status: 401 });
+    });
+    jest.spyOn(Authenticator.prototype, "isLoggedIn").mockImplementation((req: any, res: any, next: any) => {
+        req.isAuthenticated = () => false;
+        return res.status(401).json({ error: "User is not a customer", status: 401 });
+    });
+    jest.spyOn(Authenticator.prototype, "isAdminOrManager").mockImplementation((req: any, res: any, next: any) => {
+        req.isAuthenticated = () => false;
+        return res.status(401).json({ error: "User is not a customer", status: 401 });
+    });
+}
+
 const enableMockedAuth = (app: express.Application) => {
     initRoutes(app)
 }
