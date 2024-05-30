@@ -22,12 +22,12 @@ const spyCustomer = () => {
     jest.spyOn(Authenticator.prototype, "isManager").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => true;
         req.user = testLoggedUser;
-        return res.status(401).json({ error: "User is not a customer", status: 401 });
+        return res.status(401).json({ error: "User is not a manager", status: 401 });
     });
     jest.spyOn(Authenticator.prototype, "isAdmin").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => true;
         req.user = testLoggedUser;
-        return res.status(401).json({ error: "User is not a customer", status: 401 });
+        return res.status(401).json({ error: "User is not an admin", status: 401 });
     });
     jest.spyOn(Authenticator.prototype, "isLoggedIn").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => true;
@@ -37,7 +37,7 @@ const spyCustomer = () => {
     jest.spyOn(Authenticator.prototype, "isAdminOrManager").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => true;
         req.user = testLoggedUser;
-        return res.status(401).json({ error: "User is not a customer", status: 401 });
+        return res.status(401).json({ error: "User is not an admin or manager", status: 401 });
     });
     return testLoggedUser;
 }
@@ -64,7 +64,7 @@ const spyManager = () => {
     jest.spyOn(Authenticator.prototype, "isAdmin").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => true;
         req.user = testLoggedUser;
-        return res.status(401).json({ error: "User is not a customer", status: 401 });
+        return res.status(401).json({ error: "User is not an admin", status: 401 });
     });
     jest.spyOn(Authenticator.prototype, "isLoggedIn").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => true;
@@ -96,7 +96,7 @@ const spyAdmin = () => {
     jest.spyOn(Authenticator.prototype, "isManager").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => true;
         req.user = testLoggedUser;
-        return res.status(401).json({ error: "User is not a customer", status: 401 });
+        return res.status(401).json({ error: "User is not a manager", status: 401 });
     });
     jest.spyOn(Authenticator.prototype, "isAdmin").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => true;
@@ -123,19 +123,19 @@ const spyNotLogged = () => {
     });
     jest.spyOn(Authenticator.prototype, "isManager").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => false;
-        return res.status(401).json({ error: "User is not a customer", status: 401 });
+        return res.status(401).json({ error: "User is not a manager", status: 401 });
     });
     jest.spyOn(Authenticator.prototype, "isAdmin").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => false;
-        return res.status(401).json({ error: "User is not a customer", status: 401 });
+        return res.status(401).json({ error: "User is not an admin", status: 401 });
     });
     jest.spyOn(Authenticator.prototype, "isLoggedIn").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => false;
-        return res.status(401).json({ error: "User is not a customer", status: 401 });
+        return res.status(401).json({ error: "Unauthenticated user", status: 401 });
     });
     jest.spyOn(Authenticator.prototype, "isAdminOrManager").mockImplementation((req: any, res: any, next: any) => {
         req.isAuthenticated = () => false;
-        return res.status(401).json({ error: "User is not a customer", status: 401 });
+        return res.status(401).json({ error: "User is not an admin or manager", status: 401 });
     });
 }
 
