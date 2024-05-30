@@ -37,25 +37,15 @@ class ReviewRoutes {
         this.router.post(
             "/:model",
             this.authenticator.isCustomer, //devo gestire l'access costraint
-        param('model')
+            param('model')
             .isString()
             .withMessage('Model must be a string')
             .notEmpty()
             .withMessage('Model cannot be empty'),
-        body('user')
-            .isString()
-            .withMessage('User must be a string')
-            .notEmpty()
-            .withMessage('User cannot be empty'),
-        body('score')
+            body('score')
             .isInt({ min: 1, max: 5 })
             .withMessage('Score must be an integer between 1 and 5'),
-        body('date')
-            .isString()
-            .withMessage('Date must be a string')
-            .notEmpty()
-            .withMessage('Date cannot be empty'),
-        body('comment')
+            body('comment')
             .isString()
             .withMessage('Comment must be a string')
             .notEmpty()
