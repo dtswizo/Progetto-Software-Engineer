@@ -12,21 +12,25 @@ let sql="CREATE TABLE products( \
 db.run(sql, (err) => { if (err) throw err; });
 
 //creazione tabella carts
+//Utilizzo autoincrement per l'id
+//si creera una tabella automatica extra sqllite sequence che serve per l'autoincrement
 sql="CREATE TABLE carts( \
-        idCart int primary key,\
+        idCart INTEGER PRIMARY KEY AUTOINCREMENT,\
         customer text,\
         paid boolean,\
         paymentDate char(10),\
-        total float\
+        total float,\
         FOREIGN KEY (customer) REFERENCES users (username)\
         );";
 db.run(sql, (err) => { if (err) throw err; });
 
 //creazione tabella realzione prodotti-carrello
+//aggiunto campo price mancante
 sql="CREATE TABLE prod_in_cart( \
         idCart int,\
         model text,\
         quantity int,\
+        price int,\
         PRIMARY KEY (idCart, model),\
         FOREIGN KEY (idCart) REFERENCES carts (idCart),\
         FOREIGN KEY (model) REFERENCES products (model)\

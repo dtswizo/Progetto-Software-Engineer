@@ -103,6 +103,9 @@ class ProductController {
      * @returns A Promise that resolves to an array of Product objects.
      */
     async getProducts(grouping: string | null, category: string | null, model: string | null) /**Promise<Product[]> */ { 
+        //NOTA: I parametri non vengono registrati come "null" ma come "undefined"
+        //Non l'ho svolto per tutti ma solo per i controlli che mi interessavano
+        // (error parameter category... e grouping == null), vedi se è necessario per gli altri
         if (grouping===null && (category!==null || model!==null)){
             throw new FilteringError();
         }
@@ -112,12 +115,14 @@ class ProductController {
         if(grouping==="model" && (category!==null || model===null)){
             throw new FilteringError();
         }
-
+        if (category!==null && category!==undefined && category!="Smartphone" && category!="Laptop" && category!="Appliance"){
+            throw new Error("parameter category is not valid");
+        }
         if(grouping==="category"){
             return await this.dao.getFilteredProducts("category",category);
         }else if(grouping==="model"){
             return await this.dao.getFilteredProducts("model",model);
-        }else if (grouping===null){
+        }else if (grouping===null || grouping===undefined){
             return await this.dao.getAllProducts();
         }
     }
@@ -130,8 +135,9 @@ class ProductController {
      * @returns A Promise that resolves to an array of Product objects.
      */
     async getAvailableProducts(grouping: string | null, category: string | null, model: string | null) /**:Promise<Product[]> */ {
+        //NOTA: Ho rimosso le graffe di products.filter, a quanto pare bloccavano la restituzione
         let result=await this.getProducts(grouping,category,model).then(
-            (products:Product[])=>{products.filter((p)=>p.quantity>0)}
+            (products:Product[])=>products.filter((p)=>p.quantity>0)
         );
 
         return result;

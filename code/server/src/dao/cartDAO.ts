@@ -11,8 +11,8 @@ class CartDAO {
     checkIfCartExists(user:User):Promise<boolean>{
         return new Promise<boolean>((resolve,reject)=>{
             try{
-                const sql = "SELECT * FROM carts c JOIN prod_in_cart pc JOIN products p WHERE c.idCart = pc.idCart AND pc.model = p.model AND username=? AND paid=FALSE;"
-                db.all(sql, [user.username], (err: Error | null, row:any) => {
+                const sql = "SELECT * FROM carts c JOIN prod_in_cart pc JOIN products p WHERE c.idCart = pc.idCart AND pc.model = p.model AND customer=? AND paid=FALSE;"
+                db.get(sql, [user.username], (err: Error | null, row:any) => {
                     if (err){
                         reject(err)
                         return
@@ -34,7 +34,7 @@ class CartDAO {
     checkIfProductExists(model: string):Promise<boolean>{
     return new Promise<boolean>((resolve,reject)=>{
         try{
-            const sql="SELECT model FROM products WHERE model=?";
+            const sql="SELECT * FROM products WHERE model=?";
             db.get(sql,[model], (err:Error | null, row: any )=>{
                 if (err){
                     reject(err)
@@ -57,12 +57,13 @@ class CartDAO {
     checkIfProductExistsInCart(user: User, model: string):Promise<boolean>{
         return new Promise<boolean>((resolve,reject)=>{
             try{
-                const sql="SELECT model FROM cart c JOIN productincart pc WHERE c.idCart = pc.idCart AND user model=?;";
-                db.get(sql,[model], (err:Error | null, row: any )=>{
+                const sql="SELECT * FROM carts c JOIN prod_in_cart pc JOIN product p WHERE p.model=pc.model c.idCart = pc.idCart AND customer=? AND model=?;";
+                db.get(sql,[user.username,model], (err:Error | null, row: any )=>{
                     if (err){
                         reject(err)
                         return
                     } 
+                    console.log(row)
                     if (!row){
                         resolve (false)
                         return 
@@ -81,12 +82,13 @@ class CartDAO {
     checkProductAvailability(model: string):Promise<number>{
         return new Promise<number>((resolve,reject)=>{
             try{
-                const sql="SELECT model FROM product WHERE model=?;";
+                const sql="SELECT * FROM products WHERE model=?;";
                 db.get(sql,[model], (err:Error | null, row: any )=>{
                     if (err){
                         reject(err);
                         return
                     } 
+                    console.log(row.quantity)
                     if (!row){
                         resolve (-1);
                         return 
@@ -102,7 +104,7 @@ class CartDAO {
     checkProductQuantityInCart(user:User, model: string):Promise<number>{
         return new Promise<number>((resolve,reject)=>{
             try{
-                const sql="SELECT model FROM cart c JOIN productincart pc WHERE c.idCart = pc.idCart AND user model=?;";
+                const sql="SELECT * FROM cart c JOIN productincart pc WHERE c.idCart = pc.idCart AND user model=?;";
                 db.get(sql,[model], (err:Error | null, row: any )=>{
                     if (err){
                         reject(err);
@@ -142,23 +144,26 @@ class CartDAO {
         });
     }
 
-    //DOMANDA: QUANTITY DEL PRODOTTO VA RIDOTTA QUA DA PRODUCT?
-    //RISPOSTA: NO, VERIFICA TUTTO IL CHECKOUT
     addProductInCart(user: User, product:string, checkCart:boolean, checkProduct:boolean):Promise<Boolean>{
         return new Promise<Boolean>((resolve,reject)=>{
             try{
-                //PROBLEMI SU AWAIT COME FARE? HA SENSO FARE ASYNC?
-                
+                console.log(checkCart)
                 if (checkCart === false){
                     //VERIFICARE AUTOINCREMENT
                     //CARRELLO DA CREARE, PRENDERE ID E INSERIRE IN PRODINCART
                     const sql = "INSERT INTO carts(customer,paid,paymentDate,total) VALUES (?,?,?,?)"
                     db.run(sql,[user.username,false,null,0], (err: Error | null) =>{
+                        console.log("post sql")
                         if(err){
+                            console.log(err)
                             reject(err);
                             return 
                         }
-                        const sql2 = "SELECT * FROM carts WHERE customer = ? AND paid = FALSE";
+                        
+                        
+                        //console.log(row.idCart);
+                        //Seleziono carrello corrente, superfluo se riesco a pescare l'id prima
+                        const sql2 = "SELECT * FROM carts WHERE customer = ? AND paid = FALSE;";
                         db.get(sql2,[user.username], (err:Error | null, row: any ) =>{
                             if(err){
                                 reject(err);
@@ -178,20 +183,30 @@ class CartDAO {
                     })
                 }
                 
-
+                //TO REVIEW
+                //Carrello esistente
                 let cartId = null;
-
-                const sql = "SELECT * FROM carts c JOIN prod_in_cart pc JOIN products p WHERE c.idCart == pc.idCart AND pc.model == p.model AND username=? AND paid=FALSE;"
-                db.all(sql, [user.username], (err: Error | null, row:any) => {
+                console.log("prova seconda query")
+                const sql = "SELECT * FROM carts c WHERE  customer=? AND paid=FALSE;"
+                db.get(sql, [user.username], (err: Error | null, row:any) => {
+                    console.log("post seconda query")
+                    console.log(row)
                     if (err){
+                        console.log(err)
                         reject(err)
                         return
                     }
-                    cartId = row.cartId;
+                    
+                    cartId = row.idCart;
+                    console.log("id")
+                    console.log(cartId)
+                    console.log(checkProduct)
                     //In questo caso il carrello è vuoto
-                    if(!row || checkProduct != true){
-                        const sql3 = "INSERT INTO prod_in_cart(idCart,model,quantity) VALUES (?,?,?)"
+                    if(!row || checkProduct === false){
+                        console.log("prova terza query")
+                        const sql3 = "INSERT INTO prod_in_cart(idCart,model,quantity,price) VALUES (?,?,?)"
                             db.run(sql3,[cartId,product,1], (err: Error | null) =>{
+                                console.log("post terza query")
                             if(err){
                                 reject(err);
                                 return 
@@ -200,14 +215,19 @@ class CartDAO {
                             })
                         return
                     }
+                    //Prodotto esiste, aggiornarne quantità
+                    else if(checkProduct === true){
+                        console.log("quantity da aggiornare")
+                    }
                     
                     //Prodotto presente, si aggiorna quantity
-                    const productsInCart = row.map((p: {model: string; quantity: number; category: Category; price: number;})=> new ProductInCart(p.model,p.quantity,p.category,p.price));
+                    //const productsInCart = row.map((p: {model: string; quantity: number; category: Category; price: number;})=> new ProductInCart(p.model,p.quantity,p.category,p.price));
                     
                     });
                 
             }
             catch (error){
+                console.log("finito in catch")
                 reject(error)
             }
         });
@@ -218,16 +238,20 @@ class CartDAO {
     getCurrentCart(user: User):Promise<Cart>{
         return new Promise<Cart>((resolve,reject)=>{
             try{
-                const sql = "SELECT * FROM carts c JOIN prod_in_cart pc JOIN products p WHERE c.idCart == pc.idCart AND pc.model == p.model AND username=? AND paid=FALSE;"
+                const sql = "SELECT * FROM carts c JOIN prod_in_cart pc JOIN products p WHERE c.idCart == pc.idCart AND pc.model == p.model AND customer=? AND paid=FALSE;";
                 db.all(sql, [user.username], (err: Error | null, row:any) => {
+                    
                     if (err){
-                        reject(err)
+                        reject(err);
                         return
                     }
-                    if(!row){
+                    if(!row || row.length==0){
+                        //console.log("Carrello non trovato");
                         resolve (new Cart(user.username,false,null,0,[]));
                         return
                     }
+                    //console.log("Carrello trovato");
+                    //console.log(row);
                     let cartId = row.cartId;
                     const productsInCart = row.map((p: {model: string; quantity: number; category: Category; price: number;})=> new ProductInCart(p.model,p.quantity,p.category,p.price));
                     resolve (new Cart(user.username,false,null,0,productsInCart));
