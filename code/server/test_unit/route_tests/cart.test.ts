@@ -6,7 +6,10 @@ import CartController from "../../src/controllers/cartController"
 import { Cart, ProductInCart } from "../../src/components/cart"
 import { Role, User } from "../../src/components/user"
 import { EmptyProductStockError, LowProductStockError, ProductNotFoundError } from "../../src/errors/productError"
+import { Category } from "../../src/components/product"
+import { before, describe } from "node:test"
 const baseURL = "/ezelectronics"
+
 
 /* ************************ get ezelectronics/carts -->getCart ************************* */
 
