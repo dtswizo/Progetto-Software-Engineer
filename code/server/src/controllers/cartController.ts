@@ -1,9 +1,10 @@
-import { EmptyProductStockError, ProductNotFoundError } from "../errors/productError";
+import { EmptyProductStockError, LowProductStockError, ProductNotFoundError } from "../errors/productError";
 import { User } from "../components/user";
 import { Cart } from "../components/cart";
 import CartDAO from "../dao/cartDAO";
 import { CartNotFoundError, ProductInCartError } from "../errors/cartError";
 import { ProductNotInCartError } from "../errors/cartError";
+import dayjs from "dayjs";
 
 /**
  * Represents a controller for managing shopping carts.
@@ -32,7 +33,9 @@ class CartController {
                 throw new ProductNotFoundError(); //ERROR 404
             if (quantity === 0)
                 throw new EmptyProductStockError(); //ERROR 409
-            return await this.dao.addProductInCart(user , product);
+            let checkCart = await this.dao.checkIfCartExists(user);
+            let checkProduct = await this.dao.checkIfProductExistsInCart(user,product);
+            return await this.dao.addProductInCart(user , product, checkCart, checkProduct);
         }
         catch{}
     }
@@ -62,11 +65,24 @@ class CartController {
             throw new CartNotFoundError();
         //check if at least one has 0 in stock
         //checks if at least one has more than whats available in stock
-        let quantity = await this.dao.checkProductAvailability
-        if(...){
-            ...
-        }
-        return await this.dao.checkoutCart(user);
+        let cart = await this.dao.getCurrentCart(user);
+        let total = 0;
+        let inStock = new Array<number>(cart.products.length);
+        for (let i=0;i<cart.products.length; i++){
+                //EFFETTUARE CONTROLLO SU QUANTITY
+                let quantity = await this.dao.checkProductAvailability(cart.products[i].model);
+                //Quantity available < Quantity richiesta
+                if (quantity === 0)
+                    throw new EmptyProductStockError()
+                if (quantity <= cart.products[i].quantity || quantity === 0){
+                    throw new LowProductStockError()
+                }
+                total = total + cart.products[i].price;
+                inStock[i] = quantity;  
+                }
+            let newCart = new Cart(user.username,true,dayjs().format('YYYY-MM-DD'),total,cart.products)
+            
+            return await this.dao.checkoutCart(user,newCart,inStock);
     }
 
     /**
@@ -99,7 +115,8 @@ class CartController {
             if (checkCart!=true){
                 throw new CartNotFoundError();
             }
-            return await this.dao.removeProductFromCart(user,product);
+            let quantity =  await this.dao.checkProductQuantityInCart(user,product);
+            return await this.dao.removeProductFromCart(user,product,quantity);
             
 
         }
@@ -115,9 +132,10 @@ class CartController {
     async clearCart(user: User)/*:Promise<Boolean> */ { 
         try{
             let checkCart = await this.dao.checkIfCartExists(user);
+            let idCart = await this.dao.getCartId(user);
             if (checkCart!=true)
                 throw new CartNotFoundError();
-            return await this.dao.clearCart(user);
+            return await this.dao.clearCart(user,idCart);
         }
         catch{}
     }

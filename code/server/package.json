@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.ts",
-    "test": "set NODE_ENV=test && jest --runInBand --coverage --colors --detectOpenHandles --forceExit --verbose"
+    "test": "set NODE_ENV=test && jest --runInBand --coverage --colors --detectOpenHandles --forceExit --verbose",
+    "test_unit": "jest --runInBand --coverage --colors --detectOpenHandles --forceExit --verbose --testPathPattern=test_unit",
+    "test_integration": "jest --runInBand --coverage --colors --detectOpenHandles --forceExit --verbose --testPathPattern=test_integration",
+    "test_official": "jest --runInBand --coverage --colors --detectOpenHandles --forceExit --verbose --testPathPattern=test_official"
   },
   "keywords": [],
   "author": "",

@@ -121,7 +121,7 @@ Returns the list of all users.
   - Example: `[{username: "Mario Rossi", name: "Mario", surname: "Rossi", role: "Customer", address: "...", birthdate: ".."}, {username: "Giuseppe Verdi", name: "Giuseppe", surname: "Verdi", role: "Customer", address: "...", birthdate: ".."}, {username: "Admin", name: "admin", surname: "admin", role: "Manager", address: "...", birthdate: ".."}]`
 - Access Constraints: Can only be called by a logged in user whose role is Admin
 
-#### GET `ezelectronics/users/role/:role`
+#### GET `ezelectronics/users/roles/:role`
 
 Returns the list of all users with a specific role.
 
@@ -292,7 +292,7 @@ Returns all products in the database that are available (their quantity is more 
   - It should return a 422 error if `grouping` is `model` and `model` is null OR `category` is not null
   - It should return a 404 error if `model` does not represent a product in the database (only when `grouping` is `model`)
 
-#### DELETE `ezelectronics/:model`
+#### DELETE `ezelectronics/products/:model`
 
 Deletes one product from the database, removing it from the shop and making it not available anymore.
 

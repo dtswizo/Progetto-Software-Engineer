@@ -10,6 +10,15 @@ test_server:
   image: node:latest
   script:
     - set NODE_ENV=test
-    - npm test --testPathPattern='(test_unit|test_integration)'
+    - npm run test_unit
+    - npm run test_integration
   rules:
-    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "testdelivery" || $CI_COMMIT_BRANCH == "v2-base"
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "testdelivery"
+test_official:
+  stage: test
+  image: node:latest
+  script:
+    - set NODE_ENV=test
+    - npm run test_official
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "testdelivery"
