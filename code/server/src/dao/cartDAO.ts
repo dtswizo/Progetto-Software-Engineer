@@ -1,15 +1,15 @@
 import { User } from "../components/user";
 import { Cart, ProductInCart } from "../components/cart";
 import db from "../db/db"
-import { Category } from "src/components/product";
+import { Category } from "../components/product";
 /**
  * A class that implements the interaction with the database for all cart-related operations.
  * You are free to implement any method you need here, as long as the requirements are satisfied.
  */
 class CartDAO {
 
-    checkIfCartExists(user:User){
-        return new Promise<Boolean>((resolve,reject)=>{
+    checkIfCartExists(user:User):Promise<boolean>{
+        return new Promise<boolean>((resolve,reject)=>{
             try{
                 const sql = "SELECT * FROM carts c JOIN prod_in_cart pc JOIN products p WHERE c.idCart = pc.idCart AND pc.model = p.model AND username=? AND paid=FALSE;"
                 db.all(sql, [user.username], (err: Error | null, row:any) => {
@@ -31,7 +31,7 @@ class CartDAO {
     }
 
 
-    checkIfProductExists(model: string){
+    checkIfProductExists(model: string):Promise<boolean>{
     return new Promise<boolean>((resolve,reject)=>{
         try{
             const sql="SELECT model FROM products WHERE model=?";
@@ -54,7 +54,7 @@ class CartDAO {
     });
     }
 
-    checkIfProductExistsInCart(user: User, model: string){
+    checkIfProductExistsInCart(user: User, model: string):Promise<boolean>{
         return new Promise<boolean>((resolve,reject)=>{
             try{
                 const sql="SELECT model FROM cart c JOIN productincart pc WHERE c.idCart = pc.idCart AND user model=?;";
@@ -78,8 +78,8 @@ class CartDAO {
         });
         }
 
-    checkProductAvailability(model: string){
-        return new Promise<Number>((resolve,reject)=>{
+    checkProductAvailability(model: string):Promise<number>{
+        return new Promise<number>((resolve,reject)=>{
             try{
                 const sql="SELECT model FROM product WHERE model=?;";
                 db.get(sql,[model], (err:Error | null, row: any )=>{
@@ -99,8 +99,8 @@ class CartDAO {
         });
     }
 
-    checkProductQuantityInCart(user:User, model: string){
-        return new Promise<Number>((resolve,reject)=>{
+    checkProductQuantityInCart(user:User, model: string):Promise<number>{
+        return new Promise<number>((resolve,reject)=>{
             try{
                 const sql="SELECT model FROM cart c JOIN productincart pc WHERE c.idCart = pc.idCart AND user model=?;";
                 db.get(sql,[model], (err:Error | null, row: any )=>{
@@ -120,13 +120,35 @@ class CartDAO {
         });
     }
 
+    getCartId(user:User):Promise<number>{
+        return new Promise<number>((resolve,reject)=>{
+            try{
+                const sql = "SELECT * FROM carts c WHERE AND username=? AND paid=FALSE;"
+                db.all(sql, [user.username], (err: Error | null, row:any) => {
+                    if (err){
+                        reject(err)
+                        return
+                    }
+                    if(!row){
+                        reject(err);
+                        return
+                    }
+                        resolve (row.idCart);
+                    });
+            }
+            catch(error){
+                reject (error);
+            }
+        });
+    }
+
     //DOMANDA: QUANTITY DEL PRODOTTO VA RIDOTTA QUA DA PRODUCT?
     //RISPOSTA: NO, VERIFICA TUTTO IL CHECKOUT
-    addProductInCart(user: User, product:string){
+    addProductInCart(user: User, product:string, checkCart:boolean, checkProduct:boolean):Promise<Boolean>{
         return new Promise<Boolean>((resolve,reject)=>{
             try{
                 //PROBLEMI SU AWAIT COME FARE? HA SENSO FARE ASYNC?
-                let checkCart = this.checkIfCartExists(user);
+                
                 if (checkCart === false){
                     //VERIFICARE AUTOINCREMENT
                     //CARRELLO DA CREARE, PRENDERE ID E INSERIRE IN PRODINCART
@@ -155,7 +177,7 @@ class CartDAO {
                         
                     })
                 }
-                let checkProduct = await this.checkIfProductExistsInCart(user,product);
+                
 
                 let cartId = null;
 
@@ -193,7 +215,7 @@ class CartDAO {
     }
 
 
-    getCurrentCart(user: User){
+    getCurrentCart(user: User):Promise<Cart>{
         return new Promise<Cart>((resolve,reject)=>{
             try{
                 const sql = "SELECT * FROM carts c JOIN prod_in_cart pc JOIN products p WHERE c.idCart == pc.idCart AND pc.model == p.model AND username=? AND paid=FALSE;"
@@ -220,11 +242,12 @@ class CartDAO {
     Se quantità è 1, rimuovere associazione
     Se quantità > 1, aggiornare quantity
     */
-    removeProductFromCart(user:User, product:string){
-        return new Promise<Boolean>((resolve,reject)=>{
+    //PARAMETRI MODIFICATI PER COMODITA
+    removeProductFromCart(user:User, product:string, quantity:number):Promise<boolean>{
+        return new Promise<boolean>((resolve,reject)=>{
             try{
-                let quantity =  await this.checkProductQuantityInCart(user,product);
-                let idCart = this.getIdCart(); //TODO
+                
+                let idCart = this.getCartId(user);
                 if (quantity===1){
                     //eliminare associazione perchè quantity è 1
                     //DA FINIREEEEE
@@ -265,11 +288,17 @@ class CartDAO {
     Join tra cart e prod in cart
     cancellare tutte le associazioni in prod in cart
     */
-    clearCart(user:User){
+    clearCart(user:User,idCart: number):Promise<Boolean>{
         return new Promise<Boolean>((resolve,reject)=>{
             try{
-                const sql = ""
-                db.all(sql, [user.username], (err: Error | null, row:any) => {
+                
+                const sql = "DELETE FROM prod_in_cart WHERE idCart=?"
+                db.run(sql, [idCart], (err: Error | null) => {
+                    if(err){
+                        reject(err);
+                        return 
+                    }
+                    resolve(true);
                 });
             }
             catch(error){
@@ -279,22 +308,41 @@ class CartDAO {
 
     }
 
-    /*
-    Impostare il carrello da true a false 
-    */
-    checkoutCart(user:User){
+    checkoutCart(user:User, cart: Cart, inStock: Array<number>):Promise<Boolean>{
         return new Promise<Boolean>((resolve,reject)=>{
             try{
-                let cart = await this.getCurrentCart(user);
-                let total = 0;
+                //Updating quantities in stock
                 for (let i=0;i<cart.products.length; i++){
-                    //EFFETTUARE CONTROLLO SU QUANTITY
-
-                    total = total + cart.products[i].price;
-                    
+                    const sql ="UPDATE products\
+                                SET quantity=?\
+                                WHERE model=?;"
+                    db.run(sql, [inStock[i]-cart.products[i].quantity, cart.products[i].model], function (err: Error | null) {
+                    if (err) {
+                        reject(err);
+                        return
+                    }
+                    if(this.changes==0){
+                        reject(err);
+                        return
+                    }
+                    });
                 }
-                //UPDATE paid = true
-                //UPDATE paymentDate
+                //Marks current cart as paid
+                const sql = "UPDATE carts\
+                            SET paid=?,paymentDate=?,total=?\
+                            WHERE customer=?;" 
+                db.run(sql, [cart.paid,cart.paymentDate,cart.total,cart.customer], function (err: Error | null) {
+                    if (err) {
+                        reject(err);
+                        return
+                    }
+                    if(this.changes==0){
+                        reject(err);
+                        return
+                    }
+                    resolve(true)
+                });
+                 
             }
             catch(error){
                 reject(error)
@@ -302,18 +350,78 @@ class CartDAO {
         });
     }
 
-    getCustomerCarts(user:User){
-        return new Promise<Boolean>((resolve,reject)=>{
+
+    //TODO Come restituire esattamente la roba per ogni carrello così da riempire productsincart?
+    //Possibile: prima query prende tutti gli id dei carrelli interessati, seconda query scorre la lista di carrelli e ogni volta tira giù lista prodotti
+    getCustomerCarts(user:User):Promise<Cart[]>{
+        return new Promise<Cart[]>((resolve,reject)=>{
             try{
-               const sql = "SELECT * FROM cart WHERE username=?;"
+                const sql = "SELECT * FROM carts c JOIN prod_in_cart pc JOIN products p WHERE c.idCart == pc.idCart AND pc.model == p.model AND username=? AND paid=TRUE;"
                 db.all(sql, [user.username], (err: Error | null, row:any) => {
-                });
+                    if (err){
+                        reject(err)
+                        return
+                    }
+                    if(!row){
+                        resolve ([]);
+                        return
+                    }
+                    let cartId = row.cartId;
+                    const productsInCart = row.map((p: {model: string; quantity: number; category: Category; price: number;})=> new ProductInCart(p.model,p.quantity,p.category,p.price));
+                    resolve ([]); //DA FINIRE
+                    });
             }
             catch(error){
                 reject(error)
             }
         });
+    }
 
+    deleteAllCarts():Promise<boolean>{
+        return new Promise<boolean>((resolve,reject)=>{
+            try{
+                const sql = "DELETE * FROM carts ;"
+                db.run(sql, [], (err: Error | null) => {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    
+                })
+                const sql2 = "DELETE * FROM prod_in_cart;"
+                db.run(sql2, [], (err: Error | null) => {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    
+                })
+            }
+            catch(error){
+
+            }
+
+        })
+    }
+
+    //TODO Stesso dilemma di getCustomerCarts
+    getAllCarts(){
+        return new Promise<boolean>((resolve,reject)=>{
+            try{
+                const sql = "SELECT * FROM carts AND prod_in_cart;"
+                db.run(sql, [], (err: Error | null) => {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    resolve(true);
+                })
+            }
+            catch(error){
+
+            }
+
+        })
     }
 
 
