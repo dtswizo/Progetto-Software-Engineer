@@ -184,7 +184,7 @@ describe("POST /ezelectronics/reviews/:model", () => {
         expect(response.status).toBe(422);
         expect(ReviewController.prototype.addReview).toHaveBeenCalledTimes(0);
     });
-    it("Customer - Review already present - 409 error code", async () => {
+    it("Customer - Already existing review for the product made by the customer - 409 error code", async () => {
         const testLoggedUser = spyCustomer();
         enableMockedAuth(app);
 
@@ -204,6 +204,34 @@ describe("POST /ezelectronics/reviews/:model", () => {
 
         expect(Authenticator.prototype.isCustomer).toHaveBeenCalledTimes(1);
         expect(response.status).toBe(409);
+        expect(ReviewController.prototype.addReview).toHaveBeenCalledTimes(1);
+        expect(ReviewController.prototype.addReview).toHaveBeenCalledWith(
+            model,
+            testLoggedUser,
+            testReview.score,
+            testReview.comment
+        );
+    });
+    it("Customer - model does not represent an existing product in the database - 404 error code", async () => {
+        const testLoggedUser = spyCustomer();
+        enableMockedAuth(app);
+
+        jest.spyOn(ReviewController.prototype, "addReview").mockImplementation(() => {
+            return Promise.reject(new ProductNotFoundError());
+        });
+
+        const testReview = {
+            score: 5,
+            comment: "A very cool smartphone!"
+        }
+        const model = 'iPhone13';
+        const response = await request(app)
+            .post(`${baseURL}/reviews/${model}`)
+            .send(testReview)
+            .set('Content-Type', 'application/json');
+
+        expect(Authenticator.prototype.isCustomer).toHaveBeenCalledTimes(1);
+        expect(response.status).toBe(404);
         expect(ReviewController.prototype.addReview).toHaveBeenCalledTimes(1);
         expect(ReviewController.prototype.addReview).toHaveBeenCalledWith(
             model,
@@ -291,7 +319,7 @@ describe("GET /ezelectronics/reviews/:model", () => {
             model
         );
     });
-    it("Customer - model does not represent an existing product in the database - 404 error code", async () => {
+    it("Admin - model does not represent an existing product in the database - 404 error code", async () => {
         spyAdmin();
         enableMockedAuth(app);
 
