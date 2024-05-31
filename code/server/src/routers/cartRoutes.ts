@@ -120,6 +120,7 @@ class CartRoutes {
         this.router.delete(
             "/products/:model",
             this.authenticator.isCustomer,
+            param("model").isString().isLength({ min: 1 }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.removeProductFromCart(req.user, req.params.model)
                 .then(() => res.status(200).end())
@@ -136,6 +137,8 @@ class CartRoutes {
          */
         this.router.delete(
             "/current",
+            this.authenticator.isCustomer,
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.clearCart(req.user)
                 .then(() => res.status(200).end())
                 .catch((err) => next(err))
@@ -148,6 +151,8 @@ class CartRoutes {
          */
         this.router.delete(
             "/",
+            this.authenticator.isAdminOrManager,
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.deleteAllCarts()
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))
@@ -160,6 +165,8 @@ class CartRoutes {
          */
         this.router.get(
             "/all",
+            this.authenticator.isAdminOrManager,
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getAllCarts()
                 .then((carts: any/**Cart[] */) => res.status(200).json(carts))
                 .catch((err: any) => next(err))
