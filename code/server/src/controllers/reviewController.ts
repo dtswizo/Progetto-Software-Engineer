@@ -1,6 +1,5 @@
 import { User } from "../components/user";
 import ReviewDAO from "../dao/reviewDAO";
-import { ExistingReviewError, NoReviewProductError } from "../errors/reviewError";
 import { ProductReview } from "../components/review";
 
 
@@ -21,7 +20,7 @@ class ReviewController {
      */
     async addReview(model: string, user: User, score: number, comment: string) :Promise<void>{    
             await this.dao.productCheck(model);
-            return await this.dao.addReview(model, user, score, comment);
+            return this.dao.addReview(model, user, score, comment);
     }
 
     /**
@@ -30,7 +29,7 @@ class ReviewController {
      * @returns A Promise that resolves to an array of ProductReview objects
      */
     async getProductReviews(model: string) :Promise<ProductReview[]> {
-             return await this.dao.getProductReviews(model);
+             return this.dao.getProductReviews(model);
      }
     
 
@@ -42,7 +41,7 @@ class ReviewController {
      */
     async deleteReview(model: string, user: User) :Promise<void>{
         await this.dao.productCheck(model);
-        return await this.dao.deleteReview(model, user);
+        return this.dao.deleteReview(model, user);
        
     }
 
@@ -53,7 +52,7 @@ class ReviewController {
      */
     async deleteReviewsOfProduct(model: string) :Promise<void>{ 
         await this.dao.productCheck(model);
-        return await this.dao.deleteReviewsOfProduct(model); 
+        return this.dao.deleteReviewsOfProduct(model); 
     }
 
     /**
@@ -61,7 +60,7 @@ class ReviewController {
      * @returns A Promise that resolves to nothing
      */
     async deleteAllReviews() :Promise<void> {    
-        return await this.dao.deleteAllReviews();     
+        return this.dao.deleteAllReviews();     
     }
 }
 
