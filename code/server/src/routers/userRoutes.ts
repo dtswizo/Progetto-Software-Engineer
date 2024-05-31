@@ -150,6 +150,7 @@ class UserRoutes {
                 .catch((err: any) => next(err))
         )
 
+        //TODO: VALIDARE LA DATA NEL MIDDLEWARE
         /**
          * Route for updating the information of a user.
          * It requires the user to be authenticated.
@@ -167,7 +168,7 @@ class UserRoutes {
             body("name").isString().isLength({ min: 1 }),
             body("surname").isString().isLength({ min: 1 }),
             body("address").isString().isLength({ min: 1 }),
-            body('birthdate').isString().isLength({ min: 1 }),
+            body('birthdate').isDate({format: 'YYYY-MM-DD', strictMode: true}),
             param("username").isString().isLength({ min: 1 }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.updateUserInfo(req.user, req.body.name, req.body.surname, req.body.address, req.body.birthdate, req.params.username)
