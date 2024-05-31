@@ -1,6 +1,6 @@
 import { User, Role } from "./components/user"
 const DATE_ERROR = "Input date is not compatible with the current date"
-
+const WRONG_PARAMETER_ERROR = "The parameters are not formatted properly"
 /**
  * Represents a utility class.
  */
@@ -39,4 +39,15 @@ class DateError extends Error {
     }
 }
 
-export { Utility, DateError }
+class WrongParametersError extends Error {
+    customMessage: string
+    customCode: number
+    
+    constructor() {
+        super()
+        this.customMessage = WRONG_PARAMETER_ERROR
+        this.customCode = 422
+    }
+}
+
+export { Utility, DateError, WrongParametersError }
