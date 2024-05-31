@@ -27,7 +27,7 @@ class ProductController {
      * @param arrivalDate The optional date in which the product arrived.
      * @returns A Promise that resolves to nothing.
      */
-    async registerProducts(model: string, category: string, quantity: number, details: string | null, sellingPrice: number, arrivalDate: string | null) /**:Promise<void> */ {
+    async registerProducts(model: string, category: string, quantity: number, details: string | null, sellingPrice: number, arrivalDate: string | null) :Promise<void> {
         
         if (arrivalDate===null){
             arrivalDate=dayjs().format('YYYY-MM-DD');
@@ -47,7 +47,7 @@ class ProductController {
      * @param changeDate The optional date in which the change occurred.
      * @returns A Promise that resolves to the new available quantity of the product.
      */
-    async changeProductQuantity(model: string, newQuantity: number, changeDate: string | null) /**:Promise<number> */ { 
+    async changeProductQuantity(model: string, newQuantity: number, changeDate: string | null) :Promise<number> { 
         
         if (changeDate===null){
             changeDate=dayjs().format('YYYY-MM-DD');
@@ -71,7 +71,7 @@ class ProductController {
      * @param sellingDate The optional date in which the sale occurred.
      * @returns A Promise that resolves to the new available quantity of the product.
      */
-    async sellProduct(model: string, quantity: number, sellingDate: string | null) /**:Promise<number> */ { 
+    async sellProduct(model: string, quantity: number, sellingDate: string | null) :Promise<number> { 
 
         if (sellingDate===null){
             sellingDate=dayjs().format('YYYY-MM-DD');
@@ -102,7 +102,7 @@ class ProductController {
      * @param model An optional parameter. It can only be present if grouping is equal to "model" (in which case it must be present and not empty).
      * @returns A Promise that resolves to an array of Product objects.
      */
-    async getProducts(grouping: string | null, category: string | null, model: string | null) /**Promise<Product[]> */ { 
+    async getProducts(grouping: string | null, category: string | null, model: string | null) :Promise<Product[]> { 
         //NOTA: I parametri non vengono registrati come "null" ma come "undefined"
         //Non l'ho svolto per tutti ma solo per i controlli che mi interessavano
         // (error parameter category... e grouping == null), vedi se è necessario per gli altri
@@ -134,7 +134,7 @@ class ProductController {
      * @param model An optional parameter. It can only be present if grouping is equal to "model" (in which case it must be present and not empty).
      * @returns A Promise that resolves to an array of Product objects.
      */
-    async getAvailableProducts(grouping: string | null, category: string | null, model: string | null) /**:Promise<Product[]> */ {
+    async getAvailableProducts(grouping: string | null, category: string | null, model: string | null) :Promise<Product[]>  {
         //NOTA: Ho rimosso le graffe di products.filter, a quanto pare bloccavano la restituzione
         let result=await this.getProducts(grouping,category,model).then(
             (products:Product[])=>products.filter((p)=>p.quantity>0)
@@ -148,7 +148,7 @@ class ProductController {
      * Deletes all products.
      * @returns A Promise that resolves to `true` if all products have been successfully deleted.
      */
-    async deleteAllProducts() /**:Promise <Boolean> */ {
+    async deleteAllProducts() :Promise <Boolean> {
         return this.dao.deleteAllProducts();
     }
 
