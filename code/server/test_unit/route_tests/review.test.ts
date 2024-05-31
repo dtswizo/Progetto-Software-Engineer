@@ -109,7 +109,7 @@ describe("POST /ezelectronics/reviews/:model", () => {
         expect(ReviewController.prototype.addReview).toHaveBeenCalledTimes(0);
 
     });
-    it("Customer - model null - 404 error code", async () => {
+    it("Customer - model empty - 422 error code", async () => {
         spyAdmin();
         enableMockedAuth(app)
         jest.spyOn(ReviewController.prototype, "addReview").mockResolvedValue();
@@ -124,7 +124,7 @@ describe("POST /ezelectronics/reviews/:model", () => {
             .send(testReview)
             .set('Content-Type', 'application/json');
 
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(422);
         expect(ReviewController.prototype.addReview).toHaveBeenCalledTimes(0);
     });
     it("Customer - score < 1 - 422 error code", async () => {
@@ -165,7 +165,7 @@ describe("POST /ezelectronics/reviews/:model", () => {
         expect(response.status).toBe(422);
         expect(ReviewController.prototype.addReview).toHaveBeenCalledTimes(0);
     });
-    it("Customer - null comment - 422 error code", async () => {
+    it("Customer - empty comment - 422 error code", async () => {
         const testLoggedUser = spyCustomer();
         enableMockedAuth(app);
 
@@ -291,18 +291,35 @@ describe("GET /ezelectronics/reviews/:model", () => {
             model
         );
     });
-    it("Customer - model null - 404 error code", async () => {
+    it("Customer - model does not represent an existing product in the database - 404 error code", async () => {
         spyAdmin();
         enableMockedAuth(app);
 
-        jest.spyOn(ReviewController.prototype, "getProductReviews").mockResolvedValue([new ProductReview("test", "test", 1, "test", "test")]);
+        jest.spyOn(ReviewController.prototype, "getProductReviews").mockRejectedValue(new NoReviewProductError());
+
+        const model = 'iPhone13';
+        const response = await request(app)
+            .get(`${baseURL}/reviews/${model}`)
+            .set('Content-Type', 'application/json');
+
+        expect(response.status).toBe(404);
+        expect(ReviewController.prototype.getProductReviews).toHaveBeenCalledTimes(1);
+        expect(ReviewController.prototype.getProductReviews).toHaveBeenCalledWith(
+            model
+        );
+    });
+    it("Customer - model empty - 422 error code", async () => {
+        spyAdmin();
+        enableMockedAuth(app);
+
+        jest.spyOn(ReviewController.prototype, "getProductReviews").mockRejectedValue(new NoReviewProductError());
 
         const model = '';
         const response = await request(app)
             .get(`${baseURL}/reviews/${model}`)
             .set('Content-Type', 'application/json');
 
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(422);
         expect(ReviewController.prototype.getProductReviews).toHaveBeenCalledTimes(0);
     });
 
@@ -530,6 +547,20 @@ describe("DELETE /ezelectronics/reviews/:model/all", () => {
             model
         );
     });
+    it("Admin - model empty - 422 error code", async () => {
+        spyAdmin();
+        enableMockedAuth(app);
+
+        jest.spyOn(ReviewController.prototype, "deleteReviewsOfProduct").mockResolvedValue();
+
+        const model = '';
+        const response = await request(app)
+            .delete(`${baseURL}/reviews/${model}/all`)
+            .set('Content-Type', 'application/json');
+
+        expect(response.status).toBe(422);
+        expect(ReviewController.prototype.deleteReviewsOfProduct).toHaveBeenCalledTimes(0);
+    });
 
 });
 
@@ -596,6 +627,21 @@ describe("DELETE /ezelectronics/reviews", () => {
 
         expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
         expect(response.status).toBe(200);
+        expect(ReviewController.prototype.deleteAllReviews).toHaveBeenCalledTimes(1);
+        expect(ReviewController.prototype.deleteAllReviews).toHaveBeenCalledWith();
+    });
+    it("Admin - db error", async () => {
+        spyAdmin();
+        enableMockedAuth(app);
+
+        jest.spyOn(ReviewController.prototype, "deleteAllReviews").mockRejectedValue(new Error());
+
+        const response = await request(app)
+            .delete(`${baseURL}/reviews`)
+            .set('Content-Type', 'application/json');
+
+        expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
+        expect(response.status).not.toBe(200);
         expect(ReviewController.prototype.deleteAllReviews).toHaveBeenCalledTimes(1);
         expect(ReviewController.prototype.deleteAllReviews).toHaveBeenCalledWith();
     });
