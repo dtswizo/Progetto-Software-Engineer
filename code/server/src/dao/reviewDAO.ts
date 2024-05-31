@@ -32,8 +32,8 @@ class ReviewDAO {
                     reject(err);
                     return;
                 }
-                if (rows.length === 0) {
-                    reject(new NoReviewProductError());
+                if (rows.length === 0) {   //sta roba non so se va rimossa, cioè se il prodotto non ha recensioni va ritornato array vuoto? o reject
+                    reject();
                     return;
                 }
 
@@ -73,12 +73,6 @@ class ReviewDAO {
                     reject(err);
                     return;
                 }
-
-                if (this.changes === 0) {
-                    reject(new NoReviewProductError());
-                    return;
-                }
-
                 resolve();
             });
         });
@@ -92,7 +86,6 @@ class ReviewDAO {
                     reject(err);
                     return;
                 }
-
                 resolve();
             });
         });
