@@ -92,7 +92,9 @@ class CartController {
      * Only the carts that have been checked out should be returned, the current cart should not be included in the result.
      */
     async getCustomerCarts(user: User) { 
-        return await this.dao.getCustomerCarts(user);
+        let result =await this.dao.getCustomerCarts(user)
+        console.log(result)
+        return result ;
     } /**Promise<Cart[]> */
 
     /**

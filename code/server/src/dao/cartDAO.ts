@@ -387,23 +387,49 @@ class CartDAO {
     //TODO Come restituire esattamente la roba per ogni carrello così da riempire productsincart?
     //Possibile: prima query prende tutti gli id dei carrelli interessati, seconda query scorre la lista di carrelli e ogni volta tira giù lista prodotti
     getCustomerCarts(user:User):Promise<Cart[]>{
-        return new Promise<Cart[]>((resolve,reject)=>{
+    return new Promise<Cart[]>((resolve,reject)=>{
             try{
-                const sql = "SELECT * FROM carts c JOIN prod_in_cart pc JOIN products p WHERE c.idCart == pc.idCart AND pc.model == p.model AND username=? AND paid=TRUE;"
-                db.all(sql, [user.username], (err: Error | null, row:any) => {
+                const result: Cart[] = []
+                const sql = "SELECT * FROM carts c  WHERE customer=? AND paid=TRUE;"
+                db.all(sql, [user.username], (err: Error | null, rows:any) => {
                     if (err){
                         reject(err)
                         return
                     }
-                    if(!row){
+                    if(!rows){
                         resolve ([]);
                         return
                     }
-                    let cartId = row.cartId;
-                    const productsInCart = row.map((p: {model: string; quantity: number; category: Category; price: number;})=> new ProductInCart(p.model,p.quantity,p.category,p.price));
-                    resolve ([]); //DA FINIRE
+                     let cartQueries = rows.map((row: any, i:number) => {
+                    return new Promise<void>((resolve, reject) => {
+                        const sql = "SELECT * FROM carts c JOIN prod_in_cart pc WHERE c.idCart = pc.idCart AND c.idCart = ? AND paid = TRUE;";
+                        db.all(sql, [row.idCart], (err: Error | null, row: any) => {
+                            if (err) {
+                                reject(err);
+                                return;
+                            }
+                            if (!row) {
+                                resolve();
+                                return;
+                            }
+
+                            const productsInCart = row.map((p: { model: string; quantity: number; category: Category; price: number; }) => new ProductInCart(p.model, p.quantity, p.category, p.price));
+                           
+                            let cartToAdd = new Cart(row[i].customer, true, row[i].paymentDate, row[i].total, productsInCart);
+                            
+                            result.push(cartToAdd);
+                            resolve();
+                        });
                     });
-            }
+                });
+
+                Promise.all(cartQueries).then(() => {
+                    console.log(result)
+                    resolve(result);
+                })
+                    
+            });
+        }
             catch(error){
                 reject(error)
             }
@@ -427,6 +453,7 @@ class CartDAO {
                         reject(err)
                         return
                     }
+                    resolve(true)
                     
                 })
             }
@@ -438,24 +465,54 @@ class CartDAO {
     }
 
     //TODO Stesso dilemma di getCustomerCarts
-    getAllCarts(){
-        return new Promise<boolean>((resolve,reject)=>{
-            try{
-                const sql = "SELECT * FROM carts AND prod_in_cart;"
-                db.run(sql, [], (err: Error | null) => {
-                    if (err) {
-                        reject(err)
-                        return
-                    }
-                    resolve(true);
-                })
-            }
-            catch(error){
+    getAllCarts(){return new Promise<Cart[]>((resolve,reject)=>{
+        try{
+            const result: Cart[] = []
+            const sql = "SELECT * FROM carts c "
+            db.all(sql, [], (err: Error | null, rows:any) => {
+                if (err){
+                    reject(err)
+                    return
+                }
+                if(!rows){
+                    resolve ([]);
+                    return
+                }
+                 let cartQueries = rows.map((row: any, i: number) => {
+                return new Promise<void>((resolve, reject) => {
+                    const sql = "SELECT * FROM carts c JOIN prod_in_cart pc WHERE c.idCart = pc.idCart AND c.idCart = ? AND paid = TRUE;";
+                    db.all(sql, [row.idCart], (err: Error | null, row: any) => {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        if (!row) {
+                            resolve();
+                            return;
+                        }
 
-            }
+                        const productsInCart = row.map((p: { model: string; quantity: number; category: Category; price: number; }) => new ProductInCart(p.model, p.quantity, p.category, p.price));
+                       
+                        let cartToAdd = new Cart(rows[i].customer, true, rows[i].paymentDate, rows[i].total, productsInCart);
+                        
+                        result.push(cartToAdd);
+                        resolve();
+                    });
+                });
+            });
 
-        })
+            Promise.all(cartQueries).then(() => {
+                console.log(result)
+                resolve(result);
+            })
+                
+        });
     }
+        catch(error){
+            reject(error)
+        }
+    });
+}
 
 
 }
