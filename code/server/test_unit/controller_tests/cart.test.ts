@@ -18,19 +18,20 @@ test("Test correct addToCart controller", async () => {
         address: "test",
         birthdate: "27/05/2024"
     }
-    jest.spyOn(CartDAO.prototype, "addToCart").mockResolvedValueOnce(true);
-    //eventuali altri mock da chiamare
+    jest.spyOn(CartDAO.prototype, "addProductInCart").mockResolvedValueOnce(true);
+    jest.spyOn(CartDAO.prototype, "checkProductAvailability").mockResolvedValueOnce(3);
+    jest.spyOn(CartDAO.prototype, "checkIfCartExists").mockResolvedValueOnce(true);
+    jest.spyOn(CartDAO.prototype, "checkIfProductExistsInCart").mockResolvedValueOnce(true);
     
     const controller = new CartController(); 
     
-    const response = await controller.getCart(testUser);
-
+    const response = await controller.addToCart(testUser,"test");
     
-    expect(CartDAO.prototype.addToCart).toHaveBeenCalledTimes(1);
-    expect(CartDAO.prototype.addToCart).toHaveBeenCalledWith(testUser,"test");
+    expect(CartDAO.prototype.addProductInCart).toHaveBeenCalledTimes(1);
+    expect(CartDAO.prototype.addProductInCart).toHaveBeenCalledWith(testUser,"test");
     expect(response).toBe(true);
-});
-*/
+});*/
+
 /* ****************************** FUNZIONE getCart ****************************** */
 /*
 test("Test correct getCart controller", async () => {
