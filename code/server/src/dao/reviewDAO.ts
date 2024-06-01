@@ -83,7 +83,7 @@ class ReviewDAO {
     async deleteAllReviews(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             const sql = "DELETE FROM reviews";
-            db.run(sql, function (err: Error | null) {
+            db.run(sql, [], function (err: Error | null) {
                 if (err) {
                     reject(err);
                     return;

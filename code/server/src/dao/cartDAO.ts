@@ -145,6 +145,50 @@ class CartDAO {
         });
     }
 
+    updateCartTotal(user:User, price:number){
+        return new Promise<Boolean>((resolve,reject)=>{
+            try{
+                const sql = "UPDATE carts \
+                    SET total=total+?\
+                    WHERE customer=? AND paid=FALSE";
+                   db.run(sql, [price,user.username], function (err: Error | null) {
+                    if(err){
+                        reject(err)
+                        return
+                    }
+                    if(this.changes===0){
+                        reject(false)
+                        return
+                    }
+                    resolve(true)
+                   })
+            }
+            catch{}
+        });
+    }
+    
+    resetCartTotal(user:User){
+        return new Promise<Boolean>((resolve,reject)=>{
+            try{
+                const sql = "UPDATE carts \
+                    SET total=0\
+                    WHERE customer=? AND paid=FALSE";
+                   db.run(sql, [user.username], function (err: Error | null) {
+                    if(err){
+                        reject(err)
+                        return
+                    }
+                    if(this.changes===0){
+                        reject(false)
+                        return
+                    }
+                    resolve(true)
+                   })
+            }
+            catch{}
+        });
+    }
+
     addProductInCart(user: User, product:string, checkCart:boolean, checkProduct:boolean):Promise<Boolean>{
         return new Promise<Boolean>((resolve,reject)=>{
             try{
@@ -183,6 +227,9 @@ class CartDAO {
                                 reject(err);
                                 return 
                             }
+                            this.updateCartTotal(user,price).then(()=>{
+                                resolve(true)
+                            })
                             resolve(true)
                             })
                         })
@@ -211,6 +258,9 @@ class CartDAO {
                                 reject(err);
                                 return 
                             }
+                            this.updateCartTotal(user,price).then(()=>{
+                                resolve(true)
+                            })
                             resolve(true)
                             })
                         return
@@ -224,6 +274,9 @@ class CartDAO {
                                 reject(err);
                                 return 
                             }
+                            this.updateCartTotal(user,price).then(()=>{
+                                resolve(true)
+                            })
                             resolve(true)
                             })
                         return
@@ -247,7 +300,7 @@ class CartDAO {
     getCurrentCart(user: User):Promise<Cart>{
         return new Promise<Cart>((resolve,reject)=>{
             try{
-                const sql = "SELECT pc.model, pc.quantity, p.category ,p.sellingPrice \
+                const sql = "SELECT total, pc.model, pc.quantity, p.category ,p.sellingPrice \
                  FROM carts c JOIN prod_in_cart pc JOIN products p WHERE c.idCart == pc.idCart AND pc.model == p.model AND customer=? AND paid=FALSE;";
                 db.all(sql, [user.username], (err: Error | null, row:any) => {
                     
@@ -264,7 +317,7 @@ class CartDAO {
                     //console.log(row);
                     //let cartId = row.cartId;
                     const productsInCart = row.map((p: {model: string; quantity: number; category: Category; sellingPrice: number;})=> new ProductInCart(p.model,p.quantity,p.category,p.sellingPrice));
-                    resolve (new Cart(user.username,false,null,0,productsInCart));
+                    resolve (new Cart(user.username,false,null,row[0].total,productsInCart));
                     });
             }
             catch{}
@@ -331,6 +384,9 @@ class CartDAO {
                         reject(err);
                         return 
                     }
+                    this.resetCartTotal(user).then(()=>{
+                        resolve(true)
+                    })
                     resolve(true);
                 });
             }
@@ -384,8 +440,6 @@ class CartDAO {
     }
 
 
-    //TODO Come restituire esattamente la roba per ogni carrello così da riempire productsincart?
-    //Possibile: prima query prende tutti gli id dei carrelli interessati, seconda query scorre la lista di carrelli e ogni volta tira giù lista prodotti
     getCustomerCarts(user:User):Promise<Cart[]>{
     return new Promise<Cart[]>((resolve,reject)=>{
             try{
@@ -464,7 +518,6 @@ class CartDAO {
         })
     }
 
-    //TODO Stesso dilemma di getCustomerCarts
     getAllCarts(){return new Promise<Cart[]>((resolve,reject)=>{
         try{
             const result: Cart[] = []
