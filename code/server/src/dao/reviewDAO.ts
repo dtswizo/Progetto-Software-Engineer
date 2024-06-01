@@ -32,6 +32,8 @@ class ReviewDAO {
                     reject(err);
                     return;
                 }
+
+                //TODO: Questo errore va veramente ritornato?
                 if (rows.length === 0) {
                     reject(new NoReviewProductError());
                     return;
@@ -74,6 +76,7 @@ class ReviewDAO {
                     return;
                 }
 
+                //TODO: Questo errore va veramente ritornato?
                 if (this.changes === 0) {
                     reject(new NoReviewProductError());
                     return;
