@@ -66,7 +66,6 @@ class CartController {
         //check if at least one has 0 in stock
         //checks if at least one has more than whats available in stock
         let cart = await this.dao.getCurrentCart(user);
-        let total = 0;
         let inStock = new Array<number>(cart.products.length);
         for (let i=0;i<cart.products.length; i++){
                 //EFFETTUARE CONTROLLO SU QUANTITY
@@ -77,10 +76,9 @@ class CartController {
                 if (quantity <= cart.products[i].quantity || quantity === 0){
                     throw new LowProductStockError()
                 }
-                total = total + cart.products[i].price;
                 inStock[i] = quantity;  
                 }
-            let newCart = new Cart(user.username,true,dayjs().format('YYYY-MM-DD'),total,cart.products)
+            let newCart = new Cart(user.username,true,dayjs().format('YYYY-MM-DD'),cart.total,cart.products)
             
             return await this.dao.checkoutCart(user,newCart,inStock);
     }
