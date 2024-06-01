@@ -13,7 +13,7 @@ export function cleanup() {
         db.run("DELETE FROM users")
         //Add delete statements for other tables here
         db.run("DELETE FROM carts")
-        db.run("DELETE FROM prod_in_carts")
+        db.run("DELETE FROM prod_in_cart")
         db.run("DELETE FROM products")
         db.run("DELETE FROM reviews")
     })
