@@ -155,12 +155,15 @@ class ProductRoutes {
          * - model: string. It can only be present if grouping is equal to "model" (in which case it must be present and not empty).
          * It returns an array of Product objects.
          */
+
+        //COMMENTATI I CONTROLLIIIII
+        //IIIIIIIIIII
         this.router.get(
             "/available",
             this.authenticator.isLoggedIn,
-            body("category").isIn([["Smartphone", "Laptop", "Appliance",null]]),
+            //body("category").isIn([["Smartphone", "Laptop", "Appliance",null]]),
             body("grouping").isIn(["model","category",null]),
-            body("model").isString(),
+            //body("model").isString(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getAvailableProducts(req.query.grouping, req.query.category, req.query.model)
                 .then((products: Product[]) => res.status(200).json(products))
