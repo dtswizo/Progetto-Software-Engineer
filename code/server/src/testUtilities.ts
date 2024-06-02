@@ -1,7 +1,7 @@
 const cors = require('cors');
-import { User, Role } from "../../src/components/user";
-import Authenticator from "../../src/routers/auth";
-import initRoutes from "../../src/routes"
+import { User, Role } from "./components/user";
+import Authenticator from "./routers/auth";
+import initRoutes from "./routes"
 import dotenv from 'dotenv';
 import express from 'express';
 
