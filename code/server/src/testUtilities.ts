@@ -7,9 +7,9 @@ import express from 'express';
 
 const spyCustomer = () => {
     const testLoggedUser = new User(
-        "test",
-        "test",
-        "test",
+        "MarioRossi",
+        "Mario",
+        "Rossi",
         Role.CUSTOMER,
         "",
         ""
@@ -43,9 +43,9 @@ const spyCustomer = () => {
 }
 const spyManager = () => {
     const testLoggedUser = new User(
-        "test",
-        "test",
-        "test",
+        "MarioRossi",
+        "Mario",
+        "Rossi",
         Role.MANAGER,
         "",
         ""
@@ -80,9 +80,9 @@ const spyManager = () => {
 }
 const spyAdmin = () => {
     const testLoggedUser = new User(
-        "test",
-        "test",
-        "test",
+        "MarioRossi",
+        "Mario",
+        "Rossi",
         Role.ADMIN,
         "",
         ""
