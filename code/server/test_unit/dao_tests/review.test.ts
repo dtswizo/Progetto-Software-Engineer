@@ -4,7 +4,7 @@ import ReviewDAO from '../../src/dao/reviewDAO'
 import db from "../../src/db/db"
 import { Database } from "sqlite3"
 import { User, Role } from '../../src/components/user';
-import { Product, Category } from '../../src/components/product'; 
+import { Product, Category } from '../../src/components/product';
 import { ExistingReviewError, NoReviewProductError } from "../../src/errors/reviewError";
 import { ProductNotFoundError } from "../../src/errors/productError";
 import { ProductReview } from '../../src/components/review';
@@ -179,7 +179,7 @@ describe("deleteReview", () => {
 
         await expect(reviewDAO.deleteReview(testModel, testUser)).rejects.toThrowError(Error);
     });
-    it("Error - Generic DB Error", async () => {
+    it("Error - NoReviewProductError", async () => {
         const testUser = new User('MarioRossi',
             'Mario',
             'Rossi',
@@ -235,7 +235,7 @@ describe("deleteAllReviews", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
-    
+
     it("Success - void", async () => {
 
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
@@ -264,7 +264,7 @@ describe("productCheck", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
-    
+
     it("Success - true", async () => {
         const testModel = 'iPhone13';
 
