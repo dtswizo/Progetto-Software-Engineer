@@ -26,18 +26,17 @@ class CartController {
      * @returns A Promise that resolves to `true` if the product was successfully added.
      */
     async addToCart(user: User, product: string)/*: Promise<Boolean>*/ { 
-        try{
-            let quantity = await this.dao.checkProductAvailability(product);
-            console.log(quantity)
-            if (quantity === -1)
-                throw new ProductNotFoundError(); //ERROR 404
-            if (quantity === 0)
-                throw new EmptyProductStockError(); //ERROR 409
-            let checkCart = await this.dao.checkIfCartExists(user);
-            let checkProduct = await this.dao.checkIfProductExistsInCart(user,product);
-            return await this.dao.addProductInCart(user , product, checkCart, checkProduct);
-        }
-        catch{}
+        
+        let quantity = await this.dao.checkProductAvailability(product);
+        console.log(quantity)
+        if (quantity === -1)
+            throw new ProductNotFoundError(); //ERROR 404
+        if (quantity === 0)
+            throw new EmptyProductStockError(); //ERROR 409
+        let checkCart = await this.dao.checkIfCartExists(user);
+        let checkProduct = await this.dao.checkIfProductExistsInCart(user,product);
+        return await this.dao.addProductInCart(user , product, checkCart, checkProduct);
+        
     }
 
 
@@ -47,10 +46,7 @@ class CartController {
      * @returns A Promise that resolves to the user's cart or an empty one if there is no current cart.
      */
     async getCart(user: User)/*: Cart*/ { 
-        try{
-            return await this.dao.getCurrentCart(user);
-        }
-        catch{}
+        return await this.dao.getCurrentCart(user);
     }
 
     /**
@@ -104,31 +100,26 @@ class CartController {
      * @returns A Promise that resolves to `true` if the product was successfully removed.
      */
     async removeProductFromCart(user: User, product: string) /**Promise<Boolean> */ { 
-        try{
-            let checkProduct = await this.dao.checkIfProductExists(product);
-            console.log(checkProduct)
-            if (checkProduct!=true){
-                throw new ProductNotFoundError();
-            }
-            let checkInCart = await this.dao.checkIfProductExistsInCart(user,product);
-            console.log(checkInCart)
-            if (checkInCart!=true){
-                throw new ProductNotInCartError();
-            }
-            let checkCart = await this.dao.checkIfCartExists(user);
-            console.log(checkCart)
-            if (checkCart!=true){
-                throw new CartNotFoundError();
-            }
-            let quantity =  await this.dao.checkProductQuantityInCart(user,product);
-            let idCart = await this.dao.getCartId(user);
-            console.log(quantity)
-            console.log(idCart)
-            return await this.dao.removeProductFromCart(user,product,idCart,quantity);
-            
-
+        let checkProduct = await this.dao.checkIfProductExists(product);
+        console.log(checkProduct)
+        if (checkProduct!=true){
+            throw new ProductNotFoundError();
         }
-        catch{}
+        let checkInCart = await this.dao.checkIfProductExistsInCart(user,product);
+        console.log(checkInCart)
+        if (checkInCart!=true){
+            throw new ProductNotInCartError();
+        }
+        let checkCart = await this.dao.checkIfCartExists(user);
+        console.log(checkCart)
+        if (checkCart!=true){
+            throw new CartNotFoundError();
+        }
+        let quantity =  await this.dao.checkProductQuantityInCart(user,product);
+        let idCart = await this.dao.getCartId(user);
+        console.log(quantity)
+        console.log(idCart)
+        return await this.dao.removeProductFromCart(user,product,idCart,quantity);
     }
         
 
@@ -138,15 +129,12 @@ class CartController {
      * @returns A Promise that resolves to `true` if the cart was successfully cleared.
      */
     async clearCart(user: User)/*:Promise<Boolean> */ { 
-        try{
-            let checkCart = await this.dao.checkIfCartExists(user);
-            
-            if (checkCart!=true)
-                throw new CartNotFoundError();
-            let idCart = await this.dao.getCartId(user);
-            return await this.dao.clearCart(user,idCart);
-        }
-        catch{}
+        let checkCart = await this.dao.checkIfCartExists(user);
+        
+        if (checkCart!=true)
+            throw new CartNotFoundError();
+        let idCart = await this.dao.getCartId(user);
+        return await this.dao.clearCart(user,idCart);
     }
 
     /**
