@@ -2,6 +2,7 @@ import { User } from "../components/user";
 import { Cart, ProductInCart } from "../components/cart";
 import db from "../db/db"
 import { Category } from "../components/product";
+import dayjs from "dayjs";
 /**
  * A class that implements the interaction with the database for all cart-related operations.
  * You are free to implement any method you need here, as long as the requirements are satisfied.
@@ -44,9 +45,8 @@ class CartDAO {
                     resolve (false)
                     return 
                 }
-                else {
-                    resolve (true)
-                }
+                    resolve (true);
+                
             })
         }  catch (error){
             reject(error)
@@ -189,10 +189,21 @@ class CartDAO {
         });
     }
 
-    addProductInCart(user: User, product:string, checkCart:boolean, checkProduct:boolean):Promise<Boolean>{
+    addToCart(user: User, product:string):Promise<Boolean>{
         return new Promise<Boolean>((resolve,reject)=>{
             try{
+                let checkCart: boolean = null 
+                this.checkIfCartExists(user).then((result:boolean)=>{
+                    checkCart=result
+                
+                console.log(checkCart)
+                let checkProduct: boolean = null
+                this.checkIfProductExistsInCart(user,product).then((result:boolean)=>{
+                    checkProduct=result
+                
+                console.log(checkProduct)
                 let price = 0;
+                let category = "";
                 const query = "SELECT * \
                     FROM products WHERE model=?";
                    db.get(query, [product], (err: Error | null, row:any) => {
@@ -201,10 +212,11 @@ class CartDAO {
                         return
                     }
                     price = row.sellingPrice;
+                    category = row.category;
                    })
                 if (checkCart === false){
                     //CARRELLO DA CREARE, PRENDERE ID E INSERIRE IN PRODINCART
-                    console.log("creo carrello")
+                    //console.log("creo carrello")
                     const sql = "INSERT INTO carts(customer,paid,paymentDate,total) VALUES (?,?,?,?)"
                     db.run(sql,[user.username,false,null,0], (err: Error | null) =>{
                         if(err){
@@ -221,8 +233,8 @@ class CartDAO {
                                 return 
                             }
                             let cartId = row.idCart;
-                            const sql3 = "INSERT INTO prod_in_cart(idCart,model,quantity,price) VALUES (?,?,?,?)"
-                            db.run(sql3,[cartId,product,1,price], (err: Error | null) =>{
+                            const sql3 = "INSERT INTO prod_in_cart(idCart,model,quantity,category,price) VALUES (?,?,?,?,?)"
+                            db.run(sql3,[cartId,product,1,category,price], (err: Error | null) =>{
                             if(err){
                                 reject(err);
                                 return 
@@ -251,9 +263,9 @@ class CartDAO {
                     cartId = row.idCart;
                     //In questo caso il carrello è vuoto
                     if(!row || checkProduct === false){
-                        console.log("prodotto ancora non in carrello")
-                        const sql3 = "INSERT INTO prod_in_cart(idCart,model,quantity,price) VALUES (?,?,?,?)"
-                            db.run(sql3,[cartId,product,1,price], (err: Error | null) =>{
+                        //console.log("prodotto ancora non in carrello")
+                        const sql3 = "INSERT INTO prod_in_cart(idCart,model,quantity,category,price) VALUES (?,?,?,?,?)"
+                            db.run(sql3,[cartId,product,1,category,price], (err: Error | null) =>{
                             if(err){
                                 reject(err);
                                 return 
@@ -267,7 +279,7 @@ class CartDAO {
                     }
                     //Prodotto esiste, aggiornarne quantità
                     else if(checkProduct === true){
-                        console.log("quantity da aggiornare")
+                        //console.log("quantity da aggiornare")
                         const sql3 = "UPDATE prod_in_cart SET quantity=quantity+1 WHERE idCart=? AND model=?"
                             db.run(sql3,[cartId,product], (err: Error | null) =>{
                             if(err){
@@ -286,7 +298,8 @@ class CartDAO {
                     //const productsInCart = row.map((p: {model: string; quantity: number; category: Category; price: number;})=> new ProductInCart(p.model,p.quantity,p.category,p.price));
                     
                     });
-                
+                })
+                })
             }
             catch (error){
                 console.log("finito in catch")
@@ -297,7 +310,7 @@ class CartDAO {
     }
 
 
-    getCurrentCart(user: User):Promise<Cart>{
+    getCart(user: User):Promise<Cart>{
         return new Promise<Cart>((resolve,reject)=>{
             try{
                 const sql = "SELECT total, pc.model, pc.quantity, p.category ,p.sellingPrice \
@@ -329,11 +342,25 @@ class CartDAO {
     Se quantità è 1, rimuovere associazione
     Se quantità > 1, aggiornare quantity
     */
-    //PARAMETRI MODIFICATI PER COMODITA
-    removeProductFromCart(user:User, product:string, idCart:number ,quantity:number):Promise<boolean>{
+    //CODICE SCRITTO MALE DA PULIRE 
+    removeProductFromCart(user:User, product:string):Promise<boolean>{
         return new Promise<boolean>((resolve,reject)=>{
             try{
+                let price = 0;
+                let category = "";
+                this.getCartId(user).then((idCart:number)=>{
+                this.checkProductQuantityInCart(user,product).then((quantity:number)=>{
                 
+                const query = "SELECT * \
+                    FROM products WHERE model=?";
+                   db.get(query, [product], (err: Error | null, row:any) => {
+                    if(err){
+                        reject(err)
+                        return
+                    }
+                    price = row.sellingPrice;
+                    category = row.category;
+                   })
                 if (quantity===1){
                     //eliminare associazione perchè quantity è 1
                     //DA FINIREEEEE
@@ -343,7 +370,9 @@ class CartDAO {
                         reject(err)
                         return
                     }
-                    resolve (true)
+                    this.updateCartTotal(user,-price).then(()=>{
+                        resolve(true)
+                    })
                     });
                 }
                 else {
@@ -356,17 +385,23 @@ class CartDAO {
                         reject(err)
                         return
                     }
-                    resolve (true)
+                    this.updateCartTotal(user,-price).then(()=>{
+                        resolve(true)
+                    })
                     });
 
 
                 }
+                })
+            })
                 
             }
             catch(error){
                 reject(error)
             }
+            
         });
+        
 
     }
 
@@ -374,10 +409,10 @@ class CartDAO {
     Join tra cart e prod in cart
     cancellare tutte le associazioni in prod in cart
     */
-    clearCart(user:User,idCart: number):Promise<Boolean>{
+    clearCart(user:User):Promise<Boolean>{
         return new Promise<Boolean>((resolve,reject)=>{
             try{
-                
+                this.getCartId(user).then((idCart:number)=>{
                 const sql = "DELETE FROM prod_in_cart WHERE idCart=?"
                 db.run(sql, [idCart], (err: Error | null) => {
                     if(err){
@@ -389,6 +424,7 @@ class CartDAO {
                     })
                     resolve(true);
                 });
+            });
             }
             catch(error){
                 reject(error)
@@ -397,15 +433,16 @@ class CartDAO {
 
     }
 
-    checkoutCart(user:User, cart: Cart, inStock: Array<number>):Promise<Boolean>{
+    checkoutCart(user:User):Promise<Boolean>{
         return new Promise<Boolean>((resolve,reject)=>{
             try{
+                this.getCart(user).then((cart:Cart)=>{
                 //Updating quantities in stock
                 for (let i=0;i<cart.products.length; i++){
                     const sql ="UPDATE products\
-                                SET quantity=?\
+                                SET quantity=quantity-?\
                                 WHERE model=?;"
-                    db.run(sql, [inStock[i]-cart.products[i].quantity, cart.products[i].model], function (err: Error | null) {
+                    db.run(sql, [cart.products[i].quantity, cart.products[i].model], function (err: Error | null) {
                     if (err) {
                         reject(err);
                         return
@@ -420,7 +457,7 @@ class CartDAO {
                 const sql = "UPDATE carts\
                             SET paid=?,paymentDate=?,total=?\
                             WHERE customer=?;" 
-                db.run(sql, [cart.paid,cart.paymentDate,cart.total,cart.customer], function (err: Error | null) {
+                db.run(sql, [true,dayjs().format('YYYY-MM-DD'),cart.total,cart.customer], function (err: Error | null) {
                     if (err) {
                         reject(err);
                         return
@@ -431,7 +468,7 @@ class CartDAO {
                     }
                     resolve(true)
                 });
-                 
+            })
             }
             catch(error){
                 reject(error)

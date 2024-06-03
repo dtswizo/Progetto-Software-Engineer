@@ -30,6 +30,7 @@ sql="CREATE TABLE prod_in_cart( \
         idCart int,\
         model text,\
         quantity int,\
+        category text,\
         price int,\
         PRIMARY KEY (idCart, model),\
         FOREIGN KEY (idCart) REFERENCES carts (idCart),\
