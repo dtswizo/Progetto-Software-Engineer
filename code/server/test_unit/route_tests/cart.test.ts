@@ -96,7 +96,7 @@ test("addToCart: 404 model does not represent an existing product", async () => 
     expect(response.status).toBe(404)
     expect(CartController.prototype.addToCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.addToCart).toHaveBeenCalledWith(testUser,"test")
-    expect(CartController.prototype.addToCart).toThrowError(new ProductNotFoundError())
+    expect(CartController.prototype.addToCart).toThrowError(ProductNotFoundError)
 });
 
 test("addToCart: 409 model with avaible quantity 0", async () => {
@@ -108,7 +108,7 @@ test("addToCart: 409 model with avaible quantity 0", async () => {
     expect(response.status).toBe(409) 
     expect(CartController.prototype.addToCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.addToCart).toHaveBeenCalledWith(testUser,"test")
-    expect(CartController.prototype.addToCart).toThrow(new EmptyProductStockError())
+    expect(CartController.prototype.addToCart).toThrow(EmptyProductStockError)
 });
 
 test("addToCart: 401 wrong account type logged", async () => {
@@ -160,7 +160,7 @@ test("checkoutCart:404 no unpaid cart for the user", async () => {
     expect(response.status).toBe(404)
     expect(CartController.prototype.checkoutCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.checkoutCart).toHaveBeenCalledWith(testUser)
-    expect(CartController.prototype.checkoutCart).toThrow(new CartNotFoundError())
+    expect(CartController.prototype.checkoutCart).toThrow(CartNotFoundError)
 });
 
 test("checkoutCart:400 the unpaid cart is empty", async () => {
@@ -172,7 +172,7 @@ test("checkoutCart:400 the unpaid cart is empty", async () => {
     expect(response.status).toBe(400)
     expect(CartController.prototype.checkoutCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.checkoutCart).toHaveBeenCalledWith(testUser)
-    expect(CartController.prototype.checkoutCart).toThrow(new EmptyCartError())
+    expect(CartController.prototype.checkoutCart).toThrow(EmptyCartError)
 });
 
 test("checkoutCart:409 at least one product in the cart is not avaible", async () => {
@@ -184,7 +184,7 @@ test("checkoutCart:409 at least one product in the cart is not avaible", async (
     expect(response.status).toBe(409)
     expect(CartController.prototype.checkoutCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.checkoutCart).toHaveBeenCalledWith(testUser)
-    expect(CartController.prototype.checkoutCart).toThrow(new EmptyProductStockError())
+    expect(CartController.prototype.checkoutCart).toThrow(EmptyProductStockError)
 });
 
 test("checkoutCart:409 at least one product quantity in the cart is > than the avaible", async () => {
@@ -196,7 +196,7 @@ test("checkoutCart:409 at least one product quantity in the cart is > than the a
     expect(response.status).toBe(409)
     expect(CartController.prototype.checkoutCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.checkoutCart).toHaveBeenCalledWith(testUser)
-    expect(CartController.prototype.checkoutCart).toThrow(new LowProductStockError())
+    expect(CartController.prototype.checkoutCart).toThrow(LowProductStockError)
 });
 
 
@@ -282,7 +282,7 @@ test("removeProductFromCart: 404 model is not in the cart", async () => {
     expect(response.status).toBe(404)
     expect(CartController.prototype.removeProductFromCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.removeProductFromCart).toHaveBeenCalledWith(testUser,model)
-    expect(CartController.prototype.removeProductFromCart).toThrow(new ProductNotInCartError())
+    expect(CartController.prototype.removeProductFromCart).toThrow(ProductNotInCartError)
 });
 
 test("removeProductFromCart: 404 no unpaid cart or empty cart", async () => {
@@ -295,7 +295,7 @@ test("removeProductFromCart: 404 no unpaid cart or empty cart", async () => {
     expect(response.status).toBe(404)
     expect(CartController.prototype.removeProductFromCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.removeProductFromCart).toHaveBeenCalledWith(testUser,model)
-    expect(CartController.prototype.removeProductFromCart).toThrow(new CartNotFoundError())
+    expect(CartController.prototype.removeProductFromCart).toThrow(CartNotFoundError)
 });
 /*
 test("removeProductFromCart: 404 empty cart", async () => {
@@ -307,7 +307,7 @@ test("removeProductFromCart: 404 empty cart", async () => {
     expect(response.status).toBe(404)
     expect(CartController.prototype.removeProductFromCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.removeProductFromCart).toHaveBeenCalledWith(testUser,model)
-    //expect(CartController.prototype.checkoutCart).toThrow(new EmptyCartError())
+    //expect(CartController.prototype.checkoutCart).toThrow(EmptyCartError)
     //vanno distinti i 2 casi con 2 test
 });*/
 
@@ -321,7 +321,7 @@ test("removeProductFromCart: 404 model product not existing", async () => {
     expect(response.status).toBe(404)
     expect(CartController.prototype.removeProductFromCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.removeProductFromCart).toHaveBeenCalledWith(testUser,model)
-    expect(CartController.prototype.removeProductFromCart).toThrow(new ProductNotFoundError())
+    expect(CartController.prototype.removeProductFromCart).toThrow(ProductNotFoundError)
 });
 
 test("checkoutCart: 401 wrong account type logged", async () => {
@@ -376,7 +376,7 @@ test("clearCart: 404 not exist an unpaid cart", async () => {
     expect(response.status).toBe(404)
     expect(CartController.prototype.clearCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.clearCart).toHaveBeenCalledWith(testUser)
-    expect(CartController.prototype.clearCart).toThrow(new CartNotFoundError())
+    expect(CartController.prototype.clearCart).toThrow(CartNotFoundError)
 });
 
 /* ************************ DELETE ezelectronics/carts -->deleteAllCarts ************************* */
