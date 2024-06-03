@@ -1,7 +1,7 @@
 import { expect, jest } from "@jest/globals"
 import request from 'supertest'
 import express from 'express';
-import { spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, initMockedApp } from './testUtilities'
+import { spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, initMockedApp } from '../../src/testUtilities'
 import { ExistingReviewError, NoReviewProductError } from "../../src/errors/reviewError";
 import { ProductNotFoundError } from "../../src/errors/productError"
 import ReviewController from "../../src/controllers/reviewController";

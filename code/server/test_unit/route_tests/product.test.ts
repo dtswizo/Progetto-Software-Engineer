@@ -1,7 +1,7 @@
 import { expect, jest } from "@jest/globals"
 import request from 'supertest';
 import express from 'express';
-import { spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, initMockedApp } from './testUtilities';
+import { spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, initMockedApp } from '../../src/testUtilities';
 import ProductController from "../../src/controllers/productController";
 import Authenticator from "../../src/routers/auth";
 import { Product,Category } from "../../src/components/product";

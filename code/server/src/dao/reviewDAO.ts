@@ -10,7 +10,7 @@ class ReviewDAO {
             const sql = "INSERT INTO reviews(user, model, score, date, comment) VALUES(?, ?, ?, ?, ?)";
             const date = new Date().toISOString().slice(0, 10);
 
-            db.run(sql, [user, model, score, date, comment], (err: Error | null) => {
+            db.run(sql, [user.username, model, score, date, comment], (err: Error | null) => {
                 if (err) {
                     if (err.message.includes("UNIQUE constraint failed: reviews.user, reviews.model")) {
                         reject(new ExistingReviewError());
@@ -32,7 +32,7 @@ class ReviewDAO {
                     reject(err);
                     return;
                 }
-
+                
                 //TODO: Questo errore va veramente ritornato?
                 if (rows.length === 0) {   //sta roba non so se va rimossa, cioè se il prodotto non ha recensioni va ritornato array vuoto? o reject
                     resolve([]);
@@ -51,7 +51,7 @@ class ReviewDAO {
     async deleteReview(model: string, user: User): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             const sql = "DELETE FROM reviews WHERE model = ? AND user = ?";
-            db.run(sql, [model, user], function (err: Error | null) {
+            db.run(sql, [model, user.username], function (err: Error | null) {
                 if (err) {
                     reject(err);
                     return;
@@ -83,7 +83,7 @@ class ReviewDAO {
     async deleteAllReviews(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             const sql = "DELETE FROM reviews";
-            db.run(sql, function (err: Error | null) {
+            db.run(sql, [], function (err: Error | null) {
                 if (err) {
                     reject(err);
                     return;

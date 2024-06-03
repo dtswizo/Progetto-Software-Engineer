@@ -62,6 +62,14 @@ class ReviewController {
     async deleteAllReviews() :Promise<void> {    
         return this.dao.deleteAllReviews();     
     }
+
+    /**
+     * ONLY FOR TEST PURPOSE
+     * @returns The current reviewDAO
+     */
+    public get reviewDAO(): ReviewDAO {
+        return this.dao;
+    }
 }
 
 export default ReviewController;

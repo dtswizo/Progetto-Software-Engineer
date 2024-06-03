@@ -9,7 +9,7 @@ import { EmptyProductStockError, LowProductStockError, ProductNotFoundError } fr
 import { Category } from "../../src/components/product"
 //import { before, beforeEach, describe } from "node:test"
 import express from "express"
-import { spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, initMockedApp } from './testUtilities'
+import { spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, initMockedApp } from '../../src/testUtilities'
 jest.mock('../../src/controllers/cartController');  /////
 
 
