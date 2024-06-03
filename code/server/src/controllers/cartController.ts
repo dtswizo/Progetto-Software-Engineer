@@ -2,7 +2,7 @@ import { EmptyProductStockError, LowProductStockError, ProductNotFoundError } fr
 import { User } from "../components/user";
 import { Cart } from "../components/cart";
 import CartDAO from "../dao/cartDAO";
-import { CartNotFoundError, ProductInCartError } from "../errors/cartError";
+import { CartNotFoundError, EmptyCartError, ProductInCartError } from "../errors/cartError";
 import { ProductNotInCartError } from "../errors/cartError";
 import dayjs from "dayjs";
 
@@ -60,10 +60,16 @@ class CartController {
         //check if at least one has 0 in stock
         //checks if at least one has more than whats available in stock
         let cart = await this.dao.getCart(user);
+        if(cart.products.length===0){
+            throw new EmptyCartError();
+        }
         let inStock = new Array<number>(cart.products.length);
         for (let i=0;i<cart.products.length; i++){
             //EFFETTUARE CONTROLLO SU QUANTITY
             let quantity = await this.dao.checkProductAvailability(cart.products[i].model);
+            console.log("ciao")
+            console.log(quantity)
+            console.log("ciao")
             //Quantity available < Quantity richiesta
             if (quantity === 0)
                 throw new EmptyProductStockError()
