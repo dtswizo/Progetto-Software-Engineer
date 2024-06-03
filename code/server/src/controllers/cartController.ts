@@ -28,7 +28,7 @@ class CartController {
     async addToCart(user: User, product: string)/*: Promise<Boolean>*/ { 
         
             let quantity = await this.dao.checkProductAvailability(product);
-            console.log(quantity)
+            //console.log(quantity)
             if (quantity === -1)
                 throw new ProductNotFoundError(); //ERROR 404
             if (quantity === 0)
@@ -67,9 +67,6 @@ class CartController {
         for (let i=0;i<cart.products.length; i++){
             //EFFETTUARE CONTROLLO SU QUANTITY
             let quantity = await this.dao.checkProductAvailability(cart.products[i].model);
-            console.log("ciao")
-            console.log(quantity)
-            console.log("ciao")
             //Quantity available < Quantity richiesta
             if (quantity === 0)
                 throw new EmptyProductStockError()
@@ -103,18 +100,18 @@ class CartController {
         if (checkProduct!=true){
             throw new ProductNotFoundError();
         }
-        let checkInCart = await this.dao.checkIfProductExistsInCart(user,product);
-        if (checkInCart!=true){
-            throw new ProductNotInCartError();
-        }
         let checkCart = await this.dao.checkIfCartExists(user);
         if (checkCart!=true){
             throw new CartNotFoundError();
         }
+        let checkInCart = await this.dao.checkIfProductExistsInCart(user,product);
+        if (checkInCart!=true){
+            throw new ProductNotInCartError();
+        }
         let quantity =  await this.dao.checkProductQuantityInCart(user,product);
         let idCart = await this.dao.getCartId(user);
-        console.log(quantity)
-        console.log(idCart)
+        //console.log(quantity)
+        //console.log(idCart)
         return await this.dao.removeProductFromCart(user,product);
             
     }
