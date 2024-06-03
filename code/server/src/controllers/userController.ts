@@ -90,7 +90,7 @@ class UserController {
      * @returns A Promise that resolves to true if all non-Admin users have been deleted.
      */
     async deleteAll() {
-        this.dao.deleteAll();
+       return this.dao.deleteAll();
     }
 
     /**
@@ -125,14 +125,14 @@ class UserController {
         return this.dao.updateUserInfo(username, name, surname, address, birthdateValid.toString());
     }
 
-    getValidDate(birthdate: string): Dayjs {
+    getValidDate(birthdate: string): string {
         const format = "YYYY-MM-DD";
-        const birthdateValid = dayjs(birthdate, format);
+        const birthdateValid = dayjs(birthdate, format,true);
 
         if (!birthdateValid.isValid() || birthdateValid.isAfter(dayjs())) {
             throw new DateError();
         }
-        return birthdateValid;
+        return dayjs(birthdate).format(format);
     }
 }
 
