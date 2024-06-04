@@ -77,7 +77,7 @@ class CartDAO {
                 reject(error)
             }
         });
-        }
+    }
 
     checkProductAvailability(model: string):Promise<number>{
         return new Promise<number>((resolve,reject)=>{
@@ -196,12 +196,12 @@ class CartDAO {
                 this.checkIfCartExists(user).then((result:boolean)=>{
                     checkCart=result
                 
-                console.log(checkCart)
+                //console.log(checkCart)
                 let checkProduct: boolean = null
                 this.checkIfProductExistsInCart(user,product).then((result:boolean)=>{
                     checkProduct=result
                 
-                console.log(checkProduct)
+                //console.log(checkProduct)
                 let price = 0;
                 let category = "";
                 const query = "SELECT * \
@@ -251,7 +251,7 @@ class CartDAO {
                 
                 //Carrello esistente
                 let cartId = null;
-                console.log("carrello esistente")
+                //console.log("carrello esistente")
                 const sql = "SELECT * FROM carts c WHERE  customer=? AND paid=FALSE;"
                 db.get(sql, [user.username], (err: Error | null, row:any) => {
                     
@@ -302,7 +302,7 @@ class CartDAO {
                 })
             }
             catch (error){
-                console.log("finito in catch")
+                //console.log("finito in catch")
                 reject(error)
             }
         });
@@ -515,7 +515,7 @@ class CartDAO {
                 });
 
                 Promise.all(cartQueries).then(() => {
-                    console.log(result)
+                    //console.log(result)
                     resolve(result);
                 })
                     
@@ -592,7 +592,7 @@ class CartDAO {
             });
 
             Promise.all(cartQueries).then(() => {
-                console.log(result)
+                //console.log(result)
                 resolve(result);
             })
                 
