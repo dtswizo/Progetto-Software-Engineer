@@ -105,7 +105,7 @@ class UserController {
      */
     async updateUserInfo(user: User, name: string, surname: string, address: string, birthdate: string, username: string): Promise<User> {
         let targetUser: User;
-        const birthdateValid = this.getValidDate(birthdate);
+        const birthdateValid = await this.getValidDate(birthdate);
         if (user.username === username) {
             targetUser = user;
         } else if (Utility.isAdmin(user)) {
@@ -125,11 +125,12 @@ class UserController {
         return this.dao.updateUserInfo(username, name, surname, address, birthdateValid.toString());
     }
 
-    getValidDate(birthdate: string): string {
+    async getValidDate(birthdate: string): Promise<String> {
         const format = "YYYY-MM-DD";
         const birthdateValid = dayjs(birthdate, format,true);
-
+        
         if (!birthdateValid.isValid() || birthdateValid.isAfter(dayjs())) {
+            
             throw new DateError();
         }
         return dayjs(birthdate).format(format);

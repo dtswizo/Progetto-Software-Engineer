@@ -3,6 +3,8 @@ import UserController from "../../src/controllers/userController"
 import UserDAO from "../../src/dao/userDAO"
 import { Role, User } from "../../src/components/user";
 import { UnauthorizedUserError, UserAlreadyExistsError, UserIsAdminError, UserNotAdminError, UserNotFoundError } from "../../src/errors/userError";
+import { DateError } from "../../src/utilities";
+import '@jest/globals';
 
 jest.mock("../../src/dao/userDAO")
 
@@ -294,6 +296,24 @@ describe("updateUserInfo", ()=>{
         expect(response2).toBe(newUser.birthdate); //Check if the response is true
     });
 
+    test("200 OK - Successful execution but nothing to be updated", async () => {
+        let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino, Via Madama Cristina 17","1980-01-01")
+        let newUser = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino, Via Madama Cristina 17","1980-01-01")
+        //jest.spyOn(UserDAO.prototype, "getUserByUsername").mockResolvedValueOnce(user); //Mock the createUser method of the DAO
+        
+        jest.spyOn(UserDAO.prototype, "updateUserInfo").mockResolvedValue(newUser); //Mock the createUser method of the DAO
+        
+        const controller = new UserController(); 
+        const response2 = await controller.getValidDate(newUser.birthdate);
+        
+        const response = await controller.updateUserInfo(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate,user.username);
+        //expect(UserController.prototype.getUserByUsername).toHaveBeenCalledTimes(1)
+        //expect(UserController.prototype.getUserByUsername).toHaveBeenCalledWith(user.username)
+        expect(UserDAO.prototype.updateUserInfo).toHaveBeenCalledTimes(0);
+        expect(response).toBe(user); //Check if the response is true
+        expect(response2).toBe(newUser.birthdate); //Check if the response is true
+    });
+
     test("404 KO - User not found ", async () => {
         let admin = new User("admin","NameAdmin","SurnameAdmin",Role.ADMIN,"Corso Duca degli Abruzzi 129, Torino","")
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
@@ -314,25 +334,54 @@ describe("updateUserInfo", ()=>{
         expect(response2).toBe(newUser.birthdate); //Check if the response is true
     });
 
-    //Errore di admin che non può modificare admin?
-    test("401 KO -  ", async () => {
+    test("401 KO - Admin is trying to update another Admin ", async () => {
         let admin = new User("admin","NameAdmin","SurnameAdmin",Role.ADMIN,"Corso Duca degli Abruzzi 129, Torino","")
+        let admin2 = new User("admin2","NameAdmin2","SurnameAdmin2",Role.ADMIN,"","1980-01-01")
+        
+        jest.spyOn(UserDAO.prototype, "getUserByUsername").mockResolvedValue(admin2); //Mock the createUser method of the DAO
+        
+        //jest.spyOn(UserDAO.prototype, "updateUserInfo").mockRejectedValue(newUser); //Mock the createUser method of the DAO
+        
+        const controller = new UserController(); 
+        const response2 = await controller.getValidDate(admin2.birthdate);
+        
+        await expect(controller.updateUserInfo(admin,admin2.name,admin2.surname,admin2.address,admin2.birthdate,admin2.username)).rejects.toThrowError(UserIsAdminError);
+        expect(UserDAO.prototype.getUserByUsername).toHaveBeenCalledTimes(1)
+        expect(UserDAO.prototype.getUserByUsername).toHaveBeenCalledWith(admin2.username)
+        expect(UserDAO.prototype.updateUserInfo).toHaveBeenCalledTimes(0);
+        //expect(UserDAO.prototype.updateUserInfo).toHaveBeenCalledWith(user.username,newUser.name,newUser.surname,newUser.address,newUser.birthdate);
+        expect(response2).toBe(admin2.birthdate); //Check if the response is true
+    });
+
+    test("401 KO - Username does not corrispond to the logged in non-Admin user ", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
+        let newUser = new User("customer2","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         
-        let newUser = new User("customer","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
-        jest.spyOn(UserDAO.prototype, "getUserByUsername").mockRejectedValue(new UserNotFoundError()); //Mock the createUser method of the DAO
+        jest.spyOn(UserDAO.prototype, "getUserByUsername").mockResolvedValue(newUser); //Mock the createUser method of the DAO
         
-        jest.spyOn(UserDAO.prototype, "updateUserInfo").mockResolvedValue(newUser); //Mock the createUser method of the DAO
         
         const controller = new UserController(); 
         const response2 = await controller.getValidDate(newUser.birthdate);
         
-        await expect(controller.updateUserInfo(admin,newUser.name,newUser.surname,newUser.address,newUser.birthdate,user.username)).rejects.toThrowError(UserNotFoundError);
-        expect(UserDAO.prototype.getUserByUsername).toHaveBeenCalledTimes(1)
-        expect(UserDAO.prototype.getUserByUsername).toHaveBeenCalledWith(user.username)
+        await expect(controller.updateUserInfo(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate,newUser.username)).rejects.toThrowError(UserNotAdminError);
+        expect(UserDAO.prototype.getUserByUsername).toHaveBeenCalledTimes(0)
         expect(UserDAO.prototype.updateUserInfo).toHaveBeenCalledTimes(0);
         //expect(UserDAO.prototype.updateUserInfo).toHaveBeenCalledWith(user.username,newUser.name,newUser.surname,newUser.address,newUser.birthdate);
         expect(response2).toBe(newUser.birthdate); //Check if the response is true
+    });
+
+    test("400 KO - birthdate is after the current date ", async () => {
+        let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
+        let newUser = new User("customer2","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","2099-01-01")
+        
+        const controller = new UserController(); 
+        await expect(controller.getValidDate(newUser.birthdate)).rejects.toThrowError(DateError);
+        
+        await expect(controller.updateUserInfo(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate,newUser.username)).rejects.toThrowError(DateError);
+        expect(UserDAO.prototype.getUserByUsername).toHaveBeenCalledTimes(0)
+        expect(UserDAO.prototype.updateUserInfo).toHaveBeenCalledTimes(0);
+        //expect(UserDAO.prototype.updateUserInfo).toHaveBeenCalledWith(user.username,newUser.name,newUser.surname,newUser.address,newUser.birthdate);
+        
     });
 
 })
