@@ -694,3 +694,29 @@ describe("PATCH /ezelectronics/users/:username", () => {
                      })
 
 })
+/*
+describe("POST ezelectronics/sessions", () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        app = initMockedApp();
+    })
+
+    test("200 OK - User successfully logged in", async () => {
+        spyNotLogged();
+            enableMockedAuth(app)
+        const testUser = { //Define a test user object sent to the route
+            username: "MarioRossi",
+            password: "test",
+        }
+        const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"","")
+        
+
+        jest.spyOn(AuthService.prototype, "login").mockResolvedValueOnce(true) //Mock the createUser method of the controller
+        const response = await request(app).post(baseURL + "/users").send(testUser) //Send a POST request to the route
+        expect(response.status).toBe(200) //Check if the response status is 200
+        expect(UserController.prototype.createUser).toHaveBeenCalledTimes(1) //Check if the createUser method has been called once
+        //Check if the createUser method has been called with the correct parameters
+        expect(UserController.prototype.createUser).toHaveBeenCalledWith(e)
+    })
+})*/
