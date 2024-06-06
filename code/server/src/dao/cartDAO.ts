@@ -480,6 +480,7 @@ class CartDAO {
     getCustomerCarts(user:User):Promise<Cart[]>{
     return new Promise<Cart[]>((resolve,reject)=>{
             try{
+                
                 const result: Cart[] = []
                 const sql = "SELECT * FROM carts c  WHERE customer=? AND paid=TRUE;"
                 db.all(sql, [user.username], (err: Error | null, rows:any) => {
