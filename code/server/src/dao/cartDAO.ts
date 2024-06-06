@@ -225,7 +225,7 @@ class CartDAO {
                         }
                         //console.log(row.idCart);
                         //Seleziono carrello corrente, superfluo se riesco a pescare l'id prima
-                       
+                        /*
                         const sql2 = "SELECT * FROM carts WHERE customer = ? AND paid = FALSE;";
                         db.get(sql2,[user.username], (err:Error | null, row: any ) =>{
                             if(err){
@@ -244,7 +244,7 @@ class CartDAO {
                             })
                             resolve(true)
                             })
-                        })
+                        })*/
                         
                     })
                 }
