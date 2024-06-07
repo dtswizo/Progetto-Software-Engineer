@@ -11,6 +11,8 @@ import express from "express"
 import { DateError } from "../../src/utilities"
 
 jest.mock('../../src/controllers/userController');
+
+jest.mock('../../src/routers/auth')
 const baseURL = "/ezelectronics"
 let app: express.Application;
 
@@ -21,9 +23,11 @@ describe("POST /ezelectronics/users", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+        jest.resetAllMocks();
         app = initMockedApp();
     });
-test("200 OK - User successfully created", async () => {
+
+it("200 OK - User successfully created", async () => {
     spyNotLogged();
         enableMockedAuth(app)
     const testUser = { //Define a test user object sent to the route
@@ -135,7 +139,35 @@ test("422 - Role is not valid", async () => {
    
 })
 
-test("409 - Username already in database", async () => {
+
+test("409 KO - Username already exists", async () => {
+    spyNotLogged();
+    const testUser = { //Define a test user object sent to the route
+        username: "test1",
+        name: "test",
+        surname: "test",
+        password: "test",
+        role: "Customer"
+    }
+
+    enableMockedAuth(app);
+    jest.spyOn(UserController.prototype, "createUser").mockImplementation(() => {
+        return Promise.reject(new UserAlreadyExistsError());
+    });
+    const response = await request(app).post(baseURL + "/users").send(testUser)
+     
+    //expect(Authenticator.prototype.isLoggedIn).toHaveBeenCalledTimes(1);
+    
+    expect(UserController.prototype.createUser).toHaveBeenCalledTimes(1) 
+    expect(UserController.prototype.createUser).toHaveBeenCalledWith(testUser.username,
+        testUser.name,
+        testUser.surname,
+        testUser.password,
+        testUser.role)
+    expect(response.status).toBe(409)
+})
+
+/*test("409 - Username already in database", async () => {
     spyNotLogged();
         enableMockedAuth(app)
     const testUser = { //Define a test user object sent to the route
@@ -143,23 +175,31 @@ test("409 - Username already in database", async () => {
         name: "test",
         surname: "test",
         password: "test",
-        role: "test"
+        role: "Customer"
     }
     jest.spyOn(UserController.prototype, "createUser").mockImplementation(() => {
         return Promise.reject(new UserAlreadyExistsError());
     });
-     const response = await request(app).post(baseURL + "/users").send(testUser) //Send a POST request to the route
-    expect(response.status).toBe(422) //Check if the response status is 200
-    expect(UserController.prototype.createUser).toHaveBeenCalledTimes(0) //Check if the createUser method has been called once
-    //Check if the createUser method has been called with the correct parameters
+    //jest.spyOn(UserController.prototype, "createUser").mockRejectedValue(new UserAlreadyExistsError)
+     const response = await request(app).post(`${baseURL}/users`).send(testUser)
+    expect(response.status).toBe(409)
+    expect(UserController.prototype.createUser).toHaveBeenCalledTimes(1) 
+    expect(UserController.prototype.createUser).toHaveBeenCalledWith(testUser.username,
+        testUser.name,
+        testUser.surname,
+        testUser.password,
+        testUser.role)
    
-})
+})*/
+
+
 })
 
 describe("GET /ezelectronics/users", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+        jest.resetAllMocks();
         app = initMockedApp();
     });
 
@@ -197,6 +237,25 @@ describe("GET /ezelectronics/users", () => {
         expect(UserController.prototype.getUsers).toHaveBeenCalledTimes(0) //Check if the createUser method has been called once
         //Check if the createUser method has been called with the correct parameters
     })
+   /* 
+    test("Generic Error", async () => {
+        const users = [new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"",""),
+        new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"","")
+        ]
+        spyCustomer();
+        enableMockedAuth(app);
+
+        jest.spyOn(UserController.prototype, "getUsers").mockImplementation(() => {
+            return Promise.reject(new (Error));
+        });
+        const response = await request(app).get(baseURL + "/users") //Send a POST request to the route
+        
+        expect(response.status).toBe(401) //Check if the response status is 200
+        expect(Authenticator.prototype.isAdmin).toHaveBeenCalledTimes(1);
+        
+        expect(UserController.prototype.getUsers).toHaveBeenCalledTimes(1) //Check if the createUser method has been called once
+        //Check if the createUser method has been called with the correct parameters
+    })*/
 
 })
 
@@ -694,7 +753,6 @@ describe("PATCH /ezelectronics/users/:username", () => {
                      })
 
 })
-/*
 describe("POST ezelectronics/sessions", () => {
 
     beforeEach(() => {
@@ -709,14 +767,74 @@ describe("POST ezelectronics/sessions", () => {
             username: "MarioRossi",
             password: "test",
         }
-        const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"","")
-        
-
-        jest.spyOn(AuthService.prototype, "login").mockResolvedValueOnce(true) //Mock the createUser method of the controller
-        const response = await request(app).post(baseURL + "/users").send(testUser) //Send a POST request to the route
-        expect(response.status).toBe(200) //Check if the response status is 200
-        expect(UserController.prototype.createUser).toHaveBeenCalledTimes(1) //Check if the createUser method has been called once
-        //Check if the createUser method has been called with the correct parameters
-        expect(UserController.prototype.createUser).toHaveBeenCalledWith(e)
+        jest.spyOn(Authenticator.prototype, "login").mockResolvedValueOnce(true) 
+        const response = await request(app).post(baseURL + "/sessions").send(testUser) 
+        expect(response.status).toBe(200) 
+        expect(Authenticator.prototype.login).toHaveBeenCalledTimes(1)
+        //expect(Authenticator.prototype.login).toHaveBeenCalledWith(testUser,response)
     })
-})*/
+
+    test("401 KO - Username and/or password are incorrect", async () => {
+        spyNotLogged();
+            enableMockedAuth(app)
+        const testUser = { //Define a test user object sent to the route
+            username: "MarioRossi",
+            password: "test",
+        }
+        jest.spyOn(Authenticator.prototype, "login").mockRejectedValueOnce(new Error) 
+        const response = await request(app).post(baseURL + "/sessions").send(testUser) 
+        expect(response.status).toBe(401) 
+        expect(Authenticator.prototype.login).toHaveBeenCalledTimes(1)
+        //expect(Authenticator.prototype.login).toHaveBeenCalledWith(testUser,response,)
+    })
+})
+
+describe("DELETE ezelectronics/sessions/current", () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        app = initMockedApp();
+    })
+
+    test("200 OK - User successfully logged out", async () => {
+        spyCustomer();
+        enableMockedAuth(app)
+        jest.spyOn(Authenticator.prototype, "logout").mockResolvedValueOnce(true) 
+        const response = await request(app).delete(baseURL + "/sessions/current") 
+        expect(response.status).toBe(200) 
+        expect(Authenticator.prototype.isLoggedIn).toHaveBeenCalledTimes(1)
+        expect(Authenticator.prototype.logout).toHaveBeenCalledTimes(1)
+        //expect(Authenticator.prototype.login).toHaveBeenCalledWith(testUser,response,)
+    })
+    /*
+    test("Generic Error", async () => {
+        spyCustomer();
+        enableMockedAuth(app)
+        jest.spyOn(Authenticator.prototype, "logout").mockResolvedValueOnce(new Error) 
+        expect (await request(app).delete(baseURL + "/sessions/current")).rejects.toThrowError(new Error) 
+        expect(Authenticator.prototype.isLoggedIn).toHaveBeenCalledTimes(1)
+        expect(Authenticator.prototype.logout).toHaveBeenCalledTimes(1)
+        //expect(Authenticator.prototype.login).toHaveBeenCalledWith(testUser,response,)
+    })*/
+})
+
+describe("GET ezelectronics/sessions/current", () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        app = initMockedApp();
+    })
+
+    test("200 OK - User successfully retrieved", async () => {
+        spyCustomer();
+        enableMockedAuth(app)
+        const testUser = { //Define a test user object sent to the route
+            username: "MarioRossi",
+            password: "test",
+        }
+        const response = await request(app).get(baseURL + "/sessions/current") 
+        expect(response.status).toBe(200) 
+        expect(Authenticator.prototype.isLoggedIn).toHaveBeenCalledTimes(1)
+        //expect(Authenticator.prototype.login).toHaveBeenCalledWith(testUser,response,)
+    })
+})
