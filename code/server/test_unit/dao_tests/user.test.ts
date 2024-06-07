@@ -15,7 +15,7 @@ jest.mock("../../src/db/db.ts")
 const userDAO = new UserDAO()
 
 
-/*
+
 describe("getIsUserAuthenticated", () => {
 
     beforeEach(() => {
@@ -28,6 +28,14 @@ describe("getIsUserAuthenticated", () => {
             password:"11111111",
             salt:"222222222222"
         }
+
+        jest.spyOn(crypto, 'scryptSync').mockImplementation((p, s, k) => {
+            return Buffer.from('test');
+        });
+        jest.spyOn(crypto, 'timingSafeEqual').mockImplementation((p, h) => {
+            return true;
+        });
+
         jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
             callback(null,test)
             return {} as Database
@@ -36,7 +44,7 @@ describe("getIsUserAuthenticated", () => {
         const result = await userDAO.getIsUserAuthenticated("test", "11111111")
         expect(result).toBe(true)
     })
-})*/
+})
 describe("createUser", () => {
 
     beforeEach(() => {
