@@ -7,16 +7,44 @@ import db from "../../src/db/db"
 import { Database } from "sqlite3"
 import { UserAlreadyExistsError, UserNotFoundError } from "../../src/errors/userError"
 import { Role, User } from "../../src/components/user"
-
+//import '@types/jest'
 jest.mock("crypto")
 jest.mock("../../src/db/db.ts")
 
+
 const userDAO = new UserDAO()
 
-//Example of unit test for the createUser method
-//It mocks the database run method to simulate a successful insertion and the crypto randomBytes and scrypt methods to simulate the hashing of the password
-//It then calls the createUser method and expects it to resolve true
 
+
+describe("getIsUserAuthenticated", () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    test("200 OK - User is correctly authenticated",async ()=>{
+        const test = {
+            username:"test",
+            password:"11111111",
+            salt:"222222222222"
+        }
+
+        jest.spyOn(crypto, 'scryptSync').mockImplementation((p, s, k) => {
+            return Buffer.from('test');
+        });
+        jest.spyOn(crypto, 'timingSafeEqual').mockImplementation((p, h) => {
+            return true;
+        });
+
+        jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
+            callback(null,test)
+            return {} as Database
+
+        });
+        const result = await userDAO.getIsUserAuthenticated("test", "11111111")
+        expect(result).toBe(true)
+    })
+})
 describe("createUser", () => {
 
     beforeEach(() => {
