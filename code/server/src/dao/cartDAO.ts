@@ -3,6 +3,8 @@ import { Cart, ProductInCart } from "../components/cart";
 import db from "../db/db"
 import { Category } from "../components/product";
 import dayjs from "dayjs";
+import { CartNotFoundError } from "../errors/cartError";
+import { ProductNotFoundError } from "../errors/productError";
 /**
  * A class that implements the interaction with the database for all cart-related operations.
  * You are free to implement any method you need here, as long as the requirements are satisfied.
@@ -133,7 +135,8 @@ class CartDAO {
                         return
                     }
                     if(!row){
-                        reject(err);
+                        /////////verificare
+                        reject(new CartNotFoundError());
                         return
                     }
                         resolve (row.idCart);
@@ -223,6 +226,7 @@ class CartDAO {
                             reject(err);
                             return 
                         }
+                        //rivedere
                         //console.log(row.idCart);
                         //Seleziono carrello corrente, superfluo se riesco a pescare l'id prima
                         /*
@@ -272,8 +276,9 @@ class CartDAO {
                             }
                             this.updateCartTotal(user,price).then(()=>{
                                 resolve(true)
-                            })
-                            resolve(true)
+                            }).catch((err)=>reject(err))
+                            //rivedere
+                            //resolve(true)
                             })
                         return
                     }
@@ -288,8 +293,9 @@ class CartDAO {
                             }
                             this.updateCartTotal(user,price).then(()=>{
                                 resolve(true)
-                            })
-                            resolve(true)
+                            }).catch((err)=>reject(err))
+                            // rivedere
+                            //resolve(true)
                             })
                         return
                     }
@@ -298,8 +304,8 @@ class CartDAO {
                     //const productsInCart = row.map((p: {model: string; quantity: number; category: Category; price: number;})=> new ProductInCart(p.model,p.quantity,p.category,p.price));
                     
                     });
-                })
-                })
+                }).catch((err)=>{reject(err)})
+                }).catch((err)=>{reject(err)})
             }
             catch (error){
                 //console.log("finito in catch")
@@ -372,7 +378,7 @@ class CartDAO {
                     }
                     this.updateCartTotal(user,-price).then(()=>{
                         resolve(true)
-                    })
+                    }).catch((err)=>reject(err))
                     });
                 }
                 else {
@@ -387,13 +393,13 @@ class CartDAO {
                     }
                     this.updateCartTotal(user,-price).then(()=>{
                         resolve(true)
-                    })
+                    }).catch((err)=>reject(err))
                     });
 
 
                 }
-                })
-            })
+                }).catch((err)=>reject(err))
+            }).catch((err)=>reject(err))
                 
             }
             catch(error){
@@ -421,10 +427,11 @@ class CartDAO {
                     }
                     this.resetCartTotal(user).then(()=>{
                         resolve(true)
-                    })
-                    resolve(true);
+                    }).catch((err)=>reject(err))
+                    //rivedere
+                    //resolve(true);
                 });
-            });
+            }).catch((err)=>reject(err));
             }
             catch(error){
                 reject(error)
@@ -436,40 +443,49 @@ class CartDAO {
     checkoutCart(user:User):Promise<Boolean>{
         return new Promise<Boolean>((resolve,reject)=>{
             try{
+                let error=false;
                 this.getCart(user).then((cart:Cart)=>{
-                //Updating quantities in stock
-                for (let i=0;i<cart.products.length; i++){
-                    const sql ="UPDATE products\
-                                SET quantity=quantity-?\
-                                WHERE model=?;"
-                    db.run(sql, [cart.products[i].quantity, cart.products[i].model], function (err: Error | null) {
-                    if (err) {
-                        reject(err);
-                        return
+                    //Updating quantities in stock
+                    for (let i=0;i<cart.products.length; i++){
+                        const sql ="UPDATE products\
+                                    SET quantity=quantity-?\
+                                    WHERE model=?;"
+                        db.run(sql, [cart.products[i].quantity, cart.products[i].model], function (err: Error | null) {
+                        if (err) {
+                            error=true;
+                            reject(err);
+                            //return
+                        }
+                        //verificare
+                        if(this.changes==0){
+                            error=true;
+                            reject(new ProductNotFoundError());
+                            //return
+                        }
+                        });
+                        if (error===true){
+                            break;
+                            
+                        }
                     }
-                    console.log("ciao")
-                    if(this.changes==0){
-                        reject(err);
-                        return
+                    if(!error){
+                        //Marks current cart as paid
+                        const sql = "UPDATE carts\
+                        SET paid=?,paymentDate=?,total=?\
+                        WHERE customer=?;" 
+                        db.run(sql, [true,dayjs().format('YYYY-MM-DD'),cart.total,cart.customer], function (err: Error | null) {
+                            if (err) {
+                                reject(err);
+                                return
+                            }
+                            if(this.changes==0){
+                                reject(new CartNotFoundError());
+                                return
+                            }
+                            resolve(true)
+                        });
                     }
-                    });
-                }
-                //Marks current cart as paid
-                const sql = "UPDATE carts\
-                            SET paid=?,paymentDate=?,total=?\
-                            WHERE customer=?;" 
-                db.run(sql, [true,dayjs().format('YYYY-MM-DD'),cart.total,cart.customer], function (err: Error | null) {
-                    if (err) {
-                        reject(err);
-                        return
-                    }
-                    if(this.changes==0){
-                        reject(err);
-                        return
-                    }
-                    resolve(true)
-                });
-            }).catch((error)=>{reject(error)})
+                }).catch((error)=>{reject(error)})
             }
             catch(error){
                 reject(error)
@@ -490,6 +506,7 @@ class CartDAO {
                         return
                     }
                     if(!rows){
+                        //console.log("prova")
                         resolve ([]);
                         return
                     }
@@ -502,10 +519,10 @@ class CartDAO {
                                 return;
                             }
                             if (!row) {
-                                resolve();
+                                //rivedere
+                                reject(new CartNotFoundError());
                                 return;
                             }
-
                             const productsInCart = row.map((p: { model: string; quantity: number; category: Category; price: number; }) => new ProductInCart(p.model, p.quantity, p.category, p.price));
 
                             let cartToAdd = new Cart(row[0].customer, true, row[0].paymentDate, row[0].total, productsInCart);
@@ -519,7 +536,7 @@ class CartDAO {
                 Promise.all(cartQueries).then(() => {
                     //console.log(result)
                     resolve(result);
-                })
+                }).catch((error)=>reject(error))
                     
             });
         }
@@ -570,7 +587,7 @@ class CartDAO {
                     resolve ([]);
                     return
                 }
-                 let cartQueries = rows.map((row: any, i: number) => {
+                let cartQueries = rows.map((row: any, i: number) => {
                 return new Promise<void>((resolve, reject) => {
                     const sql = "SELECT * FROM carts c JOIN prod_in_cart pc WHERE c.idCart = pc.idCart AND c.idCart = ? AND paid = TRUE;";
                     db.all(sql, [row.idCart], (err: Error | null, row: any) => {
@@ -584,10 +601,9 @@ class CartDAO {
                             reject(new Error())
                             return;
                         }
-                        
                         const productsInCart = row.map((p: { model: string; quantity: number; category: Category; price: number; }) => new ProductInCart(p.model, p.quantity, p.category, p.price));
                        
-                        let cartToAdd = new Cart(rows[0].customer, true, rows[0].paymentDate, rows[0].total, productsInCart);
+                        let cartToAdd = new Cart(rows[i].customer, true, rows[i].paymentDate, rows[i].total, productsInCart);
                         
                         result.push(cartToAdd);
                         resolve();
