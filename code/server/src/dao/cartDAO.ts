@@ -447,6 +447,7 @@ class CartDAO {
                         reject(err);
                         return
                     }
+                    console.log("ciao")
                     if(this.changes==0){
                         reject(err);
                         return
@@ -468,7 +469,7 @@ class CartDAO {
                     }
                     resolve(true)
                 });
-            })
+            }).catch((error)=>{reject(error)})
             }
             catch(error){
                 reject(error)
@@ -506,8 +507,8 @@ class CartDAO {
                             }
 
                             const productsInCart = row.map((p: { model: string; quantity: number; category: Category; price: number; }) => new ProductInCart(p.model, p.quantity, p.category, p.price));
-                           
-                            let cartToAdd = new Cart(row[i].customer, true, row[i].paymentDate, row[i].total, productsInCart);
+
+                            let cartToAdd = new Cart(row[0].customer, true, row[0].paymentDate, row[0].total, productsInCart);
                             
                             result.push(cartToAdd);
                             resolve();
@@ -578,13 +579,15 @@ class CartDAO {
                             return;
                         }
                         if (!row) {
-                            resolve();
+                            ///resolve();
+                            // vedere che errore c'è
+                            reject(new Error())
                             return;
                         }
-
+                        
                         const productsInCart = row.map((p: { model: string; quantity: number; category: Category; price: number; }) => new ProductInCart(p.model, p.quantity, p.category, p.price));
                        
-                        let cartToAdd = new Cart(rows[i].customer, true, rows[i].paymentDate, rows[i].total, productsInCart);
+                        let cartToAdd = new Cart(rows[0].customer, true, rows[0].paymentDate, rows[0].total, productsInCart);
                         
                         result.push(cartToAdd);
                         resolve();
@@ -595,7 +598,7 @@ class CartDAO {
             Promise.all(cartQueries).then(() => {
                 //console.log(result)
                 resolve(result);
-            })
+            }).catch((error)=>{reject(error)})
                 
         });
     }
