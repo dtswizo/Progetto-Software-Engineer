@@ -20,6 +20,7 @@ describe("Cart route tests", () => {
 
 beforeEach(() => {
     jest.clearAllMocks();
+    jest.resetAllMocks();
     app = initMockedApp();
 });
 
@@ -72,6 +73,15 @@ test("getCart:401 user not logged", async () => {
     const response = await request(app).get(baseURL + "/carts")
     expect(response.status).toBe(401)
     expect(CartController.prototype.getCart).toHaveBeenCalledTimes(0)
+});
+
+test("getCart:error from getCart", async () => {
+    const testUser = spyCustomer();
+    enableMockedAuth(app)
+    jest.spyOn(CartController.prototype, "getCart").mockRejectedValue(new Error())
+    const response = await request(app).get(baseURL + "/carts")
+    expect(CartController.prototype.getCart).toHaveBeenCalledTimes(1)
+    expect(CartController.prototype.getCart).toHaveBeenCalledWith(testUser)
 });
 
 
@@ -136,6 +146,16 @@ test("addToCart: 422 empty model parameter", async () => {
     const response = await request(app).post(baseURL + "/carts").send({model:""}).set('Content-Type', 'application/json')
     expect(response.status).toBe(422)
     expect(CartController.prototype.addToCart).toHaveBeenCalledTimes(0)
+});
+
+test("addToCart: error from controller", async () => {
+    const testUser = spyCustomer();
+    enableMockedAuth(app)
+    jest.spyOn(CartController.prototype, "addToCart").mockRejectedValueOnce(new Error())
+    const response = await request(app).post(baseURL + "/carts").send({model:"iphone13"}).set('Content-Type', 'application/json')
+    //expect(response.status).toBe(200)
+    expect(CartController.prototype.addToCart).toHaveBeenCalledTimes(1)
+    expect(CartController.prototype.addToCart).toHaveBeenCalledWith(testUser, "iphone13")
 });
 
 /* ************************ PATCH ezelectronics/carts -->checkoutCart ************************* */
@@ -218,6 +238,17 @@ test("checkoutCart: 401 user not logged", async () => {
     expect(CartController.prototype.checkoutCart).toHaveBeenCalledTimes(0)
 });
 
+test("checkoutCart: error from controller", async () => {
+    const testUser = spyCustomer();
+    enableMockedAuth(app)
+    jest.spyOn(CartController.prototype, "checkoutCart").mockRejectedValueOnce(new Error())
+    const response = await request(app).patch(baseURL + "/carts")
+    expect(CartController.prototype.checkoutCart).toHaveBeenCalledTimes(1)
+    expect(CartController.prototype.checkoutCart).toHaveBeenCalledWith(testUser)
+    
+});
+
+
 /* ************************ GET ezelectronics/carts/history -->getCustomerCarts ************************* */
 
 test("getCustomerCarts: It should return a 200 success code", async () => {
@@ -255,6 +286,15 @@ test("checkoutCart: 401 user not logged", async () => {
     const response = await request(app).get(baseURL + "/carts/history")
     expect(response.status).toBe(401)
     expect(CartController.prototype.getCustomerCarts).toHaveBeenCalledTimes(0)
+});
+
+test("getCustomerCarts: error from controller", async () => {
+    const testUser = spyCustomer();
+    enableMockedAuth(app)
+    jest.spyOn(CartController.prototype, "getCustomerCarts").mockRejectedValueOnce(new Error())
+    const response = await request(app).get(baseURL + "/carts/history")
+    expect(CartController.prototype.getCustomerCarts).toHaveBeenCalledTimes(1)
+    expect(CartController.prototype.getCustomerCarts).toHaveBeenCalledWith(testUser)
 });
 
 
@@ -355,6 +395,16 @@ test("checkoutCart: 422 model parameter empty", async () => {
     expect(CartController.prototype.getCustomerCarts).toHaveBeenCalledTimes(0)
 });
 
+test("removeProductFromCart: error from controller", async () => {
+    const testUser = spyCustomer();
+    enableMockedAuth(app)
+    jest.spyOn(CartController.prototype, "removeProductFromCart").mockRejectedValueOnce(new Error())
+    const model="test"  //modello da rimuovere
+    const response = await request(app).delete(baseURL + `/carts/products/${model}`)    
+    expect(CartController.prototype.removeProductFromCart).toHaveBeenCalledTimes(1)
+    expect(CartController.prototype.removeProductFromCart).toHaveBeenCalledWith(testUser,model)
+});
+
 /* ************************ DELETE ezelectronics/carts/current -->clearCart ************************* */
 
 test("clearCart: It should return a 200 success code", async () => {
@@ -377,6 +427,15 @@ test("clearCart: 404 not exist an unpaid cart", async () => {
     expect(CartController.prototype.clearCart).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.clearCart).toHaveBeenCalledWith(testUser)
     expect(CartController.prototype.clearCart).toThrow(CartNotFoundError)
+});
+
+test("clearCart: error from controller", async () => {
+    const testUser = spyCustomer();
+    enableMockedAuth(app)
+    jest.spyOn(CartController.prototype, "clearCart").mockRejectedValueOnce(new Error())
+    const response = await request(app).delete(baseURL + "/carts/current") 
+    expect(CartController.prototype.clearCart).toHaveBeenCalledTimes(1)
+    expect(CartController.prototype.clearCart).toHaveBeenCalledWith(testUser) 
 });
 
 /* ************************ DELETE ezelectronics/carts -->deleteAllCarts ************************* */
@@ -419,17 +478,60 @@ test("deleteAllCarts: 401 called by non logged user", async () => {
     expect(CartController.prototype.deleteAllCarts).toHaveBeenCalledTimes(0)
 });
 
-/* ************************ DELETE ezelectronics/carts/all -->getAllCarts ************************* */
-/*
+test("deleteAllCarts:error from controller", async () => {
+    const testUser = spyAdmin();
+    enableMockedAuth(app)
+    jest.spyOn(CartController.prototype, "deleteAllCarts").mockRejectedValueOnce(new Error())
+    const response = await request(app).delete(baseURL + "/carts") 
+    expect(response.status).toBe(503)
+    expect(CartController.prototype.deleteAllCarts).toHaveBeenCalledTimes(1)
+    expect(CartController.prototype.deleteAllCarts).toHaveBeenCalledWith()
+});
+
+/* ************************ GET ezelectronics/carts/all -->getAllCarts ************************* */
+
 test("getAllCarts: It should return a 200 success code", async () => {
-    jest.spyOn(CartController.prototype, "getAllCarts").mockResolvedValueOnce([
-        new Cart("test",false,"",500,[new ProductInCart("test",1,Category.APPLIANCE,500)]),
+    const testUser=spyAdmin()
+    jest.spyOn(CartController.prototype, "getAllCarts").mockResolvedValue([
+        new Cart("test",false,null,500,[new ProductInCart("test",1,Category.APPLIANCE,500)]),
         new Cart("test",true,"20/05/2024",10,[new ProductInCart("test1",1,Category.APPLIANCE,10)])
     ])
-    const response = await request(app).delete(baseURL + "/carts/all") 
+    const response = await request(app).get(baseURL + "/carts/all") 
     expect(response.status).toBe(200)
     expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.getAllCarts).toHaveBeenCalledWith()
-});*/
+});
+
+test("getAllCarts:401 logged not as Manager or Admin", async () => {
+    const testUser=spyCustomer()
+    jest.spyOn(CartController.prototype, "getAllCarts").mockResolvedValue([
+        new Cart("test",false,"",500,[new ProductInCart("test",1,Category.APPLIANCE,500)]),
+        new Cart("test",true,"20/05/2024",10,[new ProductInCart("test1",1,Category.APPLIANCE,10)])
+    ])
+    const response = await request(app).get(baseURL + "/carts/all") 
+    expect(response.status).toBe(200)
+    expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(1)
+    expect(CartController.prototype.getAllCarts).toHaveBeenCalledWith()
+});
+
+test("getAllCarts:401 not logged", async () => {
+    const testUser=spyNotLogged()
+    jest.spyOn(CartController.prototype, "getAllCarts").mockResolvedValue([
+        new Cart("test",false,"",500,[new ProductInCart("test",1,Category.APPLIANCE,500)]),
+        new Cart("test",true,"20/05/2024",10,[new ProductInCart("test1",1,Category.APPLIANCE,10)])
+    ])
+    const response = await request(app).get(baseURL + "/carts/all")
+    expect(response.status).toBe(200)
+    expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(1)
+    expect(CartController.prototype.getAllCarts).toHaveBeenCalledWith()
+});
+
+test("getAllCarts: error from controller", async () => {
+    const testUser=spyAdmin()
+    jest.spyOn(CartController.prototype, "getAllCarts").mockRejectedValueOnce(new Error())
+    const response = await request(app).get(baseURL + "/carts/all") 
+    expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(1)
+    expect(CartController.prototype.getAllCarts).toHaveBeenCalledWith()
+});
 
 });

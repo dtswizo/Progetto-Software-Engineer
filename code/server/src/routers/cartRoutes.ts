@@ -168,7 +168,7 @@ class CartRoutes {
             this.authenticator.isAdminOrManager,
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getAllCarts()
-                .then((carts: any/**Cart[] */) => res.status(200).json(carts))
+                .then((carts: Cart[] ) => res.status(200).json(carts))
                 .catch((err: any) => next(err))
         )
     }
