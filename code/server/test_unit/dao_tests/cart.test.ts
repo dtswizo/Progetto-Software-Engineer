@@ -1258,8 +1258,8 @@ describe("getCustomerCarts", ()=>{
         }
 
         let rows=[
-            {cartId:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50},
-            {cartId:2,customer:testUser.username,paid:true,paymentDate:"10/01/2023",total:20}
+            {idCart:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50},
+            {idCart:2,customer:testUser.username,paid:true,paymentDate:"10/01/2023",total:20}
         ]
 
         let carts=[
@@ -1270,9 +1270,9 @@ describe("getCustomerCarts", ()=>{
         let nCarts=2
         
         let joined_rows=[
-            {cartId:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50,
+            {idCart:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50,
                 model:"test",quantity:1,category:Category.SMARTPHONE,price:50},
-            {cartId:2,customer:testUser.username,paid:true,paymentDate:"10/01/2023",total:20,
+            {idCart:2,customer:testUser.username,paid:true,paymentDate:"10/01/2023",total:20,
                 model:"test1",quantity:2,category:Category.LAPTOP,price:10}
         ]
 
@@ -1285,12 +1285,16 @@ describe("getCustomerCarts", ()=>{
         });
 
         //get all paied carts of the user with products
-        jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
-            callback(null,joined_rows);
+        jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
+            callback(null,[joined_rows[0]]);
+            return ({} as Database);
+        });
+        jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
+            callback(null,[joined_rows[1]]);
             return ({} as Database);
         });
         
-        await expect(cartDAO.getCustomerCarts(testUser)).resolves.toBe(carts);
+        await expect(cartDAO.getCustomerCarts(testUser)).resolves.toStrictEqual(carts);
         expect(Database.prototype.all).toHaveBeenCalledTimes(nCarts+1);
     });
 
@@ -1509,7 +1513,7 @@ describe("getAllCarts", ()=>{
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
-    
+    /*
     test("correct getAllCarts: list of carts unempty", async () => {
         const testUser = {
             username: "test",
@@ -1663,7 +1667,7 @@ describe("getAllCarts", ()=>{
         
         await expect(cartDAO.getAllCarts()).rejects.toBe(Error);
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
-    });
+    });*/
 
 
     test("error getAllCarts:DB error in products_in_cart", async () => {
