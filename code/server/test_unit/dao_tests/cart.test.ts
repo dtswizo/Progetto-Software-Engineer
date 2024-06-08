@@ -407,7 +407,7 @@ describe("getCartId", ()=>{
             return ({} as Database);
         });
         
-        await expect(cartDAO.getCartId(testUser)).rejects.toBe(Error);
+        await expect(cartDAO.getCartId(testUser)).rejects.toStrictEqual(new CartNotFoundError());
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
@@ -752,9 +752,157 @@ describe("addToCart", ()=>{
 
     });
 
-      ////////////////////////errori////////////////////////////
-     /* aggiungere i catch ad ogni then prima di test errori */
-    //////////////////////////////////////////////////////////
+    test("error addToCart: error in checkIfCartExists", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+        let product="test"
+
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "checkIfCartExists").mockRejectedValueOnce(Error);
+
+        
+        await expect(cartDAO.addToCart(testUser,product)).rejects.toBe(Error);
+        expect(CartDAO.prototype.checkIfCartExists).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.checkIfCartExists).toBeCalledTimes(1);
+
+
+    });
+
+    test("error addToCart: error in checkIfProductExistsInCart", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+        let product="test"
+
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "checkIfCartExists").mockResolvedValueOnce(true);
+        jest.spyOn(CartDAO.prototype, "checkIfProductExistsInCart").mockRejectedValueOnce(Error);
+
+        
+        await expect(cartDAO.addToCart(testUser,product)).rejects.toBe(Error);
+        expect(CartDAO.prototype.checkIfCartExists).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.checkIfCartExists).toBeCalledTimes(1);
+        expect(CartDAO.prototype.checkIfProductExistsInCart).toBeCalledWith(testUser,product);
+        expect(CartDAO.prototype.checkIfProductExistsInCart).toBeCalledTimes(1);
+
+    });
+
+    test("error addToCart: error in updateCartTotal con prodotto gia esistente", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+        let product="test"
+        let price=20
+        let category=Category.APPLIANCE
+        let quantity=1
+        let product_object={product:product,quantity:quantity,category:category,sellingPrice:price};
+        let idCart=3;
+
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "checkIfCartExists").mockResolvedValueOnce(true);
+        jest.spyOn(CartDAO.prototype, "checkIfProductExistsInCart").mockResolvedValueOnce(true);
+        jest.spyOn(CartDAO.prototype, "updateCartTotal").mockRejectedValueOnce(Error);
+        //get del prodotto
+        jest.spyOn(Database.prototype, "get").mockImplementationOnce((sql, params, callback) => {
+            callback(null,product_object);
+            return ({} as Database);
+        });
+        /////////
+        // get cart id
+        jest.spyOn(Database.prototype, "get").mockImplementationOnce((sql, params, callback) => {
+            callback(null,{idCart:idCart});
+            return ({} as Database);
+        });
+        //update product quantity in cart
+        jest.spyOn(Database.prototype, "run").mockImplementationOnce((sql, params, callback) => {
+            callback(null);
+            return ({} as Database);
+        });
+        
+        await expect(cartDAO.addToCart(testUser,product)).rejects.toBe(Error);
+        expect(Database.prototype.get).toHaveBeenCalledTimes(2);
+        expect(Database.prototype.run).toHaveBeenCalledTimes(1);
+        expect(CartDAO.prototype.checkIfCartExists).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.checkIfCartExists).toBeCalledTimes(1);
+        expect(CartDAO.prototype.checkIfProductExistsInCart).toBeCalledWith(testUser,product);
+        expect(CartDAO.prototype.checkIfProductExistsInCart).toBeCalledTimes(1);
+        expect(CartDAO.prototype.updateCartTotal).toBeCalledWith(testUser,price);
+        expect(CartDAO.prototype.updateCartTotal).toBeCalledTimes(1);
+
+    });
+
+    test("error addToCart: error in updateCartTotal con prodotto non ancora esistente", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+        let product="test"
+        let price=20
+        let category=Category.APPLIANCE
+        let quantity=1
+        let product_object={product:product,quantity:quantity,category:category,sellingPrice:price};
+        let idCart=3;
+
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "checkIfCartExists").mockResolvedValueOnce(true);
+        jest.spyOn(CartDAO.prototype, "checkIfProductExistsInCart").mockResolvedValueOnce(false);
+        jest.spyOn(CartDAO.prototype, "updateCartTotal").mockRejectedValueOnce(Error);
+        //get del prodotto
+        jest.spyOn(Database.prototype, "get").mockImplementationOnce((sql, params, callback) => {
+            callback(null,product_object);
+            return ({} as Database);
+        });
+        /////////
+        // get cart id
+        jest.spyOn(Database.prototype, "get").mockImplementationOnce((sql, params, callback) => {
+            callback(null,{idCart:idCart});
+            return ({} as Database);
+        });
+        //update product quantity in cart
+        jest.spyOn(Database.prototype, "run").mockImplementationOnce((sql, params, callback) => {
+            callback(null);
+            return ({} as Database);
+        });
+        
+        await expect(cartDAO.addToCart(testUser,product)).rejects.toBe(Error);
+        expect(Database.prototype.get).toHaveBeenCalledTimes(2);
+        expect(Database.prototype.run).toHaveBeenCalledTimes(1);
+        expect(CartDAO.prototype.checkIfCartExists).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.checkIfCartExists).toBeCalledTimes(1);
+        expect(CartDAO.prototype.checkIfProductExistsInCart).toBeCalledWith(testUser,product);
+        expect(CartDAO.prototype.checkIfProductExistsInCart).toBeCalledTimes(1);
+        expect(CartDAO.prototype.updateCartTotal).toBeCalledWith(testUser,price);
+        expect(CartDAO.prototype.updateCartTotal).toBeCalledTimes(1);
+
+    });
 });
 
 
@@ -949,10 +1097,124 @@ describe("removeProductFromCart", ()=>{
         expect(CartDAO.prototype.updateCartTotal).toBeCalledTimes(1);
     });
 
+    test("error removeProductFromCart: error in getCartId", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+        let product="test"
+        let price=20
+        let quantity=10
+        let product_object={product:product,quantity:quantity,category:Category.APPLIANCE,sellingPrice:price};
+        let idCart=3;
+        let quantity_in_cart=1
 
-      ////////////////////////errori////////////////////////////
-     /* aggiungere i catch ad ogni then prima di test errori */
-    //////////////////////////////////////////////////////////
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "getCartId").mockRejectedValueOnce(Error);
+        
+        await expect(cartDAO.removeProductFromCart(testUser,product)).rejects.toBe(Error);
+        expect(CartDAO.prototype.getCartId).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.getCartId).toBeCalledTimes(1);
+    });
+
+    test("error removeProductFromCart: error in checkProductQuantityInCart", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+        let product="test"
+        let idCart=3;
+
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "getCartId").mockResolvedValueOnce(idCart);
+        jest.spyOn(CartDAO.prototype, "checkProductQuantityInCart").mockRejectedValueOnce(Error);
+        
+        await expect(cartDAO.removeProductFromCart(testUser,product)).rejects.toBe(Error);
+        expect(CartDAO.prototype.getCartId).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.getCartId).toBeCalledTimes(1);
+        expect(CartDAO.prototype.checkProductQuantityInCart).toBeCalledWith(testUser,product);
+        expect(CartDAO.prototype.checkProductQuantityInCart).toBeCalledTimes(1);
+    });
+
+    test("error removeProductFromCart: error in getCartId", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+        let product="test"
+
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "getCartId").mockRejectedValueOnce(Error);
+        
+        await expect(cartDAO.removeProductFromCart(testUser,product)).rejects.toBe(Error);
+        expect(CartDAO.prototype.getCartId).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.getCartId).toBeCalledTimes(1);
+    });
+
+    test("error removeProductFromCart: error in checkProductQuantityInCart con quantity==1", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+        let product="test"
+        let price=20
+        let quantity=10
+        let product_object={product:product,quantity:quantity,category:Category.APPLIANCE,sellingPrice:price};
+        let idCart=3;
+        let quantity_in_cart=1
+
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "getCartId").mockResolvedValueOnce(idCart);
+        jest.spyOn(CartDAO.prototype, "checkProductQuantityInCart").mockResolvedValueOnce(quantity_in_cart);
+        jest.spyOn(CartDAO.prototype, "updateCartTotal").mockRejectedValueOnce(Error);
+        //get del prodotto
+        jest.spyOn(Database.prototype, "get").mockImplementationOnce((sql, params, callback) => {
+            callback(null,product_object);
+            return ({} as Database);
+        });
+
+        /////////
+
+        //delete product from cart cart
+        jest.spyOn(Database.prototype, "run").mockImplementationOnce((sql, params, callback) => {
+            callback(null);
+            return ({} as Database);
+        });
+        
+        await expect(cartDAO.removeProductFromCart(testUser,product)).rejects.toBe(Error);
+        expect(Database.prototype.get).toHaveBeenCalledTimes(1);
+        expect(Database.prototype.run).toHaveBeenCalledTimes(1);
+        expect(CartDAO.prototype.getCartId).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.getCartId).toBeCalledTimes(1);
+        expect(CartDAO.prototype.checkProductQuantityInCart).toBeCalledWith(testUser,product);
+        expect(CartDAO.prototype.checkProductQuantityInCart).toBeCalledTimes(1);
+        expect(CartDAO.prototype.updateCartTotal).toBeCalledWith(testUser,-price);
+        expect(CartDAO.prototype.updateCartTotal).toBeCalledTimes(1);
+    });
 
 });
 
@@ -1033,9 +1295,59 @@ describe("clearCart", ()=>{
         expect(CartDAO.prototype.resetCartTotal).toBeCalledTimes(0);
     });
 
-      ////////////////////////errori////////////////////////////
-     /* aggiungere i catch ad ogni then prima di test errori */
-    //////////////////////////////////////////////////////////
+    test("error clearCart: error on getCartId", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "getCartId").mockRejectedValueOnce(Error);
+        
+        await expect(cartDAO.clearCart(testUser)).rejects.toBe(Error);
+        expect(CartDAO.prototype.getCartId).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.getCartId).toBeCalledTimes(1);
+    });
+
+    test("error clearCart: error on resetCartTotal", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+        let idCart=3;
+
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "getCartId").mockResolvedValueOnce(idCart);
+        jest.spyOn(CartDAO.prototype, "resetCartTotal").mockRejectedValueOnce(Error);
+
+        /////////
+
+        //delete products from cart
+        jest.spyOn(Database.prototype, "run").mockImplementationOnce((sql, params, callback) => {
+            callback(null);
+            return ({} as Database);
+        });
+        
+        await expect(cartDAO.clearCart(testUser)).rejects.toBe(Error);
+        expect(Database.prototype.get).toHaveBeenCalledTimes(0);
+        expect(Database.prototype.run).toHaveBeenCalledTimes(1);
+        expect(CartDAO.prototype.getCartId).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.getCartId).toBeCalledTimes(1);
+        expect(CartDAO.prototype.resetCartTotal).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.resetCartTotal).toBeCalledTimes(1);
+    });
 
 });
 
@@ -1108,15 +1420,8 @@ describe("checkoutCart", ()=>{
         });
 
         /////////
-
-        //mark cart as paid cart
-        /*
-        jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            callback.call({changes:1},null);
-            return ({} as Database);
-        });*/
         
-        await expect(cartDAO.checkoutCart(testUser)).rejects.toBe(Error);
+        await expect(cartDAO.checkoutCart(testUser)).rejects.toStrictEqual(new ProductNotFoundError());
         expect(Database.prototype.get).toHaveBeenCalledTimes(0);
         //ipotizzo che l'errore avvenga sull'aggiornamento del primo prodotto in lista
         expect(Database.prototype.run).toHaveBeenCalledTimes(1);
@@ -1140,24 +1445,23 @@ describe("checkoutCart", ()=>{
 
         // mock di base per tutti i casi
         jest.spyOn(CartDAO.prototype, "getCart").mockResolvedValueOnce(cart);
-        //update product stock quantities
-        jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            callback.call({changes:0},null);
-            return ({} as Database);
-        });
 
         /////////
 
         //mark cart as paid cart
         
         jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            callback.call({changes:0},null);
+            if (sql.includes("products")){
+                callback.call({changes:1},null);
+            }else{
+                callback.call({changes:0},null);
+            }
             return ({} as Database);
         });
         
-        await expect(cartDAO.checkoutCart(testUser)).rejects.toBe(Error);
+        await expect(cartDAO.checkoutCart(testUser)).rejects.toStrictEqual(new CartNotFoundError());
         expect(Database.prototype.get).toHaveBeenCalledTimes(0);
-        expect(Database.prototype.run).toHaveBeenCalledTimes(1);
+        expect(Database.prototype.run).toHaveBeenCalledTimes(np_in_cart+1);
         expect(CartDAO.prototype.getCart).toBeCalledWith(testUser);
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
@@ -1195,7 +1499,7 @@ describe("checkoutCart", ()=>{
         
         await expect(cartDAO.checkoutCart(testUser)).rejects.toBe(Error);
         //ipotizzo che l'errore avvenga sull'aggiornamento del primo prodotto in lista
-        expect(Database.prototype.run).toHaveBeenCalledTimes(1);    //perché np_in_cart+1 ? dovrebbe fermarsi al primo errore
+        expect(Database.prototype.run).toHaveBeenCalledTimes(1); 
         expect(CartDAO.prototype.getCart).toBeCalledWith(testUser);
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
@@ -1218,7 +1522,7 @@ describe("checkoutCart", ()=>{
         jest.spyOn(CartDAO.prototype, "getCart").mockResolvedValueOnce(cart);
         //update product stock quantities
         jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            callback.call({changes:1},null);
+            callback.call(Error,null);
             return ({} as Database);
         });
 
@@ -1226,13 +1530,35 @@ describe("checkoutCart", ()=>{
 
         //mark cart as paid cart
         jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            callback(Error);
+            if(sql.includes("carts")){
+                callback(Error);
+            }else{
+                callback.call({changes:1},null);
+            }
             return ({} as Database);
         });
 
         await expect(cartDAO.checkoutCart(testUser)).rejects.toBe(Error);
-        //ipotizzo che l'errore avvenga sull'aggiornamento del primo prodotto in lista
         expect(Database.prototype.run).toHaveBeenCalledTimes(np_in_cart+1);
+        expect(CartDAO.prototype.getCart).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
+    });
+
+    test("error checkoutCart: error in getCart", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "getCart").mockRejectedValueOnce(Error);
+        
+        await expect(cartDAO.checkoutCart(testUser)).rejects.toBe(Error);
         expect(CartDAO.prototype.getCart).toBeCalledWith(testUser);
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
@@ -1358,12 +1684,12 @@ describe("getCustomerCarts", ()=>{
         });
 
         //get all paied carts of the user with products
-        jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
+        jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
             callback(null);
             return ({} as Database);
         });
         
-        await expect(cartDAO.getCustomerCarts(testUser)).rejects.toBe(Error);
+        await expect(cartDAO.getCustomerCarts(testUser)).rejects.toStrictEqual(new CartNotFoundError());
         expect(Database.prototype.all).toHaveBeenCalledTimes(nCarts+1);
     });
 
@@ -1405,19 +1731,7 @@ describe("getCustomerCarts", ()=>{
             {cartId:2,customer:testUser.username,paid:true,paymentDate:"10/01/2023",total:20}
         ]
 
-        let carts=[
-            new Cart(testUser.username,true,"27/05/2024",50,[new ProductInCart("test",1,Category.SMARTPHONE,50)]),
-            new Cart(testUser.username,true,"10/01/2023",20,[new ProductInCart("test1",2,Category.LAPTOP,10)]),
-        ]
-
         let nCarts=2
-        
-        let joined_rows=[
-            {cartId:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50,
-                model:"test",quantity:1,category:Category.SMARTPHONE,price:50},
-            {cartId:2,customer:testUser.username,paid:true,paymentDate:"10/01/2023",total:20,
-                model:"test1",quantity:2,category:Category.LAPTOP,price:10}
-        ]
 
         let cartDAO = new CartDAO();
 
@@ -1485,7 +1799,7 @@ describe("deleteAllCarts", ()=>{
         expect(Database.prototype.run).toHaveBeenCalledTimes(2);
 
     });
-    /* da vedere ****************************************
+
     test("error deleteAllCarts: DB error in product_in_carts", async () => {
         let cartDAO = new CartDAO();
 
@@ -1503,7 +1817,7 @@ describe("deleteAllCarts", ()=>{
         await expect(cartDAO.deleteAllCarts()).rejects.toBe(Error);
         expect(Database.prototype.run).toHaveBeenCalledTimes(2);
 
-    });*/
+    });
 });
 
 /* *************************** FUNZIONE getAllCarts ****************************** */
@@ -1513,7 +1827,6 @@ describe("getAllCarts", ()=>{
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
-    /*
     test("correct getAllCarts: list of carts unempty", async () => {
         const testUser = {
             username: "test",
@@ -1553,7 +1866,7 @@ describe("getAllCarts", ()=>{
         ]
 
         let cartDAO = new CartDAO();
-
+        
         //get all paied carts of the user
         jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
             callback(null,rows);
@@ -1561,12 +1874,16 @@ describe("getAllCarts", ()=>{
         });
 
         //get all paied carts of the user with products
-        jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
-            callback(null,joined_rows);
+        jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
+            callback(null,[joined_rows[0]]);
             return ({} as Database);
         });
-        
-        await expect(cartDAO.getAllCarts()).resolves.toBe(carts);
+        jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
+            callback(null,[joined_rows[1]]);
+            return ({} as Database);
+        });
+
+        await expect(cartDAO.getAllCarts()).resolves.toStrictEqual(carts);
         expect(Database.prototype.all).toHaveBeenCalledTimes(nCarts+1);
     });
 
@@ -1614,21 +1931,8 @@ describe("getAllCarts", ()=>{
             {cartId:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50},
             {cartId:2,customer:testUser2.username,paid:true,paymentDate:"10/01/2023",total:20}
         ]
-
-        let carts=[
-            new Cart(testUser.username,true,"27/05/2024",50,[new ProductInCart("test",1,Category.SMARTPHONE,50)]),
-            new Cart(testUser2.username,true,"10/01/2023",20,[new ProductInCart("test1",2,Category.LAPTOP,10)]),
-        ]
-
         let nCarts=2
         
-        let joined_rows=[
-            {cartId:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50,
-                model:"test",quantity:1,category:Category.SMARTPHONE,price:50},
-            {cartId:2,customer:testUser2.username,paid:true,paymentDate:"10/01/2023",total:20,
-                model:"test1",quantity:2,category:Category.LAPTOP,price:10}
-        ]
-
         let cartDAO = new CartDAO();
 
         //get all paied carts of the user
@@ -1643,7 +1947,7 @@ describe("getAllCarts", ()=>{
             return ({} as Database);
         });
         
-        await expect(cartDAO.getAllCarts()).rejects.toBe(Error);
+        await expect(cartDAO.getAllCarts()).rejects.toStrictEqual(new Error());
         expect(Database.prototype.all).toHaveBeenCalledTimes(nCarts+1);
     });
 
@@ -1667,7 +1971,7 @@ describe("getAllCarts", ()=>{
         
         await expect(cartDAO.getAllCarts()).rejects.toBe(Error);
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
-    });*/
+    });
 
 
     test("error getAllCarts:DB error in products_in_cart", async () => {
@@ -1694,19 +1998,7 @@ describe("getAllCarts", ()=>{
             {cartId:2,customer:testUser2.username,paid:true,paymentDate:"10/01/2023",total:20}
         ]
 
-        let carts=[
-            new Cart(testUser.username,true,"27/05/2024",50,[new ProductInCart("test",1,Category.SMARTPHONE,50)]),
-            new Cart(testUser2.username,true,"10/01/2023",20,[new ProductInCart("test1",2,Category.LAPTOP,10)]),
-        ]
-
         let nCarts=2
-        
-        let joined_rows=[
-            {cartId:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50,
-                model:"test",quantity:1,category:Category.SMARTPHONE,price:50},
-            {cartId:2,customer:testUser2.username,paid:true,paymentDate:"10/01/2023",total:20,
-                model:"test1",quantity:2,category:Category.LAPTOP,price:10}
-        ]
 
         let cartDAO = new CartDAO();
 
