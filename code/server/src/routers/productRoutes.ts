@@ -177,6 +177,7 @@ class ProductRoutes {
          */
         this.router.delete(
             "/",
+            this.authenticator.isAdminOrManager,
             (req: any, res: any, next: any) => this.controller.deleteAllProducts()
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))

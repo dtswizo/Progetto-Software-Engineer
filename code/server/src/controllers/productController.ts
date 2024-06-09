@@ -187,7 +187,7 @@ class ProductController {
      * @param model The model of the product to delete
      * @returns A Promise that resolves to `true` if the product has been successfully deleted.
      */
-    async deleteProduct(model: string) /**:Promise <Boolean> */ { 
+    async deleteProduct(model: string) :Promise <Boolean> { 
         if (model===""){
             throw new Error("parameter model can't be empty");
         }

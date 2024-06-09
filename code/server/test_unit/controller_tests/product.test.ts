@@ -166,6 +166,7 @@ describe("sellProduct", () => {
         const quantity = 2;
         const sellingDate = "2024-06-04";
 
+        jest.spyOn(ProductDAO.prototype, "getArrivalDate").mockResolvedValue("2023-01-01");
         await expect(productController.sellProduct(model, quantity, sellingDate)).rejects.toThrowError(DateError);
 
         expect(ProductDAO.prototype.getArrivalDate).toHaveBeenCalledTimes(0);
@@ -255,10 +256,10 @@ describe("getProducts", () => {
 
         jest.spyOn(ProductDAO.prototype, "getFilteredProducts").mockResolvedValue(products);
 
-        const response = await productController.getProducts("category", "Smartphone", null);
+        const response = await productController.getProducts("category", Category.SMARTPHONE, null);
 
         expect(ProductDAO.prototype.getFilteredProducts).toHaveBeenCalledTimes(1);
-        expect(ProductDAO.prototype.getFilteredProducts).toHaveBeenCalledWith("category", "Smartphone");
+        expect(ProductDAO.prototype.getFilteredProducts).toHaveBeenCalledWith("category", Category.SMARTPHONE);
         expect(response).toEqual(products);
     });
 
