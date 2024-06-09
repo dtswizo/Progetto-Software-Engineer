@@ -135,6 +135,14 @@ class UserController {
         }
         return dayjs(birthdate).format(format);
     }
+
+    /**
+     * ONLY FOR TEST PURPOSE
+     * @returns The current userDAO
+     */
+    public get userDAO(): UserDAO {
+        return this.dao;
+    }
 }
 
 export default UserController
