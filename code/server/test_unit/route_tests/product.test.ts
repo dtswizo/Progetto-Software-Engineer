@@ -473,7 +473,7 @@ describe("ProductRoutes", () => {
  
     describe("DELETE /ezelectronics/products/:model", () => {
 
-        it("Admin/Manager - 200 success code", async () => {
+        it("Admin - 200 success code", async () => {
             spyAdmin();
             enableMockedAuth(app);
 
@@ -491,7 +491,7 @@ describe("ProductRoutes", () => {
             expect(ProductController.prototype.deleteProduct).toHaveBeenCalledWith(model);
         });
 
-        it("Admin/Manager - 200 success code", async () => {
+        it("Manager - 200 success code", async () => {
             spyManager();
             enableMockedAuth(app);
 
