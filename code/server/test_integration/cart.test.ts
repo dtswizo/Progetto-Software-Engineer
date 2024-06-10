@@ -134,11 +134,10 @@ describe('Integration DAO - DB', () => {
     describe('addToCart', () => {
 
         test("Success - cart not already exist and product not already in the cart", async () => {
-            await addProduct("IphoneX",500,Category.SMARTPHONE,"2024-04-18","",2)
+            await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",2)
 
             let cartDAO = new CartDAO;
-            let result= await cartDAO.addToCart(testUser, testModel)
-            expect(result).resolves.toBe(true);
+            await expect(cartDAO.addToCart(testUser, testModel)).resolves.toBe(true);
             await expect(cartDAO.checkProductAvailability(testModel)).resolves.toBeGreaterThan(0);
         });
 
@@ -151,8 +150,15 @@ describe('Integration DAO - DB', () => {
 
         test("Error - product strock=0", async () => {
             let cartDAO = new CartDAO;
-
+            
             await expect(cartDAO.addToCart(testUser, testModel)).rejects.toBe(EmptyProductStockError);
+            await expect(cartDAO.checkProductAvailability(testModel)).resolves.toBe(0);
+        });
+
+        test("Error - product doesn't exist", async () => {
+            let cartDAO = new CartDAO;
+
+            await expect(cartDAO.addToCart(testUser, "nonEsiste")).rejects.toBe(ProductNotFoundError);
             await expect(cartDAO.checkProductAvailability(testModel)).resolves.toBe(0);
         });
 
