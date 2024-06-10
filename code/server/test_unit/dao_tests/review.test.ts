@@ -14,13 +14,13 @@ jest.mock("../../src/db/db.ts");
 
 let reviewDAO = new ReviewDAO();
 
-describe("addReview", () => {
+describe("URD1 - addReview", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - void", async () => {
+    it("URD1.1 - Success - void", async () => {
         const testUser = new User('MarioRossi',
             'Mario',
             'Rossi',
@@ -39,7 +39,7 @@ describe("addReview", () => {
         await expect(reviewDAO.addReview(testModel, testUser, testScore, testComment)).resolves.toBe(undefined);
     });
 
-    it("Error - ExistingReviewError", async () => {
+    it("URD1.2 - Error - ExistingReviewError", async () => {
         const testUser = new User('MarioRossi',
             'Mario',
             'Rossi',
@@ -58,7 +58,7 @@ describe("addReview", () => {
         await expect(reviewDAO.addReview(testModel, testUser, testScore, testComment)).rejects.toThrowError(ExistingReviewError);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("URD1.3 - Error - Generic DB Error", async () => {
         const testUser = new User('MarioRossi',
             'Mario',
             'Rossi',
@@ -81,13 +81,13 @@ describe("addReview", () => {
 
 
 
-describe("getProductReviews", () => {
+describe("URD2 - getProductReviews", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - ProductReview[] not empty", async () => {
+    it("URD2.1 - Success - ProductReview[] not empty", async () => {
         const testModel = 'iPhone13';
         const testUser = 'MarioRossi';
         const testScore = 5;
@@ -113,7 +113,7 @@ describe("getProductReviews", () => {
         )]);
     });
 
-    it("Success - ProductReview[] empty", async () => {
+    it("URD2.2 - Success - ProductReview[] empty", async () => {
         const testModel = 'iPhone13';
         jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
             callback(null, []);
@@ -123,7 +123,7 @@ describe("getProductReviews", () => {
         await expect(reviewDAO.getProductReviews(testModel)).resolves.toStrictEqual([]);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("URD2.3 - Error - Generic DB Error", async () => {
         const testModel = 'iPhone13';
         jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
             callback(new Error());
@@ -136,13 +136,13 @@ describe("getProductReviews", () => {
 });
 
 
-describe("deleteReview", () => {
+describe("URD3 - deleteReview", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - void", async () => {
+    it("URD3.1 - Success - void", async () => {
         const testUser = new User('MarioRossi',
             'Mario',
             'Rossi',
@@ -160,7 +160,7 @@ describe("deleteReview", () => {
         await expect(reviewDAO.deleteReview(testModel, testUser)).resolves.toBe(undefined);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("URD3.2 - Error - Generic DB Error", async () => {
         const testUser = new User('MarioRossi',
             'Mario',
             'Rossi',
@@ -179,7 +179,7 @@ describe("deleteReview", () => {
 
         await expect(reviewDAO.deleteReview(testModel, testUser)).rejects.toThrowError(Error);
     });
-    it("Error - NoReviewProductError", async () => {
+    it("URD3.3 - Error - NoReviewProductError", async () => {
         const testUser = new User('MarioRossi',
             'Mario',
             'Rossi',
@@ -200,13 +200,13 @@ describe("deleteReview", () => {
 });
 
 
-describe("deleteReviewsOfProduct", () => {
+describe("URD4 - deleteReviewsOfProduct", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - void", async () => {
+    it("URD4.1 - Success - void", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
@@ -217,7 +217,7 @@ describe("deleteReviewsOfProduct", () => {
         await expect(reviewDAO.deleteReviewsOfProduct(testModel)).resolves.toBe(undefined);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("URD4.2 - Error - Generic DB Error", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
@@ -230,13 +230,13 @@ describe("deleteReviewsOfProduct", () => {
 
 });
 
-describe("deleteAllReviews", () => {
+describe("URD5 - deleteAllReviews", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - void", async () => {
+    it("URD5.1 - Success - void", async () => {
 
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback(null);
@@ -246,7 +246,7 @@ describe("deleteAllReviews", () => {
         await expect(reviewDAO.deleteAllReviews()).resolves.toBe(undefined);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("URD5.2 - Error - Generic DB Error", async () => {
 
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback(new Error());
@@ -259,13 +259,13 @@ describe("deleteAllReviews", () => {
 });
 
 
-describe("productCheck", () => {
+describe("URD6 - productCheck", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - true", async () => {
+    it("URD6.1 - Success - true", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
@@ -283,7 +283,7 @@ describe("productCheck", () => {
         await expect(reviewDAO.productCheck(testModel)).resolves.toBe(true);
     });
 
-    it("Error - ProductNotFoundError", async () => {
+    it("URD6.2 - Error - ProductNotFoundError", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
@@ -294,7 +294,7 @@ describe("productCheck", () => {
         await expect(reviewDAO.productCheck(testModel)).rejects.toThrowError(ProductNotFoundError);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("URD6.3 - Error - Generic DB Error", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {

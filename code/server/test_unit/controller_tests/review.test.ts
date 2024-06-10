@@ -10,12 +10,12 @@ jest.mock("../../src/dao/reviewDAO");
 
 let reviewController = new ReviewController();
 
-describe("addReview", () => {
+describe("URC1 - addReview", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("200 OK - model not empty", async () => {
+    it("URC1.1 -200 OK - model not empty", async () => {
         expect.assertions(5);
         const testModel = 'iPhone13';
         const testUser = new User(
@@ -51,7 +51,7 @@ describe("addReview", () => {
 
 
 
-    it("404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
+    it("URC1.2 - 404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
         expect.assertions(4);
 
         const testModel = 'iPhone13';
@@ -79,7 +79,7 @@ describe("addReview", () => {
 
     });
 
-    it("409 KO ExistingReviewError - Already existing review for the product made by the customer", async () => {
+    it("URC1.3 - 409 KO ExistingReviewError - Already existing review for the product made by the customer", async () => {
         expect.assertions(5);
 
         const testModel = 'iPhone13';
@@ -111,13 +111,13 @@ describe("addReview", () => {
     });
 });
 
-describe("getProductReviews", () => {
+describe("URC2 - getProductReviews", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("200 OK - model not empty", async () => {
+    it("URC2.1 - 200 OK - model not empty", async () => {
         expect.assertions(3);
         const testModel = 'iPhone13';
         const testProductReview = new ProductReview(
@@ -141,12 +141,12 @@ describe("getProductReviews", () => {
 });
 
 
-describe("deleteReview", () => {
+describe("URC3 - deleteReview", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("200 OK - model not empty", async () => {
+    it("URC3.1 - 200 OK - model not empty", async () => {
         expect.assertions(5);
         const testModel = 'iPhone13';
         const testUser = new User(
@@ -175,7 +175,7 @@ describe("deleteReview", () => {
 
     });
 
-    it("404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
+    it("URC3.2 - 404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
         expect.assertions(4);
         const testModel = 'iPhone13';
         const testUser = new User(
@@ -200,7 +200,7 @@ describe("deleteReview", () => {
 
     });
 
-    it("404 KO NoReviewProductError - current user does not have a review for the product identified by model", async () => {
+    it("URC3.2 - 404 KO NoReviewProductError - current user does not have a review for the product identified by model", async () => {
         expect.assertions(5);
         const testModel = 'iPhone13';
         const testUser = new User(
@@ -230,12 +230,12 @@ describe("deleteReview", () => {
 });
 
 
-describe("deleteReviewsOfProduct", () => {
+describe("URC4 - deleteReviewsOfProduct", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("200 OK - model not empty", async () => {
+    it("URC4.1 - 200 OK - model not empty", async () => {
         expect.assertions(5);
         const testModel = 'iPhone13';
 
@@ -255,7 +255,7 @@ describe("deleteReviewsOfProduct", () => {
 
     });
 
-    it("404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
+    it("URC4.2 - 404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
         expect.assertions(4);
         const testModel = 'iPhone13';
 
@@ -276,12 +276,12 @@ describe("deleteReviewsOfProduct", () => {
 });
 
 
-describe("deleteAllReviews", () => {
+describe("URC5 - deleteAllReviews", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("200 OK", async () => {
+    it("URC5.1 - 200 OK", async () => {
         expect.assertions(3);
         
         jest.spyOn(ReviewDAO.prototype, "deleteAllReviews").mockResolvedValue();
