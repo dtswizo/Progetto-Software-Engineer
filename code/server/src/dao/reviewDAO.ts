@@ -6,8 +6,8 @@ import { ProductNotFoundError } from "../errors/productError";
 
 class ReviewDAO {
     async addReview(model: string, user: User, score: number, comment: string): Promise<void> {
-        try {
-            return new Promise<void>((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
+            try {
                 const sql = "INSERT INTO reviews(user, model, score, date, comment) VALUES(?, ?, ?, ?, ?)";
                 const date = new Date().toISOString().slice(0, 10);
 
@@ -22,22 +22,23 @@ class ReviewDAO {
                     }
                     resolve();
                 });
-            });
-        } catch (error) {
-            throw error;
-        }
+            } catch (error) {
+                reject(error);
+            }
+
+        });
     }
 
     async getProductReviews(model: string): Promise<ProductReview[]> {
-        try {
-            return new Promise<ProductReview[]>((resolve, reject) => {
+        return new Promise<ProductReview[]>((resolve, reject) => {
+            try {
                 const sql = "SELECT * FROM reviews WHERE reviews.model = ?";
                 db.all(sql, [model], (err: Error | null, rows: any[]) => {
                     if (err) {
                         reject(err);
                         return;
                     }
-                    
+
                     if (rows.length === 0) {
                         resolve([]);
                         return;
@@ -49,15 +50,17 @@ class ReviewDAO {
 
                     resolve(reviews);
                 });
-            });
-        } catch (error) {
-            throw error;
-        }
+            } catch (error) {
+                reject(error);
+            }
+
+        });
+
     }
 
     async deleteReview(model: string, user: User): Promise<void> {
-        try {
-            return new Promise<void>((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
+            try {
                 const sql = "DELETE FROM reviews WHERE model = ? AND user = ?";
                 db.run(sql, [model, user.username], function (err: Error | null) {
                     if (err) {
@@ -72,15 +75,17 @@ class ReviewDAO {
 
                     resolve();
                 });
-            });
-        } catch (error) {
-            throw error;
-        }
+            } catch (error) {
+                reject(error);
+            }
+
+        });
+
     }
 
     async deleteReviewsOfProduct(model: string): Promise<void> {
-        try {
-            return new Promise<void>((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
+            try {
                 const sql = "DELETE FROM reviews WHERE model = ?";
                 db.run(sql, [model], function (err: Error | null) {
                     if (err) {
@@ -89,15 +94,17 @@ class ReviewDAO {
                     }
                     resolve();
                 });
-            });
-        } catch (error) {
-            throw error;
-        }
+            } catch (error) {
+                reject(error);
+            }
+
+        });
+
     }
 
     async deleteAllReviews(): Promise<void> {
-        try {
-            return new Promise<void>((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
+            try {
                 const sql = "DELETE FROM reviews";
                 db.run(sql, [], function (err: Error | null) {
                     if (err) {
@@ -106,15 +113,17 @@ class ReviewDAO {
                     }
                     resolve();
                 });
-            });
-        } catch (error) {
-            throw error;
-        }
+            } catch (error) {
+                reject(error);
+            }
+
+        });
+
     }
 
     async productCheck(model: string): Promise<boolean> {
-        try {
-            return new Promise<boolean>((resolve, reject) => {
+        return new Promise<boolean>((resolve, reject) => {
+            try {
                 const sql = "SELECT * FROM products WHERE model = ?";
                 db.all(sql, [model], (err: Error | null, rows: any[]) => {
                     if (err) {
@@ -127,10 +136,12 @@ class ReviewDAO {
                         resolve(true);  // Almeno un prodotto trovato
                     }
                 });
-            });
-        } catch (error) {
-            throw error;
-        }
+            } catch (error) {
+                reject(error);
+            }
+
+        });
+
     }
 }
 
