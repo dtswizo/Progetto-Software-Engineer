@@ -16,13 +16,13 @@ const userDAO = new UserDAO()
 
 
 
-describe("getIsUserAuthenticated", () => {
+describe("UUD 1 - getIsUserAuthenticated", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    test("200 OK - User is correctly authenticated",async ()=>{
+    test("UUD 1.1 - 200 OK - User is correctly authenticated",async ()=>{
         const test = {
             username:"test",
             password:"11111111",
@@ -45,14 +45,14 @@ describe("getIsUserAuthenticated", () => {
         expect(result).toBe(true)
     })
 })
-describe("createUser", () => {
+describe("UUD 2 - createUser", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
 
-    test("200 OK - User created correctly", async () => {
+    test("UUD 2.1 - 200 OK - User created correctly", async () => {
         
         const mockDBRun = jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback(null)
@@ -71,7 +71,7 @@ describe("createUser", () => {
         mockScrypt.mockRestore()
     })
 
-    test("409 KO - Username alrady in database", async () => {
+    test("UUD 2.2 - 409 KO - Username alrady in database", async () => {
         const userDAO = new UserDAO()
         const mockDBRun = jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback(new Error("UNIQUE constraint failed: users.username"))
@@ -82,7 +82,7 @@ describe("createUser", () => {
         
     })
 
-    test("Generic DB Error", async () => {
+    test("UUD 2.3 - Generic DB Error", async () => {
         const userDAO = new UserDAO()
         const mockDBRun = jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback(new Error())
@@ -97,13 +97,13 @@ describe("createUser", () => {
 
 })
 
-describe("getUsers", () => {
+describe("UUD 3 - getUsers", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     })
 
-    test("200 OK - Users succesfully returned", async () => {
+    test("UUD 3.1 - 200 OK - Users succesfully returned", async () => {
         const users =[new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino","1980-01-01"),new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"Torino","1980-01-01")]
         
         jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
@@ -115,7 +115,7 @@ describe("getUsers", () => {
         expect(result).toStrictEqual(users)
     });
 
-    test("Generic DB Error", async () => {
+    test("UUD 3.2 - Generic DB Error", async () => {
         const users =[new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino","1980-01-01"),new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"Torino","1980-01-01")]
         
         jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
@@ -130,12 +130,12 @@ describe("getUsers", () => {
 
 })
 
-describe("getUsersByRole", () => {
+describe("UUD 4 - getUsersByRole", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     })
-    test("200 OK - Users succesfully returned by Role", async () => {
+    test("UUD 4.1 - 200 OK - Users succesfully returned by Role", async () => {
         const users =[new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino","1980-01-01"),new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"Torino","1980-01-01")]
         const role = "Customer"
         jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
@@ -147,7 +147,7 @@ describe("getUsersByRole", () => {
         expect(result).toStrictEqual(users)
     });
 
-    test("Generic DB Error", async () => {
+    test("UUD 4.2 - Generic DB Error", async () => {
         const users =[new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino","1980-01-01"),new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"Torino","1980-01-01")]
         const role = "Customer"
         jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
@@ -159,13 +159,13 @@ describe("getUsersByRole", () => {
     });
 })
 
-describe("getUsersByUsername", () => {
+describe("UUD 5 - getUsersByUsername", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     })
 
-    test("200 OK - Users succesfully returned by Username", async () => {
+    test("UUD 5.1 - 200 OK - Users succesfully returned by Username", async () => {
         const user =new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino","1980-01-01")
         const username = "customer"
         jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
@@ -177,7 +177,7 @@ describe("getUsersByUsername", () => {
         expect(result).toStrictEqual(user)
     });
 
-    test("404 KO - User not found", async () => {
+    test("UUD 5.2 - 404 KO - User not found", async () => {
         const user =new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino","1980-01-01")
         const username = ""
         jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
@@ -188,7 +188,7 @@ describe("getUsersByUsername", () => {
         await expect(userDAO.getUserByUsername(username)).rejects.toThrowError(new UserNotFoundError)
     });
 
-    test("Generic DB Error", async () => {
+    test("UUD 5.3 - Generic DB Error", async () => {
         const user =new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino","1980-01-01")
         const username = "customer"
         jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
@@ -201,13 +201,13 @@ describe("getUsersByUsername", () => {
 })
 
 
-describe("deleteUser", () => {
+describe("UUD 6 - deleteUser", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     })
 
-    test("200 OK - Users succesfully deleted", async () => {
+    test("UUD 6.1 - 200 OK - Users succesfully deleted", async () => {
         const username = "customer"
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback.call({ changes: 1 }, null);
@@ -218,7 +218,7 @@ describe("deleteUser", () => {
         expect(result).toBe(true)
     });
 
-    test("404 KO - User not found ", async () => {
+    test("UUD 6.2 - 404 KO - User not found ", async () => {
         const username = "customer"
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback.call({ changes: 0 }, null);
@@ -228,7 +228,7 @@ describe("deleteUser", () => {
         await expect(userDAO.deleteUser(username)).rejects.toThrowError(new UserNotFoundError)
     });
 
-    test("Generic DB Error", async () => {
+    test("UUD 6.3 - Generic DB Error", async () => {
         const username = "customer"
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback(new Error());
@@ -239,13 +239,13 @@ describe("deleteUser", () => {
     });
 })
 
-describe("deleteAll", () => {
+describe("UUD 7 - deleteAll", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     })
 
-    test("200 OK - Users succesfully deleted", async () => {
+    test("UUD 7.1 - 200 OK - Users succesfully deleted", async () => {
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback.call({ changes: 1 }, null);
             return {} as Database;
@@ -255,7 +255,7 @@ describe("deleteAll", () => {
         expect(result).toBe(true)
     });
 
-    test("Generic DB Error", async () => {
+    test("UUD 7.2 - Generic DB Error", async () => {
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback(new Error());
             return {} as Database;
@@ -265,13 +265,13 @@ describe("deleteAll", () => {
     });
 })
 
-describe("updateUserInfo", () => {
+describe("UUD 8 - updateUserInfo", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
     })
 
-    test("200 OK - Users succesfully updated", async () => {
+    test("UUD 8.1 - 200 OK - Users succesfully updated", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino, Via Madama Cristina 17","1980-01-01")
         let newUser = new User ("customer","NameCustomer2","SurnameCustome2r",Role.CUSTOMER,"Torino, Via Madama Cristina 17","1980-01-01")
         jest.spyOn(UserDAO.prototype, "getUserByUsername").mockResolvedValueOnce(newUser);
@@ -284,7 +284,7 @@ describe("updateUserInfo", () => {
         expect(result).toStrictEqual(newUser)
     });
 
-    test("404 KO - User not found", async () => {
+    test("UUD 8.2 - 404 KO - User not found", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino, Via Madama Cristina 17","1980-01-01")
         let newUser = new User ("customer","NameCustomer2","SurnameCustome2r",Role.CUSTOMER,"Torino, Via Madama Cristina 17","1980-01-01")
        
@@ -296,7 +296,7 @@ describe("updateUserInfo", () => {
         await expect(userDAO.updateUserInfo(user.username,newUser.name,newUser.surname,newUser.address,newUser.birthdate)).rejects.toThrowError(new UserNotFoundError)
     });
 
-    test("Generic DB Error", async () => {
+    test("UUD 8.3 - Generic DB Error", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino, Via Madama Cristina 17","1980-01-01")
         let newUser = new User ("customer","NameCustomer2","SurnameCustome2r",Role.CUSTOMER,"Torino, Via Madama Cristina 17","1980-01-01")
        

@@ -10,9 +10,11 @@ import { cleanup, cleanupDB } from '../src/db/cleanup';
 import db from "../src/db/db"
 import { UnauthorizedUserError, UserAlreadyExistsError, UserIsAdminError, UserNotAdminError, UserNotFoundError } from '../src/errors/userError';
 import { DateError } from '../src/utilities';
+import Authenticator from '../src/routers/auth';
 
 let userDAO: UserDAO;
 let userController: UserController;
+let authenticator: Authenticator;
 
 const userToAdd = { //Define a test user object sent to the route
     username: "MarioRossi",
@@ -72,6 +74,11 @@ const newUser2 = { //Define a test user object sent to the route
     role: Role.MANAGER,
     address: "Torino, Via Madama Cristina 27",
     birthdate:"1981-01-01"
+}
+
+const userToLog = {
+    username: "MarioRossi",
+    password: "test",
 }
 
 const createUser = async()=>{
@@ -185,38 +192,38 @@ const setupDB = async () => {
     });
 }
 
-describe('Integration DAO - DB', () => {
+describe('IUD - Integration DAO - DB', () => {
 
     beforeAll(async () => {
         await cleanupDB();
         await setupDB();
     });
 
-    describe('createUser',() =>{
+    describe('IUD 1 - createUser',() =>{
 
         beforeEach(async () => {
             userDAO = new UserDAO;
         });
 
-        it("200 OK - User successfully created", async () => {
+        it("IUD 1.1 - 200 OK - User successfully created", async () => {
 
             await expect(userDAO.createUser(userToAdd2.username,userToAdd2.name,userToAdd2.surname,userToAdd2.password,userToAdd2.role)).resolves.toBe(true);
         });
 
-        it("409 KO - User already exists", async () => {
+        it("IUD 1.2 - 409 KO - User already exists", async () => {
 
             await expect(userDAO.createUser(userToAdd.username,userToAdd.name,userToAdd.surname,userToAdd.password,userToAdd.role)).rejects.toThrowError(UserAlreadyExistsError)
         });
 
     })
 
-    describe('getUsers',() =>{
+    describe('IUD 2 - getUsers',() =>{
 
         beforeEach(async () => {
             userDAO = new UserDAO;
         })
 
-        it("200 OK - Users successfully retrieved", async () => {
+        it("IUD 2.1 - 200 OK - Users successfully retrieved", async () => {
 
             const result = await userDAO.getUsers();
             expect(result[0].username).toBe(user.username);
@@ -228,12 +235,12 @@ describe('Integration DAO - DB', () => {
         });
     })
 
-    describe('getUsersByRole',() =>{
+    describe('IUD 3 - getUsersByRole',() =>{
 
         beforeEach(async () => {
             userDAO = new UserDAO;
         })
-        it("200 OK - Users successfully retrieved by role", async () => {
+        it("IUD 3.1 - 200 OK - Users successfully retrieved by role", async () => {
 
             const result = await userDAO.getUsersByRole(user.role);
             expect(result[0].username).toBe(user.username);
@@ -246,12 +253,12 @@ describe('Integration DAO - DB', () => {
 
     })
 
-    describe('getUserByUsername',() =>{
+    describe('IUD 4 - getUserByUsername',() =>{
 
         beforeEach(async () => {
             userDAO = new UserDAO;
         })
-        it("200 OK - User successfully retrieved by username", async () => {
+        it("IUD 4.1 - 200 OK - User successfully retrieved by username", async () => {
 
             const result = await userDAO.getUserByUsername(user.username);
             expect(result.username).toBe(user.username);
@@ -263,14 +270,14 @@ describe('Integration DAO - DB', () => {
         });
 
     })
-    describe('updateUserInfo',() =>{
+    describe('IUD 5 - updateUserInfo',() =>{
         
 
         beforeEach(async () => {
             userDAO = new UserDAO;
         })
         
-        it("200 OK - User successfully updated", async () => {
+        it("IUD 5.1 - 200 OK - User successfully updated", async () => {
 
             const result = await userDAO.updateUserInfo(user.username,newUser.name,newUser.surname,newUser.address,newUser.birthdate)
             expect(result.username).toBe(newUser.username)
@@ -280,7 +287,7 @@ describe('Integration DAO - DB', () => {
             expect(result.birthdate).toBe(newUser.birthdate)
         });
         
-        it("404 KO - User not found ", async () => {
+        it("IUD 5.2 - 404 KO - User not found ", async () => {
 
             await expect(userDAO.updateUserInfo("aaaa",newUser.name,newUser.surname,newUser.address,newUser.birthdate)).rejects.toThrowError(new UserNotFoundError())
         });
@@ -289,12 +296,12 @@ describe('Integration DAO - DB', () => {
 
     })
 
-    describe('deleteUser',() =>{
+    describe('IUD 6 - deleteUser',() =>{
 
         beforeEach(async () => {
             userDAO = new UserDAO;
         })
-        it("200 OK - User successfully deleted", async () => {
+        it("IUD 6.1 - 200 OK - User successfully deleted", async () => {
 
             await expect(userDAO.deleteUser(user.username)).resolves.toBe(true)
         });
@@ -308,12 +315,12 @@ describe('Integration DAO - DB', () => {
 
     })
 
-    describe('deleteAll',() =>{
+    describe('IUD 7 - deleteAll',() =>{
 
         beforeEach(async () => {
             userDAO = new UserDAO;
         })
-        it("200 OK - Users successfully deleted", async () => {
+        it("IUD 7.1 - 200 OK - Users successfully deleted", async () => {
 
             await expect(userDAO.deleteAll()).resolves.toBe(true)
         });
@@ -324,21 +331,21 @@ describe('Integration DAO - DB', () => {
 
 })
 
-describe('Integration CONTROLLER - DAO - DB', () => {
+describe('IUC - Integration CONTROLLER - DAO - DB', () => {
 
     beforeAll(async () => {
         await cleanupDB();
         await setupDB();
     });
 
-    describe("createUser", () => {
+    describe("IUC 1 - createUser", () => {
 
         beforeEach(async () => {
             userController = new UserController();
             userDAO = userController.userDAO;
         });
 
-        it("200 OK - Successful execution", async () => {
+        it("IUC 1.1 - 200 OK - Successful execution", async () => {
             
             const spyCreateUser = jest.spyOn(userDAO, "createUser"); //Mock the createUser method of the DAO
             await expect ( userController.createUser(userToAdd2.username,
@@ -360,7 +367,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             spyCreateUser.mockRestore();
         });
 
-        it("409 KO - Username is already in DB", async () => {
+        it("IUC 1.2 - 409 KO - Username is already in DB", async () => {
             
             const spyCreateUser = jest.spyOn(userDAO, "createUser"); //Mock the createUser method of the DAO
             await expect ( userController.createUser(userToAdd2.username,
@@ -383,14 +390,14 @@ describe('Integration CONTROLLER - DAO - DB', () => {
         });
     })
 
-    describe("getUsers", () => {
+    describe("IUC 2 - getUsers", () => {
 
         beforeEach(async () => {
             userController = new UserController();
             userDAO = userController.userDAO;
         });
 
-        it("200 OK - Successful execution", async () => {
+        it("IUC 2.1 - 200 OK - Successful execution", async () => {
             const spyGetUsers = jest.spyOn(userDAO, "getUsers");
             const result = await userController.getUsers()
             expect(result[0].username).toBe(user.username);
@@ -412,13 +419,13 @@ describe('Integration CONTROLLER - DAO - DB', () => {
         });
     })
 
-    describe("getUserByRole", () => {
+    describe("IUC 3 - getUserByRole", () => {
 
         beforeEach(async () => {
             userController = new UserController();
             userDAO = userController.userDAO;
         });
-        it("200 OK - Successful execution", async () => {
+        it("IUC 3.1 - 200 OK - Successful execution", async () => {
             const spyGetUsersByRole = jest.spyOn(userDAO, "getUsersByRole");
             let role = "Manager"
             const result = await userController.getUsersByRole(role)
@@ -436,13 +443,13 @@ describe('Integration CONTROLLER - DAO - DB', () => {
 
     })
 
-    describe("getUserByUsername", () => {
+    describe("IUC 4 - getUserByUsername", () => {
 
         beforeEach(async () => {
             userController = new UserController();
             userDAO = userController.userDAO;
         });
-        it("200 OK - Successful execution for customer", async () => {
+        it("IUC 4.1 - 200 OK - Successful execution for customer", async () => {
             const spyGetUserByUsername = jest.spyOn(userDAO, "getUserByUsername");
             let username = "MarioRossi"
             const result = await userController.getUserByUsername(user,username)
@@ -458,7 +465,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             spyGetUserByUsername.mockRestore();
         });
 
-        it("200 OK - Successful execution for admin", async () => {
+        it("IUC 4.2 - 200 OK - Successful execution for admin", async () => {
             const spyGetUserByUsername = jest.spyOn(userDAO, "getUserByUsername");
             let username = "LuigiVerdi"
             const result = await userController.getUserByUsername(admin,username)
@@ -474,14 +481,14 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             spyGetUserByUsername.mockRestore();
         });
 
-        it("404 KO - User does not exist", async () => {
+        it("IUC 4.3 - 404 KO - User does not exist", async () => {
             const spyGetUserByUsername = jest.spyOn(userDAO, "getUserByUsername") 
             await expect(userController.getUserByUsername(admin ,"test")).rejects.toThrowError(UserNotFoundError)
             expect(spyGetUserByUsername).toHaveBeenCalledTimes(1);
             expect(spyGetUserByUsername).toHaveBeenCalledWith("test");
         });
 
-        it("401 KO - Username does not belong to the non-Admin User", async () => {
+        it("IUC 4.4 - 401 KO - Username does not belong to the non-Admin User", async () => {
             const spyGetUserByUsername = jest.spyOn(userDAO, "getUserByUsername") 
             await expect(userController.getUserByUsername(user ,manager.username)).rejects.toThrowError(UnauthorizedUserError)
             expect(spyGetUserByUsername).toHaveBeenCalledTimes(0);
@@ -489,13 +496,13 @@ describe('Integration CONTROLLER - DAO - DB', () => {
         });
     })
 
-    describe("updateUserInfo", ()=>{
+    describe("IUC 5 - updateUserInfo", ()=>{
     
         beforeEach(() => {
             jest.clearAllMocks();
         });
 
-        it("200 OK - Successful execution for non-Admin User", async () => {
+        it("IUC 5.1 - 200 OK - Successful execution for non-Admin User", async () => {
             
             const spyUpdateUserInfo = jest.spyOn(userDAO, "updateUserInfo") //Mock the createUser method of the DAO
             
@@ -508,7 +515,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             expect(response2).toEqual(newUser.birthdate); //Check if the response is true
         });
 
-        it("200 OK - Successful execution for Admin", async () => {
+        it("IUC 5.2 - 200 OK - Successful execution for Admin", async () => {
             
             const spyUpdateUserInfo = jest.spyOn(userDAO, "updateUserInfo") //Mock the createUser method of the DAO
             //const response3 = await userController.getUserByUsername(manager,manager.username);
@@ -525,7 +532,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             //expect(response3).toEqual(manager)
         });
 
-        it("200 OK - Successful execution but nothing to be updated", async () => {
+        it("IUC 5.3 - 200 OK - Successful execution but nothing to be updated", async () => {
             
             const spyUpdateUserInfo = jest.spyOn(userDAO, "updateUserInfo") //Mock the createUser method of the DAO
             
@@ -538,7 +545,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             expect(response2).toEqual(newUser.birthdate); //Check if the response is true
         });
 
-        it("404 KO - User not found", async () => {
+        it("IUC 5.4 - 404 KO - User not found", async () => {
             const spyUpdateUserInfo = jest.spyOn(userDAO, "updateUserInfo") //Mock the createUser method of the DAO
             const response2 = await userController.getValidDate(newUser2.birthdate);
             await expect (userController.updateUserInfo(admin,newUser2.name,newUser2.surname,newUser2.address,newUser2.birthdate,"testtt")).rejects.toThrowError(UserNotFoundError);
@@ -552,7 +559,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             
         });
 
-        it("401 KO - Admin is trying to delete another admin", async () => {
+        it("IUC 5.5 - 401 KO - Admin is trying to delete another admin", async () => {
             let admin2 = new User("admin2","NameAdmin2","SurnameAdmin2",Role.ADMIN,"","1980-01-01")
             await userController.createUser(admin2.username,admin2.name,admin2.surname,"aaaaa",Role.ADMIN)
             const spyUpdateUserInfo = jest.spyOn(userDAO, "updateUserInfo") //Mock the createUser method of the DAO
@@ -568,7 +575,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             
         });
 
-        it("400 KO - Birthdate is after the current date", async () => {
+        it("IUC 5.6 - 400 KO - Birthdate is after the current date", async () => {
             
             const spyUpdateUserInfo = jest.spyOn(userDAO, "updateUserInfo") //Mock the createUser method of the DAO
             
@@ -582,12 +589,12 @@ describe('Integration CONTROLLER - DAO - DB', () => {
         });
     })
 
-    describe("deleteUser", ()=>{
+    describe("IUC 6 - deleteUser", ()=>{
     
         beforeEach(() => {
             jest.clearAllMocks();
         });
-        it("200 OK - Successful execution for Admin", async () => {
+        it("IUC 6.1 - 200 OK - Successful execution for Admin", async () => {
             const spyGetUserByUsername = jest.spyOn(userDAO, "getUserByUsername") 
             const spyDeleteCustomer = jest.spyOn(userDAO, "deleteUser")
             const response = await userController.deleteUser(admin,user.username);
@@ -598,7 +605,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             expect(response).toBe(true); //Check if the response is true
         });
 
-        it("200 OK - Successful execution for non-Admin User", async () => {
+        it("IUC 6.2 - 200 OK - Successful execution for non-Admin User", async () => {
             const spyDeleteCustomer = jest.spyOn(userDAO, "deleteUser")
             const response = await userController.deleteUser(manager,manager.username);
             expect(spyDeleteCustomer).toHaveBeenCalledTimes(1);
@@ -606,7 +613,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             expect(response).toBe(true); //Check if the response is true
         });
 
-        it("404 KO - User not found ", async () => {
+        it("IUC 6.3 - 404 KO - User not found ", async () => {
             const spyGetUserByUsername = jest.spyOn(userDAO, "getUserByUsername") 
             const spyDeleteCustomer = jest.spyOn(userDAO, "deleteUser")
             await expect (userController.deleteUser(admin,user.username)).rejects.toThrowError(UserNotFoundError)
@@ -617,7 +624,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             //expect(response).toBe(true); //Check if the response is true
         });
 
-        it("401 KO - Username does not belong to User", async () => {
+        it("IUC 6.4 - 401 KO - Username does not belong to User", async () => {
             const spyGetUserByUsername = jest.spyOn(userDAO, "getUserByUsername") 
             const spyDeleteCustomer = jest.spyOn(userDAO, "deleteUser")
             await expect (userController.deleteUser(user,manager.username)).rejects.toThrowError(UserNotAdminError)
@@ -626,7 +633,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             //expect(response).toBe(true); //Check if the response is true
         });
 
-        it("401 KO - Admin is trying to delete another Admin", async () => {
+        it("IUC 6.5 - 401 KO - Admin is trying to delete another Admin", async () => {
             let admin2 = new User("admin2","NameAdmin2","SurnameAdmin2",Role.ADMIN,"","")
             //await userController.createUser(admin2.username,admin2.name,admin2.surname,"test",Role.ADMIN)
             const spyGetUserByUsername = jest.spyOn(userDAO, "getUserByUsername") 
@@ -642,13 +649,13 @@ describe('Integration CONTROLLER - DAO - DB', () => {
 
     })
 
-    describe("deleteAll", ()=>{
+    describe("IUC 7 - deleteAll", ()=>{
     
         beforeEach(() => {
             jest.clearAllMocks();
         });
 
-        it("200 OK - Successful execution for Admin", async () => {
+        it("IUC 7.1 - 200 OK - Successful execution for Admin", async () => {
            const spyDeleteAll = jest.spyOn(userDAO, "deleteAll")
             const response = await userController.deleteAll();
             expect(spyDeleteAll).toHaveBeenCalledTimes(1);
@@ -660,3 +667,37 @@ describe('Integration CONTROLLER - DAO - DB', () => {
     })
         
 })
+/*
+describe('Integration ROUTES - CONTROLLER - DAO - DB', () => {
+    const baseURL = "/ezelectronics"
+    let app: express.Application;
+
+    beforeAll(async () => {
+        await cleanupDB();
+        await setupDB();
+    });
+
+    describe("POST /ezelectronics/users", () => {
+
+        beforeEach(() => {
+            jest.clearAllMocks();
+            jest.resetAllMocks();
+            app = initMockedApp();
+        });
+
+        it("200 OK - User successfully created", async () => {
+            
+            //const spyLogin = await request(app).post(baseURL + "/sessions").send(userToLog)
+            const spyCreateUser = await request(app).post(baseURL + "/users").send(userToAdd2) 
+    
+            //expect(spyLogin.status).toBe(200) 
+            expect(spyCreateUser.status).toBe(200)
+            expect(userController.createUser).toHaveBeenCalledTimes(1)
+            expect(userController.createUser).toHaveBeenCalledWith(userToAdd2.username,
+                userToAdd2.name,
+                userToAdd2.surname,
+                userToAdd2.password,
+                userToAdd2.role)
+        })
+})
+})*/

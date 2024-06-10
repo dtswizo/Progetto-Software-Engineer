@@ -33,7 +33,44 @@
 
 | Test case name | Object(s) tested | Test level | Technique used |
 | :------------: | :--------------: | :--------: | :------------: |
-|                |                  |            |                |
+|        UUR 1   |  User, Routes    | Unit/API?  |     BB?        |
+|        UUR 2   |  User, Routes    | Unit/API?  |     BB?        |
+|        UUR 3   |  User, Routes    | Unit/API?  |     BB?        |
+|        UUR 4   |  User, Routes    | Unit/API?  |     BB?        |
+|        UUR 5   |  User, Routes    | Unit/API?  |     BB?        |
+|        UUR 6   |  User, Routes    | Unit/API?  |     BB?        |
+|        UUR 7   |  User, Routes    | Unit/API?  |     BB?        |
+|        UUR 8   |  User, Routes    | Unit/API?  |     BB?        |
+|        UUR 9   |  User, Routes    | Unit/API?  |     BB?        |
+|        UUR 10   |  User, Routes    | Unit/API?  |     BB?        |
+|        UUC 1   |  User, Controller  | Unit     |     WB         |
+|        UUC 2   |  User, Controller  | Unit     |     WB         |
+|        UUC 3   |  User, Controller  | Unit     |     WB         |
+|        UUC 4   |  User, Controller  | Unit     |     WB         |
+|        UUC 5   |  User, Controller  | Unit     |     WB         |
+|        UUC 6   |  User, Controller  | Unit     |     WB         |
+|        UUC 7   |  User, Controller  | Unit     |     WB         |
+|        UUD 1   |  User, DAO  | Unit     |     WB         |
+|        UUD 2   |  User, DAO  | Unit     |     WB         |
+|        UUD 3   |  User, DAO  | Unit     |     WB         |
+|        UUD 4   |  User, DAO  | Unit     |     WB         |
+|        UUD 5   |  User, DAO  | Unit     |     WB         |
+|        UUD 6   |  User, DAO  | Unit     |     WB         |
+|        UUD 7   |  User, DAO  | Unit     |     WB         |
+|        IUD 1   |  User, DAO  | Integration     |     WB         |
+|        IUD 2   |  User, DAO  | Integration     |     WB         |
+|        IUD 3   |  User, DAO  | Integration     |     WB         |
+|        IUD 4   |  User, DAO  | Integration     |     WB         |
+|        IUD 5   |  User, DAO  | Integration     |     WB         |
+|        IUD 6   |  User, DAO  | Integration     |     WB         |
+|        IUD 7   |  User, DAO  | Integration     |     WB         |
+|        IUC 1   |  User, DAO  | Integration     |     WB         |
+|        IUC 2   |  User, DAO  | Integration     |     WB         |
+|        IUC 3   |  User, DAO  | Integration     |     WB         |
+|        IUC 4   |  User, DAO  | Integration     |     WB         |
+|        IUC 5   |  User, DAO  | Integration     |     WB         |
+|        IUC 6   |  User, DAO  | Integration     |     WB         |
+|        IUC 7   |  User, DAO  | Integration     |     WB         |
 
 # Coverage
 
