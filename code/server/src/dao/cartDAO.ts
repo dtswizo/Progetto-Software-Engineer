@@ -552,7 +552,7 @@ class CartDAO {
                         reject(err)
                         return
                     }
-                    resolve(true)
+                    
                     
                 })
 
@@ -564,6 +564,8 @@ class CartDAO {
                     }
                     
                 })
+
+                resolve(true)
             }
             catch(error){
 

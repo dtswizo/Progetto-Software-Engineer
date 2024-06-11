@@ -1035,7 +1035,7 @@ describe("removeProductFromCart", ()=>{
 
         //delete product from cart cart
         jest.spyOn(Database.prototype, "run").mockImplementationOnce((sql, params, callback) => {
-            callback(null);
+            callback.call({changes:1},null);
             return ({} as Database);
         });
         
@@ -1082,7 +1082,7 @@ describe("removeProductFromCart", ()=>{
 
         //update product quantity in cart
         jest.spyOn(Database.prototype, "run").mockImplementationOnce((sql, params, callback) => {
-            callback(null);
+            callback.call({changes:1},null);
             return ({} as Database);
         });
         
@@ -1148,28 +1148,7 @@ describe("removeProductFromCart", ()=>{
         expect(CartDAO.prototype.checkProductQuantityInCart).toBeCalledTimes(1);
     });
 
-    test("error removeProductFromCart: error in getCartId", async () => {
-        const testUser = {
-            username: "test",
-            name: "test",
-            surname: "test",
-            role: Role.CUSTOMER,
-            address: "test",
-            birthdate: "27/05/2024"
-        }
-        let product="test"
-
-        let cartDAO = new CartDAO();
-
-        // mock di base per tutti i casi
-        jest.spyOn(CartDAO.prototype, "getCartId").mockRejectedValueOnce(Error);
-        
-        await expect(cartDAO.removeProductFromCart(testUser,product)).rejects.toBe(Error);
-        expect(CartDAO.prototype.getCartId).toBeCalledWith(testUser);
-        expect(CartDAO.prototype.getCartId).toBeCalledTimes(1);
-    });
-
-    test("error removeProductFromCart: error in checkProductQuantityInCart con quantity==1", async () => {
+    test("error removeProductFromCart: error in updateCartTotal with quantity==1", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1201,7 +1180,54 @@ describe("removeProductFromCart", ()=>{
 
         //delete product from cart cart
         jest.spyOn(Database.prototype, "run").mockImplementationOnce((sql, params, callback) => {
-            callback(null);
+            callback.call({changes:1},null);
+            return ({} as Database);
+        });
+        
+        await expect(cartDAO.removeProductFromCart(testUser,product)).rejects.toBe(Error);
+        expect(Database.prototype.get).toHaveBeenCalledTimes(1);
+        expect(Database.prototype.run).toHaveBeenCalledTimes(1);
+        expect(CartDAO.prototype.getCartId).toBeCalledWith(testUser);
+        expect(CartDAO.prototype.getCartId).toBeCalledTimes(1);
+        expect(CartDAO.prototype.checkProductQuantityInCart).toBeCalledWith(testUser,product);
+        expect(CartDAO.prototype.checkProductQuantityInCart).toBeCalledTimes(1);
+        expect(CartDAO.prototype.updateCartTotal).toBeCalledWith(testUser,-price);
+        expect(CartDAO.prototype.updateCartTotal).toBeCalledTimes(1);
+    });
+
+    test("error removeProductFromCart: error in updateCartTotal with quantity>1", async () => {
+        const testUser = {
+            username: "test",
+            name: "test",
+            surname: "test",
+            role: Role.CUSTOMER,
+            address: "test",
+            birthdate: "27/05/2024"
+        }
+        let product="test"
+        let price=20
+        let quantity=10
+        let product_object={product:product,quantity:quantity,category:Category.APPLIANCE,sellingPrice:price};
+        let idCart=3;
+        let quantity_in_cart=3
+
+        let cartDAO = new CartDAO();
+
+        // mock di base per tutti i casi
+        jest.spyOn(CartDAO.prototype, "getCartId").mockResolvedValueOnce(idCart);
+        jest.spyOn(CartDAO.prototype, "checkProductQuantityInCart").mockResolvedValueOnce(quantity_in_cart);
+        jest.spyOn(CartDAO.prototype, "updateCartTotal").mockRejectedValueOnce(Error);
+        //get del prodotto
+        jest.spyOn(Database.prototype, "get").mockImplementationOnce((sql, params, callback) => {
+            callback(null,product_object);
+            return ({} as Database);
+        });
+
+        /////////
+
+        //update product from cart cart
+        jest.spyOn(Database.prototype, "run").mockImplementationOnce((sql, params, callback) => {
+            callback.call({changes:1},null);
             return ({} as Database);
         });
         
