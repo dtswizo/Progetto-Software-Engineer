@@ -70,7 +70,7 @@ class CartController {
             //Quantity available < Quantity richiesta
             if (quantity === 0)
                 throw new EmptyProductStockError()
-            if (quantity <= cart.products[i].quantity || quantity === 0){
+            if (quantity < cart.products[i].quantity || quantity === 0){    //da rivedere <=
                 throw new LowProductStockError()
             }
         }
