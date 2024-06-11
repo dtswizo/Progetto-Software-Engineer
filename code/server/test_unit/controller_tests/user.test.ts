@@ -11,13 +11,13 @@ jest.mock("../../src/dao/userDAO")
 //Example of a unit test for the createUser method of the UserController
 //The test checks if the method returns true when the DAO method returns true
 //The test also expects the DAO method to be called once with the correct parameters
-describe("createUser", ()=>{
+describe("UUC 1 - createUser", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-test("200 OK - Successful execution", async () => {
+test("UUC 1.1 - 200 OK - Successful execution", async () => {
     const testUser = { //Define a test user object
         username: "test",
         name: "test",
@@ -40,7 +40,7 @@ test("200 OK - Successful execution", async () => {
     expect(response).toBe(true); //Check if the response is true
 });
 
-test("409 KO UserAlreadyExistsError - Already exisiting user", async () => {
+test("UUC 1.2 - 409 KO UserAlreadyExistsError - Already exisiting user", async () => {
     const testUser = { //Define a test user object
         username: "test",
         name: "test",
@@ -63,13 +63,13 @@ test("409 KO UserAlreadyExistsError - Already exisiting user", async () => {
 });
 });
 
-describe("getUsers", ()=>{
+describe("UUC 2 - getUsers", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    test("200 OK - Successful execution", async () => {
+    test("UUC 2.1 - 200 OK - Successful execution", async () => {
         let users = [new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"",""),
         new User ("manager","NameManager","SurnameManager",Role.MANAGER,"",""),
         ]
@@ -83,13 +83,13 @@ describe("getUsers", ()=>{
     });
 })
 
-describe("getUsersByRole", ()=>{
+describe("UUC 3 - getUsersByRole", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
     });
     
-    test("200 OK - Successful execution", async () => {
+    test("UUC 3.1 - 200 OK - Successful execution", async () => {
         let users = [new User ("manager2","NameManager2","SurnameManager2",Role.MANAGER,"",""),
         new User ("manager","NameManager","SurnameManager",Role.MANAGER,"",""),
         ]
@@ -104,13 +104,13 @@ describe("getUsersByRole", ()=>{
     });
 })
 
-describe("getUserByUsername", ()=>{
+describe("UUC 4 - getUserByUsername", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
     });
     
-    test("200 OK - Successful execution for Customer", async () => {
+    test("UUC 4.1 - 200 OK - Successful execution for Customer", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         jest.spyOn(UserDAO.prototype, "getUserByUsername").mockResolvedValueOnce(user); //Mock the createUser method of the DAO
         const controller = new UserController(); 
@@ -122,7 +122,7 @@ describe("getUserByUsername", ()=>{
     });
 
     //Effettuo caso successful anche per admin
-    test("200 OK - Successful execution for Admin", async () => {
+    test("UUC 4.2 - 200 OK - Successful execution for Admin", async () => {
         let admin = new User("admin","NameAdmin","SurnameAdmin",Role.ADMIN,"","")
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         jest.spyOn(UserDAO.prototype, "getUserByUsername").mockResolvedValueOnce(user); //Mock the createUser method of the DAO
@@ -134,7 +134,7 @@ describe("getUserByUsername", ()=>{
         expect(response).toBe(user); //Check if the response is true
     });
 
-    test("404 KO - User does not exist", async () => {
+    test("UUC 4.3 - 404 KO - User does not exist", async () => {
         let admin = new User("admin","NameAdmin","SurnameAdmin",Role.ADMIN,"","")
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         jest.spyOn(UserDAO.prototype, "getUserByUsername").mockRejectedValue(new UserNotFoundError()); //Mock the createUser method of the DAO
@@ -145,7 +145,7 @@ describe("getUserByUsername", ()=>{
         expect(UserDAO.prototype.getUserByUsername).toHaveBeenCalledWith(user.username);
     });
 
-    test("401 KO - Username does not belong to the non-Admin User", async () => {
+    test("UUC 4.4 - 401 KO - Username does not belong to the non-Admin User", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         let user2 = new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"","")
         
@@ -157,12 +157,12 @@ describe("getUserByUsername", ()=>{
     });
 })
 
-describe("deleteUser", ()=>{
+describe("UUC 5 - deleteUser", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
     });
-    test("200 OK - Successful execution for Admin", async () => {
+    test("UUC 5.1 - 200 OK - Successful execution for Admin", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         let admin = new User("admin","NameAdmin","SurnameAdmin",Role.ADMIN,"","")
         jest.spyOn(UserDAO.prototype, "getUserByUsername").mockResolvedValueOnce(user); //Mock the createUser method of the DAO
@@ -177,7 +177,7 @@ describe("deleteUser", ()=>{
         expect(response).toBe(true); //Check if the response is true
     });
 
-    test("200 OK - Successful execution for non-Admin User", async () => {
+    test("UUC 5.2 - 200 OK - Successful execution for non-Admin User", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         
         jest.spyOn(UserDAO.prototype, "deleteUser").mockResolvedValueOnce(true); //Mock the createUser method of the DAO
@@ -188,7 +188,7 @@ describe("deleteUser", ()=>{
         expect(response).toBe(true); //Check if the response is true
     });
 
-    test("404 KO - User does not exist", async () => {
+    test("UUC 5.3 - 404 KO - User does not exist", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         let admin = new User("admin","NameAdmin","SurnameAdmin",Role.ADMIN,"","")
         jest.spyOn(UserDAO.prototype, "getUserByUsername").mockRejectedValue(new UserNotFoundError()); //Mock the createUser method of the DAO
@@ -201,7 +201,7 @@ describe("deleteUser", ()=>{
         expect(UserDAO.prototype.deleteUser).toHaveBeenCalledTimes(0);
     });
 
-    test("401 KO - Username does not belong to User", async () => {
+    test("UUC 5.4 - 401 KO - Username does not belong to User", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         let user2 = new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"","")
         
@@ -215,7 +215,7 @@ describe("deleteUser", ()=>{
         expect(UserDAO.prototype.deleteUser).toHaveBeenCalledTimes(0);
     });
 
-    test("401 KO - Admin is trying to delete another Admin", async () => {
+    test("UUC 5.5 - 401 KO - Admin is trying to delete another Admin", async () => {
         let admin = new User("admin","NameAdmin","SurnameAdmin",Role.ADMIN,"","")
         let admin2 = new User("admin2","NameAdmin2","SurnameAdmin2",Role.ADMIN,"","")
         
@@ -232,13 +232,13 @@ describe("deleteUser", ()=>{
 
 })
 
-describe("deleteAll", ()=>{
+describe("UUC 6 - deleteAll", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    test("200 OK - Successful execution", async () => {
+    test("UUC 6.1 - 200 OK - Successful execution", async () => {
         jest.spyOn(UserDAO.prototype, "deleteAll").mockResolvedValue(true); //Mock the createUser method of the DAO
         const controller = new UserController(); 
         const response = await controller.deleteAll();
@@ -249,12 +249,12 @@ describe("deleteAll", ()=>{
 })
 
 
-describe("updateUserInfo", ()=>{
+describe("UUC 7 - updateUserInfo", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
     });
-    test("200 OK - Successful execution for non-Admin User", async () => {
+    test("UUC 7.1 - 200 OK - Successful execution for non-Admin User", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         let newUser = new User("customer","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         //jest.spyOn(UserDAO.prototype, "getUserByUsername").mockResolvedValueOnce(user); //Mock the createUser method of the DAO
@@ -275,7 +275,7 @@ describe("updateUserInfo", ()=>{
         expect(response2).toBe(newUser.birthdate); //Check if the response is true
     });
 
-    test("200 OK - Successful execution for Admin ", async () => {
+    test("UUC 7.2 - 200 OK - Successful execution for Admin ", async () => {
         let admin = new User("admin","NameAdmin","SurnameAdmin",Role.ADMIN,"Corso Duca degli Abruzzi 129, Torino","")
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         
@@ -296,7 +296,7 @@ describe("updateUserInfo", ()=>{
         expect(response2).toBe(newUser.birthdate); //Check if the response is true
     });
 
-    test("200 OK - Successful execution but nothing to be updated", async () => {
+    test("UUC 7.3 - 200 OK - Successful execution but nothing to be updated", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino, Via Madama Cristina 17","1980-01-01")
         let newUser = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"Torino, Via Madama Cristina 17","1980-01-01")
         //jest.spyOn(UserDAO.prototype, "getUserByUsername").mockResolvedValueOnce(user); //Mock the createUser method of the DAO
@@ -314,7 +314,7 @@ describe("updateUserInfo", ()=>{
         expect(response2).toBe(newUser.birthdate); //Check if the response is true
     });
 
-    test("404 KO - User not found ", async () => {
+    test("UUC 7.4 - 404 KO - User not found ", async () => {
         let admin = new User("admin","NameAdmin","SurnameAdmin",Role.ADMIN,"Corso Duca degli Abruzzi 129, Torino","")
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         
@@ -334,7 +334,7 @@ describe("updateUserInfo", ()=>{
         expect(response2).toBe(newUser.birthdate); //Check if the response is true
     });
 
-    test("401 KO - Admin is trying to update another Admin ", async () => {
+    test("UUC 7.5 - 401 KO - Admin is trying to update another Admin ", async () => {
         let admin = new User("admin","NameAdmin","SurnameAdmin",Role.ADMIN,"Corso Duca degli Abruzzi 129, Torino","")
         let admin2 = new User("admin2","NameAdmin2","SurnameAdmin2",Role.ADMIN,"","1980-01-01")
         
@@ -353,7 +353,7 @@ describe("updateUserInfo", ()=>{
         expect(response2).toBe(admin2.birthdate); //Check if the response is true
     });
 
-    test("401 KO - Username does not corrispond to the logged in non-Admin user ", async () => {
+    test("UUC 7.6 - 401 KO - Username does not corrispond to the logged in non-Admin user ", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         let newUser = new User("customer2","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         
@@ -370,7 +370,7 @@ describe("updateUserInfo", ()=>{
         expect(response2).toBe(newUser.birthdate); //Check if the response is true
     });
 
-    test("400 KO - birthdate is after the current date ", async () => {
+    test("UUC 7.7 - 400 KO - birthdate is after the current date ", async () => {
         let user = new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"","")
         let newUser = new User("customer2","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","2099-01-01")
         

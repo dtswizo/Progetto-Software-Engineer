@@ -19,7 +19,7 @@ let app: express.Application;
 //Example of a unit test for the POST ezelectronics/users route
 //The test checks if the route returns a 200 success code
 //The test also expects the createUser method of the controller to be called once with the correct parameters
-describe("POST /ezelectronics/users", () => {
+describe("UUR 1 - POST /ezelectronics/users", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -27,7 +27,7 @@ describe("POST /ezelectronics/users", () => {
         app = initMockedApp();
     });
 
-it("200 OK - User successfully created", async () => {
+it("UUR 1.1 - 200 OK - User successfully created", async () => {
     spyNotLogged();
         enableMockedAuth(app)
     const testUser = { //Define a test user object sent to the route
@@ -49,7 +49,7 @@ it("200 OK - User successfully created", async () => {
         testUser.role)
 })
 
-test("422 - Username is Empty", async () => {
+test("UUR 1.2.1 - 422 - Username is Empty", async () => {
     spyNotLogged();
         enableMockedAuth(app)
     const testUser = { //Define a test user object sent to the route
@@ -67,7 +67,7 @@ test("422 - Username is Empty", async () => {
    
 })
 
-test("422 - Name is Empty", async () => {
+test("UUR 1.2.1 - 422 - Name is Empty", async () => {
     spyNotLogged();
         enableMockedAuth(app)
     const testUser = { //Define a test user object sent to the route
@@ -85,7 +85,7 @@ test("422 - Name is Empty", async () => {
    
 })
 
-test("422 - Surname is Empty", async () => {
+test("UUR 1.2.1: 422 - Surname is Empty", async () => {
     spyNotLogged();
         enableMockedAuth(app)
     const testUser = { //Define a test user object sent to the route
@@ -103,7 +103,7 @@ test("422 - Surname is Empty", async () => {
    
 })
 
-test("422 - Password is Empty", async () => {
+test("UUR 1.2.1: 422 - Password is Empty", async () => {
     spyNotLogged();
         enableMockedAuth(app)
     const testUser = { //Define a test user object sent to the route
@@ -121,7 +121,7 @@ test("422 - Password is Empty", async () => {
    
 })
 
-test("422 - Role is not valid", async () => {
+test("UUR 1.2.1: 422 - Role is not valid", async () => {
     spyNotLogged();
         enableMockedAuth(app)
     const testUser = { //Define a test user object sent to the route
@@ -140,7 +140,7 @@ test("422 - Role is not valid", async () => {
 })
 
 
-test("409 KO - Username already exists", async () => {
+test("UUR 1.3: 409 KO - Username already exists", async () => {
     spyNotLogged();
     const testUser = { //Define a test user object sent to the route
         username: "test1",
@@ -170,7 +170,7 @@ test("409 KO - Username already exists", async () => {
 
 })
 
-describe("GET /ezelectronics/users", () => {
+describe("UUR 2 - GET /ezelectronics/users", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -178,7 +178,7 @@ describe("GET /ezelectronics/users", () => {
         app = initMockedApp();
     });
 
-    test("200 OK - Users succesfully returned", async () => {
+    test("UUR 2.1 - 200 OK - Users succesfully returned", async () => {
         const users = [new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"",""),
         new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"","")
         ]
@@ -196,7 +196,7 @@ describe("GET /ezelectronics/users", () => {
         expect(UserController.prototype.getUsers).toHaveBeenCalledWith()
     })
 
-    test("401 KO - User is not an Admin", async () => {
+    test("UUR 2.2 - 401 KO - User is not an Admin", async () => {
         const users = [new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"",""),
         new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"","")
         ]
@@ -213,7 +213,7 @@ describe("GET /ezelectronics/users", () => {
         //Check if the createUser method has been called with the correct parameters
     })
    
-    test("Generic Error", async () => {
+    test("UUR 2.3 - Generic Error", async () => {
         
         spyAdmin();
         enableMockedAuth(app);
@@ -232,7 +232,7 @@ describe("GET /ezelectronics/users", () => {
 
 })
 
-describe("GET /ezelectronics/users/roles/:role", () => {
+describe("UUR 3 - GET /ezelectronics/users/roles/:role", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -240,7 +240,7 @@ describe("GET /ezelectronics/users/roles/:role", () => {
         app = initMockedApp();
     });
 
-    test("200 OK - Users succesfully returned by role", async () => {
+    test("UUR 3.1 - 200 OK - Users succesfully returned by role", async () => {
         const users = [new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"",""),
         new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"","")
         ]
@@ -259,7 +259,7 @@ describe("GET /ezelectronics/users/roles/:role", () => {
         expect(UserController.prototype.getUsersByRole).toHaveBeenCalledWith(role)
     })
 
-    test("401 KO - User is not an Admin", async () => {
+    test("UUR 3.2 - 401 KO - User is not an Admin", async () => {
         const users = [new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"",""),
         new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"","")
         ]
@@ -276,7 +276,7 @@ describe("GET /ezelectronics/users/roles/:role", () => {
         //Check if the createUser method has been called with the correct parameters
     })
 
-    test("Generic Error", async () => {
+    test("UUR 3.3 - Generic Error", async () => {
         const users = [new User ("customer","NameCustomer","SurnameCustomer",Role.CUSTOMER,"",""),
             new User ("customer2","NameCustomer2","SurnameCustomer2",Role.CUSTOMER,"","")
             ]
@@ -297,7 +297,7 @@ describe("GET /ezelectronics/users/roles/:role", () => {
 
 })
 
-describe("GET /ezelectronics/users/:username", () => {
+describe("UUR 4 - GET /ezelectronics/users/:username", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -305,7 +305,7 @@ describe("GET /ezelectronics/users/:username", () => {
     });
 
     
-    test("200 OK - User succesfully returned by username (Customer)", async () => {
+    test("UUR 4.1 - 200 OK - User succesfully returned by username (Customer)", async () => {
         const user = new User ("MarioRossi","Mario","Rossi",Role.CUSTOMER,"","")
         
         spyCustomer();
@@ -322,7 +322,7 @@ describe("GET /ezelectronics/users/:username", () => {
         expect(UserController.prototype.getUserByUsername).toHaveBeenCalledWith(user, user.username)
     })
 
-    test("200 OK - User succesfully returned by username (Admin)", async () => {
+    test("UUR 4.2 - 200 OK - User succesfully returned by username (Admin)", async () => {
         const user = new User ("MarioRossi","Mario","Rossi",Role.CUSTOMER,"","")
         const admin = spyAdmin()
         enableMockedAuth(app);
@@ -338,7 +338,7 @@ describe("GET /ezelectronics/users/:username", () => {
         expect(UserController.prototype.getUserByUsername).toHaveBeenCalledWith(admin, user.username)
     })
 
-    test("401 KO - User is not an Admin", async () => {
+    test("UUR 4.2 - 401 KO - User is not an Admin", async () => {
         const admin = spyAdmin();
         const user = new User ("MarioRossi","Mario","Rossi",Role.CUSTOMER,"","")
         enableMockedAuth(app);
@@ -355,7 +355,7 @@ describe("GET /ezelectronics/users/:username", () => {
     
     })
     
-    test("404 KO - User does not exist in database", async () => {
+    test("UUR 4.3 - 404 KO - User does not exist in database", async () => {
         const admin = spyAdmin();
         const user = new User ("testtt","test","test",Role.CUSTOMER,"","")
         enableMockedAuth(app);
@@ -393,7 +393,7 @@ describe("GET /ezelectronics/users/:username", () => {
 
 })
 
-describe("DELETE /ezelectronics/users/:username", () => {
+describe("UUR 5 - DELETE /ezelectronics/users/:username", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -401,7 +401,7 @@ describe("DELETE /ezelectronics/users/:username", () => {
     });
 
     
-    test("200 OK - User succesfully deleted (Customer)", async () => {
+    test("UUR 5.1 -200 OK - User succesfully deleted (Customer)", async () => {
         const user = spyCustomer();
         enableMockedAuth(app);
 
@@ -416,7 +416,7 @@ describe("DELETE /ezelectronics/users/:username", () => {
         expect(UserController.prototype.deleteUser).toHaveBeenCalledWith(user, user.username)
     })
 
-    test("200 OK - User succesfully deleted (Admin)", async () => {
+    test("UUR 5.2 - 200 OK - User succesfully deleted (Admin)", async () => {
         const user = new User ("MarioRossi","Mario","Rossi",Role.CUSTOMER,"","")
         const admin = spyAdmin()
         enableMockedAuth(app);
@@ -432,7 +432,7 @@ describe("DELETE /ezelectronics/users/:username", () => {
         expect(UserController.prototype.deleteUser).toHaveBeenCalledWith(admin, user.username)
     })
 
-    test("401 KO - User is not an Admin and username doesn't belong to User", async () => {
+    test("UUR 5.3 - 401 KO - User is not an Admin and username doesn't belong to User", async () => {
         const user = new User ("MarioRossi","Mario","Rossi",Role.CUSTOMER,"","")
         const customer = spyAdmin()
         enableMockedAuth(app);
@@ -450,7 +450,7 @@ describe("DELETE /ezelectronics/users/:username", () => {
         expect(UserController.prototype.deleteUser).toHaveBeenCalledWith(customer , user.username)
     })
 
-    test("401 KO - Admin User is trying to delete another Admin", async () => {
+    test("UUR 5.4 - 401 KO - Admin User is trying to delete another Admin", async () => {
         const admin2 = new User ("test","test","test",Role.ADMIN,"","")
         const admin = spyAdmin()
         enableMockedAuth(app);
@@ -468,7 +468,7 @@ describe("DELETE /ezelectronics/users/:username", () => {
         expect(UserController.prototype.deleteUser).toHaveBeenCalledWith(admin , admin2.username)
     })
 
-    test("404 KO - User does not exist", async () => {
+    test("UUR 5.5 - 404 KO - User does not exist", async () => {
         const admin2 = new User ("test","test","test",Role.ADMIN,"","")
         const admin = spyAdmin()
         enableMockedAuth(app);
@@ -488,8 +488,6 @@ describe("DELETE /ezelectronics/users/:username", () => {
 
     /*
 
-    TOCHECK: è DA FARE?
-
     test("422 KO - Username is empty", async () => {
         const admin2 = new User ("","Mario","Rossi",Role.CUSTOMER,"","")
         const admin = spyAdmin()
@@ -508,7 +506,7 @@ describe("DELETE /ezelectronics/users/:username", () => {
     */
 })
 
-describe("DELETE /ezelectronics/users", () => {
+describe("UUR 6 - DELETE /ezelectronics/users", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -517,7 +515,7 @@ describe("DELETE /ezelectronics/users", () => {
     });
 
     
-    test("200 OK - Users succesfully deleted", async () => {
+    test("UUR 6.1 - 200 OK - Users succesfully deleted", async () => {
         spyAdmin();
         enableMockedAuth(app);
 
@@ -532,7 +530,7 @@ describe("DELETE /ezelectronics/users", () => {
         expect(UserController.prototype.deleteAll).toHaveBeenCalledWith()
     })
 
-    test("401 KO - User is not Admin", async () => {
+    test("UUR 6.2 - 401 KO - User is not Admin", async () => {
         spyCustomer();
         enableMockedAuth(app);
 
@@ -546,7 +544,7 @@ describe("DELETE /ezelectronics/users", () => {
         expect(UserController.prototype.deleteAll).toHaveBeenCalledTimes(0) 
     })
 
-    test("Generic DB", async () => {
+    test("UUR 6.3 - Generic DB", async () => {
         spyAdmin();
         enableMockedAuth(app);
 
@@ -562,14 +560,14 @@ describe("DELETE /ezelectronics/users", () => {
     })
 })
 
-describe("PATCH /ezelectronics/users/:username", () => {
+describe("UUR 7 - PATCH /ezelectronics/users/:username", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
         app = initMockedApp();
     })
 
-    test("200 OK - User succesfully updated", async () => {
+    test("UUR 7.1 - 200 OK - User succesfully updated", async () => {
         const user = spyCustomer();
        // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         const newUser = { //Define a test user object sent to the route
@@ -595,7 +593,7 @@ describe("PATCH /ezelectronics/users/:username", () => {
         expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate, newUser.username)
     })
 
-    test("404 KO - User not found", async () => {
+    test("UUR 7.2 - 404 KO - User not found", async () => {
         const user = spyCustomer();
        // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         const newUser = { //Define a test user object sent to the route
@@ -623,7 +621,7 @@ describe("PATCH /ezelectronics/users/:username", () => {
         expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate, newUser.username)
     })
 
-    test("401 KO - Username doesn't match logged user and is not Admin", async () => {
+    test("UUR 7.3 - 401 KO - Username doesn't match logged user and is not Admin", async () => {
         const user = spyCustomer();
        // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         const newUser = { //Define a test user object sent to the route
@@ -651,7 +649,7 @@ describe("PATCH /ezelectronics/users/:username", () => {
         expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate, newUser.username)
     })
 
-    test("400 KO - User birthdate is after current date", async () => {
+    test("UUR 7.4 - 400 KO - User birthdate is after current date", async () => {
         const user = spyCustomer();
        // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         const newUser = { //Define a test user object sent to the route
@@ -679,7 +677,7 @@ describe("PATCH /ezelectronics/users/:username", () => {
         expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate, newUser.username)
     })
 
-    test("422 KO - Name is empty", async () => {
+    test("UUR 7.5.1 - 422 KO - Name is empty", async () => {
         const user = spyCustomer();
        // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         const newUser = { //Define a test user object sent to the route
@@ -700,7 +698,7 @@ describe("PATCH /ezelectronics/users/:username", () => {
         expect(UserController.prototype.updateUserInfo).toHaveBeenCalledTimes(0) 
          })
 
-         test("422 KO - Surname is empty", async () => {
+         test("UUR 7.5.2 - 422 KO - Surname is empty", async () => {
             const user = spyCustomer();
            // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
             const newUser = { //Define a test user object sent to the route
@@ -721,7 +719,7 @@ describe("PATCH /ezelectronics/users/:username", () => {
             expect(UserController.prototype.updateUserInfo).toHaveBeenCalledTimes(0) 
              })
 
-             test("422 KO - Address is empty", async () => {
+             test("UUR 7.5.3 - 422 KO - Address is empty", async () => {
                 const user = spyCustomer();
                // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
                 const newUser = { //Define a test user object sent to the route
@@ -742,7 +740,7 @@ describe("PATCH /ezelectronics/users/:username", () => {
                 expect(UserController.prototype.updateUserInfo).toHaveBeenCalledTimes(0) 
                  })
 
-                 test("422 KO - Birthdate is empty", async () => {
+                 test("UUR 7.5.4 - 422 KO - Birthdate is empty", async () => {
                     const user = spyCustomer();
                    // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
                     const newUser = { //Define a test user object sent to the route
@@ -764,14 +762,14 @@ describe("PATCH /ezelectronics/users/:username", () => {
                      })
 
 })
-describe("POST ezelectronics/sessions", () => {
+describe("UUR 8 - POST ezelectronics/sessions", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
         app = initMockedApp();
     })
 
-    test("200 OK - User successfully logged in", async () => {
+    test("UUR 8.1 - 200 OK - User successfully logged in", async () => {
         spyNotLogged();
             enableMockedAuth(app)
         const testUser = { //Define a test user object sent to the route
@@ -785,7 +783,7 @@ describe("POST ezelectronics/sessions", () => {
         //expect(Authenticator.prototype.login).toHaveBeenCalledWith(testUser,response)
     })
 
-    test("401 KO - Username and/or password are incorrect", async () => {
+    test("UUR 8.2 - 401 KO - Username and/or password are incorrect", async () => {
         spyNotLogged();
             enableMockedAuth(app)
         const testUser = { //Define a test user object sent to the route
@@ -800,7 +798,7 @@ describe("POST ezelectronics/sessions", () => {
     })
 })
 
-describe("DELETE ezelectronics/sessions/current", () => {
+describe("UUR 9 - DELETE ezelectronics/sessions/current", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -808,7 +806,7 @@ describe("DELETE ezelectronics/sessions/current", () => {
         app = initMockedApp();
     })
 
-    test("200 OK - User successfully logged out", async () => {
+    test("UUR 9.1 - 200 OK - User successfully logged out", async () => {
         spyCustomer();
         enableMockedAuth(app)
         jest.spyOn(Authenticator.prototype, "logout").mockResolvedValueOnce(true) 
@@ -831,14 +829,14 @@ describe("DELETE ezelectronics/sessions/current", () => {
     })
 })
 
-describe("GET ezelectronics/sessions/current", () => {
+describe("UUR 10 - GET ezelectronics/sessions/current", () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
         app = initMockedApp();
     })
 
-    test("200 OK - User successfully retrieved", async () => {
+    test("UUR 10.1 - 200 OK - User successfully retrieved", async () => {
         spyCustomer();
         enableMockedAuth(app)
         const testUser = { //Define a test user object sent to the route
