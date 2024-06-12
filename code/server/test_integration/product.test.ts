@@ -4,6 +4,10 @@ import ProductDAO from '../src/dao/productDAO';
 import { ProductAlreadyExistsError, ProductNotFoundError } from '../src/errors/productError';
 import { Category, Product } from '../src/components/product';
 import db from "../src/db/db"
+import ProductController from '../src/controllers/productController';
+import { EmptyProductStockError, FilteringError, LowProductStockError} from "../src/errors/productError";
+import { DateError } from '../src/utilities';
+
 
 const testModel = 'iPhone13';
 const testCategory = Category.SMARTPHONE;
@@ -153,6 +157,134 @@ describe('Integration DAO - DB', () => {
             await removeProduct();
             const productDAO = new ProductDAO();
             await expect(productDAO.deleteProduct(testModel)).rejects.toThrow(ProductNotFoundError);
+        });
+    });
+});
+
+describe('Integration CONTROLLER - DAO - DB', () => {
+
+    beforeAll(async () => {
+        await cleanupDB();
+    });
+
+    describe('IPC1: registerProducts', () => {
+        test('IPC1.1: Success - registers a new product', async () => {
+            const productController = new ProductController();
+            await expect(productController.registerProducts(testModel, testCategory, testQuantity, testDetails, testSellingPrice, testArrivalDate)).resolves.toBeUndefined();
+        });
+
+        test('IPC1.2: Error - product already exists', async () => {
+            const productController = new ProductController();
+            await expect(productController.registerProducts(testModel, testCategory, testQuantity, testDetails, testSellingPrice, testArrivalDate)).rejects.toThrow(Error);
+        });
+    });
+
+    describe('IPC2: changeProductQuantity', () => {
+        test('IPC2.1: Success - changes the product quantity', async () => {
+            const productController = new ProductController();
+            const newQuantity = 20;
+            await expect(productController.changeProductQuantity(testModel, newQuantity, null)).resolves.toBe(newQuantity);
+        });
+
+        test('IPC2.2: Error - product not found', async () => {
+            await removeProduct();
+            const productController = new ProductController();
+            await expect(productController.changeProductQuantity(testModel, 10, null)).rejects.toThrow(ProductNotFoundError);
+        });
+    });
+
+    describe('IPC3: sellProduct', () => {
+        test('IPC3.1: Success - sells the product', async () => {
+            await addProduct(testModel, testSellingPrice, testCategory, testArrivalDate, testDetails, testQuantity);
+            const productController = new ProductController();
+            const quantityToSell = 5;
+            await expect(productController.sellProduct(testModel, quantityToSell, null)).resolves.toBe(testQuantity - quantityToSell);
+        });
+
+        test('IPC3.2: Error - low product stock', async () => {
+            const productController = new ProductController();
+            await expect(productController.sellProduct(testModel, testQuantity + 1, null)).rejects.toThrow(LowProductStockError);
+        });
+
+        test('IPC3.3: Error - empty product stock', async () => {
+            await removeProduct();
+            await addProduct(testModel, testSellingPrice, testCategory, testArrivalDate, testDetails, 0);
+            const productController = new ProductController();
+            await expect(productController.sellProduct(testModel, testQuantity, null)).rejects.toThrow(EmptyProductStockError);
+        });
+    });
+
+    describe('IPC4: getProducts', () => {
+        test('IPC4.1: Success - retrieves all products', async () => {
+            await removeProduct();
+            await addProduct(testModel, testSellingPrice, testCategory, testArrivalDate, testDetails, testQuantity);
+            const productController = new ProductController();
+            await expect(productController.getProducts(null, null, null)).resolves.toEqual([
+                new Product(testSellingPrice, testModel, testCategory, testArrivalDate, testDetails, testQuantity)
+            ]);
+        });
+
+        test('IPC4.2: Success - retrieves products by category', async () => {
+            const productController = new ProductController();
+            await expect(productController.getProducts('category', testCategory, null)).resolves.toEqual([
+                new Product(testSellingPrice, testModel, testCategory, testArrivalDate, testDetails, testQuantity)
+            ]);
+        });
+
+        test('IPC4.3: Error - invalid category', async () => {
+            const productController = new ProductController();
+            await expect(productController.getProducts('category', 'InvalidCategory', null)).rejects.toThrow(Error);
+        });
+
+        test('IPC4.4: Error - product not found by model', async () => {
+            await removeProduct();
+            const productController = new ProductController();
+            await expect(productController.getProducts('model', null, testModel)).rejects.toThrow(ProductNotFoundError);
+        });
+    });
+
+    describe('IPC5: getAvailableProducts', () => {
+        test('IPC5.1: Success - retrieves all available products', async () => {
+            await addProduct(testModel, testSellingPrice, testCategory, testArrivalDate, testDetails, testQuantity);
+            const productController = new ProductController();
+            await expect(productController.getAvailableProducts(null, null, null)).resolves.toEqual([
+                new Product(testSellingPrice, testModel, testCategory, testArrivalDate, testDetails, testQuantity)
+            ]);
+        });
+
+        test('IPC5.2: Success - retrieves available products by category', async () => {
+            const productController = new ProductController();
+            await expect(productController.getAvailableProducts('category', testCategory, null)).resolves.toEqual([
+                new Product(testSellingPrice, testModel, testCategory, testArrivalDate, testDetails, testQuantity)
+            ]);
+        });
+
+        test('IPC5.3: Error - product not found by model', async () => {
+            await removeProduct();
+            const productController = new ProductController();
+            await expect(productController.getAvailableProducts('model', null, testModel)).rejects.toThrow(ProductNotFoundError);
+        });
+    });
+
+    describe('IPC6: deleteAllProducts', () => {
+        test('IPC6.1: Success - deletes all products', async () => {
+            await addProduct(testModel, testSellingPrice, testCategory, testArrivalDate, testDetails, testQuantity);
+            const productController = new ProductController();
+            await expect(productController.deleteAllProducts()).resolves.toBe(true);
+        });
+    });
+
+    describe('IPC7: deleteProduct', () => {
+        test('IPC7.1: Success - deletes a product', async () => {
+            await addProduct(testModel, testSellingPrice, testCategory, testArrivalDate, testDetails, testQuantity);
+            const productController = new ProductController();
+            await expect(productController.deleteProduct(testModel)).resolves.toBe(true);
+        });
+
+        test('IPC7.2: Error - product not found', async () => {
+            await removeProduct();
+            const productController = new ProductController();
+            await expect(productController.deleteProduct(testModel)).rejects.toThrow(ProductNotFoundError);
         });
     });
 });
