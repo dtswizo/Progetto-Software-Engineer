@@ -10,14 +10,46 @@ jest.mock("../../src/dao/productDAO")
 
 let productController = new ProductController();
 
-describe("registerProducts", () => {
+describe("UPC1 - registerProducts", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
+    it("UPC1.1 - 201 OK - registers product successfully", async () => {
+        const testProduct = new Product(
+            1200,
+            "iphone",
+            Category.SMARTPHONE,
+            "",
+            "mint",
+            5
+        );
+        const arrivalDate = "2024-01-01";
 
+        jest.spyOn(ProductDAO.prototype, "registerProducts").mockResolvedValue();
 
-    it("400 KO - arrivalDate is after the currentDate", async () => {
+        const response = await productController.registerProducts(
+            testProduct.model,
+            testProduct.category,
+            testProduct.quantity,
+            testProduct.details,
+            testProduct.sellingPrice,
+            arrivalDate
+        );
+
+        expect(ProductDAO.prototype.registerProducts).toHaveBeenCalledTimes(1);
+        expect(ProductDAO.prototype.registerProducts).toHaveBeenCalledWith(
+            testProduct.model,
+            testProduct.category,
+            testProduct.quantity,
+            testProduct.details,
+            testProduct.sellingPrice,
+            arrivalDate
+        );
+        expect(response).toEqual(undefined);
+    });
+
+    it("UPC1.2 - 400 KO - arrivalDate is after the currentDate", async () => {
         const testProduct = new Product(
             1200,
             "iphone",
@@ -33,8 +65,7 @@ describe("registerProducts", () => {
         expect(ProductDAO.prototype.registerProducts).toHaveBeenCalledTimes(0);
     });
 
-
-    it("409 KO - model represents an already existing set of products", async () => {
+    it("UPC1.3 - 409 KO - model represents an already existing set of products", async () => {
         const testProduct = new Product(
             1200,
             "Iphone 12", 
@@ -56,12 +87,12 @@ describe("registerProducts", () => {
     });
 });
 
-describe("changeProductQuantity", () => {
+describe("UPC2 - changeProductQuantity", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("200 OK - model not empty", async () => {
+    it("UPC2.1 - 200 OK - model not empty", async () => {
         expect.assertions(3);
         const testProduct = new Product(
             1200,
@@ -83,7 +114,7 @@ describe("changeProductQuantity", () => {
         expect(response).toBe(20);
     });
 
-    it("404 KO - model does not represent a product in the database", async () => {
+    it("UPC2.2 - 404 KO - model does not represent a product in the database", async () => {
         const testProduct = new Product(
             1200,
             "iPhone 12",
@@ -103,7 +134,7 @@ describe("changeProductQuantity", () => {
         expect(ProductDAO.prototype.changeProductQuantity).toHaveBeenCalledWith(testProduct.model, newQuantity,changeDate);
     });
 
-    it("400 KO - changeDate is before/after the currentDate", async () => {
+    it("UPC2.3 - 400 KO - changeDate is before/after the currentDate", async () => {
         const testProduct = new Product(
             1200,
             "iPhone 12",
@@ -122,12 +153,12 @@ describe("changeProductQuantity", () => {
 
 });
 
-describe("sellProduct", () => {
+describe("UPC3 - sellProduct", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("200 OK - sell product successfully", async () => {
+    it("UPC3.1 - 200 OK - sell product successfully", async () => {
         const model = "iPhone 13";
         const quantity = 2;
         const sellingDate = "2024-01-02";
@@ -147,7 +178,7 @@ describe("sellProduct", () => {
         expect(response).toBe(8);
     });
 
-    it("404 KO - model does not represent a product in the database", async () => {
+    it("UPC3.2 - 404 KO - model does not represent a product in the database", async () => {
         const model = "Nonexistent Model";
         const quantity = 2;
         const sellingDate = "2024-01-02";
@@ -161,7 +192,7 @@ describe("sellProduct", () => {
         expect(ProductDAO.prototype.getProductQuantity).toHaveBeenCalledTimes(0);
     });
 
-    it("400 KO - sellingDate is after the currentDate", async () => {
+    it("UPC3.3 - 400 KO - sellingDate is after the currentDate", async () => {
         const model = "iPhone 13";
         const quantity = 2;
         const sellingDate = "2024-06-04";
@@ -172,7 +203,7 @@ describe("sellProduct", () => {
         expect(ProductDAO.prototype.getArrivalDate).toHaveBeenCalledTimes(0);
     });
 
-    it("400 KO - sellingDate is before the arrivalDate", async () => {
+    it("UPC3.4 - 400 KO - sellingDate is before the arrivalDate", async () => {
         const model = "iPhone 13";
         const quantity = 2;
         const sellingDate = "2023-12-31";
@@ -188,9 +219,7 @@ describe("sellProduct", () => {
 
     });
 
-
-
-    it("409 KO - available quantity is zero", async () => {
+    it("UPC3.5 - 409 KO - available quantity is zero", async () => {
         const model = "iPhone 13";
         const quantity = 2;
         const sellingDate = "2024-01-02";
@@ -208,7 +237,7 @@ describe("sellProduct", () => {
 
     });
 
-    it("409 KO - available quantity is lower than requested quantity", async () => {
+    it("UPC3.6 - 409 KO - available quantity is lower than requested quantity", async () => {
         const model = "iPhone 13";
         const quantity = 5;
         const sellingDate = "2024-01-02";
@@ -229,12 +258,12 @@ describe("sellProduct", () => {
 
 });
 
-describe("getProducts", () => {
+describe("UPC4 - getProducts", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("200 OK - get all products", async () => {
+    it("UPC4.1 - 200 OK - get all products", async () => {
         const products = [
             new Product(200, "iPhone 13", Category.SMARTPHONE, "", "2024-01-01", 8),
             new Product(1500, "MacBook Pro", Category.LAPTOP, "", "2024-01-01", 5)
@@ -248,7 +277,7 @@ describe("getProducts", () => {
         expect(response).toEqual(products);
     });
 
-    it("200 OK - get products by category", async () => {
+    it("UPC4.2 - 200 OK - get products by category", async () => {
         const products = [
             new Product(200, "iPhone 13", Category.SMARTPHONE, "", "2024-01-01", 8),
             new Product(200, "iPhone 13", Category.SMARTPHONE, "", "2024-01-01", 8)
@@ -263,7 +292,7 @@ describe("getProducts", () => {
         expect(response).toEqual(products);
     });
 
-    it("200 OK - get product by model", async () => {
+    it("UPC4.3 - 200 OK - get product by model", async () => {
         const product = new Product(200, "iPhone 13", Category.SMARTPHONE, "", "2024-01-01", 8);
 
         jest.spyOn(ProductDAO.prototype, "getFilteredProducts").mockResolvedValue([product]);
@@ -275,37 +304,37 @@ describe("getProducts", () => {
         expect(response).toEqual([product]);
     });
 
-    it("422 Unprocessable Entity - invalid parameters combination (grouping is null, category is not null)", async () => {
+    it("UPC4.4 - 422 Unprocessable Entity - invalid parameters combination (grouping is null, category is not null)", async () => {
         await expect(productController.getProducts(null, "Smartphone", null)).rejects.toThrowError(FilteringError);
         expect(ProductDAO.prototype.getAllProducts).toHaveBeenCalledTimes(0);
     });
 
-    it("422 Unprocessable Entity - invalid parameters combination (grouping is null, model is not null)", async () => {
+    it("UPC4.5 - 422 Unprocessable Entity - invalid parameters combination (grouping is null, model is not null)", async () => {
         await expect(productController.getProducts(null, null, "iPhone 13")).rejects.toThrowError(FilteringError);
         expect(ProductDAO.prototype.getAllProducts).toHaveBeenCalledTimes(0);
     });
 
-    it("422 Unprocessable Entity - invalid parameters combination (grouping is category, category is null)", async () => {
+    it("UPC4.6 - 422 Unprocessable Entity - invalid parameters combination (grouping is category, category is null)", async () => {
         await expect(productController.getProducts("category", null, null)).rejects.toThrowError(FilteringError);
         expect(ProductDAO.prototype.getFilteredProducts).toHaveBeenCalledTimes(0);
     });
 
-    it("422 Unprocessable Entity - invalid parameters combination (grouping is category, model is not null)", async () => {
+    it("UPC4.7 - 422 Unprocessable Entity - invalid parameters combination (grouping is category, model is not null)", async () => {
         await expect(productController.getProducts("category", "Smartphone", "iPhone 13")).rejects.toThrowError(FilteringError);
         expect(ProductDAO.prototype.getFilteredProducts).toHaveBeenCalledTimes(0);
     });
 
-    it("422 Unprocessable Entity - invalid parameters combination (grouping is model, model is null)", async () => {
+    it("UPC4.8 - 422 Unprocessable Entity - invalid parameters combination (grouping is model, model is null)", async () => {
         await expect(productController.getProducts("model", null, null)).rejects.toThrowError(FilteringError);
         expect(ProductDAO.prototype.getFilteredProducts).toHaveBeenCalledTimes(0);
     });
 
-    it("422 Unprocessable Entity - invalid parameters combination (grouping is model, category is not null)", async () => {
+    it("UPC4.9 - 422 Unprocessable Entity - invalid parameters combination (grouping is model, category is not null)", async () => {
         await expect(productController.getProducts("model", "Smartphone", null)).rejects.toThrowError(FilteringError);
         expect(ProductDAO.prototype.getFilteredProducts).toHaveBeenCalledTimes(0);
     });
 
-    it("404 Not Found - model does not represent a product in the database", async () => {
+    it("UPC4.10 - 404 Not Found - model does not represent a product in the database", async () => {
         jest.spyOn(ProductDAO.prototype, "getFilteredProducts").mockRejectedValue(new ProductNotFoundError());
 
         await expect(productController.getProducts("model", null, "Nonexistent Model")).rejects.toThrowError(ProductNotFoundError);
@@ -315,12 +344,13 @@ describe("getProducts", () => {
     });
 });
 
-/*
-describe("getAvailableProducts", () => {
+
+describe("UPC5 - getAvailableProducts", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
-    it("200 OK - get all products", async () => {
+
+    it("UPC5.1 - 200 OK - get all available products", async () => {
         const products = [
             new Product(200, "iPhone 13", Category.SMARTPHONE, "", "2024-01-01", 8),
             new Product(1500, "MacBook Pro", Category.LAPTOP, "", "2024-01-01", 5)
@@ -329,27 +359,26 @@ describe("getAvailableProducts", () => {
         jest.spyOn(ProductDAO.prototype, "getAllProducts").mockResolvedValue(products);
 
         const response = await productController.getAvailableProducts(null, null, null);
-        expect(ProductDAO.prototype.getAllProducts).toHaveBeenCalledTimes(1);
+        expect(productController.getProducts).toHaveBeenCalledTimes(1);
         expect(response).toEqual(products);
     });
 
-    it("404 Not Found - model does not represent a product in the database", async () => {
+    it("UPC5.2 - 404 Not Found - model does not represent a product in the database", async () => {
         jest.spyOn(ProductDAO.prototype, "getAllProducts").mockRejectedValue(new ProductNotFoundError());
 
         await expect(productController.getAvailableProducts("model", null, "Nonexistent Model")).rejects.toThrowError(ProductNotFoundError);
 
-        expect(ProductDAO.prototype.getProducts).toHaveBeenCalledTimes(1);
+        expect(productController.getProducts).toHaveBeenCalledTimes(1);
         expect(ProductDAO.prototype.getAllProducts).toHaveBeenCalledWith("model", null, "Nonexistent Model");
     });
 });
-*/
 
-describe("deleteProduct", () => {
+describe("UPC6 - deleteProduct", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("200 OK - product deleted successfully", async () => {
+    it("UPC6.1 - 200 OK - product deleted successfully", async () => {
         const model = "iPhone13";
 
         jest.spyOn(ProductDAO.prototype, "deleteProduct").mockResolvedValue(true);
@@ -361,7 +390,7 @@ describe("deleteProduct", () => {
         expect(response).toBe(true);
     });
 
-    it("404 Not Found - product not found", async () => {
+    it("UPC6.2 - 404 Not Found - product not found", async () => {
         const model = "NonexistentModel";
 
         jest.spyOn(ProductDAO.prototype, "deleteProduct").mockRejectedValue(new ProductNotFoundError());
@@ -373,12 +402,12 @@ describe("deleteProduct", () => {
     });
 });
 
-describe("deleteAllProducts", () => {
+describe("UPC7 - deleteAllProducts", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("200 OK", async () => {
+    it("UPC7.1 - 200 OK - all products deleted successfully", async () => {
         jest.spyOn(ProductDAO.prototype, "deleteAllProducts").mockResolvedValue(true);
 
         const response = await productController.deleteAllProducts();
@@ -388,7 +417,6 @@ describe("deleteAllProducts", () => {
         expect(response).toBe(true);
     });
 });
-
 
 
 

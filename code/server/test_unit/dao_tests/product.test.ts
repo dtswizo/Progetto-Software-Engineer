@@ -10,12 +10,12 @@ jest.mock("../../src/db/db.ts");
 
 let productDAO = new ProductDAO();
 
-describe("registerProducts", () => {
+describe("UPD1 registerProducts", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - void", async () => {
+    it("UPD1.1 Success - void", async () => {
         const testModel = 'iPhone13';
         const testCategory = Category.SMARTPHONE;
         const testQuantity = 10;
@@ -28,10 +28,10 @@ describe("registerProducts", () => {
             return {} as Database;
         });
 
-        await expect(productDAO.registerProducts(testModel, testCategory, testQuantity, testDetails, testSellingPrice, testArrivalDate)).resolves.toBe(undefined); //poichè la promise restituisce void in caso di successo
+        await expect(productDAO.registerProducts(testModel, testCategory, testQuantity, testDetails, testSellingPrice, testArrivalDate)).resolves.toBe(undefined);
     });
 
-    it("Error 404- ProductAlreadyExistsError", async () => {
+    it("UPD1.2 Error 404- ProductAlreadyExistsError", async () => {
         const testModel = 'iPhone13';
         const testCategory = Category.SMARTPHONE;
         const testQuantity = 10;
@@ -47,7 +47,7 @@ describe("registerProducts", () => {
         await expect(productDAO.registerProducts(testModel, testCategory, testQuantity, testDetails, testSellingPrice, testArrivalDate)).rejects.toThrowError(ProductAlreadyExistsError);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("UPD1.3 Error - Generic DB Error", async () => {
         const testModel = 'iPhone13';
         const testCategory = Category.SMARTPHONE;
         const testQuantity = 10;
@@ -64,12 +64,12 @@ describe("registerProducts", () => {
     });
 });
 
-describe("getArrivalDate", () => {
+describe("UPD2 getArrivalDate", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - returns date", async () => {
+    it("UPD2.1 Success - returns date", async () => {
         const testModel = 'iPhone13';
         const testDate = '2024-05-31';
 
@@ -81,18 +81,18 @@ describe("getArrivalDate", () => {
         await expect(productDAO.getArrivalDate(testModel)).resolves.toBe(testDate);
     });
 
-    it("Error 404- ProductNotFoundError", async () => {
+    it("UPD2.2 Error 404- ProductNotFoundError", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
-            callback(null, null); //occhio qui lasciare null come primo parametro poichè se non trova il prodotto non è un errore del db!
+            callback(null, null); 
             return {} as Database;
         });
 
         await expect(productDAO.getArrivalDate(testModel)).rejects.toThrowError(ProductNotFoundError);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("UPD2.3 Error - Generic DB Error", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
@@ -104,13 +104,12 @@ describe("getArrivalDate", () => {
     });
 });
 
-
-describe("changeProductQuantity", () => {
+describe("UPD3 changeProductQuantity", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - returns new quantity", async () => {
+    it("UPD3.1 Success - returns new quantity", async () => {
         const testModel = 'iPhone13';
         const newQuantity = 20;
 
@@ -122,19 +121,19 @@ describe("changeProductQuantity", () => {
         await expect(productDAO.changeProductQuantity(testModel, newQuantity, null)).resolves.toBe(newQuantity);
     });
 
-    it("Error 404- ProductNotFoundError", async () => {
+    it("UPD3.2 Error 404- ProductNotFoundError", async () => {
         const testModel = 'iPhone13';
         const newQuantity = 20;
 
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
-            callback.call({ changes: 0 }, null); //se changes==0 ovvero non viene aggiornata nessuna riga del db significa che non ha trovato il prodotto 
+            callback.call({ changes: 0 }, null);
             return {} as Database;
         });
 
         await expect(productDAO.changeProductQuantity(testModel, newQuantity, null)).rejects.toThrowError(ProductNotFoundError);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("UPD3.3 Error - Generic DB Error", async () => {
         const testModel = 'iPhone13';
         const newQuantity = 20;
 
@@ -147,13 +146,12 @@ describe("changeProductQuantity", () => {
     });
 });
 
-
-describe("getProductQuantity", () => {
+describe("UPD4 getProductQuantity", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - returns quantity", async () => {
+    it("UPD4.1 Success - returns quantity", async () => {
         const testModel = 'iPhone13';
         const testQuantity = 10;
 
@@ -165,7 +163,7 @@ describe("getProductQuantity", () => {
         await expect(productDAO.getProductQuantity(testModel)).resolves.toBe(testQuantity);
     });
 
-    it("Error 404- ProductNotFoundError", async () => {
+    it("UPD4.2 Error 404- ProductNotFoundError", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
@@ -176,7 +174,7 @@ describe("getProductQuantity", () => {
         await expect(productDAO.getProductQuantity(testModel)).rejects.toThrowError(ProductNotFoundError);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("UPD4.3 Error - Generic DB Error", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
@@ -188,14 +186,12 @@ describe("getProductQuantity", () => {
     });
 });
 
-
-
-describe("getFilteredProducts", () => {
+describe("UPD5 getFilteredProducts", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - returns products by category", async () => {
+    it("UPD5.1 Success - returns products by category", async () => {
         const filterType = 'category';
         const filterValue = Category.SMARTPHONE;
         const testProducts = [
@@ -217,7 +213,7 @@ describe("getFilteredProducts", () => {
         await expect(productDAO.getFilteredProducts(filterType, filterValue)).resolves.toStrictEqual(testProducts);
     });
 
-    it("Success - returns product by model", async () => {
+    it("UPD5.2 Success - returns product by model", async () => {
         const filterType = 'model';
         const filterValue = 'iPhone13';
         const testProducts = [
@@ -239,13 +235,13 @@ describe("getFilteredProducts", () => {
         await expect(productDAO.getFilteredProducts(filterType, filterValue)).resolves.toStrictEqual(testProducts);
     });
 
-    it("Error 404- ProductNotFoundError", async () => {
+    it("UPD5.3 Error 404- ProductNotFoundError", async () => {
         const filterType = 'model';
         const filterValue = 'iPhone13';
     
         jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
             if (filterType === 'model') {
-                callback(null, []); //non sono così sicuro del secondo parametro della callback e il test da problemi
+                callback(null, []); 
             }
             return {} as Database;
         });
@@ -253,7 +249,7 @@ describe("getFilteredProducts", () => {
         await expect(productDAO.getFilteredProducts(filterType, filterValue)).rejects.toThrowError(ProductNotFoundError);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("UPD5.4 Error - Generic DB Error", async () => {
         const filterType = 'category';
         const filterValue = Category.SMARTPHONE;
 
@@ -266,13 +262,12 @@ describe("getFilteredProducts", () => {
     });
 });
 
-
-describe("getAllProducts", () => {
+describe("UPD6 getAllProducts", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - returns all products", async () => {
+    it("UPD6.1 Success - returns all products", async () => {
         const testProducts = [
             new Product(999.99, 'iPhone13', Category.SMARTPHONE, '2024-05-31', 'Latest model', 10)
         ];
@@ -292,7 +287,7 @@ describe("getAllProducts", () => {
         await expect(productDAO.getAllProducts()).resolves.toStrictEqual(testProducts);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("UPD6.2 Error - Generic DB Error", async () => {
         jest.spyOn(db, "all").mockImplementation((sql, params, callback) => {
             callback(new Error(), []);
             return {} as Database;
@@ -302,14 +297,12 @@ describe("getAllProducts", () => {
     });
 });
 
-
-
-describe("deleteAllProducts", () => {
+describe("UPD7 deleteAllProducts", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - returns true", async () => {
+    it("UPD7.1 Success - returns true", async () => {
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback(null);
             return {} as Database;
@@ -318,7 +311,7 @@ describe("deleteAllProducts", () => {
         await expect(productDAO.deleteAllProducts()).resolves.toBe(true);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("UPD7.2 Error - Generic DB Error", async () => {
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback(new Error());
             return {} as Database;
@@ -328,13 +321,12 @@ describe("deleteAllProducts", () => {
     });
 });
 
-
-describe("deleteProduct", () => {
+describe("UPD8 deleteProduct", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it("Success - returns true", async () => {
+    it("UPD8.1 Success - returns true", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
@@ -345,7 +337,7 @@ describe("deleteProduct", () => {
         await expect(productDAO.deleteProduct(testModel)).resolves.toBe(true);
     });
 
-    it("Error - ProductNotFoundError", async () => {
+    it("UPD8.2 Error - ProductNotFoundError", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
@@ -356,7 +348,7 @@ describe("deleteProduct", () => {
         await expect(productDAO.deleteProduct(testModel)).rejects.toThrowError(ProductNotFoundError);
     });
 
-    it("Error - Generic DB Error", async () => {
+    it("UPD8.3 Error - Generic DB Error", async () => {
         const testModel = 'iPhone13';
 
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
