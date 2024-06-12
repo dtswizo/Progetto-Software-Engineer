@@ -815,22 +815,274 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
     }
 
     describe("GET /ezelectronics/carts/", () => {
-
-        test("Correct get carts", async () => {
+        test("Correct unexisting cart", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
             await removeUser()
-            await addUser(testUser)
-            await addCart(1,testUser.username,false,null,20)
-            await addProduct(testModel,20,Category.APPLIANCE,"10-04-2022","",2)
-            await addProductInCart(1,testModel,1,Category.APPLIANCE,20)
             await postUser(customer)
             customerCookie = await login(customer)
-            console.log(customerCookie)
+
             const response = await request(app).get(`${baseURL}/carts/`).set("Cookie", customerCookie)
             expect(response.status).toBe(200);
-            console.log(response.body)
+            
+            let cart = response.body
+            expect(cart).toBeDefined()
+            expect(cart.customer).toBe(customer.name)
+            expect(cart.paid).toBe(false)
+            expect(cart.products).toStrictEqual([])
+
+        });
+
+        test("Correct get carts", async () => {
+            await removeProductsFromCart()
+            await removeCarts()
+            //await removeProduct()
+            //await removeUser()
+            //await addUser(new User(customer.username,customer.name,customer.surname,Role.CUSTOMER,"",""))
+            
+            //await postUser(customer)
+            customerCookie = await login(customer)
+
+            await addCart(1,customer.username,false,null,20)
+            await addProduct(testModel,20,Category.APPLIANCE,"10-04-2022","",2)
+            await addProductInCart(1,testModel,1,Category.APPLIANCE,20)
+
+            const response = await request(app).get(`${baseURL}/carts/`).set("Cookie", customerCookie)
+            expect(response.status).toBe(200);
+            
+            let cart = response.body
+            expect(cart).toBeDefined()
+            expect(cart.customer).toBe(customer.name)
+            expect(cart.paid).toBe(false)
+            //expect(cart.products).toStrictEqual([new ProductInCart(testModel,1,Category.APPLIANCE,20).])
+            expect(cart.products).toStrictEqual([{model:testModel, quantity:1, category:Category.APPLIANCE, price:20}])
         });
     });
+    
+    describe("POST /ezelectronics/carts/", () => {
+        test("Correct added product to cart", async ()=>{
+            await removeProductsFromCart()
+            await removeCarts()
+            //await addCart(1,customer.username,false,null,20)
+            customerCookie = await login(customer)
+
+            const response = await request(app).post(`${baseURL}/carts/`).send({model:testModel}).set("Cookie", customerCookie)
+            expect(response.status).toBe(200);
+
+        });
+
+        test("error product doesn't exist", async ()=>{
+            await removeProductsFromCart()
+            await removeCarts()
+            await removeProduct()
+            customerCookie = await login(customer)
+
+            const response = await request(app).post(`${baseURL}/carts/`).send({model:testModel}).set("Cookie", customerCookie)
+            expect(response.status).toBe(404);
+            expect(response.body.error).toStrictEqual(new ProductNotFoundError().customMessage)
+        });
+
+        test("error product stock==0", async ()=>{
+            await removeProductsFromCart()
+            await removeCarts()
+            await removeProduct()
+            await addProduct(testModel,20,Category.APPLIANCE,"10-02-2023","",0)
+            customerCookie = await login(customer)
+
+            const response = await request(app).post(`${baseURL}/carts/`).send({model:testModel}).set("Cookie", customerCookie)
+            expect(response.status).toBe(409);
+            expect(response.body.error).toStrictEqual(new EmptyProductStockError().customMessage)
+        });
+
+    });
+
+    describe("PATCH /ezelectronics/carts/", () => {
+        test("Correct checkout cart", async ()=>{
+            await removeProductsFromCart()
+            await removeCarts()
+            await addCart(1,customer.username,false,null,20)
+            await removeProduct()
+            await addProduct(testModel,20,Category.APPLIANCE,"10-02-2023","",1)
+            await addProductInCart(1,testModel,1,Category.APPLIANCE,20)
+            customerCookie = await login(customer)
+
+            const response = await request(app).patch(`${baseURL}/carts/`).set("Cookie", customerCookie)
+            expect(response.status).toBe(200);
+        });
+
+        test("cart to checkout doesn't exist", async ()=>{
+            await removeProductsFromCart()
+            await removeCarts()
+            //await removeProduct()
+            //await addProduct(testModel,20,Category.APPLIANCE,"10-02-2023","",1)
+            //await addProductInCart(1,testModel,1,Category.APPLIANCE,20)
+            customerCookie = await login(customer)
+
+            const response = await request(app).patch(`${baseURL}/carts/`).set("Cookie", customerCookie)
+            expect(response.status).toBe(404);
+            expect(response.body.error).toBe(new CartNotFoundError().customMessage)
+        });
+
+        test("cart contains no product", async ()=>{
+            //await removeProductsFromCart()
+            //await removeCarts()
+            await addCart(1,customer.username,false,null,0)
+            //await removeProduct()
+            //await addProduct(testModel,20,Category.APPLIANCE,"10-02-2023","",1)
+            //await addProductInCart(1,testModel,1,Category.APPLIANCE,20)
+            customerCookie = await login(customer)
+
+            const response = await request(app).patch(`${baseURL}/carts/`).set("Cookie", customerCookie)
+            expect(response.status).toBe(400);
+            expect(response.body.error).toBe(new EmptyCartError().customMessage)
+        });
+
+        test("at least one product in cart has stock=0", async ()=>{
+            //await removeProductsFromCart()
+            //await removeCarts()
+            //await addCart(1,customer.username,false,null,0)
+            await removeProduct()
+            await addProduct(testModel,20,Category.APPLIANCE,"10-02-2023","",0)
+            await addProductInCart(1,testModel,1,Category.APPLIANCE,20)
+            customerCookie = await login(customer)
+
+            const response = await request(app).patch(`${baseURL}/carts/`).set("Cookie", customerCookie)
+            expect(response.status).toBe(409);
+            expect(response.body.error).toBe(new EmptyProductStockError().customMessage)
+        });
+
+        test("at least one product in cart has stock<quantity in cart", async ()=>{
+            await removeProductsFromCart()
+            //await removeCarts()
+            //await addCart(1,customer.username,false,null,0)
+            await removeProduct()
+            await addProduct(testModel,20,Category.APPLIANCE,"10-02-2023","",1)
+            await addProductInCart(1,testModel,2,Category.APPLIANCE,20)
+            customerCookie = await login(customer)
+
+            const response = await request(app).patch(`${baseURL}/carts/`).set("Cookie", customerCookie)
+            expect(response.status).toBe(409);
+            expect(response.body.error).toBe(new LowProductStockError().customMessage)
+        });
+    });
+
+    describe("GET /ezelectronics/carts/history", () => {
+        test("Correct history get", async ()=>{
+            await removeProductsFromCart()
+            await removeCarts()
+            await removeProduct()
+            await addCart(1,customer.username,false,null,0)
+            await addCart(2,customer.username,true,"20-03-2024",100)
+            await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+            await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)
+            customerCookie = await login(customer)
+
+            const response = await request(app).get(`${baseURL}/carts/history`).set("Cookie", customerCookie)
+            expect(response.status).toBe(200);
+            
+            let carts = response.body
+            expect(carts).toBeDefined()
+            console.log(carts)
+            expect(carts[0].customer).toBe(customer.name)
+            expect(carts[0].paid).toBe(true)
+            expect(carts[0].products).toStrictEqual([{model:testModel, quantity:2, category:Category.SMARTPHONE, price:50}])
+
+        });
+    });
+
+    describe("DELETE /ezelectronics/carts/products/:model", () => {
+        test("Correct delete with quantity>1", async ()=>{
+            await removeProductsFromCart()
+            await removeCarts()
+            await removeProduct()
+            await addCart(1,customer.username,false,null,0)
+            //await addCart(2,customer.username,true,"20-03-2024",100)
+            await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+            await addProductInCart(1,testModel,2,Category.SMARTPHONE,50)
+            customerCookie = await login(customer)
+
+            const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
+            expect(response.status).toBe(200);
+
+        });
+
+        test("Correct delete with quantity==1", async ()=>{
+            /*await removeProductsFromCart()
+            await removeCarts()
+            await removeProduct()
+            await addCart(1,customer.username,false,null,0)
+            //await addCart(2,customer.username,true,"20-03-2024",100)
+            await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+            await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)*/
+            customerCookie = await login(customer)
+
+            const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
+            expect(response.status).toBe(200);
+
+        });
+
+        test("Error product not in cart", async ()=>{
+            /*await removeProductsFromCart()
+            await removeCarts()
+            await removeProduct()
+            await addCart(1,customer.username,false,null,0)
+            //await addCart(2,customer.username,true,"20-03-2024",100)
+            await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+            await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)*/
+            customerCookie = await login(customer)
+
+            const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
+            expect(response.status).toBe(404);
+            expect(response.body.error).toBe(new ProductNotFoundError().customMessage)
+        });
+
+        test("Error cart not exist", async ()=>{
+            await removeProductsFromCart()
+            await removeCarts()
+            //await removeProduct()
+            //await addCart(1,customer.username,false,null,0)
+            //await addCart(2,customer.username,true,"20-03-2024",100)
+            //await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+            //await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)*/
+            customerCookie = await login(customer)
+
+            const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
+            expect(response.status).toBe(404);
+            expect(response.body.error).toBe(new CartNotFoundError().customMessage)
+        });
+
+        test("Error cart is empty", async ()=>{
+            await removeProductsFromCart()
+            await removeCarts()
+            //await removeProduct()
+            await addCart(1,customer.username,false,null,0)
+            //await addCart(2,customer.username,true,"20-03-2024",100)
+            //await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+            //await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)*/
+            customerCookie = await login(customer)
+
+            const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
+            expect(response.status).toBe(404);
+            expect(response.body.error).toBe(new ProductNotInCartError().customMessage)
+        });
+
+        test("Error cart is empty", async ()=>{
+            await removeProductsFromCart()
+            await removeCarts()
+            await removeProduct()
+            await addCart(1,customer.username,false,null,0)
+            //await addCart(2,customer.username,true,"20-03-2024",100)
+            //await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+            //await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)*/
+            customerCookie = await login(customer)
+
+            const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
+            expect(response.status).toBe(404);
+            expect(response.body.error).toBe(new ProductNotFoundError().customMessage)
+        });
+    });
+
+
+    //fare delete ezelectronics/cart/current
 });
