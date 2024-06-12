@@ -827,8 +827,8 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             await addProductInCart(1,testModel,1,Category.APPLIANCE,20)
             await postUser(customer)
             customerCookie = await login(customer)
-
-            const response = await request(app).get(`${baseURL}/carts/`)
+            console.log(customerCookie)
+            const response = await request(app).get(`${baseURL}/carts/`).set("Cookie", customerCookie)
             expect(response.status).toBe(200);
             console.log(response.body)
         });
