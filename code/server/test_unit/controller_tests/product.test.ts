@@ -15,6 +15,41 @@ describe("registerProducts", () => {
         jest.clearAllMocks();
     });
 
+    it("201 OK - registers product successfully", async () => {
+        const testProduct = new Product(
+            1200,
+            "iphone",
+            Category.SMARTPHONE,
+            "",
+            "mint",
+            5
+        );
+        const arrivalDate = "2024-01-01";
+
+        jest.spyOn(ProductDAO.prototype, "registerProducts").mockResolvedValue();
+
+        const response = await productController.registerProducts(
+            testProduct.model,
+            testProduct.category,
+            testProduct.quantity,
+            testProduct.details,
+            testProduct.sellingPrice,
+            arrivalDate
+        );
+
+        expect(ProductDAO.prototype.registerProducts).toHaveBeenCalledTimes(1);
+        expect(ProductDAO.prototype.registerProducts).toHaveBeenCalledWith(
+            testProduct.model,
+            testProduct.category,
+            testProduct.quantity,
+            testProduct.details,
+            testProduct.sellingPrice,
+            arrivalDate
+        );
+        expect(response).toEqual(undefined);
+    });
+
+
 
 
     it("400 KO - arrivalDate is after the currentDate", async () => {
@@ -315,11 +350,12 @@ describe("getProducts", () => {
     });
 });
 
-/*
+
 describe("getAvailableProducts", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
+
     it("200 OK - get all products", async () => {
         const products = [
             new Product(200, "iPhone 13", Category.SMARTPHONE, "", "2024-01-01", 8),
@@ -329,7 +365,7 @@ describe("getAvailableProducts", () => {
         jest.spyOn(ProductDAO.prototype, "getAllProducts").mockResolvedValue(products);
 
         const response = await productController.getAvailableProducts(null, null, null);
-        expect(ProductDAO.prototype.getAllProducts).toHaveBeenCalledTimes(1);
+        expect(productController.getProducts).toHaveBeenCalledTimes(1);
         expect(response).toEqual(products);
     });
 
@@ -338,11 +374,11 @@ describe("getAvailableProducts", () => {
 
         await expect(productController.getAvailableProducts("model", null, "Nonexistent Model")).rejects.toThrowError(ProductNotFoundError);
 
-        expect(ProductDAO.prototype.getProducts).toHaveBeenCalledTimes(1);
+        expect(productController.getProducts).toHaveBeenCalledTimes(1);
         expect(ProductDAO.prototype.getAllProducts).toHaveBeenCalledWith("model", null, "Nonexistent Model");
     });
 });
-*/
+
 
 describe("deleteProduct", () => {
     beforeEach(() => {

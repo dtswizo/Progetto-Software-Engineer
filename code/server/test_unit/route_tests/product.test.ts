@@ -85,6 +85,7 @@ describe("ProductRoutes", () => {
                 testProduct.arrivalDate
             );
         });
+        
 
         it("Not Logged - 401 error code", async () => {
             spyNotLogged();
@@ -108,6 +109,50 @@ describe("ProductRoutes", () => {
             expect(response.status).toBe(401);
             expect(ProductController.prototype.registerProducts).toHaveBeenCalledTimes(0);
         });
+
+          it("should return 400 error code for missing product details", async () => {
+        spyAdmin();
+        enableMockedAuth(app);
+
+        const incompleteProduct = {
+            model: "GalaxyS21",
+            // Missing category and other details
+        };
+
+        const response = await request(app)
+            .post(`${baseURL}/products`)
+            .send(incompleteProduct)
+            .set('Content-Type', 'application/json');
+
+        expect(response.status).toBe(400);
+        expect(response.body.error).toBe('Invalid product details');
+        expect(ProductController.prototype.registerProducts).toHaveBeenCalledTimes(0);
+    });   
+
+    it("should return 500 error code on database failure", async () => {
+        spyAdmin();
+        enableMockedAuth(app);
+    
+        const validProduct = {
+            model: "GalaxyS21",
+            category: "Smartphone",
+            quantity: 10,
+            details: "Latest model",
+            sellingPrice: 999.99,
+            arrivalDate: "2023-01-01"
+        };
+    
+        jest.spyOn(ProductController.prototype, "registerProducts").mockRejectedValue(new Error('Database error'));
+    
+        const response = await request(app)
+            .post(`${baseURL}/products`)
+            .send(validProduct)
+            .set('Content-Type', 'application/json');
+    
+        expect(response.status).toBe(500);
+        expect(response.body.error).toBe('Database error');
+        expect(ProductController.prototype.registerProducts).toHaveBeenCalledTimes(1);
+     });
 
     });
 
@@ -193,6 +238,28 @@ describe("ProductRoutes", () => {
             expect(ProductController.prototype.changeProductQuantity).toHaveBeenCalledTimes(0);
         });
 
+         it("should return 500 error code on database failure", async () => {
+        spyAdmin();
+        enableMockedAuth(app);
+
+        const testQuantityChange = {
+            quantity: 5,
+            changeDate: "2023-02-01"
+        };
+
+        const model = "GalaxyS21";
+
+        jest.spyOn(ProductController.prototype, "changeProductQuantity").mockRejectedValue(new Error('Database error'));
+
+        const response = await request(app)
+            .patch(`${baseURL}/products/${model}`)
+            .send(testQuantityChange)
+            .set('Content-Type', 'application/json');
+
+        expect(response.status).toBe(500);
+        expect(response.body.error).toBe('Database error');
+        expect(ProductController.prototype.changeProductQuantity).toHaveBeenCalledTimes(1);
+       });
     });
 
     describe("PATCH /ezelectronics/products/:model/sell", () => {
@@ -276,6 +343,30 @@ describe("ProductRoutes", () => {
             expect(ProductController.prototype.sellProduct).toHaveBeenCalledTimes(0);
         });
 
+        describe("PATCH /ezelectronics/products/:model/sell", () => {
+            it("should return 500 error code on database failure", async () => {
+                spyAdmin();
+                enableMockedAuth(app);
+        
+                const testSale = {
+                    quantity: 3,
+                    sellingDate: "2023-03-01"
+                };
+        
+                const model = "GalaxyS21";
+        
+                jest.spyOn(ProductController.prototype, "sellProduct").mockRejectedValue(new Error('Database error'));
+        
+                const response = await request(app)
+                    .patch(`${baseURL}/products/${model}/sell`)
+                    .send(testSale)
+                    .set('Content-Type', 'application/json');
+        
+                expect(response.status).toBe(500);
+                expect(response.body.error).toBe('Database error');
+                expect(ProductController.prototype.sellProduct).toHaveBeenCalledTimes(1);
+            });
+        });        
     });
 
    describe("GET /ezelectronics/products", () => {
@@ -286,7 +377,7 @@ describe("ProductRoutes", () => {
 
     it("should return products for Admin with 200 success code", async () => {
         spyAdmin();
-        enableMockedAuth(app);
+        enableMockedAuth(app); 
     
         const testQuery = {
             grouping: "category",
@@ -366,6 +457,8 @@ describe("ProductRoutes", () => {
         expect(response.status).toBe(401);
         expect(ProductController.prototype.getProducts).toHaveBeenCalledTimes(0);
     });
+
+    
 });
 
     describe("GET /ezelectronics/products/available", () => {
@@ -468,7 +561,21 @@ describe("ProductRoutes", () => {
             expect(response.status).toBe(401);
             expect(ProductController.prototype.deleteAllProducts).toHaveBeenCalledTimes(0);
         });
-
+        
+        it("should return 500 error code on database failure", async () => {
+            spyAdmin();
+            enableMockedAuth(app);
+    
+            jest.spyOn(ProductController.prototype, "deleteAllProducts").mockRejectedValue(new Error('Database error'));
+    
+            const response = await request(app)
+                .delete(`${baseURL}/products`)
+                .set('Content-Type', 'application/json');
+    
+            expect(response.status).toBe(500);
+            expect(response.body.error).toBe('Database error');
+            expect(ProductController.prototype.deleteAllProducts).toHaveBeenCalledTimes(1);
+        });
     });
  
     describe("DELETE /ezelectronics/products/:model", () => {
@@ -523,7 +630,24 @@ describe("ProductRoutes", () => {
             expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
             expect(response.status).toBe(401);
             expect(ProductController.prototype.deleteProduct).toHaveBeenCalledTimes(0);
-        });
+        });   
+        
+         it("should return 500 error code on database failure", async () => {
+        spyAdmin();
+        enableMockedAuth(app);
 
+        const model = "GalaxyS21";
+
+        jest.spyOn(ProductController.prototype, "deleteProduct").mockRejectedValue(new Error('Database error'));
+
+        const response = await request(app)
+            .delete(`${baseURL}/products/${model}`)
+            .set('Content-Type', 'application/json');
+
+        expect(response.status).toBe(500);
+        expect(response.body.error).toBe('Database error');
+        expect(ProductController.prototype.deleteProduct).toHaveBeenCalledTimes(1);
+       });
     });
+
 });
