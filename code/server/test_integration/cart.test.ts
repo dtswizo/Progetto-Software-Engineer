@@ -16,22 +16,26 @@ import { CartNotFoundError, EmptyCartError, ProductNotInCartError } from '../src
 import { Cart } from '../src/components/cart';
 import { ProductInCart } from '../src/components/cart';
 import CartController from '../src/controllers/cartController';
+import { AuthRoutes } from '../src/routers/userRoutes';
+import Authenticator from '../src/routers/auth';
+
+import { app } from "../index"
 
 const testUser = new User('MarioRossi',
     'Mario',
     'Rossi',
     Role.CUSTOMER,
-    '',
-    ''
+    "via",
+    "20-10-2020"
 );
 const testModel = 'iPhone13';
 const testDate = new Date('2024-05-21').toISOString().split('T')[0];
 
 const addUser = async (user: User) => {
-    const sqlUser = "INSERT INTO users(username, name, surname, role) VALUES(?, ?, ?, ?)"
+    const sqlUser = "INSERT INTO users(username, name, surname, role,password,salt,address,birthdate) VALUES(?, ?, ?, ?,?,?,?,?)"
     await new Promise<void>((resolve, reject) => {
         try {
-            db.run(sqlUser, [user.username, user.name, user.surname, user.role], (err) => {
+            db.run(sqlUser, [user.username, user.name, user.surname, user.role, "1234","a",user.address,user.birthdate], (err) => {
                 if (err) {
                     return reject(err);
                 }
@@ -44,7 +48,7 @@ const addUser = async (user: User) => {
 }
 
 const removeUser = async () => {
-    const sql = "DELETE FROM products";
+    const sql = "DELETE FROM users";
     await new Promise<void>((resolve, reject) => {
         try {
             db.run(sql, [], (err) => {
@@ -770,6 +774,63 @@ describe('Integration CONTROLLER- DAO - DB', () => {
                 ]);
         });        
     });
+});
 
-    
+describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
+    const baseURL = "/ezelectronics"
+    //let app: express.Application;
+
+    //Default user information. We use them to create users and evaluate the returned values
+    const customer = { username: "customer", name: "customer", surname: "customer", password: "customer", role: "Customer"}
+    const admin = { username: "admin", name: "admin", surname: "admin", password: "admin", role: "Admin" }
+    //Cookies for the users. We use them to keep users logged in. Creating them once and saving them in a variables outside of the tests will make cookies reusable
+    let customerCookie: string
+    let adminCookie: string
+
+    //Helper function that creates a new user in the database.
+    //Can be used to create a user before the tests or in the tests
+    //Is an implicit test because it checks if the return code is successful
+    const postUser = async (userInfo: any) => {
+        await request(app)
+            .post(`${baseURL}/users`)
+            .send(userInfo)
+            .expect(200)
+    }
+
+    //Helper function that logs in a user and returns the cookie
+    //Can be used to log in a user before the tests or in the tests
+    const login = async (userInfo: any) => {
+        return new Promise<string>((resolve, reject) => {
+            request(app)
+                .post(`${baseURL}/sessions`)
+                .send(userInfo)
+                .expect(200)
+                .end((err, res) => {
+                    if (err) {
+                        reject(err)
+                    }
+                    resolve(res.header["set-cookie"][0])
+                })
+        })
+    }
+
+    describe("GET /ezelectronics/carts/", () => {
+
+        test("Correct get carts", async () => {
+            await removeProductsFromCart()
+            await removeCarts()
+            await removeProduct()
+            await removeUser()
+            await addUser(testUser)
+            await addCart(1,testUser.username,false,null,20)
+            await addProduct(testModel,20,Category.APPLIANCE,"10-04-2022","",2)
+            await addProductInCart(1,testModel,1,Category.APPLIANCE,20)
+            await postUser(customer)
+            customerCookie = await login(customer)
+            console.log(customerCookie)
+            const response = await request(app).get(`${baseURL}/carts/`).set("Cookie", customerCookie)
+            expect(response.status).toBe(200);
+            console.log(response.body)
+        });
+    });
 });
