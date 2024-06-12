@@ -5,6 +5,7 @@ import { spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, init
 import ProductController from "../../src/controllers/productController";
 import Authenticator from "../../src/routers/auth";
 import { Product,Category } from "../../src/components/product";
+import ErrorHandler from "../../src/helper";
 
 jest.mock('../../src/controllers/productController');
 
@@ -542,6 +543,22 @@ describe("ProductRoutes", () => {
                 expect(Authenticator.prototype.isLoggedIn).toHaveBeenCalledTimes(1);
                 expect(response.status).toBe(401);
                 expect(ProductController.prototype.getAvailableProducts).toHaveBeenCalledTimes(0);
+            });
+
+
+            it("UPR5.3 Error handling - 500 error code", async () => {
+                jest.spyOn(ProductController.prototype, "getAvailableProducts").mockRejectedValue(new Error('Generic error'));
+                jest.spyOn(Authenticator.prototype, "isLoggedIn").mockImplementation((req, res, next) => next());
+                jest.spyOn(ErrorHandler.prototype, "validateRequest").mockImplementation((req, res, next) => next());
+
+                const response = await request(app)
+                    .get("/available?grouping=model")
+                    .set('Content-Type', 'application/json');
+
+                expect(Authenticator.prototype.isLoggedIn).toHaveBeenCalledTimes(1);
+                expect(ErrorHandler.prototype.validateRequest).toHaveBeenCalledTimes(1);
+                expect(ProductController.prototype.getAvailableProducts).toHaveBeenCalledTimes(1);
+                expect(response.status).toBe(500);            
             });
         });
         

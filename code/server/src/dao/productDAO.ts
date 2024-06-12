@@ -129,7 +129,7 @@ class ProductDAO {
                         reject(err)
                         return
                     }
-                    if (filterType==="model" && !rows) {
+                    if (filterType==="model" && rows.length === 0) {
                         reject(new ProductNotFoundError())
                         return
                     }

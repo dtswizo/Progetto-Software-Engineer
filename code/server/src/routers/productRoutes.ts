@@ -136,7 +136,7 @@ class ProductRoutes {
             this.authenticator.isAdminOrManager, 
             body("category").isIn([["Smartphone", "Laptop", "Appliance",null]]),
             body("grouping").isIn(["model","category",null]),
-            body("model").isString(),
+            body("model").optional().isString(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getProducts(req.query.grouping, req.query.category, req.query.model)
                 .then((products: Product[]) => res.status(200).json(products))
