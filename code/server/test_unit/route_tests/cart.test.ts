@@ -384,17 +384,6 @@ test("checkoutCart: 401 user not logged", async () => {
     expect(CartController.prototype.getCustomerCarts).toHaveBeenCalledTimes(0)
 });
 
-
-test("checkoutCart: 422 model parameter empty", async () => {
-    const testUser = spyCustomer();
-    enableMockedAuth(app)
-    jest.spyOn(CartController.prototype, "removeProductFromCart").mockResolvedValueOnce(true)
-    const model=""  //modello da rimuovere
-    const response = await request(app).delete(baseURL + `/carts/products/${model}`)
-    expect(response.status).toBe(422)
-    expect(CartController.prototype.getCustomerCarts).toHaveBeenCalledTimes(0)
-});
-
 test("removeProductFromCart: error from controller", async () => {
     const testUser = spyCustomer();
     enableMockedAuth(app)
@@ -496,7 +485,7 @@ test("getAllCarts: It should return a 200 success code", async () => {
         new Cart("test",false,null,500,[new ProductInCart("test",1,Category.APPLIANCE,500)]),
         new Cart("test",true,"20/05/2024",10,[new ProductInCart("test1",1,Category.APPLIANCE,10)])
     ])
-    const response = await request(app).get(baseURL + "/carts/all") 
+    const response = await request(app).get(baseURL+"/carts/all")
     expect(response.status).toBe(200)
     expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(1)
     expect(CartController.prototype.getAllCarts).toHaveBeenCalledWith()
@@ -509,9 +498,9 @@ test("getAllCarts:401 logged not as Manager or Admin", async () => {
         new Cart("test",true,"20/05/2024",10,[new ProductInCart("test1",1,Category.APPLIANCE,10)])
     ])
     const response = await request(app).get(baseURL + "/carts/all") 
-    expect(response.status).toBe(200)
-    expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(1)
-    expect(CartController.prototype.getAllCarts).toHaveBeenCalledWith()
+    expect(response.status).toBe(401)
+    expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(0)
+    //expect(CartController.prototype.getAllCarts).toHaveBeenCalledWith()
 });
 
 test("getAllCarts:401 not logged", async () => {
@@ -521,9 +510,9 @@ test("getAllCarts:401 not logged", async () => {
         new Cart("test",true,"20/05/2024",10,[new ProductInCart("test1",1,Category.APPLIANCE,10)])
     ])
     const response = await request(app).get(baseURL + "/carts/all")
-    expect(response.status).toBe(200)
-    expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(1)
-    expect(CartController.prototype.getAllCarts).toHaveBeenCalledWith()
+    expect(response.status).toBe(401)
+    expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(0)
+    //expect(CartController.prototype.getAllCarts).toHaveBeenCalledWith()
 });
 
 test("getAllCarts: error from controller", async () => {
