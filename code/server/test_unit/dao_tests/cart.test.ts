@@ -14,14 +14,14 @@ import { Database } from "sqlite3"
 
 /* *************************** FUNZIONE checkIfCartExists ****************************** */
 
-describe("checkIfCartExists", ()=>{
+describe("UCD 1 checkIfCartExists", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
     
-    test("correct checkIfCartExists DAO", async () => {
+    test("UCD 1.1 correct checkIfCartExists DAO", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -42,7 +42,7 @@ describe("checkIfCartExists", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("checkIfCartExists DAO: cart not exist", async () => {
+    test("UCD 1.2 checkIfCartExists DAO: cart not exist", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -63,7 +63,7 @@ describe("checkIfCartExists", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("checkIfCartExists DAO:generic DB error", async () => {
+    test("UCD 1.3 checkIfCartExists DAO:generic DB error", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1872,45 +1872,26 @@ describe("getAllCarts", ()=>{
             birthdate: "04/03/2000"
         }
 
-        let rows=[
-            {cartId:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50},
-            {cartId:2,customer:testUser2.username,paid:true,paymentDate:"10/01/2023",total:20}
-        ]
-
         let carts=[
             new Cart(testUser.username,true,"27/05/2024",50,[new ProductInCart("test",1,Category.SMARTPHONE,50)]),
             new Cart(testUser2.username,true,"10/01/2023",20,[new ProductInCart("test1",2,Category.LAPTOP,10)]),
         ]
-
-        let nCarts=2
         
         let joined_rows=[
-            {cartId:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50,
+            {idCart:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50,
                 model:"test",quantity:1,category:Category.SMARTPHONE,price:50},
-            {cartId:2,customer:testUser2.username,paid:true,paymentDate:"10/01/2023",total:20,
+            {idCart:2,customer:testUser2.username,paid:true,paymentDate:"10/01/2023",total:20,
                 model:"test1",quantity:2,category:Category.LAPTOP,price:10}
         ]
 
         let cartDAO = new CartDAO();
-        
-        //get all paied carts of the user
-        jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
-            callback(null,rows);
-            return ({} as Database);
-        });
 
-        //get all paied carts of the user with products
         jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
-            callback(null,[joined_rows[0]]);
+            callback(null,joined_rows);
             return ({} as Database);
         });
-        jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
-            callback(null,[joined_rows[1]]);
-            return ({} as Database);
-        });
-
         await expect(cartDAO.getAllCarts()).resolves.toStrictEqual(carts);
-        expect(Database.prototype.all).toHaveBeenCalledTimes(nCarts+1);
+        expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
     test("correct getAllCarts: empty list of carts from carts", async () => {
@@ -1953,49 +1934,25 @@ describe("getAllCarts", ()=>{
             birthdate: "04/03/2000"
         }
 
-        let rows=[
-            {cartId:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50},
-            {cartId:2,customer:testUser2.username,paid:true,paymentDate:"10/01/2023",total:20}
+        
+        let cartDAO = new CartDAO();
+
+        let joined_rows=[
+            {idCart:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50},
+            {idCart:2,customer:testUser2.username,paid:true,paymentDate:"10/01/2023",total:20}
         ]
-        let nCarts=2
-        
-        let cartDAO = new CartDAO();
 
-        //get all paied carts of the user
-        jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
-            callback(null,rows);
-            return ({} as Database);
-        });
+        let carts=[
+            new Cart(testUser.username,true,"27/05/2024",50,[]),
+            new Cart(testUser2.username,true,"10/01/2023",20,[]),
+        ]
 
-        //get all paied carts of the user with products
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
-            callback(null);
+            callback(null,joined_rows);
             return ({} as Database);
         });
         
-        await expect(cartDAO.getAllCarts()).rejects.toStrictEqual(new Error());
-        expect(Database.prototype.all).toHaveBeenCalledTimes(nCarts+1);
-    });
-
-    test("error getAllCarts:DB error in carts", async () => {
-        const testUser = {
-            username: "test",
-            name: "test",
-            surname: "test",
-            role: Role.CUSTOMER,
-            address: "test",
-            birthdate: "27/05/2024"
-        }
-
-        let cartDAO = new CartDAO();
-
-        //get all paied carts of the user
-        jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
-            callback(Error);
-            return ({} as Database);
-        });
-        
-        await expect(cartDAO.getAllCarts()).rejects.toBe(Error);
+        await expect(cartDAO.getAllCarts()).resolves.toStrictEqual(carts);
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
@@ -2019,29 +1976,15 @@ describe("getAllCarts", ()=>{
             birthdate: "04/03/2000"
         }
 
-        let rows=[
-            {cartId:1,customer:testUser.username,paid:true,paymentDate:"27/05/2024",total:50},
-            {cartId:2,customer:testUser2.username,paid:true,paymentDate:"10/01/2023",total:20}
-        ]
-
-        let nCarts=2
-
         let cartDAO = new CartDAO();
 
-        //get all paied carts of the user
-        jest.spyOn(Database.prototype, "all").mockImplementationOnce((sql, params, callback) => {
-            callback(null,rows);
-            return ({} as Database);
-        });
-
-        //get all paied carts of the user with products
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
             callback(Error);
             return ({} as Database);
         });
         
         await expect(cartDAO.getAllCarts()).rejects.toBe(Error);
-        expect(Database.prototype.all).toHaveBeenCalledTimes(nCarts+1);
+        expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
 });
