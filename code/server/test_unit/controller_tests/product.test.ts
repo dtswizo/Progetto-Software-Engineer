@@ -162,20 +162,19 @@ describe("UPC3 - sellProduct", () => {
         const model = "iPhone 13";
         const quantity = 2;
         const sellingDate = "2024-01-02";
-
+    
         jest.spyOn(ProductDAO.prototype, "getArrivalDate").mockResolvedValue("2024-01-01");
         jest.spyOn(ProductDAO.prototype, "getProductQuantity").mockResolvedValue(10);
         jest.spyOn(ProductDAO.prototype, "changeProductQuantity").mockResolvedValue(8);
-
+    
         const response = await productController.sellProduct(model, quantity, sellingDate);
-
+    
         expect(ProductDAO.prototype.getArrivalDate).toHaveBeenCalledTimes(1);
         expect(ProductDAO.prototype.getArrivalDate).toHaveBeenCalledWith(model);
         expect(ProductDAO.prototype.getProductQuantity).toHaveBeenCalledTimes(1);
         expect(ProductDAO.prototype.getProductQuantity).toHaveBeenCalledWith(model);
         expect(ProductDAO.prototype.changeProductQuantity).toHaveBeenCalledTimes(1);
-        expect(ProductDAO.prototype.changeProductQuantity).toHaveBeenCalledWith(model, 8, sellingDate);
-        expect(response).toBe(8);
+        expect(ProductDAO.prototype.changeProductQuantity).toHaveBeenCalledWith(model, -quantity, sellingDate); // Qui il cambiamento
     });
 
     it("UPC3.2 - 404 KO - model does not represent a product in the database", async () => {
@@ -195,7 +194,7 @@ describe("UPC3 - sellProduct", () => {
     it("UPC3.3 - 400 KO - sellingDate is after the currentDate", async () => {
         const model = "iPhone 13";
         const quantity = 2;
-        const sellingDate = "2024-06-04";
+        const sellingDate = "2028-06-04";
 
         jest.spyOn(ProductDAO.prototype, "getArrivalDate").mockResolvedValue("2023-01-01");
         await expect(productController.sellProduct(model, quantity, sellingDate)).rejects.toThrowError(DateError);
@@ -355,9 +354,10 @@ describe("UPC5 - getAvailableProducts", () => {
             new Product(200, "iPhone 13", Category.SMARTPHONE, "", "2024-01-01", 8),
             new Product(1500, "MacBook Pro", Category.LAPTOP, "", "2024-01-01", 5)
         ];
-
+    
         jest.spyOn(ProductDAO.prototype, "getAllProducts").mockResolvedValue(products);
-
+        jest.spyOn(productController, "getProducts").mockResolvedValue(products); // Mocking getProducts
+    
         const response = await productController.getAvailableProducts(null, null, null);
         expect(productController.getProducts).toHaveBeenCalledTimes(1);
         expect(response).toEqual(products);

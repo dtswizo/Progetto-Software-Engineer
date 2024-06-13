@@ -109,7 +109,7 @@ class ProductRoutes {
             body("sellingDate").optional().isString(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.sellProduct(req.params.model, req.body.quantity, req.body.sellingDate)
-                .then((quantity: number) => res.status(200).json({ quantity: quantity }))
+                .then((quantity: number) => res.status(200).json())
                 .catch((err) => {
                     console.log(err)
                     next(err)
@@ -192,7 +192,7 @@ class ProductRoutes {
         this.router.delete(
             "/:model",
             this.authenticator.isAdminOrManager,
-            body("model").isString().isLength({ min: 1 }),
+            param("model").isString().isLength({ min: 1 }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.deleteProduct(req.params.model)
                 .then(() => res.status(200).end())
