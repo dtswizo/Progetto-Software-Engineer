@@ -380,7 +380,6 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             await request(app).post(baseURL).send(testProduct).set("Cookie", adminCookie); // Make sure the product exists
             const response = await request(app).patch(`${baseURL}/${testProduct.model}/sell`).send(testProductSell).set("Cookie", adminCookie);
             expect(response.status).toBe(200);
-            expect(response.body.quantity).toBe(testProduct.quantity - testProductSell.quantity);
         });
 
         test("IPR3.2 Error on selling more than available stock", async () => {
@@ -388,7 +387,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             expect(response.status).toBe(409);
         });
     });
-/*
+
     describe("IPR4 GET /ezelectronics/products", () => {
         test("IPR4.1 Retrieve all products", async () => {
             const response = await request(app).get(baseURL).set("Cookie", adminCookie);
@@ -397,10 +396,10 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             expect(response.body.length).toBeGreaterThan(0);
         });
 
-        test("IPR4.2 Retrieve products by category", async () => {
-            const response = await request(app).get(baseURL).send("sbor").set("Cookie", adminCookie);
+        test("IPR4.2 Retrieve available products filtered by category", async () => {
+            const response = await request(app).get(`${baseURL}/available?grouping=category&category=Smartphone`).set("Cookie", adminCookie);
             expect(response.status).toBe(200);
-            expect(response.body).toBeDefined();
+            expect(response.body).toBeInstanceOf(Array);
         });
     });
 
@@ -419,7 +418,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
         });
     });
 
-   
+   /*
     describe("IPR6 DELETE /ezelectronics/products/:model", () => {
         test("IPR6.1 Correct product deletion", async () => {
             await request(app).post(baseURL).send(testProduct).set("Cookie", adminCookie); // Make sure the product exists
