@@ -106,7 +106,7 @@ class ProductRoutes {
             "/:model/sell",
             this.authenticator.isAdminOrManager,
             body("quantity").isInt({min:1}),
-            body("sellingDate").isString(),
+            body("sellingDate").optional().isString(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.sellProduct(req.params.model, req.body.quantity, req.body.sellingDate)
                 .then((quantity: number) => res.status(200).json({ quantity: quantity }))
@@ -134,8 +134,8 @@ class ProductRoutes {
         this.router.get(
             "/",
             this.authenticator.isAdminOrManager, 
-            body("category").isIn([["Smartphone", "Laptop", "Appliance",null]]),
-            body("grouping").isIn(["model","category",null]),
+            body("category").optional().isIn([["Smartphone", "Laptop", "Appliance",null]]),  //Ho aggiunto degli optional un po' ovunque dove serviva sennò i test senza tali attributi non passavano
+            body("grouping").optional().isIn(["model","category",null]),
             body("model").optional().isString(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getProducts(req.query.grouping, req.query.category, req.query.model)
@@ -161,9 +161,9 @@ class ProductRoutes {
         this.router.get(
             "/available",
             this.authenticator.isLoggedIn,
-            //body("category").isIn([["Smartphone", "Laptop", "Appliance",null]]),
-            body("grouping").isIn(["model","category",null]),
-            //body("model").isString(),
+            body("category").optional().isIn([["Smartphone", "Laptop", "Appliance",null]]),
+            body("grouping").optional().isIn(["model","category",null]),
+            body("model").optional().isString(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getAvailableProducts(req.query.grouping, req.query.category, req.query.model)
                 .then((products: Product[]) => res.status(200).json(products))

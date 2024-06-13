@@ -115,7 +115,7 @@ class ProductController {
         }
         
 
-        return await this.dao.changeProductQuantity(model,q-quantity,sellingDate);
+        return await this.dao.changeProductQuantity(model, -quantity ,sellingDate); //dato il cambiamento della funzione changeProductQuantity qui ho dovuto mettere un meno invece che q-quantity
     }
 
     /**

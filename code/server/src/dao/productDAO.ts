@@ -68,30 +68,40 @@ class ProductDAO {
      * @returns A Promise that resolves to the new available quantity of the product.
      */
 
-    changeProductQuantity(model: string, newQuantity: number, changeDate: string | null) :Promise<number> {
-        return new Promise<number>((resolve, reject) => {
+    changeProductQuantity(model: string, newQuantity: number, changeDate: string | null): Promise<number> {
+        return new Promise<number>((resolve, reject) => { //modificata poichè sovrascriveva la newquantity piuttosto che sommarla
             try {
-                const sql = "UPDATE products\
-                            SET quantity=?\
-                            WHERE model=?;" 
-                db.run(sql, [newQuantity,model], function (err: Error | null) {
-                    
+                const selectSql = "SELECT quantity FROM products WHERE model = ?";
+                db.get(selectSql, [model], (err: Error | null, row: { quantity: number }) => {
                     if (err) {
                         reject(err);
-                        return
+                        return;
                     }
-                    if(this.changes==0){
+                    if (!row) {
                         reject(new ProductNotFoundError());
-                        return
+                        return;
                     }
-                    resolve(newQuantity)
-                })
+    
+                    const updatedQuantity = row.quantity + newQuantity;
+    
+                    const updateSql = "UPDATE products SET quantity = ? WHERE model = ?";
+                    db.run(updateSql, [updatedQuantity, model], function (err: Error | null) {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        if (this.changes === 0) {
+                            reject(new ProductNotFoundError());
+                            return;
+                        }
+                        resolve(updatedQuantity);
+                    });
+                });
             } catch (error) {
-                reject(error)
+                reject(error);
             }
-
         });
-     }
+    }
 
     
     async getProductQuantity(model: string) :Promise<number> { 
