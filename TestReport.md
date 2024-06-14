@@ -27,6 +27,11 @@
 
     <One step will  correspond to API testing, or testing unit route.js>
 
+**Approach:** bottom-up\
+**Step1:** Test integration between DAO and database\
+**Step2:** Test integration between controller, DAO and database\
+**Step3:** Test integration between route, controller, DAO and database\
+
 # Tests
 
 <in the table below list the test cases defined For each test report the object tested, the test level (API, integration, unit) and the technique used to define the test case (BB/ eq partitioning, BB/ boundary, WB/ statement coverage, etc)> <split the table if needed>
