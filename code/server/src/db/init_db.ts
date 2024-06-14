@@ -21,6 +21,7 @@ sql="CREATE TABLE carts( \
         paymentDate char(10),\
         total float,\
         FOREIGN KEY (customer) REFERENCES users (username)\
+        ON DELETE CASCADE\
         );";
 db.run(sql, (err) => { if (err) throw err; });
 
@@ -34,7 +35,9 @@ sql="CREATE TABLE prod_in_cart( \
         price int,\
         PRIMARY KEY (idCart, model),\
         FOREIGN KEY (idCart) REFERENCES carts (idCart),\
+        ON DELETE CASCADE\
         FOREIGN KEY (model) REFERENCES products (model)\
+        ON DELETE CASCADE\
         );";
 db.run(sql, (err) => { if (err) throw err; });
 
@@ -47,7 +50,9 @@ sql="CREATE TABLE reviews( \
         comment text,\
         PRIMARY KEY (user, model),\
         FOREIGN KEY (user) REFERENCES users (username),\
+        ON DELETE CASCADE\
         FOREIGN KEY (model) REFERENCES products (model)\
+        ON DELETE CASCADE\
         );";
 db.run(sql, (err) => { if (err) throw err; });
 
