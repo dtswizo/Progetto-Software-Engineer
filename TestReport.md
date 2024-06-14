@@ -17,6 +17,7 @@
 
      <report the here the dependency graph of EzElectronics>
 ![ProductDependencyGraph](./resources/TestReport/ProductDependencyGraph.png)
+![ProductDependencyGraph](./resources/TestReport/ReviewDependencyGraph.png)
 # Integration approach
 
     <Write here the integration sequence you adopted, in general terms (top down, bottom up, mixed) and as sequence
