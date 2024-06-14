@@ -14,7 +14,7 @@ import { spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, init
 import { User } from '../src/components/user';
 
 
-const baseURL = "/ezelectronics";
+const baseURL = "/ezelectronics/products";
 const testModel = 'iPhone13';
 const testCategory = Category.SMARTPHONE;
 const testDetails = 'Latest iPhone model';
@@ -363,7 +363,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
 
     describe("IPR2 PATCH /ezelectronics/products/:model", () => {
         test("IPR2.1 Correct quantity update", async () => {
-            await request(app).post(baseURL).send(testProduct).set("Cookie", adminCookie); // Make sure the product exists
+            await request(app).post(baseURL).send(testProduct).set("Cookie", adminCookie); 
             const response = await request(app).patch(`${baseURL}/${testProduct.model}`).send(testProductUpdated).set("Cookie", adminCookie);
             expect(response.status).toBe(200);
             expect(response.body.quantity).toBe(testProduct.quantity + testProductUpdated.quantity);
@@ -420,24 +420,45 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
 
   
     describe("IPR6 DELETE /ezelectronics/products/:model", () => {
-        test("IPR6.1 Correct product deletion", async () => {
-            await request(app).post(baseURL).send(testProduct).set("Cookie", adminCookie); // Make sure the product exists
-            const response = await request(app).delete(`${baseURL}/${testModel}`).set("Cookie", adminCookie);
+        test("IPR6.1 Success - delete an existing product", async () => {
+            const response = await request(app)
+                .delete(`${baseURL}/${testModel}`)
+                .set("Cookie", adminCookie);
+            
             expect(response.status).toBe(200);
+    
+            // Verifica che il prodotto sia effettivamente stato cancellato
+            const checkResponse = await request(app)
+                .get(`${baseURL}/${testModel}`)
+                .set("Cookie", adminCookie);
+            
+            expect(checkResponse.status).toBe(404);
         });
-
-        test("IPR6.2 Error on deleting non-existing product", async () => {
-            const response = await request(app).delete(baseURL).send("nonEsiste").set("Cookie", adminCookie);
+    
+        test("IPR6.2 Error - try to delete a non-existing product", async () => {
+            const nonExistentModel = 'nonExistentModel';
+            const response = await request(app)
+                .delete(`${baseURL}/${nonExistentModel}`)
+                .set("Cookie", adminCookie);
+            
             expect(response.status).toBe(404);
         });
     });
-
      
     describe("IPR7 DELETE /ezelectronics/products", () => {
-        test("IPR7.1 Correct deletion of all products", async () => {
-            await request(app).post(baseURL).send(testProduct).set("Cookie", adminCookie); // Make sure there's at least one product
-            const response = await request(app).delete(baseURL).set("Cookie", adminCookie);
+        test('IPR7.1 - should delete all products when user is admin or manager', async () => {
+            const response = await request(app)
+                .delete('/ezelectronics/products')
+                .set('Cookie', adminCookie);
+    
             expect(response.status).toBe(200);
+        });
+
+        test('IPR7.2 - should return 403 Forbidden if user is not authenticated as admin or manager', async () => {
+            const response = await request(app)
+                .delete('/ezelectronics/products');
+    
+            expect(response.status).toBe(401);
         });
     });
    
