@@ -71,45 +71,24 @@
 |        IUC 5   |  User, DAO  | Integration     |     WB         |
 |        IUC 6   |  User, DAO  | Integration     |     WB         |
 |        IUC 7   |  User, DAO  | Integration     |     WB         |
-|        URR 1   |  Review, Routes  | API     |     BB         |
-|        URR 2   |  Review, Routes  | API     |     BB         |
-|        URR 3   |  Review, Routes  | API     |     BB         |
-|        URR 4   |  Review, Routes  | API     |     BB         |
-|        URR 5   |  Review, Routes  | API     |     BB         |
-|        URC 1   |  Review, Controller  | Unit     |     WB         |
-|        URC 2   |  Review, Controller  | Unit     |     WB         |
-|        URC 3   |  Review, Controller  | Unit     |     WB         |
-|        URC 4   |  Review, Controller  | Unit     |     WB         |
-|        URC 5   |  Review, Controller  | Unit     |     WB         |
-|        URD 1   |  Review, DAO  | Unit     |     WB         |
-|        URD 2   |  Review, DAO  | Unit     |     WB         |
-|        URD 3   |  Review, DAO  | Unit     |     WB         |
-|        URD 4   |  Review, DAO  | Unit     |     WB         |
-|        URD 5   |  Review, DAO  | Unit     |     WB         |
-|        URD 6   |  Review, DAO  | Unit     |     WB         |
-|        IRD 1   |  Review, DAO-DB  | Integration     |     BB         |
-|        IRD 2   |  Review, DAO-DB  | Integration     |     BB         |
-|        IRD 3   |  Review, DAO-DB  | Integration     |     BB         |
-|        IRD 4   |  Review, DAO-DB  | Integration     |     BB         |
-|        IRD 5   |  Review, DAO-DB  | Integration     |     BB         |
-|        IRC 1   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRC 2   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRC 3   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRC 4   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRC 5   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 1   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 2   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 3   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 4   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 5   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 6   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
+|        URR1, URR2, URR3, URR4, URR5   |  Review, Routes  | API     |     BB         |
+|        URC1, URC2, URC3, URC4, URC5   |  Review, Controller  | Unit     |     WB         |
+|        URD1, URD2, URD3, URD4, URD5, URD6   |  Review, DAO  | Unit     |     WB         |
+|        IRD1, IRD2, IRD3, IRD4, IRD5   |  Review, DAO-DB  | Integration     |     BB         |
+|        IRC1, IRC2, IRC3, IRC4, IRC5   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
+|        IRR1, IRR2, IRR3, IRR4, IRR5, IRR6   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
 | UCD1, UCD2, UCD3, UCD4, UCD5, UCD6, UCD7, UCD8 UCD9, UCD10, UCD11, UCD12, UCD13, UCD14, UCD15, UCD16| Cart, CartDAO, CartError | unit | WB |
 | UCC1, UCC2, UCC3, UCC4, UCC5, UCC6, UCC7, UCC8 | Cart, CartController, CartError | unit | WB |
 | UCR1, UCR2, UCR3, UCR4, UCR5, UCR6, UCR7, UCR8 | Cart, CartRoutes, CartError | unit | WB |
 | ICD1, ICD2, ICD3, ICD4, ICD5, ICD6, ICD7,ICD8, ICD9, ICD10, ICD11, ICD12, ICD13, ICD14, ICD15 | Cart, CartDAO, CartError, Database | integration | BB |
 | ICC1, ICC2, ICC3, ICC4, ICC5, ICC6, ICC7,ICC8 | Cart, CartDAO, CartError, Database, CartController | integration | BB |
 | ICR1, ICR2, ICR3, ICR4, ICR5, ICR6, ICR7,ICR8 | Cart, CartDAO, CartError, Database, CartController, CartRoutes | integration/API ?????? | BB |
-
+| UPD1, UPD2, UPD3, UPD4, UPD5, UPD6, UPD7, UPD8 | Product, ProductDAO, ProductError | Unit | WB |
+| UPC1, UPC2, UPC3, UPC4, UPC5, UPC6, UPC7 | Product, ProductController, ProductError | Unit | WB |
+| UPR1, UPR2, UPR3, UPR4, UPR5, UPR6, UPR7 | Product, ProductRoutes, ProductError | Unit | BB |
+| IPD1, IPD2, IPD3, IPD4, IPD5, IPD6, IPD7,IPD8 | Product, ProductDAO, ProductError, Database | Integration | BB |
+| IPC1, IPC2, IPC3, IPC4, IPC5, IPC6, IPC7,IPC8 | Product, ProductDAO, ProductError, Database, ProductController | Integration | BB |
+| ICR1, ICR2, ICR3, ICR4, ICR5, ICR6, ICR7,ICR8 | Product, ProductDAO, ProductError, Database, ProductController, ProductRoutes | Integration | BB |
 # Coverage
 
 ## Coverage of FR
@@ -120,10 +99,11 @@
 | :--------------------------------: | :-----: |
 |                FR1                 |         |
 |                FR2                 |         |
-|                FR3                 |         |
+|                FR3                 | UPD,UPC,UPR,IPD,IPC,IPR        |
 |                FR4                 |    URR, URC, URD, IRD, IRC, IRR     |
 |                FR5                 | UCD, UCC, UCR, ICD, ICC, ICR |
 
 ## Coverage white box
 
 Report here the screenshot of coverage values obtained with jest-- coverage
+![Coverage](./resources/Coverage.jpg)
