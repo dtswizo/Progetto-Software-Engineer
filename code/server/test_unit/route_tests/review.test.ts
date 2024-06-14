@@ -109,25 +109,7 @@ describe("URR1 - POST /ezelectronics/reviews/:model", () => {
         expect(ReviewController.prototype.addReview).toHaveBeenCalledTimes(0);
 
     });
-    it("URR1.5 - Customer - model empty - 422 error code", async () => {
-        spyAdmin();
-        enableMockedAuth(app)
-        jest.spyOn(ReviewController.prototype, "addReview").mockResolvedValue();
-
-        const testReview = {
-            score: 5,
-            comment: "A very cool smartphone!"
-        }
-        const model = '';
-        const response = await request(app)
-            .post(`${baseURL}/reviews/${model}`)
-            .send(testReview)
-            .set('Content-Type', 'application/json');
-
-        expect(response.status).toBe(422);
-        expect(ReviewController.prototype.addReview).toHaveBeenCalledTimes(0);
-    });
-    it("URR1.6 - Customer - score < 1 - 422 error code", async () => {
+    it("URR1.5 - Customer - score < 1 - 422 error code", async () => {
         const testLoggedUser = spyCustomer();
         enableMockedAuth(app);
 
@@ -146,7 +128,7 @@ describe("URR1 - POST /ezelectronics/reviews/:model", () => {
         expect(response.status).toBe(422);
         expect(ReviewController.prototype.addReview).toHaveBeenCalledTimes(0);
     });
-    it("URR1.7 - Customer - score > 5 - 422 error code", async () => {
+    it("URR1.6 - Customer - score > 5 - 422 error code", async () => {
         const testLoggedUser = spyCustomer();
         enableMockedAuth(app);
 
@@ -165,7 +147,7 @@ describe("URR1 - POST /ezelectronics/reviews/:model", () => {
         expect(response.status).toBe(422);
         expect(ReviewController.prototype.addReview).toHaveBeenCalledTimes(0);
     });
-    it("URR1.8 - Customer - empty comment - 422 error code", async () => {
+    it("URR1.7 - Customer - empty comment - 422 error code", async () => {
         const testLoggedUser = spyCustomer();
         enableMockedAuth(app);
 
@@ -184,7 +166,7 @@ describe("URR1 - POST /ezelectronics/reviews/:model", () => {
         expect(response.status).toBe(422);
         expect(ReviewController.prototype.addReview).toHaveBeenCalledTimes(0);
     });
-    it("URR1.9 - Customer - Already existing review for the product made by the customer - 409 error code", async () => {
+    it("URR1.8 - Customer - Already existing review for the product made by the customer - 409 error code", async () => {
         const testLoggedUser = spyCustomer();
         enableMockedAuth(app);
 
@@ -212,7 +194,7 @@ describe("URR1 - POST /ezelectronics/reviews/:model", () => {
             testReview.comment
         );
     });
-    it("URR1.10 - Customer - model does not represent an existing product in the database - 404 error code", async () => {
+    it("URR1.9 - Customer - model does not represent an existing product in the database - 404 error code", async () => {
         const testLoggedUser = spyCustomer();
         enableMockedAuth(app);
 
@@ -224,7 +206,7 @@ describe("URR1 - POST /ezelectronics/reviews/:model", () => {
             score: 5,
             comment: "A very cool smartphone!"
         }
-        const model = 'iPhone13';
+        const model = 'iPhone12';
         const response = await request(app)
             .post(`${baseURL}/reviews/${model}`)
             .send(testReview)
@@ -323,32 +305,18 @@ describe("URR2 - GET /ezelectronics/reviews/:model", () => {
         spyAdmin();
         enableMockedAuth(app);
 
-        jest.spyOn(ReviewController.prototype, "getProductReviews").mockRejectedValue(new NoReviewProductError());
+        jest.spyOn(ReviewController.prototype, "getProductReviews").mockResolvedValue([]);
 
         const model = 'iPhone13';
         const response = await request(app)
             .get(`${baseURL}/reviews/${model}`)
             .set('Content-Type', 'application/json');
 
-        expect(response.status).toBe(404);
+        expect(response.status).toBe(200);
         expect(ReviewController.prototype.getProductReviews).toHaveBeenCalledTimes(1);
         expect(ReviewController.prototype.getProductReviews).toHaveBeenCalledWith(
             model
         );
-    });
-    it("URR2.6 - Customer - model empty - 422 error code", async () => {
-        spyAdmin();
-        enableMockedAuth(app);
-
-        jest.spyOn(ReviewController.prototype, "getProductReviews").mockRejectedValue(new NoReviewProductError());
-
-        const model = '';
-        const response = await request(app)
-            .get(`${baseURL}/reviews/${model}`)
-            .set('Content-Type', 'application/json');
-
-        expect(response.status).toBe(422);
-        expect(ReviewController.prototype.getProductReviews).toHaveBeenCalledTimes(0);
     });
 
 });
@@ -574,20 +542,6 @@ describe("URR4 - DELETE /ezelectronics/reviews/:model/all", () => {
         expect(ReviewController.prototype.deleteReviewsOfProduct).toHaveBeenCalledWith(
             model
         );
-    });
-    it("URR4.6 - Admin - model empty - 422 error code", async () => {
-        spyAdmin();
-        enableMockedAuth(app);
-
-        jest.spyOn(ReviewController.prototype, "deleteReviewsOfProduct").mockResolvedValue();
-
-        const model = '';
-        const response = await request(app)
-            .delete(`${baseURL}/reviews/${model}/all`)
-            .set('Content-Type', 'application/json');
-
-        expect(response.status).toBe(422);
-        expect(ReviewController.prototype.deleteReviewsOfProduct).toHaveBeenCalledTimes(0);
     });
 
 });

@@ -481,6 +481,7 @@ test("deleteAllCarts:error from controller", async () => {
 
 test("getAllCarts: It should return a 200 success code", async () => {
     const testUser=spyAdmin()
+    enableMockedAuth(app)
     jest.spyOn(CartController.prototype, "getAllCarts").mockResolvedValue([
         new Cart("test",false,null,500,[new ProductInCart("test",1,Category.APPLIANCE,500)]),
         new Cart("test",true,"20/05/2024",10,[new ProductInCart("test1",1,Category.APPLIANCE,10)])
@@ -493,6 +494,7 @@ test("getAllCarts: It should return a 200 success code", async () => {
 
 test("getAllCarts:401 logged not as Manager or Admin", async () => {
     const testUser=spyCustomer()
+    enableMockedAuth(app)
     jest.spyOn(CartController.prototype, "getAllCarts").mockResolvedValue([
         new Cart("test",false,"",500,[new ProductInCart("test",1,Category.APPLIANCE,500)]),
         new Cart("test",true,"20/05/2024",10,[new ProductInCart("test1",1,Category.APPLIANCE,10)])
@@ -505,6 +507,7 @@ test("getAllCarts:401 logged not as Manager or Admin", async () => {
 
 test("getAllCarts:401 not logged", async () => {
     const testUser=spyNotLogged()
+    enableMockedAuth(app)
     jest.spyOn(CartController.prototype, "getAllCarts").mockResolvedValue([
         new Cart("test",false,"",500,[new ProductInCart("test",1,Category.APPLIANCE,500)]),
         new Cart("test",true,"20/05/2024",10,[new ProductInCart("test1",1,Category.APPLIANCE,10)])
@@ -517,6 +520,7 @@ test("getAllCarts:401 not logged", async () => {
 
 test("getAllCarts: error from controller", async () => {
     const testUser=spyAdmin()
+    enableMockedAuth(app)
     jest.spyOn(CartController.prototype, "getAllCarts").mockRejectedValueOnce(new Error())
     const response = await request(app).get(baseURL + "/carts/all") 
     expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(1)

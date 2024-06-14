@@ -1034,7 +1034,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
 
             const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
             expect(response.status).toBe(404);
-            expect(response.body.error).toBe(new ProductNotFoundError().customMessage)
+            expect(response.body.error).toBe(new ProductNotInCartError().customMessage)
         });
 
         test("Error cart not exist", async ()=>{
@@ -1083,6 +1083,97 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         });
     });
 
+    describe("DELETE /ezelectronics/carts/current", () => {
 
-    //fare delete ezelectronics/cart/current
+        test("Correct delete cart", async ()=>{
+            await removeProductsFromCart()
+            await removeCarts()
+            await removeProduct()
+            await addCart(1,customer.username,false,null,100)
+            //await addCart(2,customer.username,true,"20-03-2024",100)
+            await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+            await addProductInCart(1,testModel,2,Category.SMARTPHONE,50)
+            customerCookie = await login(customer)
+
+            const response = await request(app).delete(`${baseURL}/carts/current`).set("Cookie", customerCookie)
+            expect(response.status).toBe(200);
+
+        });
+
+        test("Error don't exist any unpaid cart", async ()=>{
+            await removeCarts()
+            customerCookie = await login(customer)
+
+            const response = await request(app).delete(`${baseURL}/carts/current`).set("Cookie", customerCookie)
+            expect(response.status).toBe(404);
+            expect(response.body.error).toBe(new CartNotFoundError().customMessage)
+
+        });
+
+    });
+
+    describe("DELETE /ezelectronics/carts", () => {
+
+        test("Error user is not an admin", async ()=>{
+            await addUser(testUser)
+            await addCart(1,customer.username,false,null,100)
+            await addCart(2,testUser.username,true,"20-03-2024",100)
+            //await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+            await addProductInCart(1,testModel,2,Category.SMARTPHONE,50)
+            await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)
+            customerCookie = await login(customer)
+
+            const response = await request(app).delete(`${baseURL}/carts`).set("Cookie", customerCookie)
+            expect(response.status).toBe(401);
+
+        });
+
+        test("Correct delete of all carts", async ()=>{
+            await removeProductsFromCart()
+            await removeProduct()
+            await removeCarts()
+            await removeUser()
+            await postUser(admin)
+            await postUser(customer)
+            adminCookie = await login(admin)
+            await addUser(testUser)
+            await addCart(1,customer.username,false,null,100)
+            await addCart(2,testUser.username,true,"20-03-2024",100)
+            await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+            await addProductInCart(1,testModel,2,Category.SMARTPHONE,50)
+            await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)
+
+            const response = await request(app).delete(`${baseURL}/carts`).set("Cookie", adminCookie)
+            expect(response.status).toBe(200);
+
+        });
+    });
+
+    describe("GET /ezelectronics/carts", () => {
+
+        test("Error user is not an admin", async ()=>{
+            //await addUser(testUser)
+            await addCart(1,customer.username,false,null,100)
+            await addCart(2,testUser.username,true,"20-03-2024",100)
+            //await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+            await addProductInCart(1,testModel,2,Category.SMARTPHONE,50)
+            await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)
+            customerCookie = await login(customer)
+
+            const response = await request(app).get(`${baseURL}/carts/all`).set("Cookie", customerCookie)
+            expect(response.status).toBe(401);
+
+        });
+
+        test("Correct return all carts", async ()=>{
+            adminCookie = await login(admin)
+
+            const response = await request(app).get(`${baseURL}/carts/all`).set("Cookie", adminCookie)
+            expect(response.status).toBe(200);
+            let carts = response.body
+            expect(carts).toBeDefined()
+
+        });
+    });
+
 });

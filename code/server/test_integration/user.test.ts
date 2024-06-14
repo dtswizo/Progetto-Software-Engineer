@@ -8,6 +8,7 @@ import UserDAO from '../src/dao/userDAO';
 import { User, Role } from '../src/components/user';
 import { cleanup, cleanupDB } from '../src/db/cleanup';
 import db from "../src/db/db"
+import { app } from "../index"
 import { UnauthorizedUserError, UserAlreadyExistsError, UserIsAdminError, UserNotAdminError, UserNotFoundError } from '../src/errors/userError';
 import { DateError } from '../src/utilities';
 import Authenticator from '../src/routers/auth';
@@ -30,6 +31,14 @@ const userToAdd2 = { //Define a test user object sent to the route
     surname: "Verdi",
     password: "test",
     role: "Manager"
+}
+
+const userToAdd3 = {
+    username: "LuciaBianchi",
+    name: "Lucia",
+    surname: "Bianchi",
+    password: "test",
+    role: Role.ADMIN
 }
 
 const user = {
@@ -667,37 +676,352 @@ describe('IUC - Integration CONTROLLER - DAO - DB', () => {
     })
         
 })
-/*
+
 describe('Integration ROUTES - CONTROLLER - DAO - DB', () => {
     const baseURL = "/ezelectronics"
-    let app: express.Application;
+    let adminCookie: string;
+    let managerCookie: string;
+    let customerCookie: string;
+
+    const postUser = async (userInfo: any) => {
+        await request(app)
+            .post("/ezelectronics/users")
+            .send(userInfo)
+            .expect(200);
+    };
+
+    const login = async (userInfo: any): Promise<string> => {
+        return new Promise<string>((resolve, reject) => {
+            request(app)
+                .post("/ezelectronics/sessions")
+                .send(userInfo)
+                .expect(200)
+                .end((err, res) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(res.header["set-cookie"][0]);
+                    }
+                });
+        });
+    };
 
     beforeAll(async () => {
         await cleanupDB();
-        await setupDB();
+        await postUser(userToAdd3);
+        await postUser(userToAdd);
+        adminCookie = await login(userToAdd3);
+        //managerCookie = await login(userToAdd2);
+        customerCookie = await login(userToAdd);
     });
 
-    describe("POST /ezelectronics/users", () => {
+    describe("IUR 1 - POST /ezelectronics/users", () => {
 
         beforeEach(() => {
             jest.clearAllMocks();
             jest.resetAllMocks();
-            app = initMockedApp();
         });
 
-        it("200 OK - User successfully created", async () => {
+        it("IUR 1.1 - 200 OK - User successfully created", async () => {
             
             //const spyLogin = await request(app).post(baseURL + "/sessions").send(userToLog)
-            const spyCreateUser = await request(app).post(baseURL + "/users").send(userToAdd2) 
-    
-            //expect(spyLogin.status).toBe(200) 
-            expect(spyCreateUser.status).toBe(200)
-            expect(userController.createUser).toHaveBeenCalledTimes(1)
-            expect(userController.createUser).toHaveBeenCalledWith(userToAdd2.username,
-                userToAdd2.name,
-                userToAdd2.surname,
-                userToAdd2.password,
-                userToAdd2.role)
+            const response = await request(app).post(baseURL + "/users").send(userToAdd2) 
+            const spyCreateUser = jest.spyOn(userController, "createUser")
+            expect(response.status).toBe(200)
+            
+            managerCookie = await login(userToAdd2);
         })
+
+        it("IUR 1.2.1 - 422 KO - Username is empty", async () => {
+            const testUser = { //Define a test user object sent to the route
+                username: "",
+                name: "test",
+                surname: "test",
+                password: "test",
+                role: "Manager"
+            }
+            const response = await request(app).post(baseURL + "/users").send(testUser)
+            expect(response.status).toBe(422)
+        })
+
+        it("IUR 1.2.2 - 422 KO - Name is empty", async () => {
+            const testUser = { //Define a test user object sent to the route
+                username: "test",
+                name: "",
+                surname: "test",
+                password: "test",
+                role: "Manager"
+            }
+            const response = await request(app).post(baseURL + "/users").send(testUser)
+            expect(response.status).toBe(422)
+        })
+
+        it("IUR 1.2.3 - 422 KO - Surname is empty", async () => {
+            const testUser = { //Define a test user object sent to the route
+                username: "test",
+                name: "test",
+                surname: "",
+                password: "test",
+                role: "Manager"
+            }
+            const response = await request(app).post(baseURL + "/users").send(testUser)
+            expect(response.status).toBe(422)
+        })
+
+        it("IUR 1.2.4 - 422 KO - Password is empty", async () => {
+            const testUser = { //Define a test user object sent to the route
+                username: "",
+                name: "test",
+                surname: "test",
+                password: "test",
+                role: "Manager"
+            }
+            const response = await request(app).post(baseURL + "/users").send(testUser)
+            expect(response.status).toBe(422)
+        })
+
+        it("IUR 1.2.5 - 422 KO - Role is not valid", async () => {
+            const testUser = { //Define a test user object sent to the route
+                username: "",
+                name: "test",
+                surname: "test",
+                password: "test",
+                role: "Manager"
+            }
+            const response = await request(app).post(baseURL + "/users").send(testUser)
+            expect(response.status).toBe(422)
+        })
+
+        it("IUR 1.2.1 - 422 OK - Username is empty", async () => {
+            const testUser = { //Define a test user object sent to the route
+                username: "",
+                name: "test",
+                surname: "test",
+                password: "test",
+                role: "Manager"
+            }
+            const response = await request(app).post(baseURL + "/users").send(testUser)
+            expect(response.status).toBe(422)
+        })
+
+        it("IUR 1.3 - 409 OK - Username already exists", async () => {
+            
+            //const spyLogin = await request(app).post(baseURL + "/sessions").send(userToLog)
+            const response = await request(app).post(baseURL + "/users").send(userToAdd2) 
+            //const spyCreateUser = jest.spyOn(userController, "createUser")
+            expect(response.status).toBe(409)
+        })
+    })
+
+    describe("IUR 2 - GET /ezelectronics/users", () => {
+
+
+        beforeEach(() => {
+            jest.clearAllMocks();
+            jest.resetAllMocks();
+        });
+
+        test("IUR 2.1 - 200 OK - Users succesfully returned", async () => {
+            const response = await request(app).get(baseURL + "/users").set("Cookie", adminCookie); 
+             expect(response.status).toBe(200) //Check if the response status is 200
+        })
+
+        test("IUR 2.2 - 401 KO - Users is not an admin", async () => {
+            const response = await request(app).get(baseURL + "/users").set("Cookie", customerCookie); 
+             expect(response.status).toBe(401)
+            })
+    })
+
+    describe("IUR 3 - GET /ezelectronics/users/roles/:role", () => {
+        test("IUR 3.1 - 200 OK - Users succesfully returned by role", async () => {
+            let role = "Customer"
+            const response = await request(app).get(`${baseURL}/users/roles/${role}`).set("Cookie", adminCookie); 
+            expect(response.status).toBe(200)
+        })
+    
+
+        test("IUR 3.2 - 401 KO - User is not an Admin", async () => {
+            let role = "Customer"
+            const response = await request(app).get(`${baseURL}/users/roles/${role}`).set("Cookie", customerCookie); 
+            expect(response.status).toBe(401)
+        })
+
+    })
+
+    describe("IUR 4 - GET /ezelectronics/users/:username", () => {
+        test("IUR 4.1 - 200 OK - User succesfully returned by username (Customer)", async () => {
+            const response = await request(app).get(`${baseURL}/users/${user.username}`).set("Cookie", customerCookie)
+            expect(response.status).toBe(200)
+        })
+
+        test("IUR 4.2 - 200 OK - User succesfully returned by username (Admin)", async () => {
+            const response = await request(app).get(`${baseURL}/users/${user.username}`).set("Cookie", adminCookie)
+        
+            expect(response.status).toBe(200)
+        })
+
+        test("IUR 4.3 - 401 KO - User is not an Admin", async () => {
+            const response = await request(app).get(`${baseURL}/users/${manager.username}`).set("Cookie", customerCookie)
+        
+            expect(response.status).toBe(401)
+        })
+
+        test("IUR 4.4 - 404 KO - User does not exist in database", async () => {
+            const response = await request(app).get(`${baseURL}/users/${"testtt"}`).set("Cookie", adminCookie)
+        
+            expect(response.status).toBe(404)
+        })
+    })  
+    describe("IUR 5 - PATCH /ezelectronics/users/:username", () => {
+
+    
+        test("IUR 5.1 - 200 OK - User succesfully updated (Customer)", async () => {
+            const response = await request(app).patch(`${baseURL}/users/${newUser.username}`).send(newUser).set("Cookie", customerCookie)
+        
+            expect(response.status).toBe(200)
+        })
+
+        test("IUR 5.1 - 200 OK - User succesfully updated (Customer)", async () => {
+            const response = await request(app).patch(`${baseURL}/users/${newUser.username}`).send(newUser).set("Cookie", adminCookie)
+        
+            expect(response.status).toBe(200)
+        })
+
+        test("IUR 5.3 - 404 KO - User not found", async () => {
+            const response = await request(app).patch(`${baseURL}/users/${"testtt"}`).send(newUser).set("Cookie", adminCookie)
+        
+            expect(response.status).toBe(404)
+        })
+
+        test("IUR 5.4 - 401 KO - Username doesn't match logged user and is not Admin", async () => {
+            const response = await request(app).patch(`${baseURL}/users/${"testtt"}`).send(newUser).set("Cookie", customerCookie)
+        
+            expect(response.status).toBe(401)
+        })
+        test("IUR 5.5 - 400 KO - User birthdate is after current date", async () => {
+            const newnewUser = { //Define a test user object sent to the route
+                username: "MarioRossi",
+                name: "newName",
+                surname: "newSurname",
+                role: "Customer",
+                address: "Torino, Via Madama Cristina 27",
+                birthdate:"2099-01-01"
+            }
+            const response = await request(app).patch(`${baseURL}/users/${newnewUser.username}`).send(newnewUser).set("Cookie", customerCookie)
+        
+            expect(response.status).toBe(400)
+        })
+
+        test("IUR 5.6.1 - 422 KO - Name is empty", async () => {
+            const newnewUser = { 
+                username: "test",
+                name: "",
+                surname: "newSurname",
+                role: "Customer",
+                address: "Torino, Via Madama Cristina 27",
+                birthdate:"1980-01-01"
+            }
+            const response = await request(app).patch(`${baseURL}/users/${"testtt"}`).send(newnewUser).set("Cookie", customerCookie)
+        
+            expect(response.status).toBe(422)
+        })
+
+        test("IUR 5.6.2 - 422 KO - Surname is empty", async () => {
+            const newnewUser = { 
+                username: "test",
+                name: "newName",
+                surname: "",
+                role: "Customer",
+                address: "Torino, Via Madama Cristina 27",
+                birthdate:"1980-01-01"
+            }
+            const response = await request(app).patch(`${baseURL}/users/${"testtt"}`).send(newnewUser).set("Cookie", customerCookie)
+        
+            expect(response.status).toBe(422)
+        })
+
+        test("IUR 5.6.3 - 422 KO - Address is empty", async () => {
+            const newnewUser = { 
+                username: "test",
+                name: "newName",
+                surname: "newSurname",
+                role: "Customer",
+                address: "",
+                birthdate:"1980-01-01"
+            }
+            const response = await request(app).patch(`${baseURL}/users/${"testtt"}`).send(newnewUser).set("Cookie", customerCookie)
+        
+            expect(response.status).toBe(422)
+        })
+
+        test("IUR 5.6.4 - 422 KO - Birthdate is empty", async () => {
+            const newnewUser = { 
+                username: "test",
+                name: "newName",
+                surname: "newSurname",
+                role: "Customer",
+                address: "Torino",
+                birthdate:""
+            }
+            const response = await request(app).patch(`${baseURL}/users/${"testtt"}`).send(newnewUser).set("Cookie", customerCookie)
+        
+            expect(response.status).toBe(422)
+        })
+    })
+
+    describe("IUR 6 - DELETE /ezelectronics/users/:username", () => {
+        test("IUR 6.1 - 200 OK - User succesfully returned by username (Customer)", async () => {
+            const response = await request(app).delete(`${baseURL}/users/${user.username}`).set("Cookie", customerCookie)
+        
+            expect(response.status).toBe(200)
+        })
+
+        test("IUR 6.1 - 200 OK - User succesfully returned by username (Customer)", async () => {
+            const response = await request(app).delete(`${baseURL}/users/${manager.username}`).set("Cookie", adminCookie) 
+            expect(response.status).toBe(200)
+        })
+
+        test("IUR 6.2 - 401 KO - User is not an Admin", async () => {
+            const response = await request(app).delete(`${baseURL}/users/${manager.username}`).set("Cookie", customerCookie) 
+        
+            expect(response.status).toBe(401)
+        })
+
+        test("IUR 6.3 - 401 KO - Admin is trying to delete another Admin", async () => {
+            const admin2 = { 
+                username: "test",
+                name: "newName",
+                surname: "newSurname",
+                
+                password: "test",
+                role: "Customer"
+            }
+            await postUser(admin2)
+            const response = await request(app).delete(`${baseURL}/users/${admin2.username}`).set("Cookie", customerCookie) 
+        
+            expect(response.status).toBe(401)
+        })
+
+        test("IUR 6.4 - 404 KO - User does not exist in database", async () => {
+            const response = await request(app).get(`${baseURL}/users/${"testtt"}`).set("Cookie", adminCookie) 
+        
+            expect(response.status).toBe(404)
+        })
+
+        
+    })
+
+    describe("IUR 7 - DELETE /ezelectronics/users/", () => {
+        test("IUR 7.1 - 200 OK - Users succesfully deleted", async () => {
+            const response = await request(app).delete(`${baseURL}/users`).set("Cookie", adminCookie) 
+        
+            expect(response.status).toBe(200)
+        })
+
+        test("IUR 7.2 - 401 KO - User is not Admin", async () => {
+            const response = await request(app).delete(`${baseURL}/users`).set("Cookie", customerCookie) 
+        
+            expect(response.status).toBe(401)
+        })
+    })
 })
-})*/
