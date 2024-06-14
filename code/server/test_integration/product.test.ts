@@ -397,7 +397,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
         });
 
         test("IPR4.2 Retrieve available products filtered by category", async () => {
-            const response = await request(app).get(`${baseURL}/available?grouping=category&category=Smartphone`).set("Cookie", adminCookie);
+            const response = await request(app).get(`${baseURL}/?grouping=category&category=Smartphone&`).set("Cookie", adminCookie);
             expect(response.status).toBe(200);
             expect(response.body).toBeInstanceOf(Array);
         });
@@ -418,7 +418,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
         });
     });
 
-   /*
+  
     describe("IPR6 DELETE /ezelectronics/products/:model", () => {
         test("IPR6.1 Correct product deletion", async () => {
             await request(app).post(baseURL).send(testProduct).set("Cookie", adminCookie); // Make sure the product exists
@@ -440,5 +440,5 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             expect(response.status).toBe(200);
         });
     });
-    */
+   
 });
