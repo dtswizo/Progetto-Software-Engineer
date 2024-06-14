@@ -15,22 +15,13 @@
 
 # Dependency graph
 
-     <report the here the dependency graph of EzElectronics>
 ![ProductDependencyGraph](./resources/TestReport/ProductDependencyGraph.png)
 # Integration approach
-
-    <Write here the integration sequence you adopted, in general terms (top down, bottom up, mixed) and as sequence
-
-    (ex: step1: unit A, step 2: unit A+B, step 3: unit A+B+C, etc)>
-
-    <Some steps may  correspond to unit testing (ex step1 in ex above)>
-
-    <One step will  correspond to API testing, or testing unit route.js>
 
 **Approach:** bottom-up\
 **Step1:** Test integration between DAO and database\
 **Step2:** Test integration between controller, DAO and database\
-**Step3:** Test integration between route, controller, DAO and database\
+**Step3:** Test integration between route, controller, DAO and database
 
 # Tests
 
@@ -38,7 +29,7 @@
 
 | Test case name | Object(s) tested | Test level | Technique used |
 | :------------: | :--------------: | :--------: | :------------: |
-|        UUR 1   |  User, Routes    | Unit/API?  |     BB?        |
+|        UUR 1   |  User, Routes    | Unit  |     BB        |
 |        UUR 2   |  User, Routes    | Unit/API?  |     BB?        |
 |        UUR 3   |  User, Routes    | Unit/API?  |     BB?        |
 |        UUR 4   |  User, Routes    | Unit/API?  |     BB?        |
@@ -87,7 +78,7 @@
 | UCR1, UCR2, UCR3, UCR4, UCR5, UCR6, UCR7, UCR8 | Cart, CartRoutes, CartError | unit | WB |
 | ICD1, ICD2, ICD3, ICD4, ICD5, ICD6, ICD7,ICD8, ICD9, ICD10, ICD11, ICD12, ICD13, ICD14, ICD15 | Cart, CartDAO, CartError, Database | integration | BB |
 | ICC1, ICC2, ICC3, ICC4, ICC5, ICC6, ICC7,ICC8 | Cart, CartDAO, CartError, Database, CartController | integration | BB |
-| ICR1, ICR2, ICR3, ICR4, ICR5, ICR6, ICR7,ICR8 | Cart, CartDAO, CartError, Database, CartController, CartRoutes | integration/API ?????? | BB |
+| ICR1, ICR2, ICR3, ICR4, ICR5, ICR6, ICR7,ICR8 | Cart, CartDAO, CartError, Database, CartController, CartRoutes | integration | BB |
 | UPD1, UPD2, UPD3, UPD4, UPD5, UPD6, UPD7, UPD8 | Product, ProductDAO, ProductError | Unit | WB |
 | UPC1, UPC2, UPC3, UPC4, UPC5, UPC6, UPC7 | Product, ProductController, ProductError | Unit | WB |
 | UPR1, UPR2, UPR3, UPR4, UPR5, UPR6, UPR7 | Product, ProductRoutes, ProductError | Unit | BB |
@@ -111,4 +102,4 @@
 ## Coverage white box
 
 Report here the screenshot of coverage values obtained with jest-- coverage
-![Coverage](./resources/TestReport/Coverage.jpg)
+![Coverage](./resources/TestReport/Coverage.png)

@@ -8,18 +8,18 @@ Count only effort spent on EZElectronics (so do not count effort spent in virtua
 
 These figures will not be used to evaluate neither the project nor the team, they are meant as practical application of basic project management.
 
-|      Week      | requirement engineering | design | coding | unit testing | integration testing | acceptance testing | management | git maven |
-| :------------: | :---------------------: | :----: | :----: | :----------: | :-----------------: | :----------------: | :--------: | :-------: |
+|     Week      | requirement engineering | design | coding | unit testing | integration testing | acceptance testing | management | git maven |
+| :-----------: | :---------------------: | :----: | :----: | :----------: | :-----------------: | :----------------: | :--------: | :-------: |
 |   Apr 8 -14   |                         |        |        |              |                     |                    |            |           |
-|  Apr 15 -21   |             32          |        |        |              |                     |                    |            |           |
-|  Apr 22 -28   |             22          |        |        |              |                     |                    |            |           |
-| Apr 29 -May 5 |            32             |  10      |        |              |                     |                    |            |           |
-|   May 6 -12   |                         |        |        |              |                     |                    |            |           |
-|  May 13 -19   |                         |        |        |              |                     |                    |            |           |
-|  May 20 -26   |                         |        |        |              |                     |                    |            |           |
-| May 27 -Jun 2 |                         |        |        |              |                     |                    |            |           |
-|   Jun 3 -9    |                         |        |        |              |                     |                    |            |           |
-|  Jun 10 -16   |                         |        |        |              |                     |                    |            |           |
+|  Apr 15 -21   |           32            |        |        |              |                     |                    |            |           |
+|  Apr 22 -28   |           22            |        |        |              |                     |                    |            |           |
+| Apr 29 -May 5 |           32            |   10   |        |              |                     |                    |            |           |
+|   May 6 -12   |                         |        |   70   |              |                     |                    |            |           |
+|  May 13 -19   |                         |        |   80   |              |                     |                    |            |           |
+|  May 20 -26   |                         |        |        |      70      |                     |                    |            |           |
+| May 27 -Jun 2 |                         |        |        |      90      |                     |                    |            |           |
+|   Jun 3 -9    |                         |        |        |              |         40          |                    |            |           |
+|  Jun 10 -16   |                         |        |        |              |         20          |                    |            |           |
 |  Jun 17 -23   |                         |        |        |              |                     |                    |            |           |
 |  Jun 24 -30   |                         |        |        |              |                     |                    |            |           |
 |   Jul 1 -7    |                         |        |        |              |                     |                    |            |           |
