@@ -112,9 +112,11 @@
 
 | Functional Requirement or scenario | Test(s) |
 | :--------------------------------: | :-----: |
-|                FRx                 |         |
-|                FRy                 |         |
-|                ...                 |         |
+|                FR1                 |         |
+|                FR2                 |         |
+|                FR3                 |         |
+|                FR4                 |    URR, URC, URD, IRD, IRC, IRR     |
+|                FR5                 |         |
 
 ## Coverage white box
 
