@@ -483,7 +483,7 @@ class CartDAO {
     getCustomerCarts(user: User): Promise<Cart[]> {
         return new Promise<Cart[]>((resolve, reject) => {
             try {
-
+                /*
                 const result: Cart[] = []
                 const sql = "SELECT * FROM carts c  WHERE customer=? AND paid=TRUE;"
                 db.all(sql, [user.username], (err: Error | null, rows: any) => {
@@ -506,6 +506,7 @@ class CartDAO {
                                 if (!row) {
                                     //rivedere
                                     reject(new CartNotFoundError());
+                                    //resolve([])
                                     return;
                                 }
                                 const productsInCart = row.map((p: { model: string; quantity: number; category: Category; price: number; }) => new ProductInCart(p.model, p.quantity, p.category, p.price));
@@ -522,7 +523,44 @@ class CartDAO {
                         resolve(result);
                     }).catch((error) => reject(error))
 
+                });*/
+
+                const sql = "SELECT * FROM carts LEFT JOIN prod_in_cart ON carts.idCart = prod_in_cart.idCart WHERE customer=? AND paid=TRUE ORDER BY carts.idCart;";
+                db.all(sql, [user.username], (err: Error | null, rows: any) => {
+                    if (err) {
+                        reject(err)
+                        return
+                    }
+                    if (!rows) {
+                        resolve([]);
+                        return
+                    }
+                    let list_p_and_c: Array<[number, Cart, ProductInCart]> = rows.map((row: { idCart: number, customer: string, paid: number, paymentDate: string, total: number, model: string, quantity: number, category: Category, price: number }) => {
+                        //tupla idCarrello-carrello-prodotto dentro
+                        return [row.idCart, new Cart(row.customer, row.paid == 0 ? false : true, row.paymentDate, row.total, []), row.model ? new ProductInCart(row.model, row.quantity, row.category, row.price) : null]
+                    })
+                    let resultMap = new Map<number, Cart>();
+                    list_p_and_c.forEach(([key, cart, prod]) => {
+                        // If the key already exists in the Map, add the value to the existing sum
+
+                        if (resultMap.has(key)) {
+                            if (prod !== null) {
+                                resultMap.get(key).products.push(prod);
+                            }
+                            resultMap.set(key, resultMap.get(key));
+                        } else {
+                            // Otherwise, initialize the key with the current value
+                            if (prod !== null) {
+                                cart.products.push(prod)
+                            }
+                            resultMap.set(key, cart);
+                        }
+                    });
+
+                    let resultArray: Cart[] = Array.from(resultMap.values());
+                    resolve(resultArray)
                 });
+
             }
             catch (error) {
                 reject(error)
@@ -618,20 +656,20 @@ class CartDAO {
                     }
                     let list_p_and_c: Array<[number, Cart, ProductInCart]> = rows.map((row: { idCart: number, customer: string, paid: number, paymentDate: string, total: number, model: string, quantity: number, category: Category, price: number }) => {
                         //tupla idCarrello-carrello-prodotto dentro
-                        return [row.idCart, new Cart(row.customer, row.paid == 0?false:true, row.paymentDate, row.total, []), row.model? new ProductInCart(row.model, row.quantity, row.category, row.price):null]
+                        return [row.idCart, new Cart(row.customer, row.paid == 0 ? false : true, row.paymentDate, row.total, []), row.model ? new ProductInCart(row.model, row.quantity, row.category, row.price) : null]
                     })
                     let resultMap = new Map<number, Cart>();
                     list_p_and_c.forEach(([key, cart, prod]) => {
                         // If the key already exists in the Map, add the value to the existing sum
-                        
+
                         if (resultMap.has(key)) {
-                            if(prod!==null){
+                            if (prod !== null) {
                                 resultMap.get(key).products.push(prod);
                             }
                             resultMap.set(key, resultMap.get(key));
                         } else {
                             // Otherwise, initialize the key with the current value
-                            if (prod!==null){
+                            if (prod !== null) {
                                 cart.products.push(prod)
                             }
                             resultMap.set(key, cart);

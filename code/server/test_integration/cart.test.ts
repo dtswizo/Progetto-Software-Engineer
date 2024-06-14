@@ -963,7 +963,6 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             
             let carts = response.body
             expect(carts).toBeDefined()
-            console.log(carts)
             expect(carts[0].customer).toBe(customer.name)
             expect(carts[0].paid).toBe(true)
             expect(carts[0].products).toStrictEqual([{model:testModel, quantity:2, category:Category.SMARTPHONE, price:50}])
