@@ -71,38 +71,12 @@
 |        IUC 5   |  User, DAO  | Integration     |     WB         |
 |        IUC 6   |  User, DAO  | Integration     |     WB         |
 |        IUC 7   |  User, DAO  | Integration     |     WB         |
-|        URR 1   |  Review, Routes  | API     |     BB         |
-|        URR 2   |  Review, Routes  | API     |     BB         |
-|        URR 3   |  Review, Routes  | API     |     BB         |
-|        URR 4   |  Review, Routes  | API     |     BB         |
-|        URR 5   |  Review, Routes  | API     |     BB         |
-|        URC 1   |  Review, Controller  | Unit     |     WB         |
-|        URC 2   |  Review, Controller  | Unit     |     WB         |
-|        URC 3   |  Review, Controller  | Unit     |     WB         |
-|        URC 4   |  Review, Controller  | Unit     |     WB         |
-|        URC 5   |  Review, Controller  | Unit     |     WB         |
-|        URD 1   |  Review, DAO  | Unit     |     WB         |
-|        URD 2   |  Review, DAO  | Unit     |     WB         |
-|        URD 3   |  Review, DAO  | Unit     |     WB         |
-|        URD 4   |  Review, DAO  | Unit     |     WB         |
-|        URD 5   |  Review, DAO  | Unit     |     WB         |
-|        URD 6   |  Review, DAO  | Unit     |     WB         |
-|        IRD 1   |  Review, DAO-DB  | Integration     |     BB         |
-|        IRD 2   |  Review, DAO-DB  | Integration     |     BB         |
-|        IRD 3   |  Review, DAO-DB  | Integration     |     BB         |
-|        IRD 4   |  Review, DAO-DB  | Integration     |     BB         |
-|        IRD 5   |  Review, DAO-DB  | Integration     |     BB         |
-|        IRC 1   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRC 2   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRC 3   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRC 4   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRC 5   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 1   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 2   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 3   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 4   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 5   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
-|        IRR 6   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
+|        URR1, URR2, URR3, URR4, URR5   |  Review, Routes  | API     |     BB         |
+|        URC1, URC2, URC3, URC4, URC5   |  Review, Controller  | Unit     |     WB         |
+|        URD1, URD2, URD3, URD4, URD5, URD6   |  Review, DAO  | Unit     |     WB         |
+|        IRD1, IRD2, IRD3, IRD4, IRD5   |  Review, DAO-DB  | Integration     |     BB         |
+|        IRC1, IRC2, IRC3, IRC4, IRC5   |  Review, CONTROLLER-DAO-DB  | Integration     |     BB         |
+|        IRR1, IRR2, IRR3, IRR4, IRR5, IRR6   |  Review, ROUTE-CONTROLLER-DAO-DB  | Integration     |     BB         |
 
 # Coverage
 
