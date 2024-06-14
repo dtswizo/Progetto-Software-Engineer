@@ -122,7 +122,7 @@
 |                FR2                 |         |
 |                FR3                 |         |
 |                FR4                 |    URR, URC, URD, IRD, IRC, IRR     |
-|                FR5                 |         |
+|                FR5                 | UCD, UCC, UCR, ICD, ICC, ICR |
 
 ## Coverage white box
 
