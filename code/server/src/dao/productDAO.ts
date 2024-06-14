@@ -178,6 +178,7 @@ class ProductDAO {
                 let sql="DELETE FROM products;"
                 db.run(sql, [], (err: Error | null) => {
                     if (err) {
+                        console.log(err.message)
                         reject(err)
                         return
                     }

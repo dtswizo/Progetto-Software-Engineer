@@ -59,7 +59,7 @@ class CartDAO {
     checkIfProductExistsInCart(user: User, model: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
             try {
-                const sql = "SELECT * FROM carts c JOIN prod_in_cart pc WHERE   c.idCart = pc.idCart AND customer=? AND model=?;";
+                const sql = "SELECT * FROM carts c JOIN prod_in_cart pc WHERE   c.idCart = pc.idCart AND customer=? AND model=? AND paid=false;";
                 db.get(sql, [user.username, model], (err: Error | null, row: any) => {
 
                     if (err) {
@@ -205,15 +205,19 @@ class CartDAO {
                 }
 
                 cartId = row.idCart;
+                console.log("in aggiungiProdCArt")
                 //In questo caso il carrello è vuoto
                 if (!row || checkProduct === false) {
+                    console.log("il prodotto NON esiste")
                     const sql3 = "INSERT INTO prod_in_cart(idCart,model,quantity,category,price) VALUES (?,?,?,?,?)"
+                    console.log(cartId)
                     db.run(sql3, [cartId, product, 1, category, price], (err: Error | null) => {
                         if (err) {
                             reject(err);
                             return
                         }
                         this.updateCartTotal(user, price).then(() => {
+                            console.log("update cart total ok")
                             resolve(true)
                         }).catch((err) => reject(err))
                         //rivedere
@@ -223,6 +227,8 @@ class CartDAO {
                 }
                 //Prodotto esiste, aggiornarne quantità
                 else if (checkProduct === true) {
+                    console.log("il prodotto esiste")
+                    
                     const sql3 = "UPDATE prod_in_cart SET quantity=quantity+1 WHERE idCart=? AND model=?"
                     db.run(sql3, [cartId, product], (err: Error | null) => {
                         if (err) {
@@ -263,6 +269,7 @@ class CartDAO {
                             price = row.sellingPrice;
                             category = row.category;
                             if (checkCart === false) {
+                                console.log("il carrello non esiste ancora")
                                 //CARRELLO DA CREARE, PRENDERE ID E INSERIRE IN PRODINCART
                                 const sql = "INSERT INTO carts(customer,paid,paymentDate,total) VALUES (?,?,?,?)"
                                 db.run(sql, [user.username, false, null, 0], (err: Error | null) => {
@@ -270,11 +277,13 @@ class CartDAO {
                                         reject(err);
                                         return
                                     }
+                                    console.log("aggiungo"+product)
                                     this.aggiungiProdottoACarrello(user, checkProduct, product, category, price)
                                         .then((res) => resolve(res))
                                         .catch((err) => reject(err))
                                 })
                             } else {
+                                console.log("Il carello esiste gia")
                                 this.aggiungiProdottoACarrello(user, checkProduct, product, category, price)
                                     .then((res) => resolve(res))
                                     .catch((err) => reject(err))

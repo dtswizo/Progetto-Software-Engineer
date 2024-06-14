@@ -62,9 +62,9 @@ class ProductRoutes {
             this.authenticator.isAdminOrManager,
             body("model").isString().isLength({ min: 1 }),
             body("category").isString().isIn(["Smartphone", "Laptop", "Appliance"]),
-            body("quantity").isInt({min:0}),
+            body("quantity").isInt({min:1}),
             body("details").isString(),
-            body("sellingPrice").isFloat({min:0}),
+            body("sellingPrice").isFloat({min:1}),
             body("arrivalDate").isString(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.registerProducts(req.body.model, req.body.category, req.body.quantity, req.body.details, req.body.sellingPrice, req.body.arrivalDate)
@@ -111,7 +111,7 @@ class ProductRoutes {
             (req: any, res: any, next: any) => this.controller.sellProduct(req.params.model, req.body.quantity, req.body.sellingDate)
                 .then((quantity: number) => res.status(200).json())
                 .catch((err) => {
-                    console.log(err)
+                    //console.log(err)
                     next(err)
                 })
         )
@@ -155,9 +155,6 @@ class ProductRoutes {
          * - model: string. It can only be present if grouping is equal to "model" (in which case it must be present and not empty).
          * It returns an array of Product objects.
          */
-
-        //COMMENTATI I CONTROLLIIIII
-        //IIIIIIIIIII
         this.router.get(
             "/available",
             this.authenticator.isLoggedIn,

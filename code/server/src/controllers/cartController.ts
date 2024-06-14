@@ -28,7 +28,7 @@ class CartController {
     async addToCart(user: User, product: string)/*: Promise<Boolean>*/ { 
         
             let quantity = await this.dao.checkProductAvailability(product);
-            //console.log(quantity)
+            console.log(quantity)
             if (quantity === -1)
                 throw new ProductNotFoundError(); //ERROR 404
             if (quantity === 0)
