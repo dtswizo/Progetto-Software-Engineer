@@ -1,17 +1,13 @@
 import { expect, jest } from '@jest/globals';
 import request from 'supertest'
-import express from 'express';
-import { spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, initMockedApp } from '../src/testUtilities'
-
 import ReviewController from '../src/controllers/reviewController';
 import ReviewDAO from '../src/dao/reviewDAO';
 import { User, Role } from '../src/components/user';
-import { Category } from '../src/components/product';
 import { ProductNotFoundError } from '../src/errors/productError';
 import { ExistingReviewError, NoReviewProductError } from '../src/errors/reviewError';
-import { ProductReview } from '../src/components/review';
 import { cleanup, cleanupDB } from '../src/db/cleanup';
 import db from "../src/db/db"
+import { app } from "../index"
 
 let reviewDAO: ReviewDAO;
 let reviewController: ReviewController;
@@ -26,41 +22,7 @@ const testUser = new User('MarioRossi',
     ''
 );
 const testModel = 'iPhone13';
-const testDate = new Date('2024-05-21').toISOString().split('T')[0];
 
-const addReview = async () => {
-    const sql = "INSERT INTO reviews(user, model, score, date, comment) VALUES(?, ?, ?, ?, ?)";
-    await new Promise<void>((resolve, reject) => {
-        try {
-            db.run(sql, [testUser.username, testModel, testScore, testDate, testComment], (err) => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve();
-            });
-        } catch (error) {
-            reject(error);
-        }
-    });
-}
-
-const removeReview = async () => {
-    console.log("RemoveReview");
-    const sql = "DELETE FROM reviews";
-    await new Promise<void>((resolve, reject) => {
-        try {
-            db.run(sql, [], (err) => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve();
-            });
-        } catch (error) {
-            reject(error);
-        }
-
-    });
-}
 const addProduct = async (model: String) => {
     const sqlProduct = "INSERT INTO products(model) VALUES(?)"
     await new Promise<void>((resolve, reject) => {
@@ -78,7 +40,6 @@ const addProduct = async (model: String) => {
 }
 
 const removeProduct = async () => {
-    console.log("RemoveProduct");
     const sql = "DELETE FROM products";
     await new Promise<void>((resolve, reject) => {
         try {
@@ -119,39 +80,6 @@ const setupDB = async () => {
     });
 }
 
-const addUser = async (user: User) => {
-    const sqlUser = "INSERT INTO users(username, name, surname, role) VALUES(?, ?, ?, ?)"
-    await new Promise<void>((resolve, reject) => {
-        try {
-            db.run(sqlUser, [user.username, user.name, user.surname, user.role], (err) => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve();
-            });
-        } catch (error) {
-            reject(error);
-        }
-    });
-}
-
-const removeUser = async () => {
-    const sql = "DELETE FROM products";
-    await new Promise<void>((resolve, reject) => {
-        try {
-            db.run(sql, [], (err) => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve();
-            });
-        } catch (error) {
-            reject(error);
-        }
-
-    });
-}
-
 describe('Integration DAO - DB', () => {
 
     beforeAll(async () => {
@@ -159,31 +87,31 @@ describe('Integration DAO - DB', () => {
         await setupDB();
     });
 
-    describe('addReview', () => {
+    describe('IRD1 - addReview', () => {
 
         beforeEach(async () => {
             reviewDAO = new ReviewDAO;
         });
 
-        it("Success - void", async () => {
+        it("IRD1.1 -Success - void", async () => {
 
             await expect(reviewDAO.addReview(testModel, testUser, testScore, testComment)).resolves.toBe(undefined);
         });
 
-        it("Error - ExistingReviewError", async () => {
+        it("IRD1.2 - Error - ExistingReviewError", async () => {
 
             await expect(reviewDAO.addReview(testModel, testUser, testScore, testComment)).rejects.toThrowError(ExistingReviewError);
         });
 
     });
 
-    describe("getProductReviews", () => {
+    describe("IRD2 - getProductReviews", () => {
 
         beforeEach(async () => {
             reviewDAO = new ReviewDAO;
         });
 
-        it("Success - ProductReview[] not empty", async () => {
+        it("IRD2.1 - Success - ProductReview[] not empty", async () => {
             const result = await reviewDAO.getProductReviews(testModel);
             const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -196,56 +124,56 @@ describe('Integration DAO - DB', () => {
 
     });
 
-    describe("deleteReview", () => {
+    describe("IRD3 - deleteReview", () => {
         beforeEach(async () => {
             reviewDAO = new ReviewDAO;
         });
 
-        it("Success - void", async () => {
+        it("IRD3.1 - Success - void", async () => {
             await expect(reviewDAO.deleteReview(testModel, testUser)).resolves.toBe(undefined);
         });
 
-        it("Error - NoReviewProductError", async () => {
+        it("IRD3.2 - Error - NoReviewProductError", async () => {
             await expect(reviewDAO.deleteReview(testModel, testUser)).rejects.toThrowError(NoReviewProductError);
         });
 
     });
 
-    describe("deleteReviewsOfProduct", () => {
+    describe("IRD4 - deleteReviewsOfProduct", () => {
 
         beforeEach(async () => {
             reviewDAO = new ReviewDAO;
         });
 
-        it("Success - Product has reviews -  void", async () => {
+        it("IRD4.1 - Success - Product has reviews -  void", async () => {
             await expect(reviewDAO.deleteReviewsOfProduct(testModel)).resolves.toBe(undefined);
         });
 
     });
 
-    describe("deleteAllReviews", () => {
+    describe("IRD5 - deleteAllReviews", () => {
 
         beforeEach(async () => {
             reviewDAO = new ReviewDAO;
         });
 
-        it("Success - Reviews present in db - void", async () => {
+        it("IRD5.1 - Success - Reviews present in db - void", async () => {
             await expect(reviewDAO.deleteAllReviews()).resolves.toBe(undefined);
         });
 
     });
 
-    describe("productCheck", () => {
+    describe("IRD6 - productCheck", () => {
 
         beforeEach(async () => {
             reviewDAO = new ReviewDAO;
         });
 
-        it("Success - true", async () => {
+        it("IRD6.1 - Success - true", async () => {
             await expect(reviewDAO.productCheck(testModel)).resolves.toBe(true);
         });
 
-        it("Error - ProductNotFoundError", async () => {
+        it("IRD6.2 - Error - ProductNotFoundError", async () => {
             await removeProduct();
             await expect(reviewDAO.productCheck(testModel)).rejects.toThrowError(ProductNotFoundError);
         });
@@ -260,14 +188,14 @@ describe('Integration CONTROLLER - DAO - DB', () => {
         await setupDB();
     });
 
-    describe("addReview", () => {
+    describe("IRC1 - addReview", () => {
 
         beforeEach(async () => {
             reviewController = new ReviewController();
             reviewDAO = reviewController.reviewDAO;
         });
 
-        it("404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
+        it("IRC1.1 - 404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
 
             const spyAddReview = jest.spyOn(reviewDAO, "addReview");
             const spyProductCheck = jest.spyOn(reviewDAO, "productCheck");
@@ -285,7 +213,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             spyProductCheck.mockRestore();
         });
 
-        it("200 OK - model not empty", async () => {
+        it("IRC1.2 - 200 OK - model not empty", async () => {
 
             const spyAddReview = jest.spyOn(reviewController.reviewDAO, "addReview");
             const spyProductCheck = jest.spyOn(reviewDAO, "productCheck");
@@ -309,7 +237,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             spyProductCheck.mockRestore();
         });
 
-        it("409 KO ExistingReviewError - Already existing review for the product made by the customer", async () => {
+        it("IRC1.3 - 409 KO ExistingReviewError - Already existing review for the product made by the customer", async () => {
 
             const spyAddReview = jest.spyOn(reviewDAO, "addReview");
             const spyProductCheck = jest.spyOn(reviewDAO, "productCheck");
@@ -329,18 +257,18 @@ describe('Integration CONTROLLER - DAO - DB', () => {
         });
     });
 
-    describe("getProductReviews", () => {
+    describe("IRC2 - getProductReviews", () => {
 
         beforeEach(async () => {
             reviewController = new ReviewController();
             reviewDAO = reviewController.reviewDAO;
         });
 
-        it("200 OK - model not empty", async () => {
+        it("IRC2.1 - 200 OK - model not empty", async () => {
 
             const spyGetProductReviews = jest.spyOn(reviewDAO, "getProductReviews");
 
-            
+
             const result = await reviewController.getProductReviews(testModel);
             const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -349,7 +277,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             expect(result[0].score).toBe(testScore);
             expect(dateRegex.test(result[0].date)).toBe(true);
             expect(result[0].comment).toBe(testComment);
-            
+
             expect(reviewDAO.getProductReviews).toHaveBeenCalledTimes(1);
             expect(reviewDAO.getProductReviews).toHaveBeenCalledWith(
                 testModel
@@ -360,13 +288,13 @@ describe('Integration CONTROLLER - DAO - DB', () => {
 
     });
 
-    describe("deleteReview", () => {
+    describe("IRC3 - deleteReview", () => {
         beforeEach(async () => {
             reviewController = new ReviewController();
             reviewDAO = reviewController.reviewDAO;
         });
 
-        it("200 OK - model not empty", async () => {
+        it("IRC3.1 - 200 OK - model not empty", async () => {
 
             const spyProductCheck = jest.spyOn(reviewDAO, "productCheck");
             const spyDeleteReview = jest.spyOn(reviewDAO, "deleteReview");
@@ -386,7 +314,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             spyDeleteReview.mockRestore();
         });
 
-        it("404 KO NoReviewProductError - current user does not have a review for the product identified by model", async () => {
+        it("IRC3.2 - 404 KO NoReviewProductError - current user does not have a review for the product identified by model", async () => {
 
             const spyProductCheck = jest.spyOn(reviewDAO, "productCheck");
             const spyDeleteReview = jest.spyOn(reviewDAO, "deleteReview");
@@ -407,7 +335,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
         });
 
 
-        it("404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
+        it("IRC3.3 - 404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
 
             const spyProductCheck = jest.spyOn(reviewDAO, "productCheck");
             const spyDeleteReview = jest.spyOn(reviewDAO, "deleteReview");
@@ -426,13 +354,13 @@ describe('Integration CONTROLLER - DAO - DB', () => {
 
     });
 
-    describe("deleteReviewsOfProduct", () => {
+    describe("IRC4 - deleteReviewsOfProduct", () => {
         beforeEach(async () => {
             reviewController = new ReviewController();
             reviewDAO = reviewController.reviewDAO;
         });
 
-        it("404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
+        it("IRC4.1 - 404 KO ProductNotFoundError - model does not represent an existing product in the database", async () => {
             const spyProductCheck = jest.spyOn(reviewDAO, "productCheck");
             const spyDeleteReviewsOfProduct = jest.spyOn(reviewDAO, "deleteReviewsOfProduct");
 
@@ -448,7 +376,7 @@ describe('Integration CONTROLLER - DAO - DB', () => {
             spyDeleteReviewsOfProduct.mockRestore();
         });
 
-        it("200 OK - model not empty", async () => {
+        it("IRC4.2 - 200 OK - model not empty", async () => {
 
             const spyProductCheck = jest.spyOn(reviewDAO, "productCheck");
             const spyDeleteReviewsOfProduct = jest.spyOn(reviewDAO, "deleteReviewsOfProduct");
@@ -473,13 +401,13 @@ describe('Integration CONTROLLER - DAO - DB', () => {
 
     });
 
-    describe("deleteAllReviews", () => {
+    describe("IRC5 - deleteAllReviews", () => {
         beforeEach(async () => {
             reviewController = new ReviewController();
             reviewDAO = reviewController.reviewDAO;
         });
 
-        it("200 OK", async () => {
+        it("IRC5.1 - 200 OK", async () => {
 
             const spyDeleteAllReviews = jest.spyOn(reviewDAO, "deleteAllReviews");
 
@@ -494,31 +422,56 @@ describe('Integration CONTROLLER - DAO - DB', () => {
 
 });
 
-/*
 describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
     const baseURL = "/ezelectronics"
-    let app: express.Application;
+    //Default user information. We use them to create users and evaluate the returned values
+    const customer = { username: "customer", name: "customer", surname: "customer", password: "customer", role: "Customer" }
+    const customer2 = { username: "customer2", name: "customer2", surname: "customer2", password: "customer2", role: "Customer" }
+    const admin = { username: "admin", name: "admin", surname: "admin", password: "admin", role: "Admin" }
+    //Cookies for the users. We use them to keep users logged in. Creating them once and saving them in a variables outside of the tests will make cookies reusable
+    let customerCookie: string
+    let adminCookie: string
 
-    describe("POST /ezelectronics/reviews/:model", () => {
+    //Helper function that creates a new user in the database.
+    //Can be used to create a user before the tests or in the tests
+    //Is an implicit test because it checks if the return code is successful
+    const postUser = async (userInfo: any) => {
+        await request(app)
+            .post(`${baseURL}/users`)
+            .send(userInfo)
+            .expect(200)
+    }
 
-        beforeEach(async () => {
-            //jest.clearAllMocks();
-            console.log("initBeforeEach");
-            jest.resetAllMocks();
-            app = initMockedApp();
-            console.log("before");
-            await cleanupDB();
-            console.log("after");
-        });
+    //Helper function that logs in a user and returns the cookie
+    //Can be used to log in a user before the tests or in the tests
+    const login = async (userInfo: any) => {
+        return new Promise<string>((resolve, reject) => {
+            request(app)
+                .post(`${baseURL}/sessions`)
+                .send(userInfo)
+                .expect(200)
+                .end((err, res) => {
+                    if (err) {
+                        reject(err)
+                    }
+                    resolve(res.header["set-cookie"][0])
+                })
+        })
+    }
 
-        afterEach(async() => {
-            await cleanupDB();
-        });
 
-        it("Not Logged - 401 error code", async () => {
-            console.log("Not Logged - 401 error code");
-            spyNotLogged();
-            enableMockedAuth(app);
+
+    beforeAll(async () => {
+        await cleanupDB();
+        await setupDB();
+    });
+
+    afterAll(async () => {
+        await cleanup();
+    })
+
+    describe("IRR1 - Unhoutorized errors", () => {
+        it("IRR1.1 - POST /ezelectronics/reviews/:model - Not Logged - 401 error code", async () => {
 
             const testReview = {
                 score: testScore,
@@ -533,130 +486,229 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             expect(response.status).toBe(401);
         });
 
-        it("Customer - 200 success code", async () => {
-            console.log("Customer - 200 success code");
-            const testLoggedUser = spyCustomer();
-            enableMockedAuth(app);
-            await addUser(testLoggedUser);
-            await addProduct(testModel);
-
-            const testReview = {
-                score: testScore,
-                comment: testComment
-            }
+        it("IRR1.2 - GET /ezelectronics/reviews/:model - Not Logged - 401 error code", async () => {
 
             const response = await request(app)
-                .post(`${baseURL}/reviews/${testModel}`)
-                .send(testReview)
+                .get(`${baseURL}/reviews/${testModel}`)
                 .set('Content-Type', 'application/json');
 
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(401);
         });
 
-        it("Customer - score < 1 - 422 error code", async () => {
-            console.log("Customer - score < 1 - 422 error code");
-            const testLoggedUser = spyCustomer();
-            enableMockedAuth(app);
-            await addUser(testLoggedUser);
-            await addProduct(testModel);
-
-            const testReview = {
-                score: 0,
-                comment: testComment
-            }
-            const response = await request(app)
-                .post(`${baseURL}/reviews/${testModel}`)
-                .send(testReview)
-                .set('Content-Type', 'application/json');
-
-            expect(response.status).toBe(422);
-        });
-        it("Customer - score > 5 - 422 error code", async () => {
-            console.log("Customer - score > 5 - 422 error code");
-            const testLoggedUser = spyCustomer();
-            enableMockedAuth(app);
-            await addUser(testLoggedUser);
-            await addProduct(testModel);
-
-            const testReview = {
-                score: 6,
-                comment: testComment
-            }
+        it("IRR1.3 - DELETE /ezelectronics/reviews/:model - Not Logged - 401 error code", async () => {
 
             const response = await request(app)
-                .post(`${baseURL}/reviews/${testModel}`)
-                .send(testReview)
+                .delete(`${baseURL}/reviews/${testModel}`)
                 .set('Content-Type', 'application/json');
 
-            expect(response.status).toBe(422);
+            expect(response.status).toBe(401);
         });
 
-        it("Customer - empty comment - 422 error code", async () => {
-            console.log("Customer - empty comment - 422 error code");
-            const testLoggedUser = spyCustomer();
-            enableMockedAuth(app);
-            await addUser(testLoggedUser);
-            await addProduct(testModel);
-
-            jest.spyOn(ReviewController.prototype, "addReview").mockResolvedValue();
-
-            const testReview = {
-                score: testScore,
-                comment: ""
-            }
+        it("IRR1.4 - DELETE /ezelectronics/reviews/:model/all - Not Logged - 401 error code", async () => {
 
             const response = await request(app)
-                .post(`${baseURL}/reviews/${testModel}`)
-                .send(testReview)
+                .delete(`${baseURL}/reviews/${testModel}/all`)
                 .set('Content-Type', 'application/json');
 
-            expect(response.status).toBe(422);
+            expect(response.status).toBe(401);
 
         });
 
-        it("Customer - Already existing review for the product made by the customer - 409 error code", async () => {
-            console.log("Customer - Already existing review for the product made by the customer - 409 error code")
-            const testLoggedUser = spyCustomer();
-            await addUser(testLoggedUser);
-            await addProduct(testModel);
-            await addReview();
-            enableMockedAuth(app);
-    
-            const testReview = {
-                score: testScore,
-                comment: testComment
-            }
-            
-            const response = await request(app)
-                .post(`${baseURL}/reviews/${testModel}`)
-                .send(testReview)
-                .set('Content-Type', 'application/json');
-    
-            expect(response.status).toBe(409);
-        });
-
-        
-        /*it("Customer - model does not represent an existing product in the database - 404 error code", async () => {
-            console.log("start");
-            const testLoggedUser = spyCustomer();
-            enableMockedAuth(app);
-            await addUser(testLoggedUser);
-            await addProduct(testModel);
-
-
-            const testReview = {
-                score: testScore,
-                comment: testComment
-            }
+        it("IRR1.5 - DELETE /ezelectronics/reviews - Not Logged - 401 error code", async () => {
 
             const response = await request(app)
-                .post(`${baseURL}/reviews/${testModel}`)
-                .send(testReview)
+                .delete(`${baseURL}/reviews`)
                 .set('Content-Type', 'application/json');
 
+            expect(response.status).toBe(401);
 
-            expect(response.status).toBe(200);
         });
 
     });
-});*/
+
+    describe("IRR2 - POST /ezelectronics/reviews/:model", () => {
+
+        it("IRR2.1 - Customer - 200 success code", async () => {
+            await postUser(customer)
+            customerCookie = await login(customer)
+
+            const testReview = {
+                score: testScore,
+                comment: testComment
+            }
+            const response = await request(app)
+                .post(`${baseURL}/reviews/${testModel}`)
+                .set("Cookie", customerCookie)
+                .send(testReview)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(200);
+        });
+
+        it("IRR2.2 - Customer - score < 1 - 422 error code", async () => {
+
+            const testReview = {
+                score: 0,
+                comment: "A very cool smartphone!"
+            }
+            const response = await request(app)
+                .post(`${baseURL}/reviews/${testModel}`)
+                .set("Cookie", customerCookie)
+                .send(testReview)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(422);
+        });
+
+        it("IRR2.3 - Customer - score > 5 - 422 error code", async () => {
+            const testReview = {
+                score: 6,
+                comment: "A very cool smartphone!"
+            }
+            const response = await request(app)
+                .post(`${baseURL}/reviews/${testModel}`)
+                .set("Cookie", customerCookie)
+                .send(testReview)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(422);
+        });
+
+        it("IRR2.4 - Customer - empty comment - 422 error code", async () => {
+
+            const testReview = {
+                score: 1,
+                comment: ""
+            }
+            const response = await request(app)
+                .post(`${baseURL}/reviews/${testModel}`)
+                .set("Cookie", customerCookie)
+                .send(testReview)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(422);
+        });
+
+        it("IRR2.5 - Customer - Already existing review for the product made by the customer - 409 error code", async () => {
+            const testReview = {
+                score: 5,
+                comment: "A very cool smartphone!"
+            }
+            const response = await request(app)
+                .post(`${baseURL}/reviews/${testModel}`)
+                .set("Cookie", customerCookie)
+                .send(testReview)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(409);
+        });
+
+        it("IRR2.6 - Customer - model does not represent an existing product in the database - 404 error code", async () => {
+            const testReview = {
+                score: 5,
+                comment: "A very cool smartphone!"
+            }
+            const model = "iPhone12"
+            const response = await request(app)
+                .post(`${baseURL}/reviews/${model}`)
+                .set("Cookie", customerCookie)
+                .send(testReview)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(404);
+        });
+    });
+
+    describe("IRR3 - GET /ezelectronics/reviews/:model", () => {
+        it("IRR3.1 - Customer - 200 success code", async () => {
+
+            const response = await request(app)
+                .get(`${baseURL}/reviews/${testModel}`)
+                .set("Cookie", customerCookie)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(200);
+        });
+
+        it("IRR3.2 - Customer - model does not represent an existing product in the database - 200", async () => {
+
+            const model = 'iPhone12';
+            const response = await request(app)
+                .get(`${baseURL}/reviews/${model}`)
+                .set("Cookie", customerCookie)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(200);
+            expect(response.body).toStrictEqual([]);
+        });
+    });
+
+    describe("IRR4 - DELETE /ezelectronics/reviews/:model", () => {
+        it("IRR4.1 - Customer - 200 success code", async () => {
+            const response = await request(app)
+                .delete(`${baseURL}/reviews/${testModel}`)
+                .set("Cookie", customerCookie)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(200);
+        });
+
+        it("IRR4.2 - Customer - user does not have review for the product identified by model - 404 error code", async () => {
+            await postUser(customer2);
+            const customerCookie2 = await login(customer2);
+            const response = await request(app)
+                .delete(`${baseURL}/reviews/${testModel}`)
+                .set("Cookie", customerCookie2)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(404);
+
+        });
+
+        it("IRR4.3 - Customer - model does not represent an existing product in the database - 404 error code", async () => {
+            const response = await request(app)
+                .delete(`${baseURL}/reviews/${testModel}`)
+                .set("Cookie", customerCookie)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(404);
+        });
+
+    });
+
+    describe("IRR5 - DELETE /ezelectronics/reviews/:model/all", () => {
+        it("IRR5.1 - Admin - 200 success code", async () => {
+            await postUser(admin);
+            adminCookie = await login(admin);
+
+            const response = await request(app)
+                .delete(`${baseURL}/reviews/${testModel}/all`)
+                .set("Cookie", adminCookie)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(200);
+        });
+
+        it("IRR5.2 - Admin - model does not represent an existing product in the database - 404 error code", async () => {
+
+            const model = 'iPhone12';
+            const response = await request(app)
+                .delete(`${baseURL}/reviews/${model}/all`)
+                .set("Cookie", adminCookie)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(404);
+        });
+    });
+
+    describe("IRR6 - DELETE /ezelectronics/reviews", () => {
+        it("IRR6.1 - Admin - 200 success code", async () => {
+            const response = await request(app)
+                .delete(`${baseURL}/reviews`)
+                .set("Cookie", adminCookie)
+                .set('Content-Type', 'application/json');
+
+            expect(response.status).toBe(200);
+        });
+    });
+});
