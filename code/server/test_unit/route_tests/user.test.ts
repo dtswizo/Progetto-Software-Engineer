@@ -338,7 +338,7 @@ describe("UUR 4 - GET /ezelectronics/users/:username", () => {
         expect(UserController.prototype.getUserByUsername).toHaveBeenCalledWith(admin, user.username)
     })
 
-    test("UUR 4.2 - 401 KO - User is not an Admin", async () => {
+    test("UUR 4.3 - 401 KO - User is not an Admin", async () => {
         const admin = spyAdmin();
         const user = new User ("MarioRossi","Mario","Rossi",Role.CUSTOMER,"","")
         enableMockedAuth(app);
@@ -355,7 +355,7 @@ describe("UUR 4 - GET /ezelectronics/users/:username", () => {
     
     })
     
-    test("UUR 4.3 - 404 KO - User does not exist in database", async () => {
+    test("UUR 4.4 - 404 KO - User does not exist in database", async () => {
         const admin = spyAdmin();
         const user = new User ("testtt","test","test",Role.CUSTOMER,"","")
         enableMockedAuth(app);
@@ -593,7 +593,33 @@ describe("UUR 7 - PATCH /ezelectronics/users/:username", () => {
         expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate, newUser.username)
     })
 
-    test("UUR 7.2 - 404 KO - User not found", async () => {
+    test("UUR 7.2 - 200 OK - User succesfully updated", async () => {
+        const user = spyAdmin();
+       // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
+        const newUser = { //Define a test user object sent to the route
+            username: "MarioRossi",
+            name: "newName",
+            surname: "newSurname",
+            role: "Customer",
+            address: "Torino, Via Madama Cristina 27",
+            birthdate:"1980-01-01"
+        }
+        const updatedUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
+       
+        enableMockedAuth(app);
+
+        jest.spyOn(UserController.prototype, "updateUserInfo").mockResolvedValueOnce(updatedUser) 
+        const response = await request(app).patch(`${baseURL}/users/${newUser.username}`).send(newUser)
+        
+        expect(response.status).toBe(200)
+        
+        expect(Authenticator.prototype.isLoggedIn).toHaveBeenCalledTimes(1);
+        
+        expect(UserController.prototype.updateUserInfo).toHaveBeenCalledTimes(1) 
+        expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate, newUser.username)
+    })
+
+    test("UUR 7.3 - 404 KO - User not found", async () => {
         const user = spyCustomer();
        // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         const newUser = { //Define a test user object sent to the route
@@ -621,7 +647,7 @@ describe("UUR 7 - PATCH /ezelectronics/users/:username", () => {
         expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate, newUser.username)
     })
 
-    test("UUR 7.3 - 401 KO - Username doesn't match logged user and is not Admin", async () => {
+    test("UUR 7.4 - 401 KO - Username doesn't match logged user and is not Admin", async () => {
         const user = spyCustomer();
        // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         const newUser = { //Define a test user object sent to the route
@@ -649,7 +675,7 @@ describe("UUR 7 - PATCH /ezelectronics/users/:username", () => {
         expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate, newUser.username)
     })
 
-    test("UUR 7.4 - 400 KO - User birthdate is after current date", async () => {
+    test("UUR 7.5 - 400 KO - User birthdate is after current date", async () => {
         const user = spyCustomer();
        // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         const newUser = { //Define a test user object sent to the route
@@ -677,7 +703,7 @@ describe("UUR 7 - PATCH /ezelectronics/users/:username", () => {
         expect(UserController.prototype.updateUserInfo).toHaveBeenCalledWith(user,newUser.name,newUser.surname,newUser.address,newUser.birthdate, newUser.username)
     })
 
-    test("UUR 7.5.1 - 422 KO - Name is empty", async () => {
+    test("UUR 7.6.1 - 422 KO - Name is empty", async () => {
         const user = spyCustomer();
        // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
         const newUser = { //Define a test user object sent to the route
@@ -698,7 +724,7 @@ describe("UUR 7 - PATCH /ezelectronics/users/:username", () => {
         expect(UserController.prototype.updateUserInfo).toHaveBeenCalledTimes(0) 
          })
 
-         test("UUR 7.5.2 - 422 KO - Surname is empty", async () => {
+         test("UUR 7.6.2 - 422 KO - Surname is empty", async () => {
             const user = spyCustomer();
            // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
             const newUser = { //Define a test user object sent to the route
@@ -719,7 +745,7 @@ describe("UUR 7 - PATCH /ezelectronics/users/:username", () => {
             expect(UserController.prototype.updateUserInfo).toHaveBeenCalledTimes(0) 
              })
 
-             test("UUR 7.5.3 - 422 KO - Address is empty", async () => {
+             test("UUR 7.6.3 - 422 KO - Address is empty", async () => {
                 const user = spyCustomer();
                // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
                 const newUser = { //Define a test user object sent to the route
@@ -740,7 +766,7 @@ describe("UUR 7 - PATCH /ezelectronics/users/:username", () => {
                 expect(UserController.prototype.updateUserInfo).toHaveBeenCalledTimes(0) 
                  })
 
-                 test("UUR 7.5.4 - 422 KO - Birthdate is empty", async () => {
+                 test("UUR 7.6.4 - 422 KO - Birthdate is empty", async () => {
                     const user = spyCustomer();
                    // const newUser = new User("MarioRossi","newName","newSurname",Role.CUSTOMER,"Torino, Via Madama Cristina 27","1980-01-01")
                     const newUser = { //Define a test user object sent to the route
