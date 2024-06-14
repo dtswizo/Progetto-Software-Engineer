@@ -129,6 +129,10 @@ class ProductController {
         //NOTA: I parametri non vengono registrati come "null" ma come "undefined"
         //Non l'ho svolto per tutti ma solo per i controlli che mi interessavano
         // (error parameter category... e grouping == null), vedi se è necessario per gli altri
+        if(model === undefined) {
+            model = null;
+        }
+
         if (grouping===null && (category!==null || model!==null)){
             throw new FilteringError();
         }
