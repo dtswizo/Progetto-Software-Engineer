@@ -16,6 +16,7 @@
 # Dependency graph
 
 ![ProductDependencyGraph](./resources/TestReport/ProductDependencyGraph.png)
+![ProductDependencyGraph](./resources/TestReport/ReviewDependencyGraph.png)
 # Integration approach
 
 **Approach:** bottom-up\
