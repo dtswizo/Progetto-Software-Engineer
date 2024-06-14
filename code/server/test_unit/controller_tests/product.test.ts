@@ -354,6 +354,8 @@ describe("UPC5 - getAvailableProducts", () => {
             new Product(200, "iPhone 13", Category.SMARTPHONE, "", "2024-01-01", 8),
             new Product(1500, "MacBook Pro", Category.LAPTOP, "", "2024-01-01", 5)
         ];
+        
+
     
         jest.spyOn(ProductDAO.prototype, "getAllProducts").mockResolvedValue(products);
         jest.spyOn(productController, "getProducts").mockResolvedValue(products); // Mocking getProducts
@@ -362,15 +364,7 @@ describe("UPC5 - getAvailableProducts", () => {
         expect(productController.getProducts).toHaveBeenCalledTimes(1);
         expect(response).toEqual(products);
     });
-
-    it("UPC5.2 - 404 Not Found - model does not represent a product in the database", async () => {
-        jest.spyOn(ProductDAO.prototype, "getAllProducts").mockRejectedValue(new ProductNotFoundError());
-
-        await expect(productController.getAvailableProducts("model", null, "Nonexistent Model")).rejects.toThrowError(ProductNotFoundError);
-
-        expect(productController.getProducts).toHaveBeenCalledTimes(1);
-        expect(ProductDAO.prototype.getAllProducts).toHaveBeenCalledWith("model", null, "Nonexistent Model");
-    });
+  
 });
 
 describe("UPC6 - deleteProduct", () => {

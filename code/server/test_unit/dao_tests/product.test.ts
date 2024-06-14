@@ -109,16 +109,23 @@ describe("UPD3 changeProductQuantity", () => {
         jest.clearAllMocks();
     });
 
-    it("UPD3.1 Success - returns new quantity", async () => {
+    it("UPD3.1 - Success - Updated Quantity", async () => {
         const testModel = 'iPhone13';
-        const newQuantity = 20;
+        const initialQuantity = 10;
+        const newQuantity = 5;
+        const expectedQuantity = initialQuantity + newQuantity;
+
+        jest.spyOn(db, "get").mockImplementation((sql, params, callback) => {
+            callback(null, { quantity: initialQuantity });
+            return {} as Database;
+        });
 
         jest.spyOn(db, "run").mockImplementation((sql, params, callback) => {
             callback.call({ changes: 1 }, null);
             return {} as Database;
         });
 
-        await expect(productDAO.changeProductQuantity(testModel, newQuantity, null)).resolves.toBe(newQuantity);
+        await expect(productDAO.changeProductQuantity(testModel, newQuantity, null)).resolves.toBe(expectedQuantity);
     });
 
     it("UPD3.2 Error 404- ProductNotFoundError", async () => {
