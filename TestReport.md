@@ -16,7 +16,7 @@
 # Dependency graph
 
      <report the here the dependency graph of EzElectronics>
-
+![ProductDependencyGraph](./resources/TestReport/ProductDependencyGraph.png)
 # Integration approach
 
     <Write here the integration sequence you adopted, in general terms (top down, bottom up, mixed) and as sequence
@@ -111,4 +111,4 @@
 ## Coverage white box
 
 Report here the screenshot of coverage values obtained with jest-- coverage
-![Coverage](./resources/Coverage.jpg)
+![Coverage](./resources/TestReport/Coverage.jpg)
