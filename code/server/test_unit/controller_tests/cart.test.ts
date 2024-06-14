@@ -12,14 +12,14 @@ jest.mock("../../src/dao/cartDAO")
 
 /* *************************** FUNZIONE addToCart ****************************** */
 
-describe("addToCart", ()=>{
+describe("UCC 1 addToCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct addToCart controller", async () => {
+    test("UCC 1.1 correct addToCart controller", async () => {
         jest.clearAllMocks();
         const testUser = {
             username: "test",
@@ -43,7 +43,7 @@ describe("addToCart", ()=>{
         expect(response).toBe(true);
     });
 
-    test("failed addProductInCart DAO", async () => {
+    test("UCC 1.2failed addProductInCart DAO", async () => {
         jest.clearAllMocks();
         const testUser = {
             username: "test",
@@ -69,7 +69,7 @@ describe("addToCart", ()=>{
     });
 
 
-    test("failed DAO: 404 ProductNoFoundError", async () => {
+    test("UCC 1.3 failed DAO: 404 ProductNoFoundError", async () => {
         jest.clearAllMocks();
         const testUser = {
             username: "test",
@@ -92,7 +92,7 @@ describe("addToCart", ()=>{
         
     });
 
-    test("failed DAO: 409 EmptyProductStockError", async () => {
+    test("UCC 1.4 failed DAO: 409 EmptyProductStockError", async () => {
         jest.clearAllMocks();
         const testUser = {
             username: "test",
@@ -120,14 +120,14 @@ describe("addToCart", ()=>{
 
 /* ****************************** FUNZIONE getCart ****************************** */
 
-describe("getCart", ()=>{
+describe("UCC 2 getCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct getCart controller", async () => {
+    test("UCC 2.1 correct getCart controller", async () => {
         jest.clearAllMocks();
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         jest.spyOn(CartDAO.prototype, "getCart").mockResolvedValueOnce(new Cart("test",false,"",10,[new ProductInCart("test",1,Category.APPLIANCE,10)]));
@@ -141,7 +141,7 @@ describe("getCart", ()=>{
         expect(response).toStrictEqual(new Cart("test",false,"",10,[new ProductInCart("test",1,Category.APPLIANCE,10)]));
     });
 
-    test("Test carrello vuoto o carello non pagato non esistente getCart controller", async () => {
+    test("UCC 2.2 Test carrello vuoto o carello non pagato non esistente getCart controller", async () => {
         jest.clearAllMocks();
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         jest.spyOn(CartDAO.prototype, "getCart").mockResolvedValueOnce(new Cart("test",false,"",0,[]));    
@@ -157,7 +157,7 @@ describe("getCart", ()=>{
 });
 
 /* ****************************** FUNZIONE checkoutCart ****************************** */
-describe("checkoutCart", ()=>{
+describe("UCC 3 checkoutCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
@@ -165,7 +165,7 @@ describe("checkoutCart", ()=>{
     });
 
     
-    it("correct checkoutCart controller", async () => {
+    it("UCC 3.1 correct checkoutCart controller", async () => {
         jest.clearAllMocks();
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         jest.spyOn(CartDAO.prototype, "checkIfCartExists").mockResolvedValueOnce(true);
@@ -193,7 +193,7 @@ describe("checkoutCart", ()=>{
     });
 
     jest.clearAllMocks();
-    it("Cart not found error", async () => {
+    it("UCC 3.2 Cart not found error", async () => {
         jest.clearAllMocks();
         expect.assertions(6)
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
@@ -216,7 +216,7 @@ describe("checkoutCart", ()=>{
     });
 
     jest.clearAllMocks();
-    it("empty product stock error", async () => {
+    it("UCC 3.3 empty product stock error", async () => {
 
         jest.spyOn(CartDAO.prototype, "checkProductAvailability").mockResolvedValueOnce(0);
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
@@ -242,7 +242,7 @@ describe("checkoutCart", ()=>{
         expect.assertions(8)
     });
 
-    test("low product stock error", async () => {
+    test("UCC 3.4 low product stock error", async () => {
         jest.clearAllMocks();
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         jest.spyOn(CartDAO.prototype, "checkIfCartExists").mockResolvedValueOnce(true);
@@ -265,7 +265,7 @@ describe("checkoutCart", ()=>{
         expect(CartDAO.prototype.checkoutCart).toHaveBeenCalledTimes(0);
     });
 
-    test("empty cart error", async () => {
+    test("UCC 3.5 empty cart error", async () => {
         jest.clearAllMocks();
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         jest.spyOn(CartDAO.prototype, "checkIfCartExists").mockResolvedValueOnce(true);
@@ -290,14 +290,14 @@ describe("checkoutCart", ()=>{
 });
 
 /* ****************************** FUNZIONE getCustomerCarts ****************************** */
-describe("getCustomerCarts", ()=>{
+describe("UCC 4 getCustomerCarts", ()=>{
 
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct getCustomerCarts controller", async () => {
+    test("UCC 4.1 correct getCustomerCarts controller", async () => {
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         let carts=[new Cart("test",true,"10/04/2022",10,[new ProductInCart("test",1,Category.APPLIANCE,10)]),
                     new Cart("test1",true,"10/08/2023",500,[new ProductInCart("apple",2,Category.SMARTPHONE,500)])]
@@ -315,7 +315,7 @@ describe("getCustomerCarts", ()=>{
 
 
 /* ****************************** FUNZIONE removeProductFromCart ****************************** */
-describe("removeProductFromCart", ()=>{
+describe("UCC 5 removeProductFromCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
@@ -323,7 +323,7 @@ describe("removeProductFromCart", ()=>{
     });
 
     
-    test("correct removeProductFromCart controller", async () => {
+    test("UCC 5.1 correct removeProductFromCart controller", async () => {
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         let product="test"
         let quantity=3
@@ -354,7 +354,7 @@ describe("removeProductFromCart", ()=>{
         expect(response).toBe(true);
     });
 
-    test("ProductNotFoundError removeProductFromCart controller", async () => {
+    test("UCC 5.2 ProductNotFoundError removeProductFromCart controller", async () => {
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         let product="test"
         let quantity=3
@@ -379,7 +379,7 @@ describe("removeProductFromCart", ()=>{
         expect(CartDAO.prototype.removeProductFromCart).toHaveBeenCalledTimes(0);
     });
 
-    test("CartNotFoundError removeProductFromCart controller", async () => {
+    test("UCC 5.3 CartNotFoundError removeProductFromCart controller", async () => {
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         let product="test"
         let quantity=3
@@ -405,7 +405,7 @@ describe("removeProductFromCart", ()=>{
         expect(CartDAO.prototype.removeProductFromCart).toHaveBeenCalledTimes(0);
     });
 
-    test("ProductNotInCartError removeProductFromCart controller", async () => {
+    test("UCC 5.4 ProductNotInCartError removeProductFromCart controller", async () => {
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         let product="test"
         let quantity=3
@@ -437,7 +437,7 @@ describe("removeProductFromCart", ()=>{
 })
 
 /* ****************************** FUNZIONE clearCart ****************************** */
-describe("clearCart", ()=>{
+describe("UCC 6 clearCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
@@ -445,7 +445,7 @@ describe("clearCart", ()=>{
     });
 
     
-    test("correct clearCart controller", async () => {
+    test("UCC 6.1 correct clearCart controller", async () => {
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         let idCart=1
         jest.spyOn(CartDAO.prototype, "checkIfCartExists").mockResolvedValueOnce(true); 
@@ -462,7 +462,7 @@ describe("clearCart", ()=>{
         expect(response).toBe(true);
     });
 
-    test("CartNotFoundError clearCart controller", async () => {
+    test("UCC 6.2 CartNotFoundError clearCart controller", async () => {
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         let idCart=1
         jest.spyOn(CartDAO.prototype, "checkIfCartExists").mockResolvedValueOnce(false); 
@@ -479,7 +479,7 @@ describe("clearCart", ()=>{
 })
 
 /* ****************************** FUNZIONE deleteAllCarts ****************************** */
-describe("deleteAllCarts", ()=>{
+describe("UCC 7 deleteAllCarts", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
@@ -487,7 +487,7 @@ describe("deleteAllCarts", ()=>{
     });
 
     
-    test("correct deleteAllCarts controller", async () => {
+    test("UCC 7.1 correct deleteAllCarts controller", async () => {
         jest.spyOn(CartDAO.prototype, "deleteAllCarts").mockResolvedValueOnce(true);  
         
         const controller = new CartController(); 
@@ -502,7 +502,7 @@ describe("deleteAllCarts", ()=>{
 })
 
 /* ****************************** FUNZIONE getAllCarts ****************************** */
-describe("getAllCarts", ()=>{
+describe("UCC 8 getAllCarts", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
@@ -510,7 +510,7 @@ describe("getAllCarts", ()=>{
     });
 
     
-    test("correct getAllCarts controller", async () => {
+    test("UCC 8.1 correct getAllCarts controller", async () => {
         let carts=[new Cart("test",true,"10/04/2022",10,[new ProductInCart("test",1,Category.APPLIANCE,10)]),
                     new Cart("test1",false,"",500,[new ProductInCart("apple",2,Category.SMARTPHONE,500)])]
         jest.spyOn(CartDAO.prototype, "getAllCarts").mockResolvedValueOnce(carts);  

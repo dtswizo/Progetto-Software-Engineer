@@ -88,14 +88,14 @@ describe("UCD 1 checkIfCartExists", ()=>{
 
 /* *************************** FUNZIONE checkIfProductExists ****************************** */
 
-describe("checkIfProductExists", ()=>{
+describe("UCD 2 checkIfProductExists", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct checkIfProductExists DAO", async () => {
+    test("UCD 2.1 correct checkIfProductExists DAO", async () => {
         let model="test"
 
         let cartDAO = new CartDAO();
@@ -109,7 +109,7 @@ describe("checkIfProductExists", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("checkIfProductExists DAO: product not exist", async () => {
+    test("UCD 2.2 checkIfProductExists DAO: product not exist", async () => {
         let model="test"
         let diff_model="test1"
 
@@ -124,7 +124,7 @@ describe("checkIfProductExists", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("checkIfProductExists DAO: product not exist V2", async () => {
+    test("UCD 2.2 checkIfProductExists DAO: product not exist V2", async () => {
         let model="test"
         let diff_model="test1"
 
@@ -139,7 +139,7 @@ describe("checkIfProductExists", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("checkIfProductExists DAO:generic DB error", async () => {
+    test(" UCD 2.3 checkIfProductExists DAO:generic DB error", async () => {
         let model="test"
 
         let cartDAO = new CartDAO();
@@ -156,14 +156,14 @@ describe("checkIfProductExists", ()=>{
 
 /* *************************** FUNZIONE checkIfProductExistsInCart ****************************** */
 
-describe("checkIfProductExistsInCart", ()=>{
+describe("UCD 3 checkIfProductExistsInCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
     
-    test("correct checkIfProductExistsInCart DAO", async () => {
+    test("UCD 3.1correct checkIfProductExistsInCart DAO", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -185,7 +185,7 @@ describe("checkIfProductExistsInCart", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("checkIfProductExistsInCart DAO: product not exist in cart", async () => {
+    test("UCD 3.2 checkIfProductExistsInCart DAO: product not exist in cart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -207,7 +207,7 @@ describe("checkIfProductExistsInCart", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("checkIfCartExists DAO:generic DB error", async () => {
+    test("UCD 3.3 checkIfCartExists DAO:generic DB error", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -232,14 +232,14 @@ describe("checkIfProductExistsInCart", ()=>{
 
 /* *************************** FUNZIONE checkProductAvailability ****************************** */
 
-describe("checkProductAvailability", ()=>{
+describe("UCD 4 checkProductAvailability", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct checkProductAvailability DAO", async () => {
+    test("UCD 4.1 correct checkProductAvailability DAO", async () => {
         let model="test"
 
         let cartDAO = new CartDAO();
@@ -254,7 +254,7 @@ describe("checkProductAvailability", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("checkProductAvailability DAO: product not exist", async () => {
+    test("UCD 4.2 checkProductAvailability DAO: product not exist", async () => {
         let model="test"
 
         let cartDAO = new CartDAO();
@@ -268,7 +268,7 @@ describe("checkProductAvailability", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("checkProductAvailability DAO:generic DB error", async () => {
+    test("UCD 4.3 checkProductAvailability DAO:generic DB error", async () => {
         let model="test"
 
         let cartDAO = new CartDAO();
@@ -285,14 +285,14 @@ describe("checkProductAvailability", ()=>{
 
 /* *************************** FUNZIONE checkProductQuantityInCart ****************************** */
 
-describe("checkProductQuantityInCart", ()=>{
+describe("UCD 5 checkProductQuantityInCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct checkProductQuantityInCart DAO", async () => {
+    test("UCD 5.1 correct checkProductQuantityInCart DAO", async () => {
         let model="test"
         const testUser = {
             username: "test",
@@ -314,7 +314,7 @@ describe("checkProductQuantityInCart", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("checkProductQuantityInCart DAO: product not exist", async () => {
+    test("UCD 5.2 checkProductQuantityInCart DAO: product not exist", async () => {
         let model="test"
         const testUser = {
             username: "test",
@@ -336,7 +336,7 @@ describe("checkProductQuantityInCart", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("checkProductQuantityInCart DAO:generic DB error", async () => {
+    test("UCD 5.3 checkProductQuantityInCart DAO:generic DB error", async () => {
         let model="test"
         const testUser = {
             username: "test",
@@ -361,14 +361,14 @@ describe("checkProductQuantityInCart", ()=>{
 
 /* *************************** FUNZIONE getCartId ****************************** */
 
-describe("getCartId", ()=>{
+describe("UCD 6 getCartId", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct getCartId DAO", async () => {
+    test("UCD 6.1 correct getCartId DAO", async () => {
         let row={idCart:1,customer:"test",paid:false,paymentDate:"",total:0}
         const testUser = {
             username: "test",
@@ -390,7 +390,7 @@ describe("getCartId", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("getCartId DAO: cart not exist", async () => {
+    test("UCD 6.2 getCartId DAO: cart not exist", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -411,7 +411,7 @@ describe("getCartId", ()=>{
         expect(Database.prototype.get).toHaveBeenCalledTimes(1);
     });
 
-    test("getCartId DAO:generic DB error", async () => {
+    test("UCD 6.3 getCartId DAO:generic DB error", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -435,14 +435,14 @@ describe("getCartId", ()=>{
 
 /* *************************** FUNZIONE updateCartTotal ****************************** */
 
-describe("updateCartTotal", ()=>{
+describe("UCD 7 updateCartTotal", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct updateCartTotal DAO", async () => {
+    test("UCD 7.1 correct updateCartTotal DAO", async () => {
         let price=10
         const testUser = {
             username: "test",
@@ -464,7 +464,7 @@ describe("updateCartTotal", ()=>{
         expect(Database.prototype.run).toHaveBeenCalledTimes(1);
     });
 
-    test("updateCartTotal DAO: not paied cart for the user doesn't exist", async () => {
+    test("UCD 7.2 updateCartTotal DAO: not paied cart for the user doesn't exist", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -486,7 +486,7 @@ describe("updateCartTotal", ()=>{
         expect(Database.prototype.run).toHaveBeenCalledTimes(1);
     });
 
-    test("updateCartTotal DAO:generic DB error", async () => {
+    test("UCD 7.3 updateCartTotal DAO:generic DB error", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -511,14 +511,14 @@ describe("updateCartTotal", ()=>{
 
 /* *************************** FUNZIONE resetCartTotal ****************************** */
 
-describe("resetCartTotal", ()=>{
+describe("UCD 8 resetCartTotal", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct resetCartTotal DAO", async () => {
+    test("UCD 8.1 correct resetCartTotal DAO", async () => {
         let price=10
         const testUser = {
             username: "test",
@@ -540,7 +540,7 @@ describe("resetCartTotal", ()=>{
         expect(Database.prototype.run).toHaveBeenCalledTimes(1);
     });
 
-    test("resetCartTotal DAO: not paied cart for the user doesn't exist", async () => {
+    test("UCD 8.2 resetCartTotal DAO: not paied cart for the user doesn't exist", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -562,7 +562,7 @@ describe("resetCartTotal", ()=>{
         expect(Database.prototype.run).toHaveBeenCalledTimes(1);
     });
 
-    test("resetCartTotal DAO:generic DB error", async () => {
+    test("UCD 8.3 resetCartTotal DAO:generic DB error", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -587,14 +587,14 @@ describe("resetCartTotal", ()=>{
 
 /* *************************** FUNZIONE addToCart ****************************** */
 
-describe("addToCart", ()=>{
+describe("UCD 9 addToCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct addToCart: cart already exist and an instance of product is already in the cart", async () => {
+    test("UCD 9.1 correct addToCart: cart already exist and an instance of product is already in the cart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -645,7 +645,7 @@ describe("addToCart", ()=>{
 
     });
 
-    test("correct addToCart: cart already exist product is not in the cart", async () => {
+    test("UCD 9.2 correct addToCart: cart already exist product is not in the cart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -696,7 +696,7 @@ describe("addToCart", ()=>{
 
     });
 
-    test("correct addToCart: cart doesn't exist", async () => {
+    test("UCD 9.3 correct addToCart: cart doesn't exist", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -752,7 +752,7 @@ describe("addToCart", ()=>{
 
     });
 
-    test("error addToCart: error in checkIfCartExists", async () => {
+    test("UCD 9.4 error addToCart: error in checkIfCartExists", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -776,7 +776,7 @@ describe("addToCart", ()=>{
 
     });
 
-    test("error addToCart: error in checkIfProductExistsInCart", async () => {
+    test("UCD 9.5 error addToCart: error in checkIfProductExistsInCart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -802,7 +802,7 @@ describe("addToCart", ()=>{
 
     });
 
-    test("error addToCart: error in updateCartTotal con prodotto gia esistente", async () => {
+    test("UCD 9.6 error addToCart: error in updateCartTotal con prodotto gia esistente", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -853,7 +853,7 @@ describe("addToCart", ()=>{
 
     });
 
-    test("error addToCart: error in updateCartTotal con prodotto non ancora esistente", async () => {
+    test("UCD 9.7 error addToCart: error in updateCartTotal con prodotto non ancora esistente", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -908,14 +908,14 @@ describe("addToCart", ()=>{
 
 /* *************************** FUNZIONE getCart ****************************** */
 
-describe("getCart", ()=>{
+describe("UCD 10 getCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct getCart: cart not exist so return empty cart", async () => {
+    test("UCD 10.1 correct getCart: cart not exist so return empty cart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -940,7 +940,7 @@ describe("getCart", ()=>{
 
     });
 
-    test("correct getCart: return exisisting cart", async () => {
+    test("UCD 10.2 correct getCart: return exisisting cart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -969,7 +969,7 @@ describe("getCart", ()=>{
 
     });
 
-    test("error getCart: error from DB", async () => {
+    test("UCD 10.3 error getCart: error from DB", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -996,14 +996,14 @@ describe("getCart", ()=>{
 
 /* *************************** FUNZIONE removeProductFromCart ****************************** */
 
-describe("removeProductFromCart", ()=>{
+describe("UCD 11 removeProductFromCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct removeProductFromCart: case quantity_in_cart==1", async () => {
+    test("UCD 11.1 correct removeProductFromCart: case quantity_in_cart==1", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1050,7 +1050,7 @@ describe("removeProductFromCart", ()=>{
         expect(CartDAO.prototype.updateCartTotal).toBeCalledTimes(1);
     });
 
-    test("correct removeProductFromCart: case quantity_in_cart>1", async () => {
+    test("UCD 11.2 correct removeProductFromCart: case quantity_in_cart>1", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1097,7 +1097,7 @@ describe("removeProductFromCart", ()=>{
         expect(CartDAO.prototype.updateCartTotal).toBeCalledTimes(1);
     });
 
-    test("error removeProductFromCart: error in getCartId", async () => {
+    test("UCD 11.3 error removeProductFromCart: error in getCartId", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1123,7 +1123,7 @@ describe("removeProductFromCart", ()=>{
         expect(CartDAO.prototype.getCartId).toBeCalledTimes(1);
     });
 
-    test("error removeProductFromCart: error in checkProductQuantityInCart", async () => {
+    test("UCD 11.4 error removeProductFromCart: error in checkProductQuantityInCart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1148,7 +1148,7 @@ describe("removeProductFromCart", ()=>{
         expect(CartDAO.prototype.checkProductQuantityInCart).toBeCalledTimes(1);
     });
 
-    test("error removeProductFromCart: error in updateCartTotal with quantity==1", async () => {
+    test("UCD 11.5 error removeProductFromCart: error in updateCartTotal with quantity==1", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1195,7 +1195,7 @@ describe("removeProductFromCart", ()=>{
         expect(CartDAO.prototype.updateCartTotal).toBeCalledTimes(1);
     });
 
-    test("error removeProductFromCart: error in updateCartTotal with quantity>1", async () => {
+    test("UCD 11.6 error removeProductFromCart: error in updateCartTotal with quantity>1", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1247,14 +1247,14 @@ describe("removeProductFromCart", ()=>{
 
 /* *************************** FUNZIONE clearCart ****************************** */
 
-describe("clearCart", ()=>{
+describe("UCD 12 clearCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct clearCart", async () => {
+    test("UCD 12.1 correct clearCart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1288,7 +1288,7 @@ describe("clearCart", ()=>{
         expect(CartDAO.prototype.resetCartTotal).toBeCalledTimes(1);
     });
 
-    test("error clearCart: error from DB", async () => {
+    test("UCD 12.2 error clearCart: error from DB", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1321,7 +1321,7 @@ describe("clearCart", ()=>{
         expect(CartDAO.prototype.resetCartTotal).toBeCalledTimes(0);
     });
 
-    test("error clearCart: error on getCartId", async () => {
+    test("UCD 12.3 error clearCart: error on getCartId", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1341,7 +1341,7 @@ describe("clearCart", ()=>{
         expect(CartDAO.prototype.getCartId).toBeCalledTimes(1);
     });
 
-    test("error clearCart: error on resetCartTotal", async () => {
+    test("UCD 12.4 error clearCart: error on resetCartTotal", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1379,14 +1379,14 @@ describe("clearCart", ()=>{
 
 /* *************************** FUNZIONE checkoutCart ****************************** */
 
-describe("checkoutCart", ()=>{
+describe("UCD 13 checkoutCart", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct checkoutCart", async () => {
+    test("UCD 13.1 correct checkoutCart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1423,7 +1423,7 @@ describe("checkoutCart", ()=>{
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
 
-    test("error checkoutCart: error updaiting product stock", async () => {
+    test("UCD 13.2 error checkoutCart: error updaiting product stock", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1455,7 +1455,7 @@ describe("checkoutCart", ()=>{
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
 
-    test("error checkoutCart: error updaiting cart", async () => {
+    test("UCD 13.3 error checkoutCart: error updaiting cart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1492,7 +1492,7 @@ describe("checkoutCart", ()=>{
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
 
-    test("error checkoutCart: error DB updaiting product stock", async () => {
+    test("UCD 13.4 error checkoutCart: error DB updaiting product stock", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1530,7 +1530,7 @@ describe("checkoutCart", ()=>{
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
 
-    test("error checkoutCart: error DB updaiting cart", async () => {
+    test("UCD 13.5 error checkoutCart: error DB updaiting cart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1570,7 +1570,7 @@ describe("checkoutCart", ()=>{
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
 
-    test("error checkoutCart: error in getCart", async () => {
+    test("UCD 13.6 error checkoutCart: error in getCart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1592,14 +1592,14 @@ describe("checkoutCart", ()=>{
 });
 
 /* *************************** FUNZIONE getCustomerCarts ****************************** */
-describe("getCustomerCarts", ()=>{
+describe("UCD 14 getCustomerCarts", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct getCustomerCarts: list of carts unempty", async () => {
+    test("UCD 14.1 correct getCustomerCarts: list of carts unempty", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1650,7 +1650,7 @@ describe("getCustomerCarts", ()=>{
         expect(Database.prototype.all).toHaveBeenCalledTimes(nCarts+1);
     });
 
-    test("correct getCustomerCarts: empty list of carts from carts", async () => {
+    test("UCD 14.2 correct getCustomerCarts: empty list of carts from carts", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1672,7 +1672,7 @@ describe("getCustomerCarts", ()=>{
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
-    test("error getCustomerCarts: list of empty carts", async () => {
+    test("UCD 14.3 error getCustomerCarts: list of empty carts", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1719,7 +1719,7 @@ describe("getCustomerCarts", ()=>{
         expect(Database.prototype.all).toHaveBeenCalledTimes(nCarts+1);
     });
 
-    test("error getCustomerCarts:DB error in carts", async () => {
+    test("UCD 14.5 error getCustomerCarts:DB error in carts", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1742,7 +1742,7 @@ describe("getCustomerCarts", ()=>{
     });
 
 
-    test("error getCustomerCarts:DB error in products_in_cart", async () => {
+    test("UCD 14.6error getCustomerCarts:DB error in products_in_cart", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1781,14 +1781,14 @@ describe("getCustomerCarts", ()=>{
 
 /* *************************** FUNZIONE deleteAllCarts ****************************** */
 
-describe("deleteAllCarts", ()=>{
+describe("UCD 15 deleteAllCarts", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correct deleteAllCarts", async () => {
+    test("UCD 15.1 correct deleteAllCarts", async () => {
         let cartDAO = new CartDAO();
 
         //delete from carts
@@ -1807,7 +1807,7 @@ describe("deleteAllCarts", ()=>{
 
     });
 
-    test("error deleteAllCarts: DB error in carts", async () => {
+    test("UCD 15.1 error deleteAllCarts: DB error in carts", async () => {
         let cartDAO = new CartDAO();
 
         //delete from carts
@@ -1826,7 +1826,7 @@ describe("deleteAllCarts", ()=>{
 
     });
 
-    test("error deleteAllCarts: DB error in product_in_carts", async () => {
+    test("UCD 15.2error deleteAllCarts: DB error in product_in_carts", async () => {
         let cartDAO = new CartDAO();
 
         //delete from carts
@@ -1847,13 +1847,13 @@ describe("deleteAllCarts", ()=>{
 });
 
 /* *************************** FUNZIONE getAllCarts ****************************** */
-describe("getAllCarts", ()=>{
+describe("UCD 16 getAllCarts", ()=>{
     
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
-    test("correct getAllCarts: list of carts unempty", async () => {
+    test("UCD 16.1 correct getAllCarts: list of carts unempty", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1894,7 +1894,7 @@ describe("getAllCarts", ()=>{
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
-    test("correct getAllCarts: empty list of carts from carts", async () => {
+    test("UCD 16.2 correct getAllCarts: empty list of carts from carts", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1916,7 +1916,7 @@ describe("getAllCarts", ()=>{
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
-    test("error getAllCarts: list of empty carts", async () => {
+    test("UCD 16.3 error getAllCarts: list of empty carts", async () => {
         const testUser = {
             username: "test",
             name: "test",
@@ -1957,7 +1957,7 @@ describe("getAllCarts", ()=>{
     });
 
 
-    test("error getAllCarts:DB error in products_in_cart", async () => {
+    test("UCD 16.4 error getAllCarts:DB error in products_in_cart", async () => {
         const testUser = {
             username: "test",
             name: "test",

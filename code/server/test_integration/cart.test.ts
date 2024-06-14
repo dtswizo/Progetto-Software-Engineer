@@ -175,16 +175,16 @@ describe('Integration DAO - DB', () => {
         await addUser(testUser);
     });
 
-    describe('addToCart', () => {
+    describe('ICD 1 addToCart', () => {
 
-        test("Success - cart not already exist and product not already in the cart", async () => {
+        test("ICD 1.1 Success - cart not already exist and product not already in the cart", async () => {
             await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",2)
 
             let cartDAO = new CartDAO;
             await expect(cartDAO.addToCart(testUser, testModel)).resolves.toBe(true);
         });
 
-        test("Success - product already in the cart and cart exist", async () => {
+        test("ICD 1.2 Success - product already in the cart and cart exist", async () => {
             let cartDAO = new CartDAO;
 
             await expect(cartDAO.addToCart(testUser, testModel)).resolves.toBe(true);
@@ -192,9 +192,9 @@ describe('Integration DAO - DB', () => {
 
     });
 
-    describe('checkIfCartExists', () => {
+    describe('ICD 2 checkIfCartExists', () => {
 
-        test("Error - cart not exist", async () => {
+        test("ICD 2.1 Error - cart not exist", async () => {
             await removeProductsFromCart();
             await removeCarts();
             let cartDAO = new CartDAO;
@@ -202,7 +202,7 @@ describe('Integration DAO - DB', () => {
             await expect(cartDAO.checkIfCartExists(testUser)).resolves.toBe(false);
         });
         
-        test("Success - cart already exist", async () => {
+        test("ICD 2.2 Success - cart already exist", async () => {
             await addCart(1,testUser.username,false,"",20)
 
             let cartDAO = new CartDAO;
@@ -211,16 +211,16 @@ describe('Integration DAO - DB', () => {
 
     });
 
-    describe('checkIfProductExists', () => {
+    describe('ICD 3 checkIfProductExists', () => {
 
-        test("Error - product not exist", async () => {
+        test("ICD 3.1 Error - product not exist", async () => {
             await removeProduct()
             let cartDAO = new CartDAO;
 
             await expect(cartDAO.checkIfProductExists(testModel)).resolves.toBe(false);
         });
         
-        test("Success - product exist", async () => {
+        test("ICD 3.2 Success - product exist", async () => {
             await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",2)
 
             let cartDAO = new CartDAO;
@@ -228,15 +228,15 @@ describe('Integration DAO - DB', () => {
         });
     });
 
-    describe('checkIfProductExistsInCart', () => {
+    describe('ICD 4 checkIfProductExistsInCart', () => {
 
-        test("Error - product not exist in cart", async () => {
+        test("ICD 4.1 Error - product not exist in cart", async () => {
             let cartDAO = new CartDAO;
 
             await expect(cartDAO.checkIfProductExistsInCart(testUser,testModel)).resolves.toBe(false);
         });
         
-        test("Success - product exist", async () => {
+        test("ICD 4.2 Success - product exist", async () => {
             await addProductInCart(1,testModel,1,Category.SMARTPHONE,500)
 
             let cartDAO = new CartDAO;
@@ -244,16 +244,16 @@ describe('Integration DAO - DB', () => {
         });
     });
 
-    describe('checkProductAvailability', () => {
+    describe('ICD 5 checkProductAvailability', () => {
 
-        test("Error - product not exist", async () => {
+        test("ICD 5.1 Error - product not exist", async () => {
             let cartDAO = new CartDAO;
             await removeProductsFromCart()
             await removeProduct()
             await expect(cartDAO.checkProductAvailability(testModel)).resolves.toBe(-1);
         });
         
-        test("Success - product exist", async () => {
+        test("ICD 5.2 Success - product exist", async () => {
             await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",2)
 
             let cartDAO = new CartDAO;
@@ -261,16 +261,16 @@ describe('Integration DAO - DB', () => {
         });
     });
 
-    describe('checkProductQuantityInCart', () => {
+    describe('ICD 6 checkProductQuantityInCart', () => {
 
-        test("Error - product not exist in cart", async () => {
+        test("ICD 6.1 Error - product not exist in cart", async () => {
             //await addCart(1,testUser.username,false,"",20)
             let cartDAO = new CartDAO;
 
             await expect(cartDAO.checkProductQuantityInCart(testUser,testModel)).resolves.toBe(-1);
         });
         
-        test("Success - product exist", async () => {
+        test("ICD 6.2 Success - product exist", async () => {
             await addProductInCart(1,testModel,1,Category.SMARTPHONE,500)
 
             let cartDAO = new CartDAO;
@@ -278,15 +278,15 @@ describe('Integration DAO - DB', () => {
         });
     });
 
-    describe('getCartId', () => {
+    describe('ICD 7 getCartId', () => {
 
-        test("Success - cart exist", async () => {
+        test("ICD 7.1 Success - cart exist", async () => {
 
             let cartDAO = new CartDAO;
             await expect(cartDAO.getCartId(testUser)).resolves.toBe(1);
         });
 
-        test("Error - cart not exist", async () => {
+        test("ICD 7.2 Error - cart not exist", async () => {
             let cartDAO = new CartDAO;
             await removeProductsFromCart()
             await removeCarts()
@@ -295,15 +295,15 @@ describe('Integration DAO - DB', () => {
         
     });
 
-    describe('updateCartTotal', () => {
+    describe('ICD 8 updateCartTotal', () => {
 
-        test("Error -cart not exist", async () => {
+        test("ICD 8.1 Error -cart not exist", async () => {
             let cartDAO = new CartDAO;
 
             await expect(cartDAO.updateCartTotal(testUser,10)).rejects.toBe(false);
         });
         
-        test("Success - total updated correctly", async () => {
+        test("ICD 8.2 Success - total updated correctly", async () => {
             await addCart(1,testUser.username,false,"",20)
 
             let cartDAO = new CartDAO;
@@ -311,16 +311,16 @@ describe('Integration DAO - DB', () => {
         });
     });
 
-    describe('resetCartTotal', () => {
+    describe('ICD 9 resetCartTotal', () => {
         
-        test("Success - total reset correctly", async () => {
+        test("ICD 9.1 Success - total reset correctly", async () => {
             //await addCart(1,testUser.username,false,"",20)
 
             let cartDAO = new CartDAO;
             await expect(cartDAO.resetCartTotal(testUser)).resolves.toBe(true);
         });
 
-        test("Error -cart not exist", async () => {
+        test("ICD 9.2 Error -cart not exist", async () => {
             await removeProductsFromCart()
             await removeCarts()
             let cartDAO = new CartDAO;
@@ -329,15 +329,15 @@ describe('Integration DAO - DB', () => {
         });
     });
 
-    describe('getCart', () => {
+    describe('ICD 10 getCart', () => {
 
-        test("Success - cart not already exist", async () => {
+        test("ICD 10.1 Success - cart not already exist", async () => {
 
             let cartDAO = new CartDAO;
             await expect(cartDAO.getCart(testUser)).resolves.toStrictEqual(new Cart(testUser.username,false,null,0,[]));
         });
 
-        test("Success - cart already exist", async () => {
+        test("ICD 10.1 Success - cart already exist", async () => {
             await addCart(1,testUser.username,false,"",500)
             //await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",2)
             await addProductInCart(1,testModel,1,Category.SMARTPHONE,500)
@@ -350,15 +350,15 @@ describe('Integration DAO - DB', () => {
 
     });
 
-    describe('removeProductFromCart', () => {
+    describe('ICD 11 removeProductFromCart', () => {
 
-        test("Success - product in cart with only 1 unit", async () => {
+        test("ICD 11.1 Success - product in cart with only 1 unit", async () => {
             let cartDAO = new CartDAO;
 
             await expect(cartDAO.removeProductFromCart(testUser,testModel)).resolves.toBe(true)
         });
         
-        test("Success - product in cart with more than 1 unit", async () => {
+        test("ICD 11.2 Success - product in cart with more than 1 unit", async () => {
             await removeProductsFromCart()
             await removeProduct()
             await removeCarts()
@@ -371,7 +371,7 @@ describe('Integration DAO - DB', () => {
             await expect(cartDAO.removeProductFromCart(testUser,testModel)).resolves.toBe(true)
         });
 
-        test("Error - product not in cart", async () => {
+        test("ICD 11.3 Error - product not in cart", async () => {
             await removeProductsFromCart()
 
             let cartDAO = new CartDAO;
@@ -381,29 +381,9 @@ describe('Integration DAO - DB', () => {
 
     });
 
-    describe('checkoutCart', () => {
-        /* controllo fatto nel controller e non nel dao
-        test("Error - product stock not enough", async () => {
-            await removeProductsFromCart()
-            await removeProduct()
-            await removeCarts()
-            await addCart(1,testUser.username,false,"",20)
-            await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",1)
-            await addProductInCart(1,testModel,1,Category.SMARTPHONE,500)
-            let cartDAO = new CartDAO;
-            await expect(cartDAO.checkoutCart(testUser)).rejects.toBe(Error);
-        });*/
+    describe('ICD 12 checkoutCart', () => {
 
-        /* impossibile a causa dei constraints del db
-        test("Error - product in cart not exist", async () => {
-            await removeProductsFromCart()
-            let cartDAO = new CartDAO;
-
-            await expect(cartDAO.checkoutCart(testUser)).rejects.toStrictEqual(new ProductNotFoundError());
-        });
-        */
-
-        test("Error - cart not exist", async () => {
+        test("ICD 12.1 Error - cart not exist", async () => {
             await removeProductsFromCart()
             await removeCarts()
             let cartDAO = new CartDAO;
@@ -411,7 +391,7 @@ describe('Integration DAO - DB', () => {
             await expect(cartDAO.checkoutCart(testUser)).rejects.toStrictEqual(new CartNotFoundError());
         });
         
-        test("Success ", async () => {
+        test("ICD 12.2 Success ", async () => {
             await removeProduct()
             await addCart(1,testUser.username,false,"",20)
             await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",2)
@@ -422,9 +402,9 @@ describe('Integration DAO - DB', () => {
         });
     });
 
-    describe('getCustomerCarts', () => {
+    describe('ICD 13 getCustomerCarts', () => {
 
-        test("Error - customer doesn't have carts", async () => {
+        test("ICD 13.1 Error - customer doesn't have carts", async () => {
             await removeProductsFromCart()
             await removeProduct()
             await removeCarts()
@@ -435,14 +415,14 @@ describe('Integration DAO - DB', () => {
             await expect(cartDAO.getCustomerCarts(testUser)).resolves.toStrictEqual([]);
         });
 
-        test("Error - customer doesn't have PAIED carts", async () => {
+        test("ICD 13.1 Error - customer doesn't have PAIED carts", async () => {
             await addCart(1,testUser.username,false,"",20)
             let cartDAO = new CartDAO;
 
             await expect(cartDAO.getCustomerCarts(testUser)).resolves.toStrictEqual([]);
         });
 
-        test("Succes - customer have once or more paied carts", async () => {
+        test("ICD 13.1 Succes - customer have once or more paied carts", async () => {
             await addCart(2,testUser.username,true,testDate,100)
             await addCart(3,testUser.username,true,testDate,300)
             await addProduct(testModel,100,Category.SMARTPHONE,"2024-06-20","",1)
@@ -460,16 +440,16 @@ describe('Integration DAO - DB', () => {
         
     });
 
-    describe('deleteAllCarts', () => {
+    describe('ICD 14 deleteAllCarts', () => {
 
-        test("Succes - all carts deleted", async () => {
+        test("ICD 14.1 Succes - all carts deleted", async () => {
 
             let cartDAO = new CartDAO;
 
             await expect(cartDAO.deleteAllCarts()).resolves.toBe(true)
         });
 
-        test("Succes - no carts to delete", async () => {
+        test("ICD 14.2 Succes - no carts to delete", async () => {
 
             let cartDAO = new CartDAO;
 
@@ -477,9 +457,9 @@ describe('Integration DAO - DB', () => {
         });
     });
 
-    describe('getAllCarts', () => {
+    describe('ICD 15 getAllCarts', () => {
 
-        test("Error - no carts in db", async () => {
+        test("ICD 15.1 Error - no carts in db", async () => {
             await removeProductsFromCart()
             await removeCarts()
             let cartDAO = new CartDAO;
@@ -487,7 +467,7 @@ describe('Integration DAO - DB', () => {
             await expect(cartDAO.getAllCarts()).resolves.toStrictEqual([])
         });
 
-        test("Error - no PAIED carts in db", async () => {
+        test("ICD 15.2 Error - no PAIED carts in db", async () => {
             await addCart(1,testUser.username,false,null,20)
             await addProduct("modello",20,Category.APPLIANCE,"10-10-2023","",2)
             await addProductInCart(1,"modello",1,Category.APPLIANCE,20)
@@ -498,7 +478,7 @@ describe('Integration DAO - DB', () => {
             )])
         });
 
-        test("Succes - all carts", async () => {
+        test("ICD 15.3 Succes - all carts", async () => {
             addUser(new User("poli","TEST","TEST",Role.CUSTOMER,"",""))
             await addCart(2,testUser.username,true,testDate,100)
             await addCart(3,"poli",true,testDate,300)
@@ -523,9 +503,9 @@ describe('Integration CONTROLLER- DAO - DB', () => {
         await addUser(testUser);
     });
 
-    describe('addToCart', () => {
+    describe('ICC 1 addToCart', () => {
 
-        test("Success - cart not already exist and product not already in the cart", async () => {
+        test("ICC 1.1 Success - cart not already exist and product not already in the cart", async () => {
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -535,19 +515,19 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await expect(cartController.addToCart(testUser, testModel)).resolves.toBe(true);
         });
 
-        test("Success - product already in the cart and cart exist", async () => {
+        test("ICC 1.2 Success - product already in the cart and cart exist", async () => {
             let cartController = new CartController();
 
             await expect(cartController.addToCart(testUser, testModel)).resolves.toBe(true);
         });
 
-        test("Error - product  doesn't exist", async () => {
+        test("ICC 1.3 Error - product  doesn't exist", async () => {
             let cartController = new CartController();
 
             await expect(cartController.addToCart(testUser, "samsung")).rejects.toStrictEqual(new ProductNotFoundError());
         });
 
-        test("Error- product stock not enough", async () => {
+        test("ICC 1.4 Error- product stock not enough", async () => {
             await removeProductsFromCart()
             //await removeCarts()
             await removeProduct()
@@ -558,9 +538,9 @@ describe('Integration CONTROLLER- DAO - DB', () => {
         });
     });
 
-    describe('getCart', () => {
+    describe('ICC 2 getCart', () => {
 
-        test("Success - cart already exist", async () => {
+        test("ICC 2.1 Success - cart already exist", async () => {
             await removeProductsFromCart()
             await removeCarts()
             await addCart(1,testUser.username,false,"",100)
@@ -575,7 +555,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             ]));
         });
 
-        test("Error- cart not exist", async () => {
+        test("ICC 2.2 Error- cart not exist", async () => {
             await removeProductsFromCart()
             await removeCarts()
             //await removeProduct()
@@ -586,9 +566,9 @@ describe('Integration CONTROLLER- DAO - DB', () => {
         });
     });
 
-    describe('checkoutCart', () => {
+    describe('ICC 3 checkoutCart', () => {
 
-        test("Error- cart not exist", async () => {
+        test("ICC 3.1 Error- cart not exist", async () => {
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -597,7 +577,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await expect(cartController.checkoutCart(testUser)).rejects.toStrictEqual(new CartNotFoundError());
         });
 
-        test("Error- cart exist but is empty", async () => {
+        test("ICC 3.2 Error- cart exist but is empty", async () => {
             await addCart(1,testUser.username,false,"",100)
             await addCart(2,testUser.username,true,testDate,100)
             let cartController = new CartController();
@@ -605,7 +585,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await expect(cartController.checkoutCart(testUser)).rejects.toStrictEqual(new EmptyCartError());
         });
 
-        test("Error- empty product stock", async () => {
+        test("ICC 3.3 Error- empty product stock", async () => {
             await addProduct(testModel,100,Category.SMARTPHONE,testDate,"",0)
             await addProductInCart(1,testModel,1,Category.SMARTPHONE,100)
             let cartController = new CartController();
@@ -613,7 +593,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await expect(cartController.checkoutCart(testUser)).rejects.toStrictEqual(new EmptyProductStockError());
         });
 
-        test("Error- product stock not enough", async () => {
+        test("ICC 3.4 Error- product stock not enough", async () => {
             await removeProductsFromCart()
             await removeProduct()
             await addProduct(testModel,100,Category.SMARTPHONE,testDate,"",1)
@@ -623,7 +603,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await expect(cartController.checkoutCart(testUser)).rejects.toStrictEqual(new LowProductStockError());
         });
 
-        test("Success checkout", async () => {
+        test("ICC 3.5 Success checkout", async () => {
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -640,9 +620,9 @@ describe('Integration CONTROLLER- DAO - DB', () => {
     });
 
 
-    describe('getCustomerCarts', () => {
+    describe('ICC 4 getCustomerCarts', () => {
 
-        test("Error- not exist PAID carts", async () => {
+        test("ICC 4.1 Error- not exist PAID carts", async () => {
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -651,7 +631,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await expect(cartController.getCustomerCarts(testUser)).resolves.toStrictEqual([]);
         });
 
-        test("Success", async () => {
+        test("ICC 4.2 Success", async () => {
             
             await addCart(1,testUser.username,false,"",100)
             await addCart(2,testUser.username,true,testDate,300)
@@ -666,9 +646,9 @@ describe('Integration CONTROLLER- DAO - DB', () => {
         });        
     });
 
-    describe('removeProductFromCart', () => {
+    describe('ICC 5 removeProductFromCart', () => {
 
-        test("Error- product not exist", async () => {
+        test("ICC 5.1 Error- product not exist", async () => {
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -677,7 +657,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await expect(cartController.removeProductFromCart(testUser,testModel)).rejects.toStrictEqual(new ProductNotFoundError());
         });
 
-        test("Error- cart not exist", async () => {
+        test("ICC 5.2 Error- cart not exist", async () => {
             await addProduct(testModel,100,Category.SMARTPHONE,"20/01/2024","",1)
             await addProduct("prova",50,Category.SMARTPHONE,"20/01/2024","",1)
 
@@ -685,7 +665,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await expect(cartController.removeProductFromCart(testUser,testModel)).rejects.toStrictEqual(new CartNotFoundError());
         });  
         
-        test("Error- product not in cart", async () => {
+        test("ICC 5.3 Error- product not in cart", async () => {
             
             await addCart(1,testUser.username,false,"",100)
             await addProductInCart(1,"prova",1,Category.SMARTPHONE,50)
@@ -695,7 +675,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await expect(cartController.removeProductFromCart(testUser,testModel)).rejects.toStrictEqual(new ProductNotInCartError());
         }); 
 
-        test("Succes", async () => {
+        test("ICC 5.4 Succes", async () => {
             await addProductInCart(1,testModel,1,Category.SMARTPHONE,50)
 
             let cartController = new CartController();
@@ -703,14 +683,14 @@ describe('Integration CONTROLLER- DAO - DB', () => {
         }); 
     });
 
-    describe('clearCart', () => {
+    describe('ICC 6 clearCart', () => {
 
-        test("Succes", async () => {
+        test("ICC 6.1 Succes", async () => {
             let cartController = new CartController();
             await expect(cartController.clearCart(testUser)).resolves.toBe(true);
         });
 
-        test("Error- no cart to clear", async () => {
+        test("ICC 6.2 Error- no cart to clear", async () => {
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -720,14 +700,14 @@ describe('Integration CONTROLLER- DAO - DB', () => {
         });  
     });
 
-    describe('deleteAllCarts', () => {
+    describe('ICC 7 deleteAllCarts', () => {
 
-        test("Error- no cart to delete", async () => {
+        test("ICC 7.1 Error- no cart to delete", async () => {
             let cartController = new CartController();
             await expect(cartController.deleteAllCarts()).resolves.toBe(true);
         });  
 
-        test("Succes", async () => {
+        test("ICC 7.2 Succes", async () => {
             //await removeCarts()
             await addUser(new User("altro","","",Role.CUSTOMER,"",""))
             await addCart(1,testUser.username,false,"",100)
@@ -738,9 +718,9 @@ describe('Integration CONTROLLER- DAO - DB', () => {
         });
     });
 
-    describe('getAllCarts', () => {
+    describe('ICC 8 getAllCarts', () => {
 
-        test("Error- not exist PAID carts", async () => {
+        test("ICC 8.1 Error- not exist PAID carts", async () => {
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -749,7 +729,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await expect(cartController.getAllCarts()).resolves.toStrictEqual([]);
         });
 
-        test("Success", async () => {
+        test("ICC 8.2 Success", async () => {
             
             await addCart(1,testUser.username,false,null,100)
             await addCart(2,testUser.username,true,testDate,200)
@@ -814,8 +794,8 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         })
     }
 
-    describe("GET /ezelectronics/carts/", () => {
-        test("Correct unexisting cart", async ()=>{
+    describe("ICR 1 GET /ezelectronics/carts/", () => {
+        test("ICR 1.1 Correct unexisting cart", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -834,7 +814,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
 
         });
 
-        test("Correct get carts", async () => {
+        test("ICR 1.2 Correct get carts", async () => {
             await removeProductsFromCart()
             await removeCarts()
             //await removeProduct()
@@ -860,8 +840,8 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         });
     });
     
-    describe("POST /ezelectronics/carts/", () => {
-        test("Correct added product to cart", async ()=>{
+    describe("ICR 2 POST /ezelectronics/carts/", () => {
+        test("ICR 2.1 Correct added product to cart", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             //await addCart(1,customer.username,false,null,20)
@@ -872,7 +852,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
 
         });
 
-        test("error product doesn't exist", async ()=>{
+        test("ICR 2.2 error product doesn't exist", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -883,7 +863,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             expect(response.body.error).toStrictEqual(new ProductNotFoundError().customMessage)
         });
 
-        test("error product stock==0", async ()=>{
+        test("ICR 2.3 error product stock==0", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -897,8 +877,8 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
 
     });
 
-    describe("PATCH /ezelectronics/carts/", () => {
-        test("Correct checkout cart", async ()=>{
+    describe("ICR 3 PATCH /ezelectronics/carts/", () => {
+        test("ICR 3.1 Correct checkout cart", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             await addCart(1,customer.username,false,null,20)
@@ -911,7 +891,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             expect(response.status).toBe(200);
         });
 
-        test("cart to checkout doesn't exist", async ()=>{
+        test("ICR 3.2 cart to checkout doesn't exist", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             //await removeProduct()
@@ -924,7 +904,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             expect(response.body.error).toBe(new CartNotFoundError().customMessage)
         });
 
-        test("cart contains no product", async ()=>{
+        test("ICR 3.3 cart contains no product", async ()=>{
             //await removeProductsFromCart()
             //await removeCarts()
             await addCart(1,customer.username,false,null,0)
@@ -938,7 +918,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             expect(response.body.error).toBe(new EmptyCartError().customMessage)
         });
 
-        test("at least one product in cart has stock=0", async ()=>{
+        test("ICR 3.4 at least one product in cart has stock=0", async ()=>{
             //await removeProductsFromCart()
             //await removeCarts()
             //await addCart(1,customer.username,false,null,0)
@@ -952,7 +932,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             expect(response.body.error).toBe(new EmptyProductStockError().customMessage)
         });
 
-        test("at least one product in cart has stock<quantity in cart", async ()=>{
+        test("ICR 3.5 at least one product in cart has stock<quantity in cart", async ()=>{
             await removeProductsFromCart()
             //await removeCarts()
             //await addCart(1,customer.username,false,null,0)
@@ -967,8 +947,8 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         });
     });
 
-    describe("GET /ezelectronics/carts/history", () => {
-        test("Correct history get", async ()=>{
+    describe("ICR 4 GET /ezelectronics/carts/history", () => {
+        test("ICR 4.1 Correct history get", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -991,8 +971,8 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         });
     });
 
-    describe("DELETE /ezelectronics/carts/products/:model", () => {
-        test("Correct delete with quantity>1", async ()=>{
+    describe("ICR 5 DELETE /ezelectronics/carts/products/:model", () => {
+        test("ICR 5.1 Correct delete with quantity>1", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -1007,7 +987,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
 
         });
 
-        test("Correct delete with quantity==1", async ()=>{
+        test("ICR 5.2 Correct delete with quantity==1", async ()=>{
             /*await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -1022,7 +1002,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
 
         });
 
-        test("Error product not in cart", async ()=>{
+        test("ICR 5.3 Error product not in cart", async ()=>{
             /*await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -1037,7 +1017,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             expect(response.body.error).toBe(new ProductNotInCartError().customMessage)
         });
 
-        test("Error cart not exist", async ()=>{
+        test("ICR 5.4 Error cart not exist", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             //await removeProduct()
@@ -1052,7 +1032,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             expect(response.body.error).toBe(new CartNotFoundError().customMessage)
         });
 
-        test("Error cart is empty", async ()=>{
+        test("ICR 5.5 Error cart is empty", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             //await removeProduct()
@@ -1067,7 +1047,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             expect(response.body.error).toBe(new ProductNotInCartError().customMessage)
         });
 
-        test("Error cart is empty", async ()=>{
+        test("ICR 5.6 Error cart is empty", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -1083,9 +1063,9 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         });
     });
 
-    describe("DELETE /ezelectronics/carts/current", () => {
+    describe("ICR 6 DELETE /ezelectronics/carts/current", () => {
 
-        test("Correct delete cart", async ()=>{
+        test("ICR 6.1 Correct delete cart", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
             await removeProduct()
@@ -1100,7 +1080,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
 
         });
 
-        test("Error don't exist any unpaid cart", async ()=>{
+        test("ICR 6.2 Error don't exist any unpaid cart", async ()=>{
             await removeCarts()
             customerCookie = await login(customer)
 
@@ -1112,9 +1092,9 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
 
     });
 
-    describe("DELETE /ezelectronics/carts", () => {
+    describe("ICR 7 DELETE /ezelectronics/carts", () => {
 
-        test("Error user is not an admin", async ()=>{
+        test("ICR 7.1 Error user is not an admin", async ()=>{
             await addUser(testUser)
             await addCart(1,customer.username,false,null,100)
             await addCart(2,testUser.username,true,"20-03-2024",100)
@@ -1128,7 +1108,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
 
         });
 
-        test("Correct delete of all carts", async ()=>{
+        test("ICR 7.2 Correct delete of all carts", async ()=>{
             await removeProductsFromCart()
             await removeProduct()
             await removeCarts()
@@ -1149,9 +1129,9 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         });
     });
 
-    describe("GET /ezelectronics/carts", () => {
+    describe("ICR 8 GET /ezelectronics/carts", () => {
 
-        test("Error user is not an admin", async ()=>{
+        test("ICR 8.1 Error user is not an admin", async ()=>{
             //await addUser(testUser)
             await addCart(1,customer.username,false,null,100)
             await addCart(2,testUser.username,true,"20-03-2024",100)
@@ -1165,7 +1145,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
 
         });
 
-        test("Correct return all carts", async ()=>{
+        test("ICR 8.2 Correct return all carts", async ()=>{
             adminCookie = await login(admin)
 
             const response = await request(app).get(`${baseURL}/carts/all`).set("Cookie", adminCookie)
