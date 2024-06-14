@@ -99,7 +99,7 @@
 | :--------------------------------: | :-----: |
 |                FR1                 |         |
 |                FR2                 |         |
-|                FR3                 |         |
+|                FR3                 | UPD,UPC,UPR,IPD,IPC,IPR        |
 |                FR4                 |    URR, URC, URD, IRD, IRC, IRR     |
 |                FR5                 | UCD, UCC, UCR, ICD, ICC, ICR |
 
