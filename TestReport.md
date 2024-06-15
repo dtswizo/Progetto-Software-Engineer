@@ -18,6 +18,7 @@
 ![ProductDependencyGraph](./resources/TestReport/ProductDependencyGraph.png)
 ![ReviewDependencyGraph](./resources/TestReport/ReviewDependencyGraph.png)
 ![CartDependencyGraph](./resources/TestReport/CartDependencyGraph.jpg)
+![UserDependencyGraph](./resources/TestReport/UserDependencyGraph.png)
 # Integration approach
 
 **Approach:** bottom-up\
@@ -31,44 +32,12 @@
 
 | Test case name | Object(s) tested | Test level | Technique used |
 | :------------: | :--------------: | :--------: | :------------: |
-|        UUR 1   |  User, Routes    | Unit  |     BB        |
-|        UUR 2   |  User, Routes    | Unit/API?  |     BB?        |
-|        UUR 3   |  User, Routes    | Unit/API?  |     BB?        |
-|        UUR 4   |  User, Routes    | Unit/API?  |     BB?        |
-|        UUR 5   |  User, Routes    | Unit/API?  |     BB?        |
-|        UUR 6   |  User, Routes    | Unit/API?  |     BB?        |
-|        UUR 7   |  User, Routes    | Unit/API?  |     BB?        |
-|        UUR 8   |  User, Routes    | Unit/API?  |     BB?        |
-|        UUR 9   |  User, Routes    | Unit/API?  |     BB?        |
-|        UUR 10   |  User, Routes    | Unit/API?  |     BB?        |
-|        UUC 1   |  User, Controller  | Unit     |     WB         |
-|        UUC 2   |  User, Controller  | Unit     |     WB         |
-|        UUC 3   |  User, Controller  | Unit     |     WB         |
-|        UUC 4   |  User, Controller  | Unit     |     WB         |
-|        UUC 5   |  User, Controller  | Unit     |     WB         |
-|        UUC 6   |  User, Controller  | Unit     |     WB         |
-|        UUC 7   |  User, Controller  | Unit     |     WB         |
-|        UUD 1   |  User, DAO  | Unit     |     WB         |
-|        UUD 2   |  User, DAO  | Unit     |     WB         |
-|        UUD 3   |  User, DAO  | Unit     |     WB         |
-|        UUD 4   |  User, DAO  | Unit     |     WB         |
-|        UUD 5   |  User, DAO  | Unit     |     WB         |
-|        UUD 6   |  User, DAO  | Unit     |     WB         |
-|        UUD 7   |  User, DAO  | Unit     |     WB         |
-|        IUD 1   |  User, DAO  | Integration     |     WB         |
-|        IUD 2   |  User, DAO  | Integration     |     WB         |
-|        IUD 3   |  User, DAO  | Integration     |     WB         |
-|        IUD 4   |  User, DAO  | Integration     |     WB         |
-|        IUD 5   |  User, DAO  | Integration     |     WB         |
-|        IUD 6   |  User, DAO  | Integration     |     WB         |
-|        IUD 7   |  User, DAO  | Integration     |     WB         |
-|        IUC 1   |  User, DAO  | Integration     |     WB         |
-|        IUC 2   |  User, DAO  | Integration     |     WB         |
-|        IUC 3   |  User, DAO  | Integration     |     WB         |
-|        IUC 4   |  User, DAO  | Integration     |     WB         |
-|        IUC 5   |  User, DAO  | Integration     |     WB         |
-|        IUC 6   |  User, DAO  | Integration     |     WB         |
-|        IUC 7   |  User, DAO  | Integration     |     WB         |
+|        UUR 1, UUR 2,UUR 3, UUR 4, UUR 5, UUR 6, UUR 7, UUR 8, UUR 9, UUR 10     |  User, Routes    | Unit  |     BB        |
+|        UUC 1, UUC 2, UUC 3, UUC 4, UUC 5, UUC 6, UUC 7   |  User, Controller  | Unit     |     WB         |
+|        UUD 1, UUD 2, UUD 3, UUD 4, UUD 5, UUD 6, UUD 7    |  User, DAO  | Unit     |     WB         |
+|        IUD 1, IUD 2, IUD 3, IUD 4, IUD 5, IUD 6, IUD 7,   |  User, DAO  | Integration     |     BB         |
+|        IUC 1, IUC 2, IUC 3, IUC 4, IUC 5, IUC 6, IUC 7,   |  User, Controller  | Integration     |     BB         |
+|        IUR 1, IUR 2, IUR 3, IUR 4, IUR 5, IUR 6, IUR 7,   |  User, Routes  | Integration     |     BB         |
 |        URR1, URR2, URR3, URR4, URR5   |  Review, Routes  | API     |     BB         |
 |        URC1, URC2, URC3, URC4, URC5   |  Review, Controller  | Unit     |     WB         |
 |        URD1, URD2, URD3, URD4, URD5, URD6   |  Review, DAO  | Unit     |     WB         |
@@ -95,8 +64,8 @@
 
 | Functional Requirement or scenario | Test(s) |
 | :--------------------------------: | :-----: |
-|                FR1                 |         |
-|                FR2                 |         |
+|                FR1                 |    UUR8, UUR9, UUR10     |
+|                FR2                 |     UUR1-7, UUC, UUD, IUR, IUC, IUD    |
 |                FR3                 | UPD,UPC,UPR,IPD,IPC,IPR        |
 |                FR4                 |    URR, URC, URD, IRD, IRC, IRR     |
 |                FR5                 | UCD, UCC, UCR, ICD, ICC, ICR |
