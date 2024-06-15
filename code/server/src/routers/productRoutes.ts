@@ -4,6 +4,7 @@ import { body, param, query } from "express-validator"
 import ProductController from "../controllers/productController"
 import Authenticator from "./auth"
 import { Product } from "../components/product"
+import dayjs from "dayjs"
 
 /**
  * Represents a class that defines the routes for handling proposals.
@@ -65,7 +66,15 @@ class ProductRoutes {
             body("quantity").isInt({min:1}),
             body("details").isString(),
             body("sellingPrice").isFloat({min:1}),
-            body("arrivalDate").isString(),
+            body("arrivalDate").custom(value => {
+                if (value === '') {
+                    return true;
+                }
+                if (!dayjs(value, 'YYYY-MM-DD', true).isValid()) {
+                    return false;
+                }
+                return true;
+            }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.registerProducts(req.body.model, req.body.category, req.body.quantity, req.body.details, req.body.sellingPrice, req.body.arrivalDate)
                 .then(() => res.status(200).end())
@@ -84,8 +93,17 @@ class ProductRoutes {
         this.router.patch(
             "/:model",
             this.authenticator.isAdminOrManager,
-            body("quantity").isInt({min:0}),
-            body("changeDate").isString(),
+            param("model").isString().isLength({ min: 1 }),
+            body("quantity").isInt({min:1}),
+            body("changeDate").custom(value => {
+                if (value === '') {
+                    return true;
+                }
+                if (!dayjs(value, 'YYYY-MM-DD', true).isValid()) {
+                    return false;
+                }
+                return true;
+            }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.changeProductQuantity(req.params.model, req.body.quantity, req.body.changeDate)
                 .then((quantity: number ) => res.status(200).json({ quantity: quantity }))
@@ -105,8 +123,17 @@ class ProductRoutes {
         this.router.patch(
             "/:model/sell",
             this.authenticator.isAdminOrManager,
+            param("model").isString().isLength({ min: 1 }),
             body("quantity").isInt({min:1}),
-            body("sellingDate").optional().isString(),
+            body("sellingDate").custom(value => {
+                if (value === '') {
+                    return true;
+                }
+                if (!dayjs(value, 'YYYY-MM-DD', true).isValid()) {
+                    return false;
+                }
+                return true;
+            }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.sellProduct(req.params.model, req.body.quantity, req.body.sellingDate)
                 .then((quantity: number) => res.status(200).json())
@@ -134,9 +161,9 @@ class ProductRoutes {
         this.router.get(
             "/",
             this.authenticator.isAdminOrManager, 
-            body("category").optional().isIn([["Smartphone", "Laptop", "Appliance",null]]),  //Ho aggiunto degli optional un po' ovunque dove serviva sennò i test senza tali attributi non passavano
-            body("grouping").optional().isIn(["model","category",null]),
-            body("model").optional().isString(),
+            query("grouping").optional().isIn(["category", "model", null]),
+            query("category").optional().isIn(["Smartphone", "Laptop", "Appliance", null]),
+            query("model").optional().isString().notEmpty(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getProducts(req.query.grouping, req.query.category, req.query.model)
                 .then((products: Product[]) => res.status(200).json(products))
@@ -158,9 +185,9 @@ class ProductRoutes {
         this.router.get(
             "/available",
             this.authenticator.isLoggedIn,
-            body("category").optional().isIn([["Smartphone", "Laptop", "Appliance",null]]),
-            body("grouping").optional().isIn(["model","category",null]),
-            body("model").optional().isString(),
+            query("grouping").optional().isIn(["category", "model", null]),
+            query("category").optional().isIn(["Smartphone", "Laptop", "Appliance", null]),
+            query("model").optional().isString().notEmpty(),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getAvailableProducts(req.query.grouping, req.query.category, req.query.model)
                 .then((products: Product[]) => res.status(200).json(products))
