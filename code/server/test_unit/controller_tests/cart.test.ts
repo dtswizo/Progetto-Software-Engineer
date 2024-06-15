@@ -174,8 +174,6 @@ describe("UCC 3 checkoutCart", ()=>{
         jest.spyOn(CartDAO.prototype, "getCart").mockResolvedValueOnce(cart);
         jest.spyOn(CartDAO.prototype, "checkProductAvailability").mockResolvedValueOnce(3);
         jest.spyOn(CartDAO.prototype, "checkoutCart").mockResolvedValueOnce(true);
-        
-        //let newCart = new Cart(testUser.username,true,'30/05/2024',cart.total,cart.products)
 
         const controller = new CartController(); 
         
@@ -205,7 +203,7 @@ describe("UCC 3 checkoutCart", ()=>{
         jest.spyOn(CartDAO.prototype, "checkoutCart").mockResolvedValueOnce(true);
 
         const controller = new CartController(); 
-        //const response = await controller.checkoutCart(testUser);
+
         await expect(controller.checkoutCart(testUser)).rejects.toThrowError(CartNotFoundError);
 
         expect(CartDAO.prototype.checkIfCartExists).toHaveBeenCalledTimes(1);
@@ -227,7 +225,7 @@ describe("UCC 3 checkoutCart", ()=>{
         jest.spyOn(CartDAO.prototype, "checkoutCart").mockResolvedValueOnce(true);
 
         const controller = new CartController(); 
-        //const response = await controller.checkoutCart(testUser);
+
         await expect(controller.checkoutCart(testUser)).rejects.toThrowError(EmptyProductStockError);
 
         expect(CartDAO.prototype.checkProductAvailability).toHaveBeenCalledTimes(1);
@@ -253,7 +251,7 @@ describe("UCC 3 checkoutCart", ()=>{
         jest.spyOn(CartDAO.prototype, "checkoutCart").mockResolvedValueOnce(true);
 
         const controller = new CartController(); 
-        //const response = await controller.checkoutCart(testUser);
+
         await expect(controller.checkoutCart(testUser)).rejects.toThrowError(LowProductStockError);
 
         expect(CartDAO.prototype.checkIfCartExists).toHaveBeenCalledTimes(1);
@@ -269,14 +267,14 @@ describe("UCC 3 checkoutCart", ()=>{
         jest.clearAllMocks();
         const testUser = new User("test","test","test",Role.CUSTOMER,"test","27/05/2024")
         jest.spyOn(CartDAO.prototype, "checkIfCartExists").mockResolvedValueOnce(true);
-        //let product=new ProductInCart("test",10,Category.APPLIANCE,200)
+
         let cart=new Cart("test",false,"",0,[])
         jest.spyOn(CartDAO.prototype, "getCart").mockResolvedValueOnce(cart);
         jest.spyOn(CartDAO.prototype, "checkProductAvailability").mockResolvedValueOnce(3);
         jest.spyOn(CartDAO.prototype, "checkoutCart").mockResolvedValueOnce(true);
 
         const controller = new CartController(); 
-        //const response = await controller.checkoutCart(testUser);
+
         await expect(controller.checkoutCart(testUser)).rejects.toThrow(EmptyCartError);
 
         expect(CartDAO.prototype.checkIfCartExists).toHaveBeenCalledTimes(1);
@@ -284,7 +282,7 @@ describe("UCC 3 checkoutCart", ()=>{
         expect(CartDAO.prototype.getCart).toHaveBeenCalledTimes(1);
         expect(CartDAO.prototype.getCart).toHaveBeenCalledWith(testUser);
         expect(CartDAO.prototype.checkProductAvailability).toHaveBeenCalledTimes(0);
-        //expect(CartDAO.prototype.checkProductAvailability).toHaveBeenCalledWith(product.model);
+
         expect(CartDAO.prototype.checkoutCart).toHaveBeenCalledTimes(0);
     });
 });

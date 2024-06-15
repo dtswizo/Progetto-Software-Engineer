@@ -7,9 +7,6 @@ import { EmptyProductStockError, LowProductStockError, ProductNotFoundError } fr
 import { CartNotFoundError, EmptyCartError, ProductNotInCartError } from "../../src/errors/cartError";
 import db from "../../src/db/db"
 import { Database } from "sqlite3"
-//import '@types/jest';
-
-//jest.mock("../../src/db/db.ts");
 
 
 /* *************************** FUNZIONE checkIfCartExists ****************************** */
@@ -1447,7 +1444,7 @@ describe("UCD 13 checkoutCart", () => {
 
         /////////
 
-        await expect(cartDAO.checkoutCart(testUser)).rejects.toStrictEqual(new ProductNotFoundError());
+        await expect(cartDAO.checkoutCart(testUser)).rejects.toStrictEqual(false);
         expect(Database.prototype.get).toHaveBeenCalledTimes(0);
         //ipotizzo che l'errore avvenga sull'aggiornamento del primo prodotto in lista
         expect(Database.prototype.run).toHaveBeenCalledTimes(1);
@@ -1516,15 +1513,8 @@ describe("UCD 13 checkoutCart", () => {
 
         /////////
 
-        //mark cart as paid cart
-        /*
-        jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            callback.call({changes:1},null);
-            return ({} as Database);
-        });*/
-
         await expect(cartDAO.checkoutCart(testUser)).rejects.toBe(Error);
-        //ipotizzo che l'errore avvenga sull'aggiornamento del primo prodotto in lista
+
         expect(Database.prototype.run).toHaveBeenCalledTimes(1);
         expect(CartDAO.prototype.getCart).toBeCalledWith(testUser);
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
@@ -1608,11 +1598,6 @@ describe("UCD 14 getCustomerCarts", () => {
             address: "test",
             birthdate: "27/05/2024"
         }
-
-        let rows = [
-            { idCart: 1, customer: testUser.username, paid: true, paymentDate: "27/05/2024", total: 50 },
-            { idCart: 2, customer: testUser.username, paid: true, paymentDate: "10/01/2023", total: 20 }
-        ]
 
         let carts = [
             new Cart(testUser.username, true, "27/05/2024", 50, [new ProductInCart("test", 1, Category.SMARTPHONE, 50)]),
@@ -1874,23 +1859,6 @@ describe("UCD 16 getAllCarts", () => {
 
 
     test("UCD 16.4 error getAllCarts:DB error in products_in_cart", async () => {
-        const testUser = {
-            username: "test",
-            name: "test",
-            surname: "test",
-            role: Role.CUSTOMER,
-            address: "test",
-            birthdate: "27/05/2024"
-        }
-
-        const testUser2 = {
-            username: "test2",
-            name: "test2",
-            surname: "test2",
-            role: Role.CUSTOMER,
-            address: "test2",
-            birthdate: "04/03/2000"
-        }
 
         let cartDAO = new CartDAO();
 

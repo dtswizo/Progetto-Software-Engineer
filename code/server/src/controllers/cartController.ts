@@ -28,7 +28,6 @@ class CartController {
     async addToCart(user: User, product: string)/*: Promise<Boolean>*/ { 
         
             let quantity = await this.dao.checkProductAvailability(product);
-            console.log(quantity)
             if (quantity === -1)
                 throw new ProductNotFoundError(); //ERROR 404
             if (quantity === 0)
@@ -65,7 +64,6 @@ class CartController {
         }
         let inStock = new Array<number>(cart.products.length);
         for (let i=0;i<cart.products.length; i++){
-            //EFFETTUARE CONTROLLO SU QUANTITY
             let quantity = await this.dao.checkProductAvailability(cart.products[i].model);
             //Quantity available < Quantity richiesta
             if (quantity === 0)
@@ -110,8 +108,7 @@ class CartController {
         }
         let quantity =  await this.dao.checkProductQuantityInCart(user,product);
         let idCart = await this.dao.getCartId(user);
-        //console.log(quantity)
-        //console.log(idCart)
+
         return await this.dao.removeProductFromCart(user,product);
             
     }

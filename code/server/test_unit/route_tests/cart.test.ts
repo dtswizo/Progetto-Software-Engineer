@@ -1,16 +1,14 @@
 import { test, expect, jest } from "@jest/globals"
 import request from 'supertest'
-//import { app } from "../../index" ////
 import { CartNotFoundError, EmptyCartError, ProductNotInCartError } from "../../src/errors/cartError"
 import CartController from "../../src/controllers/cartController"
 import { Cart, ProductInCart } from "../../src/components/cart"
 import { Role, User } from "../../src/components/user"
 import { EmptyProductStockError, LowProductStockError, ProductNotFoundError } from "../../src/errors/productError"
 import { Category } from "../../src/components/product"
-//import { before, beforeEach, describe } from "node:test"
 import express from "express"
 import { spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, initMockedApp } from '../../src/testUtilities'
-jest.mock('../../src/controllers/cartController');  /////
+jest.mock('../../src/controllers/cartController');
 
 
 const baseURL = "/ezelectronics"
@@ -101,7 +99,7 @@ describe("Cart route tests", () => {
         test("UCR 2.2 addToCart: 404 model does not represent an existing product", async () => {
             const testUser = spyCustomer();
             enableMockedAuth(app)
-            //jest.spyOn(CartController.prototype, "addToCart").mockRejectedValueOnce(new ProductNotFoundError())
+
             jest.spyOn(CartController.prototype, "addToCart").mockImplementation(() => { throw new ProductNotFoundError(); })
             const response = await request(app).post(baseURL + "/carts").send({ model: "test" }).set('Content-Type', 'application/json')
             expect(response.status).toBe(404)
@@ -113,7 +111,7 @@ describe("Cart route tests", () => {
         test("UCR 2.3 addToCart: 409 model with avaible quantity 0", async () => {
             const testUser = spyCustomer();
             enableMockedAuth(app)
-            //jest.spyOn(CartController.prototype, "addToCart").mockRejectedValueOnce(new EmptyProductStockError())
+ 
             jest.spyOn(CartController.prototype, "addToCart").mockImplementation(() => { throw new EmptyProductStockError(); })
             const response = await request(app).post(baseURL + "/carts").send({ model: "test" }).set('Content-Type', 'application/json')
             expect(response.status).toBe(409)
@@ -154,7 +152,7 @@ describe("Cart route tests", () => {
             enableMockedAuth(app)
             jest.spyOn(CartController.prototype, "addToCart").mockRejectedValueOnce(new Error())
             const response = await request(app).post(baseURL + "/carts").send({ model: "iphone13" }).set('Content-Type', 'application/json')
-            //expect(response.status).toBe(200)
+
             expect(CartController.prototype.addToCart).toHaveBeenCalledTimes(1)
             expect(CartController.prototype.addToCart).toHaveBeenCalledWith(testUser, "iphone13")
         });
@@ -176,7 +174,7 @@ describe("Cart route tests", () => {
         test("UCR 3.2 checkoutCart:404 no unpaid cart for the user", async () => {
             const testUser = spyCustomer();
             enableMockedAuth(app)
-            //jest.spyOn(CartController.prototype, "checkoutCart").mockRejectedValueOnce(new CartNotFoundError())
+
             jest.spyOn(CartController.prototype, "checkoutCart").mockImplementation(() => { throw new CartNotFoundError(); })
             const response = await request(app).patch(baseURL + "/carts")
             expect(response.status).toBe(404)
@@ -188,7 +186,7 @@ describe("Cart route tests", () => {
         test("UCR 3.3 checkoutCart:400 the unpaid cart is empty", async () => {
             const testUser = spyCustomer();
             enableMockedAuth(app)
-            //jest.spyOn(CartController.prototype, "checkoutCart").mockRejectedValueOnce(new EmptyCartError())
+
             jest.spyOn(CartController.prototype, "checkoutCart").mockImplementation(() => { throw new EmptyCartError(); })
             const response = await request(app).patch(baseURL + "/carts")
             expect(response.status).toBe(400)
@@ -200,7 +198,7 @@ describe("Cart route tests", () => {
         test("UCR 3.4 checkoutCart:409 at least one product in the cart is not avaible", async () => {
             const testUser = spyCustomer();
             enableMockedAuth(app)
-            //jest.spyOn(CartController.prototype, "checkoutCart").mockRejectedValueOnce(new EmptyProductStockError())
+
             jest.spyOn(CartController.prototype, "checkoutCart").mockImplementation(() => { throw new EmptyProductStockError(); })
             const response = await request(app).patch(baseURL + "/carts")
             expect(response.status).toBe(409)
@@ -212,7 +210,7 @@ describe("Cart route tests", () => {
         test("UCR 3.5 checkoutCart:409 at least one product quantity in the cart is > than the avaible", async () => {
             const testUser = spyCustomer();
             enableMockedAuth(app)
-            //jest.spyOn(CartController.prototype, "checkoutCart").mockRejectedValueOnce(new LowProductStockError())
+
             jest.spyOn(CartController.prototype, "checkoutCart").mockImplementation(() => { throw new LowProductStockError(); })
             const response = await request(app).patch(baseURL + "/carts")
             expect(response.status).toBe(409)
@@ -318,7 +316,7 @@ describe("Cart route tests", () => {
         test("UCR 5.2 removeProductFromCart: 404 model is not in the cart", async () => {
             const testUser = spyCustomer();
             enableMockedAuth(app)
-            //jest.spyOn(CartController.prototype, "removeProductFromCart").mockRejectedValueOnce(new ProductNotInCartError())
+
             jest.spyOn(CartController.prototype, "removeProductFromCart").mockImplementation(() => { throw new ProductNotInCartError(); })
             const model = "test"  //modello da rimuovere
             const response = await request(app).delete(baseURL + `/carts/products/${model}`)
@@ -331,7 +329,7 @@ describe("Cart route tests", () => {
         test("UCR 5.3 removeProductFromCart: 404 no unpaid cart or empty cart", async () => {
             const testUser = spyCustomer();
             enableMockedAuth(app)
-            //jest.spyOn(CartController.prototype, "removeProductFromCart").mockRejectedValueOnce(new CartNotFoundError())
+
             jest.spyOn(CartController.prototype, "removeProductFromCart").mockImplementation(() => { throw new CartNotFoundError(); })
             const model = "test"  //modello da rimuovere
             const response = await request(app).delete(baseURL + `/carts/products/${model}`)
@@ -344,7 +342,7 @@ describe("Cart route tests", () => {
         test("UCR 5.4 removeProductFromCart: 404 model product not existing", async () => {
             const testUser = spyCustomer();
             enableMockedAuth(app)
-            //jest.spyOn(CartController.prototype, "removeProductFromCart").mockRejectedValueOnce(new ProductNotFoundError())
+
             jest.spyOn(CartController.prototype, "removeProductFromCart").mockImplementation(() => { throw new ProductNotFoundError(); })
             const model = "test"  //modello da rimuovere
             const response = await request(app).delete(baseURL + `/carts/products/${model}`)
@@ -401,7 +399,7 @@ describe("Cart route tests", () => {
         test("UCR 6.2 clearCart: 404 not exist an unpaid cart", async () => {
             const testUser = spyCustomer();
             enableMockedAuth(app)
-            //jest.spyOn(CartController.prototype, "clearCart").mockResolvedValueOnce(true)
+
             jest.spyOn(CartController.prototype, "clearCart").mockImplementation(() => { throw new CartNotFoundError(); })
             const response = await request(app).delete(baseURL + "/carts/current")
             expect(response.status).toBe(404)
@@ -497,7 +495,7 @@ describe("Cart route tests", () => {
             const response = await request(app).get(baseURL + "/carts/all")
             expect(response.status).toBe(401)
             expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(0)
-            //expect(CartController.prototype.getAllCarts).toHaveBeenCalledWith()
+
         });
 
         test("UCR 8.3 getAllCarts:401 not logged", async () => {
@@ -510,7 +508,7 @@ describe("Cart route tests", () => {
             const response = await request(app).get(baseURL + "/carts/all")
             expect(response.status).toBe(401)
             expect(CartController.prototype.getAllCarts).toHaveBeenCalledTimes(0)
-            //expect(CartController.prototype.getAllCarts).toHaveBeenCalledWith()
+
         });
 
         test("UCR 8.4 getAllCarts: error from controller", async () => {

@@ -135,7 +135,6 @@ class CartDAO {
                         return
                     }
                     if (!row) {
-                        /////////verificare
                         reject(new CartNotFoundError());
                         return
                     }
@@ -205,29 +204,22 @@ class CartDAO {
                 }
 
                 cartId = row.idCart;
-                console.log("in aggiungiProdCArt")
                 //In questo caso il carrello è vuoto
                 if (!row || checkProduct === false) {
-                    console.log("il prodotto NON esiste")
                     const sql3 = "INSERT INTO prod_in_cart(idCart,model,quantity,category,price) VALUES (?,?,?,?,?)"
-                    console.log(cartId)
                     db.run(sql3, [cartId, product, 1, category, price], (err: Error | null) => {
                         if (err) {
                             reject(err);
                             return
                         }
                         this.updateCartTotal(user, price).then(() => {
-                            console.log("update cart total ok")
                             resolve(true)
                         }).catch((err) => reject(err))
-                        //rivedere
-                        //resolve(true)
                     })
                     return
                 }
                 //Prodotto esiste, aggiornarne quantità
                 else if (checkProduct === true) {
-                    console.log("il prodotto esiste")
                     
                     const sql3 = "UPDATE prod_in_cart SET quantity=quantity+1 WHERE idCart=? AND model=?"
                     db.run(sql3, [cartId, product], (err: Error | null) => {
@@ -238,8 +230,6 @@ class CartDAO {
                         this.updateCartTotal(user, price).then(() => {
                             resolve(true)
                         }).catch((err) => reject(err))
-                        // rivedere
-                        //resolve(true)
                     })
                     return
                 }
@@ -269,7 +259,6 @@ class CartDAO {
                             price = row.sellingPrice;
                             category = row.category;
                             if (checkCart === false) {
-                                console.log("il carrello non esiste ancora")
                                 //CARRELLO DA CREARE, PRENDERE ID E INSERIRE IN PRODINCART
                                 const sql = "INSERT INTO carts(customer,paid,paymentDate,total) VALUES (?,?,?,?)"
                                 db.run(sql, [user.username, false, null, 0], (err: Error | null) => {
@@ -277,13 +266,11 @@ class CartDAO {
                                         reject(err);
                                         return
                                     }
-                                    console.log("aggiungo"+product)
                                     this.aggiungiProdottoACarrello(user, checkProduct, product, category, price)
                                         .then((res) => resolve(res))
                                         .catch((err) => reject(err))
                                 })
                             } else {
-                                console.log("Il carello esiste gia")
                                 this.aggiungiProdottoACarrello(user, checkProduct, product, category, price)
                                     .then((res) => resolve(res))
                                     .catch((err) => reject(err))
@@ -423,8 +410,6 @@ class CartDAO {
                         this.resetCartTotal(user).then(() => {
                             resolve(true)
                         }).catch((err) => reject(err))
-                        //rivedere
-                        //resolve(true);
                     });
                 }).catch((err) => reject(err));
             }
@@ -451,10 +436,10 @@ class CartDAO {
                                 reject(err);
                                 //return
                             }
-                            //verificare
+                            //verificare rivedere
                             if (this.changes == 0) {
                                 error = true;
-                                reject(new ProductNotFoundError());
+                                reject(false);
                                 //return
                             }
                         });
@@ -492,48 +477,6 @@ class CartDAO {
     getCustomerCarts(user: User): Promise<Cart[]> {
         return new Promise<Cart[]>((resolve, reject) => {
             try {
-                /*
-                const result: Cart[] = []
-                const sql = "SELECT * FROM carts c  WHERE customer=? AND paid=TRUE;"
-                db.all(sql, [user.username], (err: Error | null, rows: any) => {
-                    if (err) {
-                        reject(err)
-                        return
-                    }
-                    if (!rows) {
-                        resolve([]);
-                        return
-                    }
-                    let cartQueries = rows.map((row: any, i: number) => {
-                        return new Promise<void>((resolve, reject) => {
-                            const sql = "SELECT * FROM carts c JOIN prod_in_cart pc WHERE c.idCart = pc.idCart AND c.idCart = ? AND paid = TRUE;";
-                            db.all(sql, [row.idCart], (err: Error | null, row: any) => {
-                                if (err) {
-                                    reject(err);
-                                    return;
-                                }
-                                if (!row) {
-                                    //rivedere
-                                    reject(new CartNotFoundError());
-                                    //resolve([])
-                                    return;
-                                }
-                                const productsInCart = row.map((p: { model: string; quantity: number; category: Category; price: number; }) => new ProductInCart(p.model, p.quantity, p.category, p.price));
-
-                                let cartToAdd = new Cart(row[0].customer, true, row[0].paymentDate, row[0].total, productsInCart);
-
-                                result.push(cartToAdd);
-                                resolve();
-                            });
-                        });
-                    });
-
-                    Promise.all(cartQueries).then(() => {
-                        resolve(result);
-                    }).catch((error) => reject(error))
-
-                });*/
-
                 const sql = "SELECT * FROM carts LEFT JOIN prod_in_cart ON carts.idCart = prod_in_cart.idCart WHERE customer=? AND paid=TRUE ORDER BY carts.idCart;";
                 db.all(sql, [user.username], (err: Error | null, rows: any) => {
                     if (err) {
@@ -611,48 +554,6 @@ class CartDAO {
     getAllCarts() {
         return new Promise<Cart[]>((resolve, reject) => {
             try {
-                /*
-                const result: Cart[] = []
-                const sql = "SELECT * FROM carts c "
-                db.all(sql, [], (err: Error | null, rows: any) => {
-                    if (err) {
-                        reject(err)
-                        return
-                    }
-                    if (!rows) {
-                        resolve([]);
-                        return
-                    }
-                    let cartQueries = rows.map((row: any, i: number) => {
-                        return new Promise<void>((resolve, reject) => {
-                            const sql = "SELECT * FROM carts c JOIN prod_in_cart pc WHERE c.idCart = pc.idCart AND c.idCart = ?;";
-                            db.all(sql, [row.idCart], (err: Error | null, row: any) => {
-                                if (err) {
-                                    reject(err);
-                                    return;
-                                }
-                                if (!row) {
-                                    ///resolve();
-                                    // vedere che errore c'è
-                                    reject(new Error())
-                                    return;
-                                }
-                                const productsInCart = row.map((p: { model: string; quantity: number; category: Category; price: number; }) => new ProductInCart(p.model, p.quantity, p.category, p.price));
-
-                                let cartToAdd = new Cart(rows[i].customer, rows[i].paid == 0 ? false : true, rows[i].paymentDate, rows[i].total, productsInCart);
-
-                                result.push(cartToAdd);
-                                resolve();
-                            });
-                        });
-                    });
-
-                    Promise.all(cartQueries).then(() => {
-                        resolve(result);
-                    }).catch((error) => { reject(error) })
-
-                });*/
-
                 const sql = "SELECT * FROM carts LEFT JOIN prod_in_cart ON carts.idCart = prod_in_cart.idCart ORDER BY carts.idCart;";
                 db.all(sql, [], (err: Error | null, rows: any) => {
                     if (err) {

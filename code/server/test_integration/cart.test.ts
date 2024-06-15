@@ -1,15 +1,10 @@
 import { expect, jest ,test} from '@jest/globals';
 import request from 'supertest'
-import express from 'express';
-import { spyCustomer, spyManager, spyAdmin, spyNotLogged, enableMockedAuth, initMockedApp } from '../src/testUtilities'
-
 import cartController from '../src/controllers/cartController';
 import { User, Role } from '../src/components/user';
 import { Category } from '../src/components/product';
 import { EmptyProductStockError, LowProductStockError, ProductNotFoundError } from '../src/errors/productError';
-import { ExistingReviewError, NoReviewProductError } from '../src/errors/reviewError';
-import { ProductReview } from '../src/components/review';
-import { cleanup, cleanupDB } from '../src/db/cleanup';
+import { cleanupDB } from '../src/db/cleanup';
 import db from "../src/db/db"
 import CartDAO from '../src/dao/cartDAO';
 import { CartNotFoundError, EmptyCartError, ProductNotInCartError } from '../src/errors/cartError';
@@ -81,7 +76,6 @@ const addProduct = async (model: String, sellingPrice:number, category: Category
 }
 
 const removeProduct = async () => {
-    //console.log("RemoveProduct");
     const sql = "DELETE FROM products";
     await new Promise<void>((resolve, reject) => {
         try {
@@ -131,7 +125,7 @@ const addProductInCart = async (idCart:number,model:string,quantity:number,categ
 }
 
 const removeProductsFromCart = async () => {
-    //console.log("RemoveProduct");
+
     const sql = "DELETE FROM prod_in_cart";
     await new Promise<void>((resolve, reject) => {
         try {
@@ -149,7 +143,6 @@ const removeProductsFromCart = async () => {
 }
 
 const removeCarts = async () => {
-    //console.log("RemoveProduct");
     const sql = "DELETE FROM carts";
     await new Promise<void>((resolve, reject) => {
         try {
@@ -264,7 +257,7 @@ describe('Integration DAO - DB', () => {
     describe('ICD 6 checkProductQuantityInCart', () => {
 
         test("ICD 6.1 Error - product not exist in cart", async () => {
-            //await addCart(1,testUser.username,false,"",20)
+
             let cartDAO = new CartDAO;
 
             await expect(cartDAO.checkProductQuantityInCart(testUser,testModel)).resolves.toBe(-1);
@@ -314,7 +307,7 @@ describe('Integration DAO - DB', () => {
     describe('ICD 9 resetCartTotal', () => {
         
         test("ICD 9.1 Success - total reset correctly", async () => {
-            //await addCart(1,testUser.username,false,"",20)
+
 
             let cartDAO = new CartDAO;
             await expect(cartDAO.resetCartTotal(testUser)).resolves.toBe(true);
@@ -339,7 +332,7 @@ describe('Integration DAO - DB', () => {
 
         test("ICD 10.1 Success - cart already exist", async () => {
             await addCart(1,testUser.username,false,"",500)
-            //await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",2)
+
             await addProductInCart(1,testModel,1,Category.SMARTPHONE,500)
 
             let cartDAO = new CartDAO;
@@ -408,9 +401,6 @@ describe('Integration DAO - DB', () => {
             await removeProductsFromCart()
             await removeProduct()
             await removeCarts()
-            //await addCart(1,testUser.username,false,"",20)
-            //await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",1)
-            //await addProductInCart(1,testModel,1,Category.SMARTPHONE,500)
             let cartDAO = new CartDAO;
             await expect(cartDAO.getCustomerCarts(testUser)).resolves.toStrictEqual([]);
         });
@@ -529,7 +519,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
 
         test("ICC 1.4 Error- product stock not enough", async () => {
             await removeProductsFromCart()
-            //await removeCarts()
+
             await removeProduct()
             await addProduct(testModel,100,Category.SMARTPHONE,"2024-06-20","",0)
             let cartController = new CartController();
@@ -547,7 +537,6 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await addCart(2,testUser.username,true,testDate,100)
             await addProductInCart(1,testModel,1,Category.SMARTPHONE,100)
 
-            //await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",2)
 
             let cartController = new CartController();
             await expect(cartController.getCart(testUser)).resolves.toStrictEqual(new Cart(testUser.username,false,null,100,[
@@ -558,8 +547,7 @@ describe('Integration CONTROLLER- DAO - DB', () => {
         test("ICC 2.2 Error- cart not exist", async () => {
             await removeProductsFromCart()
             await removeCarts()
-            //await removeProduct()
-            //await addProduct(testModel,100,Category.SMARTPHONE,"2024-06-20","",0)
+
             let cartController = new CartController();
 
             await expect(cartController.getCart(testUser)).resolves.toStrictEqual(new Cart(testUser.username,false,null,0,[]));
@@ -612,8 +600,6 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await addProduct(testModel,100,Category.SMARTPHONE,"20/01/2024","",1)
             await addProductInCart(1,testModel,1,Category.SMARTPHONE,100)
 
-            //await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",2)
-
             let cartController = new CartController();
             await expect(cartController.checkoutCart(testUser)).resolves.toBe(true);
         });        
@@ -637,8 +623,6 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await addCart(2,testUser.username,true,testDate,300)
             await addProduct(testModel,100,Category.SMARTPHONE,"20/01/2024","",1)
             await addProductInCart(2,testModel,1,Category.SMARTPHONE,300)
-
-            //await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",2)
 
             let cartController = new CartController();
             await expect(cartController.getCustomerCarts(testUser)).resolves.toStrictEqual([new Cart(testUser.username,true,testDate,300,
@@ -669,7 +653,6 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             
             await addCart(1,testUser.username,false,"",100)
             await addProductInCart(1,"prova",1,Category.SMARTPHONE,50)
-            //await addProductInCart(1,testModel,1,Category.SMARTPHONE,500)
 
             let cartController = new CartController();
             await expect(cartController.removeProductFromCart(testUser,testModel)).rejects.toStrictEqual(new ProductNotInCartError());
@@ -708,7 +691,6 @@ describe('Integration CONTROLLER- DAO - DB', () => {
         });  
 
         test("ICC 7.2 Succes", async () => {
-            //await removeCarts()
             await addUser(new User("altro","","",Role.CUSTOMER,"",""))
             await addCart(1,testUser.username,false,"",100)
             await addCart(2,"altro",true,testDate,300)
@@ -740,8 +722,6 @@ describe('Integration CONTROLLER- DAO - DB', () => {
             await addProductInCart(2,testModel,1,Category.SMARTPHONE,200)
             await addProductInCart(3,"pc",1,Category.LAPTOP,300)
             await addProductInCart(1,"samsung",1,Category.SMARTPHONE,100)
-
-            //await addProduct(testModel,500,Category.SMARTPHONE,"2024-04-18","",2)
 
             let cartController = new CartController();
             await expect(cartController.getAllCarts()).resolves.toStrictEqual([
@@ -817,11 +797,6 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         test("ICR 1.2 Correct get carts", async () => {
             await removeProductsFromCart()
             await removeCarts()
-            //await removeProduct()
-            //await removeUser()
-            //await addUser(new User(customer.username,customer.name,customer.surname,Role.CUSTOMER,"",""))
-            
-            //await postUser(customer)
             customerCookie = await login(customer)
 
             await addCart(1,customer.username,false,null,20)
@@ -835,7 +810,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             expect(cart).toBeDefined()
             expect(cart.customer).toBe(customer.name)
             expect(cart.paid).toBe(false)
-            //expect(cart.products).toStrictEqual([new ProductInCart(testModel,1,Category.APPLIANCE,20).])
+
             expect(cart.products).toStrictEqual([{model:testModel, quantity:1, category:Category.APPLIANCE, price:20}])
         });
     });
@@ -844,7 +819,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         test("ICR 2.1 Correct added product to cart", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
-            //await addCart(1,customer.username,false,null,20)
+
             customerCookie = await login(customer)
 
             const response = await request(app).post(`${baseURL}/carts/`).send({model:testModel}).set("Cookie", customerCookie)
@@ -894,9 +869,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         test("ICR 3.2 cart to checkout doesn't exist", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
-            //await removeProduct()
-            //await addProduct(testModel,20,Category.APPLIANCE,"10-02-2023","",1)
-            //await addProductInCart(1,testModel,1,Category.APPLIANCE,20)
+
             customerCookie = await login(customer)
 
             const response = await request(app).patch(`${baseURL}/carts/`).set("Cookie", customerCookie)
@@ -905,12 +878,9 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         });
 
         test("ICR 3.3 cart contains no product", async ()=>{
-            //await removeProductsFromCart()
-            //await removeCarts()
+
             await addCart(1,customer.username,false,null,0)
-            //await removeProduct()
-            //await addProduct(testModel,20,Category.APPLIANCE,"10-02-2023","",1)
-            //await addProductInCart(1,testModel,1,Category.APPLIANCE,20)
+
             customerCookie = await login(customer)
 
             const response = await request(app).patch(`${baseURL}/carts/`).set("Cookie", customerCookie)
@@ -919,9 +889,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         });
 
         test("ICR 3.4 at least one product in cart has stock=0", async ()=>{
-            //await removeProductsFromCart()
-            //await removeCarts()
-            //await addCart(1,customer.username,false,null,0)
+
             await removeProduct()
             await addProduct(testModel,20,Category.APPLIANCE,"10-02-2023","",0)
             await addProductInCart(1,testModel,1,Category.APPLIANCE,20)
@@ -934,8 +902,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
 
         test("ICR 3.5 at least one product in cart has stock<quantity in cart", async ()=>{
             await removeProductsFromCart()
-            //await removeCarts()
-            //await addCart(1,customer.username,false,null,0)
+
             await removeProduct()
             await addProduct(testModel,20,Category.APPLIANCE,"10-02-2023","",1)
             await addProductInCart(1,testModel,2,Category.APPLIANCE,20)
@@ -976,7 +943,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             await removeCarts()
             await removeProduct()
             await addCart(1,customer.username,false,null,0)
-            //await addCart(2,customer.username,true,"20-03-2024",100)
+
             await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
             await addProductInCart(1,testModel,2,Category.SMARTPHONE,50)
             customerCookie = await login(customer)
@@ -987,13 +954,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         });
 
         test("ICR 5.2 Correct delete with quantity==1", async ()=>{
-            /*await removeProductsFromCart()
-            await removeCarts()
-            await removeProduct()
-            await addCart(1,customer.username,false,null,0)
-            //await addCart(2,customer.username,true,"20-03-2024",100)
-            await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
-            await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)*/
+
             customerCookie = await login(customer)
 
             const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
@@ -1002,13 +963,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         });
 
         test("ICR 5.3 Error product not in cart", async ()=>{
-            /*await removeProductsFromCart()
-            await removeCarts()
-            await removeProduct()
-            await addCart(1,customer.username,false,null,0)
-            //await addCart(2,customer.username,true,"20-03-2024",100)
-            await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
-            await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)*/
+
             customerCookie = await login(customer)
 
             const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
@@ -1019,11 +974,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         test("ICR 5.4 Error cart not exist", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
-            //await removeProduct()
-            //await addCart(1,customer.username,false,null,0)
-            //await addCart(2,customer.username,true,"20-03-2024",100)
-            //await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
-            //await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)*/
+
             customerCookie = await login(customer)
 
             const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
@@ -1034,11 +985,9 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
         test("ICR 5.5 Error cart is empty", async ()=>{
             await removeProductsFromCart()
             await removeCarts()
-            //await removeProduct()
+
             await addCart(1,customer.username,false,null,0)
-            //await addCart(2,customer.username,true,"20-03-2024",100)
-            //await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
-            //await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)*/
+
             customerCookie = await login(customer)
 
             const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
@@ -1051,9 +1000,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             await removeCarts()
             await removeProduct()
             await addCart(1,customer.username,false,null,0)
-            //await addCart(2,customer.username,true,"20-03-2024",100)
-            //await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
-            //await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)*/
+
             customerCookie = await login(customer)
 
             const response = await request(app).delete(`${baseURL}/carts/products/${testModel}`).set("Cookie", customerCookie)
@@ -1069,7 +1016,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             await removeCarts()
             await removeProduct()
             await addCart(1,customer.username,false,null,100)
-            //await addCart(2,customer.username,true,"20-03-2024",100)
+
             await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
             await addProductInCart(1,testModel,2,Category.SMARTPHONE,50)
             customerCookie = await login(customer)
@@ -1097,7 +1044,7 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
             await addUser(testUser)
             await addCart(1,customer.username,false,null,100)
             await addCart(2,testUser.username,true,"20-03-2024",100)
-            //await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+
             await addProductInCart(1,testModel,2,Category.SMARTPHONE,50)
             await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)
             customerCookie = await login(customer)
@@ -1131,10 +1078,10 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB', () => {
     describe("ICR 8 GET /ezelectronics/carts", () => {
 
         test("ICR 8.1 Error user is not an admin", async ()=>{
-            //await addUser(testUser)
+
             await addCart(1,customer.username,false,null,100)
             await addCart(2,testUser.username,true,"20-03-2024",100)
-            //await addProduct(testModel,50,Category.SMARTPHONE,"10-01-2024","",3)
+
             await addProductInCart(1,testModel,2,Category.SMARTPHONE,50)
             await addProductInCart(2,testModel,2,Category.SMARTPHONE,50)
             customerCookie = await login(customer)
