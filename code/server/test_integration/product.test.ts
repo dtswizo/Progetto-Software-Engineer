@@ -359,6 +359,18 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             const response = await request(app).post(baseURL).send({ model: "iPhone13" }).set("Cookie", adminCookie);
             expect(response.status).toBe(422); //parametri errati perchè ho passato solo modello => mi aspetto 422
         });
+        
+        test("IPR1.3 Error on duplicate product model", async () => {
+            await request(app).post(baseURL).send(testProduct).set("Cookie", adminCookie);
+            const response = await request(app).post(baseURL).send(testProduct).set("Cookie", adminCookie);
+            expect(response.status).toBe(409); 
+        });
+    
+        test("IPR1.4 Error on invalid arrival date", async () => {
+            const invalidProduct = { ...testProduct, arrivalDate: "3024-06-01" }; 
+            const response = await request(app).post(baseURL).send(invalidProduct).set("Cookie", adminCookie);
+            expect(response.status).toBe(400); 
+        });
     });
 
     describe("IPR2 PATCH /ezelectronics/products/:model", () => {
@@ -373,6 +385,23 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             const response = await request(app).patch(`${baseURL}/nonExistingModel`).send(testProductUpdated).set("Cookie", adminCookie);
             expect(response.status).toBe(404);
         });
+
+        test("IPR2.3 Error if model does not represent a product in the database", async () => {
+            const response = await request(app).patch(`${baseURL}/nonExistingModel`).send(testProductUpdated).set("Cookie", adminCookie);
+            expect(response.status).toBe(404); 
+        });
+    
+        test("IPR2.4 Error if changeDate is after the current date", async () => {
+            const futureDateUpdate = { ...testProductUpdated, changeDate: "3024-06-01" }; // Future change date
+            const response = await request(app).patch(`${baseURL}/${testProduct.model}`).send(futureDateUpdate).set("Cookie", adminCookie);
+            expect(response.status).toBe(400); 
+        });
+    
+        test("IPR2.5 Error if changeDate is before the product's arrivalDate", async () => {
+            const pastDateUpdate = { ...testProductUpdated, changeDate: "2023-04-01" }; // Before arrival date
+            const response = await request(app).patch(`${baseURL}/${testProduct.model}`).send(pastDateUpdate).set("Cookie", adminCookie);
+            expect(response.status).toBe(400); 
+        });
     });
 
     describe("IPR3 PATCH /ezelectronics/products/:model/sell", () => {
@@ -386,6 +415,25 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             const response = await request(app).patch(`${baseURL}/${testProduct.model}/sell`).send({ quantity: 100 }).set("Cookie", adminCookie);
             expect(response.status).toBe(409);
         });
+
+        test("IPR3.3 Error if model does not represent a product in the database", async () => {
+            const response = await request(app).patch(`${baseURL}/nonExistingModel/sell`).send(testProductSell).set("Cookie", adminCookie);
+            expect(response.status).toBe(404); 
+        });
+    
+        test("IPR3.4 Error if sellingDate is after the current date", async () => {
+            const futureDateSell = { ...testProductSell, sellingDate: "3024-07-01" }; 
+            const response = await request(app).patch(`${baseURL}/${testProduct.model}/sell`).send(futureDateSell).set("Cookie", adminCookie);
+            expect(response.status).toBe(400); 
+        });
+    
+        test("IPR3.5 Error if sellingDate is before the product's arrivalDate", async () => {
+            const pastDateSell = { ...testProductSell, sellingDate: "2023-04-01" }; 
+            const response = await request(app).patch(`${baseURL}/${testProduct.model}/sell`).send(pastDateSell).set("Cookie", adminCookie);
+            expect(response.status).toBe(400);
+        });
+    
+    
     });
 
     describe("IPR4 GET /ezelectronics/products", () => {
@@ -439,6 +487,14 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             const nonExistentModel = 'nonExistentModel';
             const response = await request(app)
                 .delete(`${baseURL}/${nonExistentModel}`)
+                .set("Cookie", adminCookie);
+            
+            expect(response.status).toBe(404);
+        });
+
+        test("IPR6.3 Error - try to delete a model that does not represent a product in the database", async () => {
+            const response = await request(app)
+                .delete(`${baseURL}/nonExistingModel`)
                 .set("Cookie", adminCookie);
             
             expect(response.status).toBe(404);

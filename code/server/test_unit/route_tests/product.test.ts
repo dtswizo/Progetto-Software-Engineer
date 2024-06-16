@@ -6,6 +6,8 @@ import ProductController from "../../src/controllers/productController";
 import Authenticator from "../../src/routers/auth";
 import { Product,Category } from "../../src/components/product";
 import ErrorHandler from "../../src/helper";
+import { ProductAlreadyExistsError, ProductNotFoundError } from "../../src/errors/productError";
+import { DateError } from "../../src/utilities";
 
 jest.mock('../../src/controllers/productController');
 
@@ -153,6 +155,54 @@ describe("ProductRoutes", () => {
             expect(ProductController.prototype.registerProducts).toHaveBeenCalledTimes(1);
          });
 
+         it("UPR1.6 - Conflict - 409 error code for existing product model", async () => {
+            spyAdmin();
+            enableMockedAuth(app);
+            
+            const testProduct = {
+                model: "GalaxyS21",
+                category: "Smartphone",
+                quantity: 10,
+                details: "Latest model",
+                sellingPrice: 999.99,
+                arrivalDate: "2023-01-01"
+            };
+                    jest.spyOn(ProductController.prototype, "registerProducts").mockRejectedValue(new ProductAlreadyExistsError());
+        
+            const response = await request(app)
+                .post(`${baseURL}/products`)
+                .send(testProduct)
+                .set('Content-Type', 'application/json');
+        
+            expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
+            expect(response.status).toBe(409);
+            expect(ProductController.prototype.registerProducts).toHaveBeenCalledTimes(1);
+        });
+
+        it("UPR1.7 - Bad Request - 400 error code for future arrival date", async () => {
+            spyAdmin();
+            enableMockedAuth(app);
+            
+            const testProduct = {
+                model: "GalaxyS21",
+                category: "Smartphone",
+                quantity: 10,
+                details: "Latest model",
+                sellingPrice: 999.99,
+                arrivalDate: "2025-01-01" 
+            };
+        
+            jest.spyOn(ProductController.prototype, "registerProducts").mockRejectedValue(new DateError()) ;
+            const response = await request(app)
+                .post(`${baseURL}/products`)
+                .send(testProduct)
+                .set('Content-Type', 'application/json');
+        
+            expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
+            expect(response.status).toBe(400);
+            expect(ProductController.prototype.registerProducts).toHaveBeenCalledTimes(1);
+        });
+
         
     });
     
@@ -275,6 +325,75 @@ describe("ProductRoutes", () => {
             expect(response.status).toBe(503);
             expect(ProductController.prototype.changeProductQuantity).toHaveBeenCalledTimes(1);
            });
+
+           it("UPR2.6 - Not Found - 404 error code for nonexistent product model", async () => {
+            spyAdmin();
+            enableMockedAuth(app);
+            
+            const testQuantityChange = {
+                quantity: 5,
+                changeDate: "2023-02-01"
+            };
+        
+            const model = "NonExistentModel";
+        
+            jest.spyOn(ProductController.prototype, "changeProductQuantity").mockRejectedValue(new ProductNotFoundError());
+        
+            const response = await request(app)
+                .patch(`${baseURL}/products/${model}`)
+                .send(testQuantityChange)
+                .set('Content-Type', 'application/json');
+        
+            expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
+            expect(response.status).toBe(404);
+            expect(ProductController.prototype.changeProductQuantity).toHaveBeenCalledTimes(1);
+        });
+
+        it("UPR2.7 - Bad Request - 400 error code for future change date", async () => {
+            spyAdmin();
+            enableMockedAuth(app);
+            
+            const testQuantityChange = {
+                quantity: 5,
+                changeDate: "2025-02-01"  // Future date
+            };
+        
+            const model = "GalaxyS21";
+        
+            jest.spyOn(ProductController.prototype, "changeProductQuantity").mockRejectedValue(new DateError());
+        
+            const response = await request(app)
+                .patch(`${baseURL}/products/${model}`)
+                .send(testQuantityChange)
+                .set('Content-Type', 'application/json');
+        
+            expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
+            expect(response.status).toBe(400);
+            expect(ProductController.prototype.changeProductQuantity).toHaveBeenCalledTimes(1);
+        });
+
+        it("UPR2.8 - Bad Request - 400 error code for change date before arrival date", async () => {
+            spyAdmin();
+            enableMockedAuth(app);
+            
+            const testQuantityChange = {
+                quantity: 5,
+                changeDate: "2022-12-31"  // Before arrival date
+            };
+        
+            const model = "GalaxyS21";
+        
+            jest.spyOn(ProductController.prototype, "changeProductQuantity").mockRejectedValue(new DateError());
+        
+            const response = await request(app)
+                .patch(`${baseURL}/products/${model}`)
+                .send(testQuantityChange)
+                .set('Content-Type', 'application/json');
+        
+            expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
+            expect(response.status).toBe(400);
+            expect(ProductController.prototype.changeProductQuantity).toHaveBeenCalledTimes(1);
+        });
     
     });
     
@@ -399,7 +518,119 @@ describe("ProductRoutes", () => {
                 expect(response.status).toBe(503);
                 expect(ProductController.prototype.sellProduct).toHaveBeenCalledTimes(1);
             });
-        
+            it("UPR3.6 - Not Found - 404 error code for nonexistent product model", async () => {
+                spyAdmin();
+                enableMockedAuth(app);
+            
+                const testSale = {
+                    quantity: 3,
+                    sellingDate: "2023-03-01"
+                };
+            
+                const model = "NonExistentModel";
+            
+                jest.spyOn(ProductController.prototype, "sellProduct").mockRejectedValue(new ProductNotFoundError());
+            
+                const response = await request(app)
+                    .patch(`${baseURL}/products/${model}/sell`)
+                    .send(testSale)
+                    .set('Content-Type', 'application/json');
+            
+                expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
+                expect(response.status).toBe(404);
+                expect(ProductController.prototype.sellProduct).toHaveBeenCalledTimes(1);
+            });
+
+            it("UPR3.7 - Bad Request - 400 error code for future selling date", async () => {
+                spyAdmin();
+                enableMockedAuth(app);
+            
+                const testSale = {
+                    quantity: 3,
+                    sellingDate: "2025-03-01" 
+                };
+            
+                const model = "GalaxyS21";
+            
+                jest.spyOn(ProductController.prototype, "sellProduct").mockRejectedValue(new DateError());
+            
+                const response = await request(app)
+                    .patch(`${baseURL}/products/${model}/sell`)
+                    .send(testSale)
+                    .set('Content-Type', 'application/json');
+            
+                expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
+                expect(response.status).toBe(400);
+                expect(ProductController.prototype.sellProduct).toHaveBeenCalledTimes(1);
+            });
+
+            it("UPR3.8 - Bad Request - 400 error code for selling date before arrival date", async () => {
+                spyAdmin();
+                enableMockedAuth(app);
+            
+                const testSale = {
+                    quantity: 3,
+                    sellingDate: "2022-12-31"  
+                };
+            
+                const model = "GalaxyS21";
+            
+                jest.spyOn(ProductController.prototype, "sellProduct").mockRejectedValue(new DateError());
+            
+                const response = await request(app)
+                    .patch(`${baseURL}/products/${model}/sell`)
+                    .send(testSale)
+                    .set('Content-Type', 'application/json');
+            
+                expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
+                expect(response.status).toBe(400);
+                expect(ProductController.prototype.sellProduct).toHaveBeenCalledTimes(1);
+            });
+
+            it("UPR3.9 - Conflict - 409 error code for product with zero available quantity", async () => {
+                spyAdmin();
+                enableMockedAuth(app);
+            
+                const testSale = {
+                    quantity: 3,
+                    sellingDate: "2023-03-01"
+                };
+            
+                const model = "GalaxyS21";
+            
+                jest.spyOn(ProductController.prototype, "sellProduct").mockRejectedValue(new ProductAlreadyExistsError());
+            
+                const response = await request(app)
+                    .patch(`${baseURL}/products/${model}/sell`)
+                    .send(testSale)
+                    .set('Content-Type', 'application/json');
+            
+                expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
+                expect(response.status).toBe(409);
+                expect(ProductController.prototype.sellProduct).toHaveBeenCalledTimes(1);
+            });
+            it("UPR3.10 - Conflict - 409 error code for requested quantity greater than available", async () => {
+                spyAdmin();
+                enableMockedAuth(app);
+            
+                const testSale = {
+                    quantity: 10,  // Requesting more than available
+                    sellingDate: "2023-03-01"
+                };
+            
+                const model = "GalaxyS21";
+            
+                jest.spyOn(ProductController.prototype, "sellProduct").mockRejectedValue(new ProductAlreadyExistsError());
+            
+                const response = await request(app)
+                    .patch(`${baseURL}/products/${model}/sell`)
+                    .send(testSale)
+                    .set('Content-Type', 'application/json');
+            
+                expect(Authenticator.prototype.isAdminOrManager).toHaveBeenCalledTimes(1);
+                expect(response.status).toBe(409);
+                expect(ProductController.prototype.sellProduct).toHaveBeenCalledTimes(1);
+            });
     });
         
         describe("UPR4 GET /ezelectronics/products", () => {
@@ -490,6 +721,8 @@ describe("ProductRoutes", () => {
                 expect(response.status).toBe(401);
                 expect(ProductController.prototype.getProducts).toHaveBeenCalledTimes(0);
             });
+            
+            
         });
         
         describe("UPR5 GET /ezelectronics/products/available", () => {
