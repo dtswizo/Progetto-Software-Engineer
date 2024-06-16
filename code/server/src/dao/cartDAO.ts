@@ -220,7 +220,7 @@ class CartDAO {
                 }
                 //Prodotto esiste, aggiornarne quantità
                 else if (checkProduct === true) {
-                    
+
                     const sql3 = "UPDATE prod_in_cart SET quantity=quantity+1 WHERE idCart=? AND model=?"
                     db.run(sql3, [cartId, product], (err: Error | null) => {
                         if (err) {
@@ -423,49 +423,70 @@ class CartDAO {
     checkoutCart(user: User): Promise<Boolean> {
         return new Promise<Boolean>((resolve, reject) => {
             try {
-                let error = false;
                 this.getCart(user).then((cart: Cart) => {
                     //Updating quantities in stock
-                    for (let i = 0; i < cart.products.length; i++) {
-                        const sql = "UPDATE products\
-                                    SET quantity=quantity-?\
-                                    WHERE model=?;"
-                        db.run(sql, [cart.products[i].quantity, cart.products[i].model], function (err: Error | null) {
+                    if (cart.products.length === 0) {
+                        reject(new CartNotFoundError());
+                        return;
+                    }
+                    db.serialize(() => {
+                        db.run("BEGIN TRANSACTION;", (err: Error | null) => {
                             if (err) {
-                                error = true;
                                 reject(err);
-                                //return
+                                return;
                             }
-                            //verificare rivedere
-                            if (this.changes == 0) {
-                                error = true;
-                                reject(false);
-                                //return
-                            }
-                        });
-                        if (error === true) {
-                            break;
 
-                        }
-                    }
-                    if (!error) {
-                        //Marks current cart as paid
-                        const sql = "UPDATE carts\
-                        SET paid=?,paymentDate=?,total=?\
-                        WHERE customer=? AND paid=false;"
-                        db.run(sql, [true, dayjs().format('YYYY-MM-DD'), cart.total, cart.customer], function (err: Error | null) {
-                            if (err) {
-                                reject(err);
-                                return
+                            let completed = 0;
+                            const totalUpdates = cart.products.length;
+                            let error = false;
+                            for (let i = 0; i < totalUpdates; i++) {
+                                if (error) {
+                                    break;
+                                }
+                                db.run(
+                                    "UPDATE products SET quantity=quantity-? WHERE model=?;",
+                                    [cart.products[i].quantity, cart.products[i].model],
+                                    function (err: Error | null) {
+                                        if (err) {
+                                            error = true;
+                                            db.run("ROLLBACK;", () => { reject(err); });
+                                            return;
+                                        }
+                                        if (this.changes == 0) {
+                                            error = true;
+                                            db.run("ROLLBACK;", () => { reject(false); });
+                                            return;
+                                        }
+                                        if (++completed === totalUpdates) {
+                                            const sql2 = `UPDATE carts
+                                                          SET paid=?, paymentDate=?, total=?
+                                                          WHERE customer=? AND paid=false;`;
+                                            db.run(sql2, [true, dayjs().format('YYYY-MM-DD'), cart.total, cart.customer], function (err: Error | null) {
+                                                if (err) {
+                                                    db.run("ROLLBACK;", () => { reject(err); });
+                                                    return;
+                                                }
+                                                if (this.changes == 0) {
+                                                    db.run("ROLLBACK;", () => { reject(new CartNotFoundError()); });
+                                                    return;
+                                                }
+                                                db.run("COMMIT;", (err: Error | null) => {
+                                                    if (err) {
+                                                        reject(err);
+                                                        return;
+                                                    }
+                                                    resolve(true);
+                                                });
+                                            });
+                                        }
+                                    }
+                                );
                             }
-                            if (this.changes == 0) {
-                                reject(new CartNotFoundError());
-                                return
-                            }
-                            resolve(true)
                         });
-                    }
-                }).catch((error) => { reject(error) })
+                    });
+                }).catch((error) => {
+                    reject(error);
+                });
             }
             catch (error) {
                 reject(error)

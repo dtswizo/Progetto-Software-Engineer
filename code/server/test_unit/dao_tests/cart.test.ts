@@ -1399,23 +1399,29 @@ describe("UCD 13 checkoutCart", () => {
 
         // mock di base per tutti i casi
         jest.spyOn(CartDAO.prototype, "getCart").mockResolvedValueOnce(cart);
-        //update product stock quantities
-        jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            callback.call({ changes: 1 }, null);
-            return ({} as Database);
-        });
 
-        /////////
+        //jest.spyOn(Database.prototype, "serialize").mockImplementation(() =>{});
+        //begin transaction
+        jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) =>{
+            if (typeof params === 'function') {
+                callback = params;
+            }
+            if(sql.includes("BEGIN") || sql.includes("COMMIT")){
+                callback(null);
+                return ({} as Database);
+            }else if(sql.includes("UPDATE")){
+                callback.call({ changes: 1 }, null);
+                return ({} as Database);
+            }else if(sql.includes("ROLLBACK")){
+                callback();
+                return ({} as Database);
+            }
 
-        //mark cart as paid cart
-        jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            callback.call({ changes: 1 }, null);
-            return ({} as Database);
         });
 
         await expect(cartDAO.checkoutCart(testUser)).resolves.toBe(true);
         expect(Database.prototype.get).toHaveBeenCalledTimes(0);
-        expect(Database.prototype.run).toHaveBeenCalledTimes(np_in_cart + 1);
+        expect(Database.prototype.run).toHaveBeenCalledTimes(np_in_cart+3);
         expect(CartDAO.prototype.getCart).toBeCalledWith(testUser);
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
@@ -1438,8 +1444,23 @@ describe("UCD 13 checkoutCart", () => {
         jest.spyOn(CartDAO.prototype, "getCart").mockResolvedValueOnce(cart);
         //update product stock quantities
         jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            callback.call({ changes: 0 }, null);
-            return ({} as Database);
+            if (typeof params === 'function') {
+                callback = params;
+            }
+            if(sql.includes("BEGIN") || sql.includes("COMMIT")){
+                callback(null);
+                return ({} as Database);
+            }else if(sql.includes("UPDATE")){
+                if(sql.includes("carts")){
+                    callback.call({ changes: 1 }, null);
+                }else{
+                    callback.call({ changes: 0 }, null);
+                }
+                return ({} as Database);
+            }else if(sql.includes("ROLLBACK")){
+                callback();
+                return ({} as Database);
+            }
         });
 
         /////////
@@ -1447,7 +1468,7 @@ describe("UCD 13 checkoutCart", () => {
         await expect(cartDAO.checkoutCart(testUser)).rejects.toStrictEqual(false);
         expect(Database.prototype.get).toHaveBeenCalledTimes(0);
         //ipotizzo che l'errore avvenga sull'aggiornamento del primo prodotto in lista
-        expect(Database.prototype.run).toHaveBeenCalledTimes(1);
+        expect(Database.prototype.run).toHaveBeenCalledTimes(3);
         expect(CartDAO.prototype.getCart).toBeCalledWith(testUser);
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
@@ -1474,17 +1495,28 @@ describe("UCD 13 checkoutCart", () => {
         //mark cart as paid cart
 
         jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            if (sql.includes("products")) {
-                callback.call({ changes: 1 }, null);
-            } else {
-                callback.call({ changes: 0 }, null);
+            if (typeof params === 'function') {
+                callback = params;
             }
-            return ({} as Database);
+            if(sql.includes("BEGIN") || sql.includes("COMMIT")){
+                callback(null);
+                return ({} as Database);
+            }else if(sql.includes("UPDATE")){
+                if(sql.includes("carts")){
+                    callback.call({ changes: 0 }, null);
+                }else{
+                    callback.call({ changes: 1 }, null);
+                }
+                return ({} as Database);
+            }else if(sql.includes("ROLLBACK")){
+                callback();
+                return ({} as Database);
+            }
         });
 
         await expect(cartDAO.checkoutCart(testUser)).rejects.toStrictEqual(new CartNotFoundError());
         expect(Database.prototype.get).toHaveBeenCalledTimes(0);
-        expect(Database.prototype.run).toHaveBeenCalledTimes(np_in_cart + 1);
+        expect(Database.prototype.run).toHaveBeenCalledTimes(np_in_cart+3);
         expect(CartDAO.prototype.getCart).toBeCalledWith(testUser);
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
@@ -1507,15 +1539,26 @@ describe("UCD 13 checkoutCart", () => {
         jest.spyOn(CartDAO.prototype, "getCart").mockResolvedValueOnce(cart);
         //update product stock quantities
         jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            callback(Error);
-            return ({} as Database);
+            if (typeof params === 'function') {
+                callback = params;
+            }
+            if(sql.includes("BEGIN") || sql.includes("COMMIT")){
+                callback(null);
+                return ({} as Database);
+            }else if(sql.includes("UPDATE")){
+                callback(Error);
+                return ({} as Database);
+            }else if(sql.includes("ROLLBACK")){
+                callback();
+                return ({} as Database);
+            }
         });
 
         /////////
 
         await expect(cartDAO.checkoutCart(testUser)).rejects.toBe(Error);
 
-        expect(Database.prototype.run).toHaveBeenCalledTimes(1);
+        expect(Database.prototype.run).toHaveBeenCalledTimes(3);
         expect(CartDAO.prototype.getCart).toBeCalledWith(testUser);
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
@@ -1537,25 +1580,32 @@ describe("UCD 13 checkoutCart", () => {
         // mock di base per tutti i casi
         jest.spyOn(CartDAO.prototype, "getCart").mockResolvedValueOnce(cart);
         //update product stock quantities
-        jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            callback.call(Error, null);
-            return ({} as Database);
-        });
 
         /////////
 
         //mark cart as paid cart
         jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
-            if (sql.includes("carts")) {
-                callback(Error);
-            } else {
-                callback.call({ changes: 1 }, null);
+            if (typeof params === 'function') {
+                callback = params;
             }
-            return ({} as Database);
+            if(sql.includes("BEGIN") || sql.includes("COMMIT")){
+                callback(null);
+                return ({} as Database);
+            }else if(sql.includes("UPDATE")){
+                if(sql.includes("carts")){
+                    callback(Error);
+                }else {
+                    callback.call({ changes: 1 }, null);
+                }
+                return ({} as Database);
+            }else if(sql.includes("ROLLBACK")){
+                callback();
+                return ({} as Database);
+            }
         });
 
         await expect(cartDAO.checkoutCart(testUser)).rejects.toBe(Error);
-        expect(Database.prototype.run).toHaveBeenCalledTimes(np_in_cart + 1);
+        expect(Database.prototype.run).toHaveBeenCalledTimes(np_in_cart+3);
         expect(CartDAO.prototype.getCart).toBeCalledWith(testUser);
         expect(CartDAO.prototype.getCart).toBeCalledTimes(1);
     });
