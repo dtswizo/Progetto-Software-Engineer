@@ -473,8 +473,8 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             expect(response1.status).toBe(422);
             const response2 = await request(app).get(`${baseURL}/?grouping=model&category=Smartphone`).set("Cookie", adminCookie);
             expect(response2.status).toBe(422);
-            //const response3 = await request(app).get(`${baseURL}/?grouping=model&model=null`).set("Cookie", adminCookie);
-           // expect(response3.status).toBe(422);
+            const response3 = await request(app).get(`${baseURL}/?grouping=model`).set("Cookie", adminCookie);
+            expect(response3.status).toBe(422);
         });
     
     
@@ -522,8 +522,8 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             expect(response1.status).toBe(422);
             const response2 = await request(app).get(`${baseURL}/available?grouping=model&category=Smartphone`).set("Cookie", adminCookie);
             expect(response2.status).toBe(422);
-            //const response3 = await request(app).get(`${baseURL}/available?grouping=model&model=null`).set("Cookie", adminCookie);
-            //expect(response3.status).toBe(422);
+            const response3 = await request(app).get(`${baseURL}/available?grouping=model`).set("Cookie", adminCookie);
+            expect(response3.status).toBe(422);
         });
     });
 
