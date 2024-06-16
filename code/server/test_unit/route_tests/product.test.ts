@@ -721,7 +721,26 @@ describe("ProductRoutes", () => {
                 expect(response.status).toBe(401);
                 expect(ProductController.prototype.getProducts).toHaveBeenCalledTimes(0);
             });
-            
+
+            it("UPR4.4 should return a 422 error if grouping is null and any of category or model is not null", async () => {
+                spyAdmin();
+                enableMockedAuth(app);
+        
+                const testQuery = {
+                    grouping: "null",
+                    category: "Smartphone"
+                };
+        
+                const response = await request(app)
+                    .get(`${baseURL}/products`)
+                    .query(testQuery)
+                    .set('Content-Type', 'application/json');
+        
+                expect(response.status).toBe(422);
+                expect(ProductController.prototype.getProducts).toHaveBeenCalledTimes(0);
+            });
+
+
             
         });
         

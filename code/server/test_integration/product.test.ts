@@ -449,6 +449,26 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             expect(response.status).toBe(200);
             expect(response.body).toBeInstanceOf(Array);
         });
+
+        test("IPR4.3 Return 422 if grouping is null and any of category or model is not null", async () => {
+            const response1 = await request(app).get(`${baseURL}/?category=Smartphone`).set("Cookie", adminCookie);
+            expect(response1.status).toBe(422);
+            const response2 = await request(app).get(`${baseURL}/?model=iPhone13`).set("Cookie", adminCookie);
+            expect(response2.status).toBe(422);
+            const response3 = await request(app).get(`${baseURL}/?category=Smartphone&model=iPhone13`).set("Cookie", adminCookie);
+            expect(response3.status).toBe(422);
+        });
+    
+        test("IPR4.4 Return 422 if grouping is category and category is null or model is not null", async () => {
+            const response1 = await request(app).get(`${baseURL}/?grouping=category`).set("Cookie", adminCookie);
+            expect(response1.status).toBe(422);
+            const response2 = await request(app).get(`${baseURL}/?grouping=category&model=iPhone13`).set("Cookie", adminCookie);
+            expect(response2.status).toBe(422);
+            const response3 = await request(app).get(`${baseURL}/?grouping=category&category=null`).set("Cookie", adminCookie);
+            expect(response3.status).toBe(422);
+        });
+    
+    
     });
 
     describe("IPR5 GET /ezelectronics/products/available", () => {
@@ -463,6 +483,29 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             const response = await request(app).get(baseURL).send(Category.SMARTPHONE).set("Cookie", adminCookie);
             expect(response.status).toBe(200);
             expect(response.body).toBeDefined();
+        });
+
+        test("IPR5.3 Return 422 if grouping is null and any of category or model is not null", async () => {
+            const response1 = await request(app).get(`${baseURL}/available?category=Smartphone`).set("Cookie", adminCookie);
+            expect(response1.status).toBe(422);
+            const response2 = await request(app).get(`${baseURL}/available?model=iPhone13`).set("Cookie", adminCookie);
+            expect(response2.status).toBe(422);
+            const response3 = await request(app).get(`${baseURL}/available?category=Smartphone&model=iPhone13`).set("Cookie", adminCookie);
+            expect(response3.status).toBe(422);
+        });
+    
+        test("IPR5.4 Return 422 if grouping is category and category is null or model is not null", async () => {
+            const response1 = await request(app).get(`${baseURL}/available?grouping=category`).set("Cookie", adminCookie);
+            expect(response1.status).toBe(422);
+            const response2 = await request(app).get(`${baseURL}/available?grouping=category&model=iPhone13`).set("Cookie", adminCookie);
+            expect(response2.status).toBe(422);
+            const response3 = await request(app).get(`${baseURL}/available?grouping=category&category=null`).set("Cookie", adminCookie);
+            expect(response3.status).toBe(422);
+        });
+     
+        test("IPR5.5 Return 404 if model does not represent a product in the database (only when grouping is model)", async () => {
+            const response = await request(app).get(`${baseURL}/available?grouping=model&model=NonExistentModel`).set("Cookie", adminCookie);
+            expect(response.status).toBe(404);
         });
     });
 
