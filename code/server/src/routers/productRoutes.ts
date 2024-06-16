@@ -136,7 +136,7 @@ class ProductRoutes {
             }),
             this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.sellProduct(req.params.model, req.body.quantity, req.body.sellingDate)
-                .then((quantity: number) => res.status(200).json())
+                .then((quantity: number) => res.status(200).end())
                 .catch((err) => {
                     //console.log(err)
                     next(err)
