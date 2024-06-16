@@ -452,7 +452,7 @@ class CartDAO {
                         //Marks current cart as paid
                         const sql = "UPDATE carts\
                         SET paid=?,paymentDate=?,total=?\
-                        WHERE customer=?;"
+                        WHERE customer=? AND paid=false;"
                         db.run(sql, [true, dayjs().format('YYYY-MM-DD'), cart.total, cart.customer], function (err: Error | null) {
                             if (err) {
                                 reject(err);
