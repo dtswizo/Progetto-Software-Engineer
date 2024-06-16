@@ -146,9 +146,9 @@ class ProductController {
             throw new FilteringError();
         }
         if(grouping==="model" && (category!==null || model===null)){
-            console.log(grouping);
-            console.log(category);
-            console.log(model);
+            //console.log(grouping);
+            //console.log(category);
+            //console.log(model);
             throw new FilteringError();
         }
         if (category!==null && category!==undefined && category!="Smartphone" && category!="Laptop" && category!="Appliance"){

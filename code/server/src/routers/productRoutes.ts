@@ -168,7 +168,7 @@ class ProductRoutes {
             (req: any, res: any, next: any) => this.controller.getProducts(req.query.grouping, req.query.category, req.query.model)
                 .then((products: Product[]) => res.status(200).json(products))
                 .catch((err) => {
-                    console.log(err)
+                    //console.log(err)
                     next(err)
                 })
         )
