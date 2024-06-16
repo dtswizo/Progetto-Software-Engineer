@@ -467,6 +467,15 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
             const response3 = await request(app).get(`${baseURL}/?grouping=category&category=null`).set("Cookie", adminCookie);
             expect(response3.status).toBe(422);
         });
+
+        test("IPR4.5 Return 422 if grouping is model and model is null or category is not null", async () => {
+            const response1 = await request(app).get(`${baseURL}/?grouping=model`).set("Cookie", adminCookie);
+            expect(response1.status).toBe(422);
+            const response2 = await request(app).get(`${baseURL}/?grouping=model&category=Smartphone`).set("Cookie", adminCookie);
+            expect(response2.status).toBe(422);
+            //const response3 = await request(app).get(`${baseURL}/?grouping=model&model=null`).set("Cookie", adminCookie);
+           // expect(response3.status).toBe(422);
+        });
     
     
     });
@@ -506,6 +515,15 @@ describe('Integration ROUTE - CONTROLLER - DAO - DB for Products', () => {
         test("IPR5.5 Return 404 if model does not represent a product in the database (only when grouping is model)", async () => {
             const response = await request(app).get(`${baseURL}/available?grouping=model&model=NonExistentModel`).set("Cookie", adminCookie);
             expect(response.status).toBe(404);
+        });
+
+        test("IPR5.6 Return 422 if grouping is model and model is null or category is not null", async () => {
+            const response1 = await request(app).get(`${baseURL}/available?grouping=model`).set("Cookie", adminCookie);
+            expect(response1.status).toBe(422);
+            const response2 = await request(app).get(`${baseURL}/available?grouping=model&category=Smartphone`).set("Cookie", adminCookie);
+            expect(response2.status).toBe(422);
+            //const response3 = await request(app).get(`${baseURL}/available?grouping=model&model=null`).set("Cookie", adminCookie);
+            //expect(response3.status).toBe(422);
         });
     });
 
