@@ -3,6 +3,7 @@ const PRODUCT_ALREADY_EXISTS = "The product already exists"
 const PRODUCT_SOLD = "Product already sold"
 const EMPTY_PRODUCT_STOCK = "Product stock is empty"
 const LOW_PRODUCT_STOCK = "Product stock cannot satisfy the requested quantity"
+const FILTERS_DONT_MATCH="The selected filters aren't compatible"
 
 /**
  * Represents an error that occurs when a product is not found.
@@ -68,4 +69,16 @@ class LowProductStockError extends Error {
     }
 }
 
-export { ProductNotFoundError, ProductAlreadyExistsError, ProductSoldError, EmptyProductStockError, LowProductStockError }
+/*added*/
+class FilteringError extends Error{
+    customMessage: string
+    customCode: number
+
+    constructor() {
+        super()
+        this.customMessage = FILTERS_DONT_MATCH
+        this.customCode = 422
+    }
+}
+
+export { ProductNotFoundError, ProductAlreadyExistsError, ProductSoldError, EmptyProductStockError, LowProductStockError,FilteringError }

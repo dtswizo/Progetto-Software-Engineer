@@ -1,4 +1,10 @@
+import { ERROR } from "sqlite3";
 import ProductDAO from "../dao/productDAO";
+import dayjs from "dayjs";
+import { EmptyProductStockError, FilteringError, LowProductStockError, ProductNotFoundError } from "../errors/productError";
+import { error, group } from "console";
+import { Product } from "../components/product";
+import { DateError } from "../utilities";
 
 /**
  * Represents a controller for managing products.
@@ -21,7 +27,28 @@ class ProductController {
      * @param arrivalDate The optional date in which the product arrived.
      * @returns A Promise that resolves to nothing.
      */
-    async registerProducts(model: string, category: string, quantity: number, details: string | null, sellingPrice: number, arrivalDate: string | null) /**:Promise<void> */ { }
+    async registerProducts(model: string, category: string, quantity: number, details: string | null, sellingPrice: number, arrivalDate: string | null) :Promise<void> {
+        
+        if (arrivalDate===null){
+            arrivalDate=dayjs().format('YYYY-MM-DD');
+        }
+        if (dayjs(arrivalDate).isAfter(dayjs())){
+            throw new DateError();
+        }
+        if (model=="" || model==null){
+            throw new ProductNotFoundError();
+        }
+        if (category!="Smartphone" && category!="Laptop" && category!="Appliance"){
+            throw new Error("parameter category is not valid");
+        }
+        if(quantity<=0){
+            throw new Error("parameter quantity is not valid");
+        }
+        
+
+        const result = await this.dao.registerProducts(model, category,quantity,details,sellingPrice,arrivalDate);
+        return result;
+     }
 
     /**
      * Increases the available quantity of a product through the addition of new units.
@@ -30,7 +57,29 @@ class ProductController {
      * @param changeDate The optional date in which the change occurred.
      * @returns A Promise that resolves to the new available quantity of the product.
      */
-    async changeProductQuantity(model: string, newQuantity: number, changeDate: string | null) /**:Promise<number> */ { }
+    async changeProductQuantity(model: string, newQuantity: number, changeDate: string | null) :Promise<number> { 
+        
+        if (changeDate===null){
+            changeDate=dayjs().format('YYYY-MM-DD');
+        }
+        if (dayjs(changeDate).isAfter(dayjs())){
+            throw new DateError();
+        }
+        let arrival= await this.dao.getArrivalDate(model);
+        if (dayjs(changeDate).isBefore(dayjs(arrival))){
+            throw new DateError();
+        }
+        if (model=="" || model==null){
+            throw new ProductNotFoundError();
+        }
+        if(newQuantity<=0){
+            throw new Error("parameter quantity is not valid");
+        }
+
+        return await this.dao.changeProductQuantity(model,newQuantity,changeDate);
+
+        
+    }
 
     /**
      * Decreases the available quantity of a product through the sale of units.
@@ -39,7 +88,35 @@ class ProductController {
      * @param sellingDate The optional date in which the sale occurred.
      * @returns A Promise that resolves to the new available quantity of the product.
      */
-    async sellProduct(model: string, quantity: number, sellingDate: string | null) /**:Promise<number> */ { }
+    async sellProduct(model: string, quantity: number, sellingDate: string | null) :Promise<number> { 
+
+        if (sellingDate===null){
+            sellingDate=dayjs().format('YYYY-MM-DD');
+        }
+        if (dayjs(sellingDate).isAfter(dayjs())){
+            throw new DateError();
+        }
+        let arrival= await this.dao.getArrivalDate(model);
+        if (dayjs(sellingDate).isBefore(dayjs(arrival))){
+            throw new DateError();
+        }
+        if (model=="" || model==null){
+            throw new ProductNotFoundError();
+        }
+        if(quantity<=0){
+            throw new Error("parameter quantity is not valid");
+        }
+        let q= await this.dao.getProductQuantity(model);
+        if(q==0){
+            throw new EmptyProductStockError();
+        }
+        if(q<quantity){
+            throw new LowProductStockError();
+        }
+        
+
+        return await this.dao.changeProductQuantity(model, -quantity ,sellingDate); //dato il cambiamento della funzione changeProductQuantity qui ho dovuto mettere un meno invece che q-quantity
+    }
 
     /**
      * Returns all products in the database, with the option to filter them by category or model.
@@ -48,7 +125,49 @@ class ProductController {
      * @param model An optional parameter. It can only be present if grouping is equal to "model" (in which case it must be present and not empty).
      * @returns A Promise that resolves to an array of Product objects.
      */
-    async getProducts(grouping: string | null, category: string | null, model: string | null) /**Promise<Product[]> */ { }
+    async getProducts(grouping: string | null, category: string | null, model: string | null) :Promise<Product[]> { 
+        //NOTA: I parametri non vengono registrati come "null" ma come "undefined"
+        //Non l'ho svolto per tutti ma solo per i controlli che mi interessavano
+        // (error parameter category... e grouping == null), vedi se è necessario per gli altri
+        if(model === undefined) {
+            model = null;
+        }
+        if(category===undefined){
+            category = null;
+        }
+        if(grouping===undefined){
+            grouping = null;
+        }
+
+        if (grouping===null && (category!==null || model!==null)){
+            throw new FilteringError();
+        }
+        if(grouping==="category" && (category===null || model!==null)){
+            throw new FilteringError();
+        }
+        if(grouping==="model" && (category!==null || model===null)){
+            //console.log(grouping);
+            //console.log(category);
+            //console.log(model);
+            throw new FilteringError();
+        }
+        if (category!==null && category!==undefined && category!="Smartphone" && category!="Laptop" && category!="Appliance"){
+            throw new Error("parameter category is not valid");
+        }
+        if(grouping==="category"){
+            return await this.dao.getFilteredProducts("category",category);
+        }else if(grouping==="model"){
+            if (model===""){
+                throw new Error("parameter model can't be empty");
+            }
+            return await this.dao.getFilteredProducts("model",model);
+        }else if (grouping===null || grouping===undefined){
+            return await this.dao.getAllProducts();
+        }else{
+            throw new Error("parameter grouping is not valid");
+        }
+
+    }
 
     /**
      * Returns all available products (with a quantity above 0) in the database, with the option to filter them by category or model.
@@ -57,13 +176,23 @@ class ProductController {
      * @param model An optional parameter. It can only be present if grouping is equal to "model" (in which case it must be present and not empty).
      * @returns A Promise that resolves to an array of Product objects.
      */
-    async getAvailableProducts(grouping: string | null, category: string | null, model: string | null) /**:Promise<Product[]> */ { }
+    async getAvailableProducts(grouping: string | null, category: string | null, model: string | null) :Promise<Product[]>  {
+        //NOTA: Ho rimosso le graffe di products.filter, a quanto pare bloccavano la restituzione
+        let result=await this.getProducts(grouping,category,model).then(
+            (products:Product[])=>products.filter((p)=>p.quantity>0)
+        );
+
+        return result;
+
+     }
 
     /**
      * Deletes all products.
      * @returns A Promise that resolves to `true` if all products have been successfully deleted.
      */
-    async deleteAllProducts() /**:Promise <Boolean> */ { }
+    async deleteAllProducts() :Promise <Boolean> {
+        return this.dao.deleteAllProducts();
+    }
 
 
     /**
@@ -71,7 +200,13 @@ class ProductController {
      * @param model The model of the product to delete
      * @returns A Promise that resolves to `true` if the product has been successfully deleted.
      */
-    async deleteProduct(model: string) /**:Promise <Boolean> */ { }
+    async deleteProduct(model: string) :Promise <Boolean> { 
+        if (model===""){
+            throw new Error("parameter model can't be empty");
+        }
+
+        return await this.dao.deleteProduct(model);
+    }
 
 }
 

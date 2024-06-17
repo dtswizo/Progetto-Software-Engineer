@@ -13,5 +13,5 @@
     },
     "types": ["node", "jest", "@types/jest"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*","test_integration/**/*","test_official/**/*","test_unit/**/*"]
 }

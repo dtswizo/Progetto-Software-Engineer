@@ -36,10 +36,24 @@ class ReviewRoutes {
          */
         this.router.post(
             "/:model",
+            this.authenticator.isCustomer, //devo gestire l'access costraint
+            param('model')
+            .isString()
+            .withMessage('Model must be a string')
+            .notEmpty()
+            .withMessage('Model cannot be empty'),
+            body('score')
+            .isInt({ min: 1, max: 5 })
+            .withMessage('Score must be an integer between 1 and 5'),
+            body('comment')
+            .isString()
+            .withMessage('Comment must be a string')
+            .notEmpty()
+            .withMessage('Comment cannot be empty'),
+            this.errorHandler.validateRequest, //gestione errori parametri
             (req: any, res: any, next: any) => this.controller.addReview(req.params.model, req.user, req.body.score, req.body.comment)
                 .then(() => res.status(200).send())
                 .catch((err: Error) => {
-                    console.log(err)
                     next(err)
                 })
         )
@@ -52,8 +66,13 @@ class ReviewRoutes {
          */
         this.router.get(
             "/:model",
+            this.authenticator.isLoggedIn,
+            param('model')
+            .notEmpty()
+            .withMessage('Model cannot be empty'),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getProductReviews(req.params.model)
-                .then((reviews: any/*ProductReview[]*/) => res.status(200).json(reviews))
+                .then((reviews: ProductReview[]) => res.status(200).json(reviews))
                 .catch((err: Error) => next(err))
         )
 
@@ -65,10 +84,12 @@ class ReviewRoutes {
          */
         this.router.delete(
             "/:model",
+            this.authenticator.isCustomer,
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.deleteReview(req.params.model, req.user)
                 .then(() => res.status(200).send())
                 .catch((err: Error) => {
-                    console.log(err)
+                    //console.log(err)
                     next(err)
                 })
         )
@@ -81,6 +102,8 @@ class ReviewRoutes {
          */
         this.router.delete(
             "/:model/all",
+            this.authenticator.isAdminOrManager,
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.deleteReviewsOfProduct(req.params.model)
                 .then(() => res.status(200).send())
                 .catch((err: Error) => next(err))
@@ -93,6 +116,8 @@ class ReviewRoutes {
          */
         this.router.delete(
             "/",
+            this.authenticator.isAdminOrManager,
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.deleteAllReviews()
                 .then(() => res.status(200).send())
                 .catch((err: Error) => next(err))

@@ -4,6 +4,7 @@ import { body, param, query } from "express-validator"
 import ProductController from "../controllers/productController"
 import Authenticator from "./auth"
 import { Product } from "../components/product"
+import dayjs from "dayjs"
 
 /**
  * Represents a class that defines the routes for handling proposals.
@@ -56,8 +57,25 @@ class ProductRoutes {
          * - arrivalDate: string. It can be omitted. If present, it must be a valid date in the format YYYY-MM-DD that is not after the current date
          * It returns a 200 status code if the arrival was registered successfully.
          */
+
         this.router.post(
             "/",
+            this.authenticator.isAdminOrManager,
+            body("model").isString().isLength({ min: 1 }),
+            body("category").isString().isIn(["Smartphone", "Laptop", "Appliance"]),
+            body("quantity").isInt({min:1}),
+            body("details").isString(),
+            body("sellingPrice").isFloat({min:1}),
+            body("arrivalDate").custom(value => {
+                if (value === '') {
+                    return true;
+                }
+                if (!dayjs(value, 'YYYY-MM-DD', true).isValid()) {
+                    return false;
+                }
+                return true;
+            }),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.registerProducts(req.body.model, req.body.category, req.body.quantity, req.body.details, req.body.sellingPrice, req.body.arrivalDate)
                 .then(() => res.status(200).end())
                 .catch((err) => next(err))
@@ -74,8 +92,21 @@ class ProductRoutes {
          */
         this.router.patch(
             "/:model",
+            this.authenticator.isAdminOrManager,
+            param("model").isString().isLength({ min: 1 }),
+            body("quantity").isInt({min:1}),
+            body("changeDate").custom(value => {
+                if (value === '') {
+                    return true;
+                }
+                if (!dayjs(value, 'YYYY-MM-DD', true).isValid()) {
+                    return false;
+                }
+                return true;
+            }),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.changeProductQuantity(req.params.model, req.body.quantity, req.body.changeDate)
-                .then((quantity: any /**number */) => res.status(200).json({ quantity: quantity }))
+                .then((quantity: number ) => res.status(200).json({ quantity: quantity }))
                 .catch((err) => next(err))
         )
 
@@ -88,12 +119,26 @@ class ProductRoutes {
          * - sellingDate: string. It can be omitted. If present, it must be a valid date in the format YYYY-MM-DD that is not after the current date and is after the arrival date of the product.
          * It returns the new quantity of the product.
          */
+
         this.router.patch(
             "/:model/sell",
+            this.authenticator.isAdminOrManager,
+            param("model").isString().isLength({ min: 1 }),
+            body("quantity").isInt({min:1}),
+            body("sellingDate").custom(value => {
+                if (value === '') {
+                    return true;
+                }
+                if (!dayjs(value, 'YYYY-MM-DD', true).isValid()) {
+                    return false;
+                }
+                return true;
+            }),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.sellProduct(req.params.model, req.body.quantity, req.body.sellingDate)
-                .then((quantity: any /**number */) => res.status(200).json({ quantity: quantity }))
+                .then((quantity: number) => res.status(200).end())
                 .catch((err) => {
-                    console.log(err)
+                    //console.log(err)
                     next(err)
                 })
         )
@@ -107,12 +152,23 @@ class ProductRoutes {
          * - model: string. It can only be present if grouping is equal to "model" (in which case it must be present and not empty).
          * It returns an array of Product objects.
          */
+        /* +++++++++++++++++++++++++++ TEST CONTROLLO PERMESSI ROUTE ++++++++++++++++++++++++++++
+        // a middleware sub-stack shows request info for any type of HTTP request to the /user/:id path
+        this.router.use('/', (req, res, next) => {
+            this.authenticator.isLoggedIn(req,res,next)
+            next()
+        })*/
         this.router.get(
             "/",
+            this.authenticator.isAdminOrManager, 
+            query("grouping").optional().isIn(["category", "model", null]),
+            query("category").optional().isIn(["Smartphone", "Laptop", "Appliance", null]),
+            query("model").optional().isString().notEmpty(),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getProducts(req.query.grouping, req.query.category, req.query.model)
-                .then((products: any /*Product[]*/) => res.status(200).json(products))
+                .then((products: Product[]) => res.status(200).json(products))
                 .catch((err) => {
-                    console.log(err)
+                    //console.log(err)
                     next(err)
                 })
         )
@@ -128,8 +184,13 @@ class ProductRoutes {
          */
         this.router.get(
             "/available",
+            this.authenticator.isLoggedIn,
+            query("grouping").optional().isIn(["category", "model", null]),
+            query("category").optional().isIn(["Smartphone", "Laptop", "Appliance", null]),
+            query("model").optional().isString().notEmpty(),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.getAvailableProducts(req.query.grouping, req.query.category, req.query.model)
-                .then((products: any/*Product[]*/) => res.status(200).json(products))
+                .then((products: Product[]) => res.status(200).json(products))
                 .catch((err) => next(err))
         )
 
@@ -140,6 +201,7 @@ class ProductRoutes {
          */
         this.router.delete(
             "/",
+            this.authenticator.isAdminOrManager,
             (req: any, res: any, next: any) => this.controller.deleteAllProducts()
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))
@@ -153,6 +215,9 @@ class ProductRoutes {
          */
         this.router.delete(
             "/:model",
+            this.authenticator.isAdminOrManager,
+            param("model").isString().isLength({ min: 1 }),
+            this.errorHandler.validateRequest,
             (req: any, res: any, next: any) => this.controller.deleteProduct(req.params.model)
                 .then(() => res.status(200).end())
                 .catch((err: any) => next(err))
