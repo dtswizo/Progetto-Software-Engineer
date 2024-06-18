@@ -67,10 +67,10 @@ class ProductRoutes {
             body("details").isString(),
             body("sellingPrice").isFloat({min:1}),
             body("arrivalDate").custom(value => {
-                if (value === '') {
+                if (value === '' || value === undefined) {
                     return true;
                 }
-                if (!dayjs(value, 'YYYY-MM-DD', true).isValid()) {
+                if (!dayjs(value, 'YYYY-MM-DD', true).isValid() || dayjs(value, 'YYYY-MM-DD', true).format('YYYY-MM-DD') !== value) {
                     return false;
                 }
                 return true;
@@ -96,10 +96,10 @@ class ProductRoutes {
             param("model").isString().isLength({ min: 1 }),
             body("quantity").isInt({min:1}),
             body("changeDate").custom(value => {
-                if (value === '') {
+                if (value === '' || value === undefined) {
                     return true;
                 }
-                if (!dayjs(value, 'YYYY-MM-DD', true).isValid()) {
+                if (!dayjs(value, 'YYYY-MM-DD', true).isValid() || dayjs(value, 'YYYY-MM-DD', true).format('YYYY-MM-DD') !== value) {
                     return false;
                 }
                 return true;
@@ -126,10 +126,10 @@ class ProductRoutes {
             param("model").isString().isLength({ min: 1 }),
             body("quantity").isInt({min:1}),
             body("sellingDate").custom(value => {
-                if (value === '') {
+                if (value === '' || value === undefined) {
                     return true;
                 }
-                if (!dayjs(value, 'YYYY-MM-DD', true).isValid()) {
+                if (!dayjs(value, 'YYYY-MM-DD', true).isValid() || dayjs(value, 'YYYY-MM-DD', true).format('YYYY-MM-DD') !== value) {
                     return false;
                 }
                 return true;

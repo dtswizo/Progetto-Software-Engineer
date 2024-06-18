@@ -29,6 +29,7 @@ class ProductController {
      */
     async registerProducts(model: string, category: string, quantity: number, details: string | null, sellingPrice: number, arrivalDate: string | null) :Promise<void> {
         
+        if(arrivalDate === undefined) arrivalDate = null;
         if (arrivalDate===null){
             arrivalDate=dayjs().format('YYYY-MM-DD');
         }
